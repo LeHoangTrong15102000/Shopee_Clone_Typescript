@@ -1,0 +1,2 @@
+# ShopeeCloneTypesript
+ Shopee Clone Typesript
