@@ -117,7 +117,7 @@ const Cart = () => {
   // clean-up func khi mà F5 lại sẽ xóa cái state được lưu trên router
   useEffect(() => {
     return () => {
-      history.replaceState(null, '')
+      history.replaceState(null, '') // hàm history.replaceState là hàm có sẵn ở trên trình duyệt
     }
   }, [])
 

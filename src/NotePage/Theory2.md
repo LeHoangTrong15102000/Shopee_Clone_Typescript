@@ -221,7 +221,48 @@
 
     + name trong event chính là cái name chúng ta truyền trong những thẻ mà chịu ảnh hưởng của onChange
 
+    + Khi mà đã lấy được cái name và value rồi thì sẽ tạo ra cái const newDate - sẽ lấy cái ngày cũ và overwrite lại mấy trường -> Nên đặt tên name của mấy cái Select/option trùng với cái state chúng ta gán giá trị cho chúng khi mà onChange
+    + Bây giờ newDate sẽ là cái ngày mới khi mà chúng ta thay đổi cái Select này -> Sau khi ghi đè xon chúng ta sẽ set lại giá trị cho setDate() => setDate({...date, [name]: value})
+    + // Kiểm tra nếu mà có onChange từ bên ngoài truyền vào, và truyền giá trị date vào
+        -> Bởi vì date chúng ta truyền vào có dạng là ISO8601 nên chúng ta phải đưa nó vào new Date(ISO8601) để format nó lại thành Sat Apr 01 2023 18:33:25 GMT+0700 (Giờ Đông Dương)
+
+    + Cái giá trị value từ trên Props truyền xuống thì nếu có chúng ta sẽ lấy giá trị từ props còn không thì sẽ lấy giá trị mặc định đã được gán sẵn trong state
+        -> Và như đã nói thì cách này chỉ có hiệu quả ngay lần đầu tiên thằng DateSelect nó render thôi
+              // value?.getDate() giá trị khởi tạo
+              const [date, setDate] = useState({
+                date: value?.getDate() || 1,
+                month: value?.getMonth || 0,
+                year: value?.getFullYear || 1990
+              })
+            -> Tại lần render đầu tiên thì giá trị khởi tạo nó mới có tác dụng -> nếu mà chúng ta thay đổi liên tục các kiểu thì cái chỗ state này nó không có thay đổi đâu
+
+        -> Ở thẻ <Select/> cũng cần phải có giá trị value nữa -> để khi mà ở ngoài truyền vào thì chúng ta cần phải show ra -> Nếu có giá trị ở ngoài thì chúng ta cần phải ưu tiên giá trị ở ngoài | còn không thì sẽ lấy giá trị localState
+        -> Chúng ta vẫn ưu tiên giá trị bên ngoài truyền vào
+      -> Một đều phải nhớ là khi dùng onChange thì chúng ta phải truyền value nó vào, value thì chúng ta ưu tiên từ bên ngoài truyền vào -> Ưu tiên giá trị bên ngoài truyền vào sau đó lấy giá trị từ localState
+
+    + Thì component DateSelect phải dùng Controller để quản lí nó rồi => Tại vì thằng register không hỗ trợ cho React-Select cũng như là các component Select custom nên vì thế chúng ta phải sử dụng Controller để bao bọc bên ngoài component DateSelect này
+    *****************************************
+        -> Thì cái onChange ở thằng dateSelect - bình thường field.onChange thì onChange truyền vào cái event(Ngoài cái event ra thì khi truyền value vào thì nó vẫn hiểu vì bình thường cái event là object event) nhưng mà ở đây component DateSelect nó không xuất ra cái event nó chỉ xuất ra cái value -> Chúng ta vẫn có thể truyền cái value vào được -> Đây là một cái hay của thằng RHF nó giúp chúng ta linh động xử lý - nó giúp chúng ta handle cái việc đấy luôn
+        -> Do cái DateSelect của chúng ta là component bình thường không thể truyền vào một cái Ref -> Nhưng mà {...field} nó bao gồm cả thằng Ref trong đó
+        -> Hoặc là chuyển DateSelect thành 1 cái component ReactForwardRef -> thì lúc này DateSelect nó mới nhận vào 1 cái Ref
+
+    + Chúng ta vừa thấy hiện tượng là khi chúng ta chọn năm hoặc ngày hoặc tháng thì trường còn lại nó tự động reset() lại giá trị khởi tạo -> Coi lại component DateSelect và tiến hành Debug bằng extendtions `Component` trên google
+        -> Ban đầu khi mà chưa chọn ngày tháng thì khi change `năm sinh` thì nó sẽ thay đổi cái `Ngày Sinh` và `Năm Sinh` khi mà thay đổi `Ngày Sinh` và `Tháng Sinh` rồi khi change cái `Năm Sinh` lại thì nó không còn change 2 thằng `Ngày Sinh` và `Năm Sinh` nữa
+
 > 212 Fix lỗi component DateSelect và thực hiện cập nhật profile
+
+    + Fix lỗi Component DateSelect và thực hiện chức năng cập nhật profile -> Khi mà change cái date thì ngày Sinh và tháng Sinh sẽ bị thay đổi và ngược lại -> Chúng ta sẽ tiến hành fix cái lỗi này
+    + Cái value của thằng DateSelect(props truyền vào là value có sự thay đổi) -> Ban đầu khi mà component Profile render lần đầu tiên -> nó sẽ lấy cái date_of_birth của giá new Date() trả về - Khi mà getProfile nó chưa gọi về thành công -> Xong rồi nó sẽ truyền vào cho thằng DateSelect -> và value sẽ lấy là Date(1, 1, 1990) -> Và sau đó Api getProfile nó thực hiện xong nó cập nhật lại cái formValue -> Và lúc này cái valueDate của chúng ta nó cũng được cập nhật
+      -> Value của thằng date_of_birth nó được cập nhật (từ 1/01/1990 thành 28/05/2000) , nhưng mà thằng DateSelect nó không được cập nhật -> nó chỉ chạy 1 lần duy nhất khi mà chúng ta khởi tạo component -> Nên dùng cho cái value thay đổi đi chăng nữa thì cái thằng state `date` của DateSelect nó cũng không thay đổi
+      -> Do khi thay đổi thằng Năm Sinh mà cái value từ Profile truyền xuống không nhận được nên là khi change Năm Sinh thì 2 thằng Ngày Sinh và Tháng Sinh nó sẽ lấy giá trị của localState trong DateSelect
+          ->  // Khi mà change cái năm sinh thì nó sẽ reset lại 2 cái thằng ngày sinh và tháng sinh, Do {...date} giá trị nó lấy là giá trị khởi tạo -> Không thay đổi khi mà getProfile thành công nên là nó sẽ lấy giá trị khởi tạo
+
+    -> Do nguyên nhân là như thế nên chúng ta có thể dễ dàng fix được -> thay vì lấy cái `date` từ trong cái state ra nó khống có đồng bộ
+        -> Nên chỗ này thay vì khai báo {...date}, chúng ta sẽ khai báo từ từ ra -> và lấy giá trị từ value
+              date: value?.getDate() || date.date,
+              month: value?.getMonth() || date.month,
+              year: value?.getFullYear() || date.year,
+            -> Ban đầu nếu mà User chưa cập nhật date_of_birth thì nó sẽ lấy giá trị mặc định
 
 > 213 Thực hiện chức năng upload ảnh
 

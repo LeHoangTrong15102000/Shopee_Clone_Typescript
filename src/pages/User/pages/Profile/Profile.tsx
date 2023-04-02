@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import userApi from 'src/apis/user.api'
+import userApi, { BodyUpdateProfile } from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
@@ -41,7 +41,6 @@ const Profile = () => {
     queryFn: () => userApi.getProfile()
   })
   const profile = profileData?.data.data
-  // console.log(profile)
 
   // Sử dụng useEffect() để đổ dữ liệu vào formProfile
   useEffect(() => {
@@ -55,6 +54,19 @@ const Profile = () => {
     }
   }, [profile, setValue])
 
+  // Khai báo 1 cái mutation update
+  const updateProfileMutation = useMutation({
+    mutationFn: (body: BodyUpdateProfile) => userApi.updateProfile(body)
+  })
+
+  // Func Submit xử lý lưu thông tin User
+  // Khi mà Submit cái form sẽ nhận được dữ liệu từ Form
+  const onSubmit = handleSubmit(async (data) => {
+    // Muốn xử lý những cái sự kiện sau cái update này thì dùng await
+    console.log(data)
+    // await updateProfileMutation.mutateAsync()
+  })
+
   return (
     <div className='rounded-md bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
       {/* Tiêu đề */}
@@ -63,7 +75,7 @@ const Profile = () => {
         <div className='mt-[0.1875rem] text-[.875rem]'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
       </div>
       {/* Form và Avatar */}
-      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
+      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
         {/* Form */}
         <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
           {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
@@ -129,7 +141,23 @@ const Profile = () => {
             </div>
           </div>
           {/* Ngày sinh, Nên cho thằng thành 1 cái component */}
-          <DateSelect />
+          <Controller
+            control={control}
+            name='date_of_birth'
+            render={({ field }) => {
+              // Trong cái {...field} đã có value={field.value} rồi
+              return (
+                <DateSelect
+                  errorMessage={errors.date_of_birth?.message}
+                  // Khi mà thằng profile.date_of_birth có giá trị thì nó sẽ truyền vào cho thằng field để xuất ra giá trị cho thằng value
+                  // Do giá trị bên ngoài ban đầu có nên nó sẽ lấy giá trị b ên ngoài để hiện ra date_of_birth(render lần đầu khi mà Component chạy)
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )
+            }}
+          />
+
           {/* button lưu thay đổi */}
           <div className='mt-7 flex flex-col flex-wrap sm:flex-row'>
             <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[20%] sm:text-right' />

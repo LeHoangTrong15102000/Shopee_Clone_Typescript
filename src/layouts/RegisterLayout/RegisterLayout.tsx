@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from 'src/components/Footer'
 import RegisterHeader from 'src/components/RegisterHeader'
 
@@ -7,6 +7,11 @@ interface Props {
 }
 
 const RegisterLayout = ({ children }: Props) => {
+  // useEffect khi mà load đến trang nào đó thì nó sẽ scroll lên đầu trang đó cho mình
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  })
+
   return (
     <div>
       <RegisterHeader />
