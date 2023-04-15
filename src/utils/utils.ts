@@ -1,6 +1,8 @@
 /* eslint-disable import/no-named-as-default-member */
 import axios, { AxiosError } from 'axios'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
+import userImage from 'src/assets/images/user.svg'
+import config from 'src/constant/config'
 
 // Hàm kiểm tra Error từ Axios
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
@@ -54,3 +56,6 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-') // split cái chuỗi theo '-i.' -> được cái arr các phần tử
   return arr[arr.length - 1] // arr lấy cái item cuối cùng
 }
+
+// func lấy ra avatar cho chúng ta
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage)

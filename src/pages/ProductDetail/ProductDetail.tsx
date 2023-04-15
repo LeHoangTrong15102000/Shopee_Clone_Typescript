@@ -16,6 +16,7 @@ import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/apis/purchases.api'
 import { Purchase } from 'src/types/purchases.type'
 import { purchasesStatus } from 'src/constant/purchase'
+import { useTranslation } from 'react-i18next'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -24,10 +25,11 @@ export type AddToCartType = {
 }
 
 const ProductDetail = () => {
+  const { t } = useTranslation('product') // i18next
   const [buyCount, setBuyCount] = useState(1)
 
   const { nameId } = useParams() // lấy ra cái nameId chứ không còn là id
-  // console.log(nameId)
+  // const _value = productId.value
   const id = getIdFromNameId(nameId as string) // tạo ra cái id từ cái nameId
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -53,10 +55,10 @@ const ProductDetail = () => {
   const { data: productsData } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => {
-      return productApi.getProducts(queryConfig) // Lấy ra những sản phẩm cùng danh mục
+      return productApi.getProducts(queryConfig) // Lấy ra những sản phẩm cùng danh mục, chứa các _id sản phẩm cùng danh mục
     },
-    enabled: Boolean(product),
-    staleTime: 3 * 60 * 1000
+    enabled: Boolean(product), // ban đầu product có data, lấy được categories thì mới cho chạy useQuery() này
+    staleTime: 3 * 60 * 1000 // Tóm lại cùng Categories khi mà staleTime chưa hết thì nó cũng ko gọi lại Api
   })
   // Ban đầu khi mà category chưa có dữ liệu thì nó sẽ render ra 20 product page 1
   // console.log(productsData?.data.data)
@@ -67,6 +69,7 @@ const ProductDetail = () => {
   })
 
   useEffect(() => {
+    // Khi mà product mà có thì set active ảnh đầu tiên
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
     }
@@ -302,7 +305,9 @@ const ProductDetail = () => {
                   onType={handleBuyCount}
                 />
                 {/* Sản phẩm có trong kho */}
-                <div className='ml-7 flex items-center text-gray-500/80'>{product.quantity} sản phẩm có sẵn</div>
+                <div className='ml-7 flex items-center text-gray-500/80'>
+                  {product.quantity} {t('available')}
+                </div>
               </div>
               {/* button thêm sản phẩm */}
               <div className='mt-10 flex items-center'>

@@ -8,7 +8,7 @@ const productApi = {
   // truyền params đường dẫn vào
   getProducts: (params: ProductListConfig) => {
     return http.get<SuccessResponseApi<ProductList>>('/products', {
-      params
+      params // gửi lên params là các queryParams của chúng ta
     })
   },
   getProductDetail: (id: string) => {

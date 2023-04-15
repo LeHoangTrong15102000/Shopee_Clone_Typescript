@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { getRules, schema, Schema, registerSchema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import authApi from 'src/apis/auth.api'
@@ -35,16 +35,16 @@ const Register = () => {
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body),
     onSuccess: (data) => {
-      toast.success('Đăng ký thành công')
+      toast.success('Đăng ký thành công', { autoClose: 1000 })
     },
     onError: () => {
-      toast.error('Đăng ký thất bại')
+      toast.error('Đăng ký thất bại', { autoClose: 1000 })
     }
   })
 
   // func handleSubmit nó sẽ không chạy khi mà cái formState chúng ta không đúng
   const onSubmit = handleSubmit((data) => {
-    const body = _.omit(data, ['confirm_password'])
+    const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
         // console.log(data)
@@ -108,7 +108,7 @@ const Register = () => {
                 errorMessage={errors.email?.message}
               />
               <Input
-                className='mt-2'
+                className='relative mt-2'
                 type='password'
                 name='password'
                 autoComplete='on'
@@ -117,7 +117,7 @@ const Register = () => {
                 errorMessage={errors.password?.message}
               />
               <Input
-                className='mt-2'
+                className='relative mt-2'
                 type='password'
                 name='confirm_password'
                 autoComplete='on'

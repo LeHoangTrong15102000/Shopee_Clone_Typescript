@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
-import _ from 'lodash'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import categoryApi from 'src/apis/category.api'
@@ -28,20 +27,23 @@ const ProductList = () => {
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)
     },
-    onSuccess: (data) => {
-      if (data.data.data.products.length === 0 && data.data.data.pagination.page !== 1) {
-        return navigate({
-          pathname: path.home,
-          search: createSearchParams({
-            ...queryConfig,
-            page: '1'
-          }).toString()
-        })
-      }
-    },
+    // onSuccess: (data) => {
+    //   // console.log(data.data)
+    //   if (data.data.data.products.length === 0 && data.data.data.pagination.page !== 1) {
+    //     return navigate({
+    //       pathname: path.home,
+    //       search: createSearchParams({
+    //         ...queryConfig,
+    //         page: '1'
+    //       }).toString()
+    //     })
+    //   }
+    // },
     keepPreviousData: true,
     staleTime: 3 * 60 * 1000 // 3 phut
   })
+
+  // console.log(productsData?.data.data) //  trả về cái mảng các phần tử trong đây
 
   // Gọi Api cho Category
   const { data: categoriesData } = useQuery({

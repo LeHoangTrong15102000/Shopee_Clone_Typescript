@@ -37,7 +37,7 @@ const Login = () => {
       toast.success('Đăng nhập thành công', { autoClose: 1000 })
     },
     onError: () => {
-      toast.error('Đăng nhập thất bại')
+      toast.error('Đăng nhập thất bại', { autoClose: 1000 })
     }
   })
 
@@ -97,7 +97,7 @@ const Login = () => {
                 errorMessage={errors.email?.message}
               />
               <Input
-                className='mt-2'
+                className='relative mt-2'
                 type='password'
                 name='password'
                 autoComplete='on'

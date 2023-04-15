@@ -73,6 +73,16 @@ function testPriceMinMax(this: yup.TestContext<AnyObject>) {
   return price_max !== '' || price_min !== ''
 }
 
+// Fucntion handleConfirmPasswordYup
+const handleConfirmPasswordYup = (refString: string) => {
+  return yup
+    .string()
+    .required('Confirm password là bắt buộc')
+    .min(6, 'Độ dài từ 6 đến 160 ký tự')
+    .max(160, 'Độ dài từ 6 đến 160 ký tự')
+    .oneOf([yup.ref(refString)], 'Nhập lại password không khớp!!')
+}
+
 export const schema = yup.object({
   email: yup
     .string()
@@ -86,12 +96,7 @@ export const schema = yup.object({
     .min(6, 'Độ dài từ 6 đến 160 ký tự')
     .max(160, 'Độ dài từ 6 đến 160 ký tự'),
   // Do là schema nên ngoài việc dùng được những string vẫn có thể dùng được cả schema api(schema là rộng nhất)
-  confirm_password: yup
-    .string()
-    .required('Confirm password là bắt buộc')
-    .min(6, 'Độ dài từ 6 đến 160 ký tự')
-    .max(160, 'Độ dài từ 6 đến 160 ký tự')
-    .oneOf([yup.ref('password')], 'Nhập lại password không khớp!!'), // Tham chiếu đến giá trị của password, nếu khớp thì pass qua
+  confirm_password: handleConfirmPasswordYup('password'), // Tham chiếu đến giá trị của password, nếu khớp thì pass qua
   price_min: yup.string().test({
     name: 'price-not-allowed',
     message: 'Giá không phù hợp',
@@ -119,9 +124,13 @@ export const userSchema = yup.object({
   address: yup.string().max(160, 'Độ dài tối đa là 160 ký tự '),
   avatar: yup.string().max(1000, 'Độ dài tối đa là 1000 ký tự'),
   date_of_birth: yup.date().max(new Date(), 'Ngày không hợp lệ, vui lòng chỉnh ngày chính xác'),
-  password: schema.fields['password'], // kế thừa từ trường password đã có sẵn
-  new_password: schema.fields['password'], // Cũng kế thừa từ password
-  confirm_password: schema.fields['confirm_password'] // Kế thừa từ confirm_password
+  password: schema.fields['password'] as yup.StringSchema<string | undefined, AnyObject, string | undefined>, // kế thừa từ trường password đã có sẵn
+  new_password: schema.fields['password'] as yup.StringSchema<string | undefined, AnyObject, string | undefined>, // Cũng kế thừa từ password
+  confirm_password: handleConfirmPasswordYup('new_password') as yup.StringSchema<
+    string | undefined,
+    AnyObject,
+    string | undefined
+  > // Kế thừa từ confirm_password
 })
 
 // Nếu mà thằng Login chỉ cần lấy vào 2 schema là email và password thôi thì có thể làm như sau

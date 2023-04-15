@@ -10,10 +10,12 @@ interface Props {
   as?: ElementType // custom thẻ khi user muốn một thẻ span thay vì div
   initialOpen?: boolean // ban đầu mình có muốn mở popover hay không
   placement?: Placement
+  enableArrow?: boolean
 }
 
 const Popover = ({
   children,
+  enableArrow = true, // mặc đinh sẽ cho nó là true
   className,
   renderPopover,
   as: Element = 'div',
@@ -40,6 +42,9 @@ const Popover = ({
   const hidePopover = () => {
     setIsOpen(false)
   }
+
+  // Dùng kĩ thuật render Props, truyền vào cái props 1 dạng function component
+
   return (
     <Element className={className} ref={reference} onMouseEnter={showPopover} onMouseLeave={hidePopover}>
       {children}
@@ -85,14 +90,16 @@ const Popover = ({
               exit={{ opacity: 0, transform: 'scale(0)' }}
               transition={{ duration: 0.2 }}
             >
-              <span
-                ref={arrowRef}
-                className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white'
-                style={{
-                  left: middlewareData.arrow?.x,
-                  top: middlewareData.arrow?.y
-                }}
-              ></span>
+              {enableArrow && (
+                <span
+                  ref={arrowRef}
+                  className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white'
+                  style={{
+                    left: middlewareData.arrow?.x,
+                    top: middlewareData.arrow?.y
+                  }}
+                ></span>
+              )}
               {/* Render popover */}
               {/* <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
                 <div className='flex flex-col py-2 px-3'>

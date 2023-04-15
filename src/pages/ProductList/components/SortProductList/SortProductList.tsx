@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import _ from 'lodash'
+import omit from 'lodash/omit'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import path from 'src/constant/path'
 import { sortBy, order as orderConstant } from 'src/constant/product'
@@ -27,7 +27,7 @@ const SortProductList = ({ queryConfig, pageSize }: Props) => {
     navigate({
       pathname: path.home,
       search: createSearchParams(
-        _.omit(
+        omit(
           {
             ...queryConfig,
             sort_by: sortByValue

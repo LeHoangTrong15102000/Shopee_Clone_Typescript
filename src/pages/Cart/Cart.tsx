@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
+import { Fragment, useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchases.api'
 import Button from 'src/components/Button'
@@ -10,7 +10,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchases.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import produce from 'immer'
-import _ from 'lodash'
+import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from 'src/assets/images/img-product-incart.png'
 
@@ -55,6 +55,8 @@ const Cart = () => {
       queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
+
+  // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
   const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
   // console.log(location.state)
@@ -97,7 +99,7 @@ const Cart = () => {
     setExtendedPurchases((prev) => {
       // prev sẽ là giá trị mới nhất của thằng purchasesInCart
       // sẽ sử dụng _keyby của lodash để lấy ra cái purchase cần tìm của chúng ta
-      const extendedPurchasesObject = _.keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử
+      const extendedPurchasesObject = keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử
       /**
        * Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
        */
@@ -107,7 +109,7 @@ const Cart = () => {
           return {
             ...purchase,
             disabled: false,
-            isChecked: isChoosenPurchaseIdFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
+            isChecked: isChoosenPurchaseIdFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.isChecked) // ban đầu nếu mà thằng này không có thì nó sẽ trả về false
           }
         }) || []
       )
@@ -154,9 +156,11 @@ const Cart = () => {
     )
   }
 
+  // Mỗi
   // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart
   const handleQuantity = (purchaseIndex: number, value: number, enabled: boolean) => {
     // Khi mà enabled = true thì mới cho thực hiện
+    updatePurchaseMutation.isLoading // ban đầu phải isLoading trước
     if (enabled) {
       const purchase = extendedPurchases[purchaseIndex] // lấy ra cái purchase
       setExtendedPurchases(
@@ -198,10 +202,10 @@ const Cart = () => {
       buyPurchasesMutation.mutate(purchaseIds)
     }
   }
-  console.log(extendedPurchases)
-
+  // console.log(extendedPurchases)
+  // ;<div className='my-3 rounded-sm bg-white p-5 shadow'></div>
   return (
-    <div className='bg-neutral-100 py-16'>
+    <div className='border-b- 4 border-b-[#ee4d2d] bg-neutral-100 py-16'>
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <Fragment>
@@ -209,7 +213,7 @@ const Cart = () => {
             <div className='overflow-auto'>
               <div className='min-w-[1000px]'>
                 {/* Tiêu đề của các sản phẩm trong cart */}
-                <div className='grid grid-cols-12 rounded-sm bg-white px-9 py-5 text-sm capitalize text-gray-500 shadow'>
+                <div className='my-2 grid grid-cols-12 rounded-md bg-white px-9 py-5 text-sm capitalize text-gray-500 shadow'>
                   {/* Phần sản phẩm và hình ảnh */}
                   <div className='col-span-6'>
                     <div className='flex items-center'>
@@ -238,7 +242,7 @@ const Cart = () => {
                 </div>
                 {/* Giao diện các sản phẩm trong cart - body các sản phẩm */}
                 {extendedPurchases.length > 0 && (
-                  <div className='my-3 rounded-sm bg-white p-5 shadow'>
+                  <>
                     {extendedPurchases?.map((purchase, index) => (
                       <div
                         key={purchase._id}
@@ -303,18 +307,22 @@ const Cart = () => {
                             {/* Quantity Controller */}
                             <div className='col-span-1'>
                               <QuantityController
+                                handleDelete={handleDelete(index)}
+                                product={purchase.product}
                                 max={purchase.product.quantity}
                                 value={purchase.buy_count}
                                 classNameWrapper='flex items-center'
-                                onIncrease={(value) => handleQuantity(index, value, value <= purchase.product.quantity)}
-                                onDecrease={(value) => handleQuantity(index, value, value >= 1)}
+                                onIncrease={(value) =>
+                                  handleQuantity(index, value, purchase.buy_count < purchase.product.quantity)
+                                }
+                                onDecrease={(value) => handleQuantity(index, value, purchase.buy_count > 1)}
                                 onType={handleTypeQuantity(index)}
                                 onFocusOut={(value) =>
                                   handleQuantity(
                                     index,
                                     value,
-                                    value >= 1 &&
-                                      value <= purchase.product.quantity &&
+                                    purchase.buy_count >= 1 &&
+                                      purchase.buy_count <= purchase.product.quantity &&
                                       value !== (purchasesInCart as Purchase[])[index].buy_count
                                   )
                                 }
@@ -339,8 +347,9 @@ const Cart = () => {
                           </div>
                         </div>
                       </div>
+                      // div thể hiện các mục giảm giá cho sản phẩm và tiền giao hàng
                     ))}
-                  </div>
+                  </>
                 )}
               </div>
             </div>

@@ -1,8 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+import React, { useContext } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import path from 'src/constant/path'
+import { AppContext } from 'src/contexts/app.context'
+import { getAvatarUrl } from 'src/utils/utils'
 
 const UserSideNav = () => {
+  const { profile } = useContext(AppContext)
+
   return (
     <div>
       {/* Avatar */}
@@ -10,14 +15,15 @@ const UserSideNav = () => {
         {/* Avatar */}
         <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
           <img
-            src='https://down-vn.img.susercontent.com/file/b34a1e6b65aaa8ba6474c7886dc59df2_tn'
+            // src='https://down-vn.img.susercontent.com/file/b34a1e6b65aaa8ba6474c7886dc59df2_tn'
+            src={getAvatarUrl(profile?.avatar)}
             alt='avatar_profile'
             className='h-full w-full object-cover'
           />
         </Link>
         {/* Tên user, mục: sửa hồ sơ */}
         <div className='flex-grow pl-[14px]'>
-          <div className='mb-1 truncate font-semibold text-gray-600'>trong_bt</div>
+          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name}</div>
           <Link to={path.profile} className='flex items-center bg-transparent capitalize'>
             {/* Icon */}
             <svg width={12} height={12} viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' className='mr-1'>
@@ -27,7 +33,6 @@ const UserSideNav = () => {
                 fillRule='evenodd'
               />
             </svg>
-
             {/* Title Sửa hồ sơ */}
             <span className='capitalize text-[#888]'>Sửa hồ sơ</span>
           </Link>
@@ -39,13 +44,13 @@ const UserSideNav = () => {
         <Link to={path.profile} className='mb-[0.9375rem] flex items-center justify-start capitalize transition-colors'>
           <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
             <img
-              src='https://down-vn.img.susercontent.com/file/sg-11134004-23030-p4oek1xcnvovf4'
+              src='https://down-vn.img.susercontent.com/file/sg-11134004-7qvfe-lezlew2dqrn784'
               alt='Avatar'
               className='h-6 w-6'
             />
           </div>
           <span className='relative flex items-center font-medium capitalize leading-tight'>
-            <span>4.4 sale thời trang mỹ phẩm</span>
+            <span>Ngày 15 sale giữa tháng</span>
             {/* <span className='ml-2 rounded-tl-2xl rounded-tr-3xl rounded-br-3xl bg-[#ee4d2d] p-1 text-[9px] text-white'>
               New
             </span> */}
@@ -68,9 +73,14 @@ const UserSideNav = () => {
           </span>
         </Link>
         {/* Thông tin cá nhân */}
-        <Link
+        <NavLink
           to={path.profile}
-          className='mb-[0.9375rem] flex items-center justify-start capitalize text-[#ee4d2d] transition-colors'
+          className={({ isActive }) =>
+            classNames('mb-[0.9375rem] flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600': !isActive
+            })
+          }
         >
           <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
             <img
@@ -80,11 +90,16 @@ const UserSideNav = () => {
             />
           </div>
           <span className='font-medium capitalize'>Tài khoản của tôi</span>
-        </Link>
+        </NavLink>
         {/* Đổi mật khẩu */}
-        <Link
+        <NavLink
           to={path.changePassword}
-          className='mb-[0.9375rem] flex items-center justify-start capitalize transition-colors'
+          className={({ isActive }) =>
+            classNames('mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600': !isActive
+            })
+          }
         >
           <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
             <img
@@ -94,9 +109,17 @@ const UserSideNav = () => {
             />
           </div>
           <span className='font-medium capitalize'>Đổi mật khẩu</span>
-        </Link>
+        </NavLink>
         {/* Đơn mua */}
-        <Link to={path.historyPurchases} className='flex items-center justify-start capitalize transition-colors'>
+        <NavLink
+          to={path.historyPurchases}
+          className={({ isActive }) =>
+            classNames('mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
             <img
               src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
@@ -105,7 +128,7 @@ const UserSideNav = () => {
             />
           </div>
           <span className='font-medium capitalize'>Đơn mua</span>
-        </Link>
+        </NavLink>
       </div>
     </div>
   )

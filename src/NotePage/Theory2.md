@@ -1,3 +1,5 @@
+// **\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***
+
 > > > > > > > > > > > > > > > > > > > > > > Chương 22 Clone shopee trang thông tin user
 
 > 205 Xử lý lỗi khi token hết hạn
@@ -264,14 +266,171 @@
               year: value?.getFullYear() || date.year,
             -> Ban đầu nếu mà User chưa cập nhật date_of_birth thì nó sẽ lấy giá trị mặc định
 
+    -> Nếu mà chúng ta muốn sự hoàn hảo -> Ban đầu cái state trong DateaSelect và value của profile nó không có đồng bộ với nhau -> Chúng ta có thể dùng useEffect() bởi vì cái valuye nó thay đổi thường xuyên nên không thể set theo kiểu như kia được
+                  const newDate = {
+                    date: value?.getDate() || date.date,
+                    month: value?.getMonth() || date.month,
+                    year: value?.getFullYear() || date.year,
+                    [name]: Number(valueFromSelect) // Mình sẽ chuyển nó thành Number() cho nó chặt chẽ
+                  }
+    -> Chúng ta phải kiểm tra thử trong trường hợp setDate() liên tục thì nó có dẫn đến trường hợp re-render vô hạn -> Khi mà chúng ta onChange() sẽ xuất 1 cái sự kiện ra bên ngoài - xuất 1 cái value ra -> value bên ngoài thay đổi -> Rồi nó sẽ nhảy vào lại trong DateSelect
+    => Ban đầu khi mà getProfile có data thì nó sẽ đồng bộ cái data của localState và Date của getProfile
+    -> Ban đầu khi mà không truyền gì vào cho DateSelect thì khi onChange không bị hiện tượng gì hết -> Vậy thì bây giờ chúng ta an tâm thực hiện handleSubmit rồi
+
+    -> Thằng Date_of_birth chúng ta phải convert no sang toISOString để submit lên Form
+    -> Chúng luôn set giá trị Default cho date_of_birth nên là lúc nào nó cũng có dữ liệu -> Nếu người dùng không có sự thay đổi về ngày sinh thì chúng ta sẽ lấy ngày sinh mặc định cho người dùng luôn
+    -> Sau khi submit thì chúng ta nên refresh lại Api getProfile -> Lấy data show lên Form lại cho người dùng
+
+    + Sau khi cập nhật thành công thì chúng ta cũng nên cập nhật lại contextApi của chúng ta
+    -> Sau khi đã set lại giá trị cho profile trong AppContext thì những khu vực như tên và Avatar chúng ta sẽ thay đổi cho nó luôn
+    -> Nếu như avatar không có thì chúng ta sẽ lấy cái icon mặc định cho nó
+    -> Khi set profile thành công thì cũng nên change trong cái localStorage luôn cho nó đồng nhất cả trang web của chúng ta
+          -> setProfile trong localStorage
+                -> setProfileToLS(res.data.data)
+
 > 213 Thực hiện chức năng upload ảnh
+
+    + Thực hiện chức năng upload ảnh, thêm vào một cái ảnh mới -> Chọn ảnh lấy được 1 cái file rồi mới tính tới chuyện upload -> Vậy thì làm thế để cho cái Input của chúng ta tự động nó click(trigger đến nó) -> Thì đơn giản chúng ta sử dụng useRef để chúng ta truy cập đến elementInputFile và chúng ta click nó khi mà người dùng click vào cái button thì chúng ta ép thằng inputFile bị click -> Khi mà bị click thì nó sẽ show lên cái window cho chúng ta chọn cái file
+
+    + Khai báo Ref để trigger nó -> Khi mà onClick cái button thì sẽ cho nó cái sự kiện onClick
+        -> fileInputRef.current?.click() -> Khi mà click vào cái button sẽ làm cho cái Input được click
+
+    + Sau khi đã xử lý được click vào button show ra window để chọn Image rồi -> Thì bây giờ sẽ tới xử lý cái file ảnh -> Cái inputFile nó sẽ nhận cái sự kiện là onChange -> gọi tới onFileChange
+        -> Để lấy cái file ra của chúng ta rất là dễ => tạo 1 cái biến. const fileFromLocal = event.target.files
+        -> Cái file ở đây là một fileList nhừng mà chúng ta chỉ chọn 1 cái file mà thôi -> Do nó có thể là null nên chúng ta sẽ sử dụng `event.target.files?.[0]` như này
+        -> Sau khi đã lấy được cái file rồi chúng ta sẽ show tấm ảnh lên trên lại cho profile của User -> gọi là `Preview` -> Chúng ta cần 1 state để lưu `fileFromLocal` này -> Và cái biến state này dùng để gửi lên cái Api của chúng ta
+        -> Set file vẫn chưa đủ làm sao để đưa cái fileFromLocal vào bên trong cái thẻ <img /> của chúng ta -> Làm sao để đưa cái file preview lên chỗ avatar của chúng ta -> Có 1 công thức rất là dễ -> URL.createObjectURL(file) điền cái file vào là nó ra được cái URL để hiển thị show lên trên cái khu vực `Preview` của chúng ta -> Nhưng bây giờ chúng ta sẽ suy nghĩ là chúng ta có cần tạo cái state [previewImg, setPreviewImg] hay không
+            *******************************
+            -> Chúng ta sẽ cho nó show ra ở dưới thẻ <img src={previewImage || profile?.avatar} /> - 1 là sẽ lấy previewImage, 2 là sẽ lấy giá trị từ trong cái formRHF ra -> Nhớ là lấy từ trong cái formRHF thì dùng cái watch(), cái getValues() nó chỉ hiệu quả khi mà lấy trong cái function, khi mà trigger 1 cái gì đó thì cái getValues() nó mới hiệu quả thôi -> Còn bình thường render ra thì dùng cái watch()(thì thằng watch() trong RHF dùng để theo dỗi sự thay đổi từ một giá trị nào đó trong form)
+            -> Bình thường chưa có previewImage([previewImage , setPreviewImage]) thì sẽ lấy avatar(const avatar = watch('avatar'))
+        -> Nhắc lại câu hỏi hồi nảy là chúng ta có cần thiết tạo ra cái [previewImage, setPreviewImage] không -> thằng này nó được tạo ra bằng cách là URL.createObjectURL(file) -> Có nghĩa là thằng previewImage khi mà chúng ta có thầng `file` thì chúng ta sẽ setState bằng useEffect() xem có thằng file thay đổi không thì chúng ta lại `setPreviewImage` à -> Nếu chúng ta sử dụng useEffect() để lắng nghe sự thay đổi của thằng file -> Vậy thì nó lại không có tối ưu cho code chúng ta -> `CHÚNG TA ĐÃ ĐƯỢC HỌC LÀ KHI MÀ CÓ MỘT GIÁ TRỊ NÀO ĐẤY PHỤ THUỘC VÀO GIÁ TRỊ CỦA THẰNG KHÁC` -> Thì chúng ta có thể dùng một cái biến
+        -> Thì thay vì tạo 1 cái state nó dài dòng và khó kiểm soát và dùng useEffect() change giá trị mỗi khi giá trị thay đổi -> Điều này làm cho code chúng ta khó kiểm soát hơn -> Và dùng useMemo() để hạn việc tính toán lại khi mà component re-render
+            -> const previewImage = useMemo(() => {
+                 // Nếu mà có cái file thì gọi đến
+                  return file ? URL.createObjectURL(file) : ''
+               }, [file]) -> Như thế này là được không nhất thiết phải tạo state làm gì
+            -> Tạo state nhiều chỉ khiến cho code chúng ta nó thêm phức tạp
+
+        -> Tiếp theo chúng ta sẽ làm là upload file lên Api (Nên nhớ chọn những tấm hình dưới 1MB )để không dữ liệu lưu trữ trên Server nó sẽ bị đầy và không còn đủ dung lượng cho ng ười khác
+
+        -> Api khi mà upload Avatar nó có thể trả về lỗi dạng 422 với key image hoặc là nó không trả về lỗi gì cả -> Ví dụ như upload ảnh Api nó có thể xử lý lỗi chẳng hạn và không trả về lỗi gì cả -> có thể tự xử lý nhờ đó mà chúng ta có thể linh hoạt được trong việc xử lý -> Không phải lúc nào cũng là cái này cũng là cái kia
+
+
+    -> Nhân tiện nói về việc upload ảnh thì chúng ta sẽ nói về 2 cái luồng upload ảnh phổ biến nhất hiện nay khi mà chúng ta rơi vào trường hợp cập nhật ở cái User như thế này
+
+        -> Luồng thứ 1:
+            + Khi mà chúng ta chọn tấm ảnh từ local của chúng ta -> thì khi mà chúng ta chọn xong một tấm ảnh từ local -> Thì chúng ta sẽ upload lên trên sv ngay lập tức luôn -> Và sv trả về cho chúng ta cái đoạn string - URL ảnh gì đấy về tấm ảnh -> Và chúng ta nhấn `Submit` thì chúng ta sẽ đưa đoạn string URL ảnh và data ấy lên sv luôn để sv xử lý
+
+        -> Luồng thứ 2:
+            + Nhấn upload: không upload lên server
+            + Nhấn submit(khi mà lưu cái hồ sơ): thì tiến hành upload lên sv, nếu upload thành công thì tiến thành gọi Api updateProfile
+
+      -> Thì ưu và nhược của 2 cái luồng trên
+
+        -> Luồng thứ 1:
+            + Ưu điểm: Khi mà người dùng upload ảnh lên sv rồi thì khi nhấn `Submit` thì data nó sẽ được trả về ngay lập tức luôn
+            + Nhược điểm
+
+        -> Luồng thứ 2:
+            + Nó sẽ hơi chậm 1 tí -> Tại vì khi chọn cái ảnh show lên để preview rồi mới nhấn submit -> Thì nó sẽ thực hiện 2 cái Api cùng một lúc
+            + Nó sẽ thực hiện Api theo tuần tự là nó sẽ upload xong tấm ảnh xong rồi nó mới submit
+
+        -> Thằng luồng 1 nó sẽ có lợi hơn luồng 2 khi mà người dùng upload tấm ảnh xong thì khi nào người dùng thích submit không submit thì thôi trên sv vẫn có tấm ảnh, nhược điểm của thằng luồng 1 là người dùng có thể spam upload ảnh liên tục(mặc dù người ta không có nhấn lưu, nhưng trên server vẫn có tấm ảnh đấy) nó có thể khiến cho sv bị quá tải
+
+      -> Như vậy thì cái nào cũng có ưu và nhược điểm riêng
+    -> Ở đây thì chúng ta sẽ chọn cách 2 để thực hiện upload profile và upload ảnh
+
+    -> Sau khi upload tấm ảnh thành công thì sẽ nhận được tên tấm ảnh -> Sẽ test bằng postman cho nó chắc => Sẽ nhận name bức ảnh có tên đuôi là jpg hoặc jpeg hoặc png
+
+    -> Khi mà có bức ảnh rồi nên set vào cái form cho nó đồng bộ -> Do nằm chung 1 cái handleSubmit nên khi nhấn submit thì sẽ gửi cái 2 Api lên trên sv luôn
+    -> Sẽ xử lý trường hợp cho tấm ảnh mà nó lớn hơn 1MB -> Do chúng ta chưa validate tại FE nên nó khoogn có bắt lỗi -> Nhưng mà khi đưa lên sv thì nó sẽ bắt lỗi `413` nôm na là lỗi dữ liệu trả về sv có kích thước quá lớn -> Và một lỗi nữa là lỗi về typescript - không thể đọc được thuộc tính của undefined là khi tấm ảnh quá lớn Server nó không có trả về dữ liệu được mà chúng ta lại data.message -> Do không có data trả về nên chấm message nó sẽ bị lỗi
+
+    ********************************************
+    -> Nếu nó bị lỗi thì nó sẽ không có gọi tới cái updateProfile bởi vì dữ liệu chúng ta được quản lí bởi RHF nên khi mà có lỗi thì dữ liệu nó sẽ không trả về để chúng ta submit lên sv đâu
+    -> Khi mà uploadAvatar kích thước quá lớn thì sẽ sv nó cũng không trả về data cho chúng ta và lỗi nó cũn trả về data lỗi là gì -> Nên là chỗ này chúng ta sẽ check một tí xíu
+    -> Chỗ Interceptor.response.error -> thì check khi mà data không có thì nên để data?.message thì khi mà không có thì nó sẽ lấy error.message -> error.message sẽ có lỗi là 'Network Error' -> Thế thì dùng đại cái 'Network Error' làm như này thì nó sẽ không có lỗi như lúc nảy nữa
+    -> Lỗi mà liên quan đến việc data?.message mà không có dữ liệu data trả về có thể khiến website chúng ta bị crash
+
+    -> Chỗ uploadProfile nếu như mà trên client chúng ta validate thiếu gì đấy và Server nó validate đủ hơn nên là nó sẽ trả về lỗi 422(lỗi về Form) -> Thì chúng ta cũng phải xử lý đúng không -> Nên là sẽ học cách validate từ Register component
+    -> Khi mà gửi lên FormData thằng date_of_birth có kiểu là Date, nhưng mà khi có lỗi thì sv sẽ trả về kiểu là string -> nên là chúng ta sẽ xử lý việc này -> Chúng ta sẽ tạo ra một cái kiểu mới nhưng sẽ hoán đổi kiểu Date thành string
+        -> Để tạo ra kiểu mới thì chúng ta sẽ kế thừa kiểu cũ và overwrite thằng date_of_birth thì cú pháp rất là đơn giản -> Đây là một cái trick - nó sẽ như thế này
+    *****
+    -> Size tấm ảnh hiện tại chỉ validate trên server -> Nên là chúng ta sẽ validate nó ở trên client luôn -> Để khi mà người dùng chọn tấm ảnh có kích thước quá lớn thì chúng ta sẽ validate nó luôn
+    -> Thực hiện validate khi uploadAvatar -> Chúng ta sẽ tiến hành validate kích thước và cái định dạng
 
 > 214 Validate khi upload ảnh
 
+    + Validate tấm ảnh theo dịnh dạng file và kích thước file ảnh -> Ban đầu nó nhảy vào sau một hồi thì nó không có nhảy vào nữa -> Tức là nó không có cái file -> Điều này không đúng có bug ở đây rồi
+    -> Lần đầu tiên khi mà chọn file ảnh thì nó vẫn còn chạy vài cái onChange đến lần thứ 2 thì cái onChange ko còn thấy được gọi nữa
+    -> Chúng ta đã hiểu vì sao cái onChange nó không có hoạt động khi mà chúng ta cứ chọn tấm ảnh lớn hơn 1MB liên tục rồi
+    -> Khi mà chúng ta chọn tấm ảnh thì cái file của tấm ảnh đấy nó đã được lưu trong cái value của Input file rồi -> Khi mà chúng ta chọn lại tấm ảnh y hệt tấm ảnh này thì nó không có biết giống nhau để onChange được -> do tấm ảnh y hệt nhau nên không thể onChange
+    -> Cách fix vấn đề này đơn giản mà thôi khi mà onClick vào `button` chọn ảnh thì chúng ta sẽ cho cái value của thẻ input File đó là null
+
 > 215 Active NavLink cho UserSideNav và tách component InputFile
+
+    + Active NavLink cho UserSideNav -> Handle Active cái UserSideNav, cùng với đó là tách riêng cái Input file ra
+
+
+    + Nếu mà tách ra như vậy thì khi mà thực hiện onFileChange thì nó phải nhận được 1 biến là file
+    -> Khi mà onFileChange thì chúng ta sẽ thực hiện sự kiện onChange gì đấy từ bên ngoài truyền vào trong cái InputFile -> Bên ngoài chúng ta có thể nhận được cái biến file rất là easy luôn
+    -> Chúng ta lo lắng rằng không truyền onChange vào thì chúng ta có dùng được cái InputFile hay không -> InputFIle này rất là đặc biệt chúng ta có thể ko dùng useState file nhưng mà chúng ta vẫn có thể chọn 1 cái file nào đó từ trong local
+    -> Xuất 1 cái event từ bên ngoài truyền vào
+    -> Khi mà onChange thì chúng ta sẽ set 1 cái file vào
+
+    -> Thì khi mà chúng ta có thao tác với 1 cái file thì thằng `handleChangeFile` nó sẽ gọi và nó sẽ thao tác lại cái File cho chúng ta
+
+    + Sẽ dùng NavLink để nó active khi mà cái URL nó matches với thằng đường dẫn trong NavLink -> Chúng ta sẽ dùng cái callback trong cái className
 
 > 216 Cách dùng useFormContext trong React Hook Form
 
+    + Sử dụng useFormContext -> một cái hook khá là hay của RHF đó là useFormContext ->
+    -> Chúng ta sẽ sử dụng cái useFormContext này trong trường hợp cái form của chúng ta nó rất là lớn và phức tạp -> Nó có nhiều cái component lớn trong đấy -> Những cái component lớn này chúng ta ko thể tách ra thành những cái component đơn giản -> Ví dụ như là component InputNumber hay Input đều không thể
+
+    *********************************************
+    -> Ví dụ như là chúng ta sẽ tạo 1 component Info() gồm 2 trường tên và số điện thoại -> Và chúng ta không thể chuyển component Info() thành 1 cái component dạng InputNumber() được -> bởi vì component Info() nó có rất là nhiều field, có field `name` field `phoneNumber` -> như thế này thì chúng ta không thể truyển nó thành những component đơn giản như component InputNumber được -> Vậy trong những trường hợp như thế này cần phải có 1 cái Form để quản lí component Info() và cái form quản lí Info() chúng ta sẽ lấy cái form từ thằng Profile()(** Nên ở đây nếu mà có nhiều component được quản lí bởi form của thằng Profile() thì cần phải sử dụng useFormContext để quản lí chúng các Form của những thằng conponent trong Profile() **)
+
+    -> Và chúng ta sẽ truyền 1 cái gì đấy của thằng useForm xuống component Info() -> Để cho thằng useForm() cũng quản lí được Info() luôn -> Thì chúng ta sẽ truyền như thế nào thì chúng ta sẽ xem thằng useFormContext()
+          -> truyền tất cả thuộc tính vào trng thằng FormProvider
+                // Ở thằng cha component Profile()
+                const methods = useForm()
+                <FormProvider {...methods} />
+                // Ở trong cái thằng con, component Info() chúng ta sẽ gọi cái methods ra bằng cách sử dụng useFormContext()
+                const methods = useFormContext()
+    -> Và chúng ta thực hiện như này là chúng ta sẽ xử lý được
+        -> errorMessage={errors.name?.message} -> Do thằng message trong errorMessage của thằng component Info() nó có thêm các thuộc tính ngoài string còn có thêm FieldErrors -> Nên thằng typescript nó không có hiểu được -> Vậy nên chúng ta phải fix cái vấn đề này
+        -> Chúng ta sẽ truyền thêm genericType vào useFormContext -> const {...} = useFormContext<FormData>() -> Nó sẽ hết lỗi
+
+    -> Cái useFormContext() -> Chúng ta sử dụng trong những trường hợp component chúng ta rất là phức tạp(có nhiều field) chúng ta không thể hoán đổi thành những component đơn giảm như là InputNumber() -> Và chúng ta bắt buộc phải quản lí bằng 1 cái form -> Và cái form lấy từ thằng useFormContext() chính là lấy từ thằng component profile truyền xuống
+
 > 217 Code logic đổi mật khẩu
 
+    + Thực hiện chức năng đổi mật khẩu thì nó cũng giống như cái Profile() thôi
+    + kể từ yup phiên bản 1.xxx version trở đi thì thằng password, confirm_password , new_password khi mà kế thừa từ một schema có sẵn cần phải thêm'
+        -> Nó sẽ phải ghi như thế này -> password: schema.fields['password'] as yup.StringSchema<string | undefined, yup.AnyObject, undefined, ''>
+
+    + Tạo 1 cái ChangePassword schema trong cái logic đổi mật khẩu của Chúng ta
+    -> Phải cho confirm_password ở ChangePassword tham chiếu tới giá trị của thằng newPassword -> Những trường hợp như này thì chúng ta sẽ tạo mới lại giá trị của `confirm_password` -> Hoặc tạo 1 cái function để tái sử dụng code
+    ************************************
+    -> Công dụng của type predicate là bắt lỗi do sv trả về -> ví dụ như `Password không đúng` -> Khi mà nhập password không đúng thì nó sẽ trả về lỗi 422 -> Lỗi liên quan đến form do sv trả về
+    -> Thay đổi password xong thì chúng ta clear cái dữ liệu cũ đi
+
+    -> Nên thêm icon mắt chỗ input của chúng ta -> Vào thẻ Input để chúng ta có thể Custom điều đó
+    => Khi mà để icon password vào rồi mà muốn thấy được password nhập vào thì người dùng phải change cái type là password thành type là text -> có sự kiện onChange để thay đổi cái icon liên tục
+
+    -> Chúng ta thoáng nghĩ nên có một cái state để lưu trữ việc ẩn hiện của con mắt
+    -> Khi mà click vào trong những cái svg thì chúng ta sẽ change cái state `openEye` lại
+    => Thẻ <input /> trong component Input sẽ lấy thêm cái type truyền vào và xử lý logic -> khi mà click con mắt thì sẽ cho show ra giá trị của ô input
+
+    -> Sẽ check xem nếu như type === 'password' && !openEye(con mắt đóng) thì chúng ta sẽ chuyển type nó thành text và mở còn mắt ra
+    -> Ngược lại
+
 > 218 Code chức năng đơn mua
+
+- bắt đầu code chức năng đơn mua, các trạng thái trong giỏ hàng đã được chúng ta khai báo ở các bài trước rồi -> Nên ở lần này chỉ cần dùng và show ra giao diện thôi
+- -> Dùng `QueryParams` để chuyền status lên
+- -> Sẽ có danh sách các thẻ `Link` -> Ở đây các bạn sẽ nghĩ là dùng NavLink để active các mục của lịch sử mua hàng -> Nhưng rất tiếc là thẻ NavLink nó chỉ có tác dụng với các params ví dụ như: `user/profile` , `user/password` , `user/purchase` -> còn ở đây các status chỉ là các `queryString/queryParams` như: `user/purchase/?type=2,3,4,5` -> Đối với queryParams thì thằng NavLink nó không hoạt động tốt sau dấu `?`
+- -> Nó active khi mà cái status chúng ta lấy từ trên cái Url === status chúng ta truyền vào thẻ <Link to={{search: statusPurchase.all}}></Link>
+- -> Use flex-1 to allow a flex item to grow and shrink as needed, ignoring its initial size
+- -> Làm sao chúng ta lấy được `status` trên thanh URL -> chúng ta sử dụng custom hook `useQueryParams` của chúng ta đã tạo được từ trước để xử lý `active` -> Kiểm tra `status` === `statusPurchase.all` thì chúng ta sẽ `active` cái thẻ <Link /> đó
+- -> Chúng ta thấy là nó lặp lại code khá là nhiều và chúng ta không muốn điều đó -> `clean-code` lại -> Chúng ta có thể tạo ra 1 cái `Array` để `map()` nó
+- -> Mỗi lần statusChange thì chúng ta sẽ gọi Api -> gọi lại Api `getPurchase`

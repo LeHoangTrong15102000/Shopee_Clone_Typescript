@@ -28,6 +28,7 @@ function InputV2<
     value = '',
     ...rest
   } = props
+  // useController dùng để custom những Input từ các thư viện như antd, MUI, mantine
   const { field, fieldState } = useController(props)
   const [localValue, setLocalValue] = useState<string>(field.value) //
   // Khi người dùng gõ số thì hàm onChange nó sẽ chạy

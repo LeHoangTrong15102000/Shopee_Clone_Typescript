@@ -4,7 +4,7 @@ import { Product } from './product.type'
 export type PurchaseStatus = -1 | 1 | 2 | 3 | 4 | 5 // Đây là các giá trị cho trạng thái đơn hàng
 
 // giá trị 0 là giá trị status đặc biệt giành riêng cho purchaseListStatus, nó bao gồm cả purchase status item và purchaseList
-export type PurchaseListStatus = PurchaseStatus | 0 // hoặc là string hoặc là number
+export type PurchaseListStatus = PurchaseStatus | 0 // hoặc là string hoặc là number, bao gồm purchaseStatus và cả số 0
 
 // Mỗi cái purchase nó sẽ có 1 cái status
 export interface Purchase {

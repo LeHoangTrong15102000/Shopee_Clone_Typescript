@@ -8,9 +8,9 @@ interface Props {
 
 const CartLayout = ({ children }: Props) => {
   // useEffect khi mà load đến trang nào đó thì nó sẽ scroll lên đầu trang đó cho mình
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  })
+  // useEffect(() => {
+  //   window.scrollTo(0, 0)
+  // })
 
   return (
     <div>

@@ -14,6 +14,7 @@ import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from 'src/pages/ProductList/components/RatingStars'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 import InputV2 from 'src/components/InputV2'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   queryConfig: QueryConfig
@@ -24,6 +25,7 @@ type FormData = NoUndefinedField<InputNumberSchema>
 // có thể khai báo như này type FormData = Pick<Schema, 'price_max' | 'price_min'> -> cú pháp của thằng typescript
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
+  const { t } = useTranslation('home') // Trong trường hợp ko khai báo gì thì chúng ta đang sử dụng namespace mặc định
   const { category, sort_by } = queryConfig // Lấy ra category config -> lấy ra cái categoriesId
   const {
     control,
@@ -98,7 +100,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
             </g>
           </g>
         </svg>
-        <span className='capitalize'>Tất cả danh mục</span>
+        <span className='capitalize'>{t('aside filter.all categories')}</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
       <ul>
@@ -153,7 +155,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
             />
           </g>
         </svg>
-        <span className=''>Bộ lộc tìm kiếm</span>
+        <span className=''>{t('aside filter.search filter')}</span>
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
       {/* Filter theo khoảng giá */}

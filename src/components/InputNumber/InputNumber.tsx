@@ -26,7 +26,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
   // Khi người dùng gõ số thì hàm onChange nó sẽ chạy
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = event.target
-    if (value === '0') return
+    // if (value === '0') return
 
     if (maxValue && +value >= +maxValue) {
       value = maxValue
