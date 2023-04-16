@@ -146,12 +146,14 @@ const ProductDetail = () => {
   // func xử lý `Mua Ngay`
   const handleBuyNow = async () => {
     const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
+    // console.log(res)
     // Khi mà thành công thì sẽ lấy ra cái purchase
     const purchase = res.data.data
+    // console.log(purchase)
     // Khi nhấn vào `Mua Ngay` thì chuyển đến trang Cart kèm theo cái state là purchaseId
     navigate(path.cart, {
       state: {
-        purchaseId: purchase._id
+        purchaseId: purchase._id // lấy ra _id của mỗi sản phẩm trong giỏ
       }
     })
   }

@@ -58,8 +58,8 @@ const Cart = () => {
 
   // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
+  // Khi mà ta xóa cái state trên URL thì thằng useEffect sẽ chạy lại
   const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
-  // console.log(location.state)
 
   const purchasesInCart = purchasesInCartData?.data.data
   // Tạo 1 biến isAllChecked để khi mà mỗi purchas trong cart checked thì isAllChecked sẽ trả về true
@@ -99,13 +99,22 @@ const Cart = () => {
     setExtendedPurchases((prev) => {
       // prev sẽ là giá trị mới nhất của thằng purchasesInCart
       // sẽ sử dụng _keyby của lodash để lấy ra cái purchase cần tìm của chúng ta
-      const extendedPurchasesObject = keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử
+      const extendedPurchasesObject = keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử và cả object sản phẩm đó sẽ là value
       /**
        * Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
        */
       return (
         purchasesInCart?.map((purchase) => {
           const isChoosenPurchaseIdFromLocation = choosenPurchaseIdFromLocation === purchase._id // Nếu cái này là true thì nó sẽ checked
+          // Kiểm tra
+          // if (isChoosenPurchaseIdFromLocation && extendedPurchasesObject[purchase._id]?.isChecked) {
+          //   history.replaceState(null, '')
+          //   return {
+          //     ...purchase,
+          //     disabled: false,
+          //     isChecked: Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
+          //   }
+          // }
           return {
             ...purchase,
             disabled: false,
@@ -125,9 +134,15 @@ const Cart = () => {
 
   // func xử lý checked cho 1 sản phẩm
   const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(choosenPurchaseIdFromLocation)
+
     setExtendedPurchases(
       produce((draft) => {
         // draft(tham số) sẽ đại diện cho extendedPurchasesPrev giá trị mới nhất, nghĩa là cái Arr mới nhất trước khi gọi đến handleChecked
+        // if (choosenPurchaseIdFromLocation === draft[purchaseIndex]._id && draft[purchaseIndex].isChecked === true) {
+        //   history.replaceState(null, '')
+        //   draft[purchaseIndex].isChecked = event.target.checked
+        // }
         draft[purchaseIndex].isChecked = event.target.checked
       })
     )

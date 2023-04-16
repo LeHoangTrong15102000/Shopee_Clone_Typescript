@@ -1,6 +1,6 @@
 // Các thuộc tính trong danh sách sản phẩm
 export interface Product {
-  _id: string
+  _id: string // id của sản phẩm
   images: string[]
   price: number
   rating: number
@@ -18,6 +18,7 @@ export interface Product {
   createdAt: string
   updatedAt: string
 }
+// Còn cái _id bên ngoài product là _id của mỗi sản phẩm trong giỏ
 
 // Các thuộc tính của một list sản phẩm
 export interface ProductList {

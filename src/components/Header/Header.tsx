@@ -276,7 +276,6 @@ const Header = () => {
               </div>
             </form>
           </Tippy>
-
           {/* Cart */}
           <div className='col-span-1 flex justify-self-center'>
             {/* Ban đầu chưa có sản phẩm thì render ra biểu tượng */}
