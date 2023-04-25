@@ -145,11 +145,17 @@ const ProductDetail = () => {
 
   // func xử lý `Mua Ngay`
   const handleBuyNow = async () => {
-    const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
-    // console.log(res)
+    const res = await addToCartMutation.mutateAsync(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: () => {
+          // toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        }
+      }
+    )
     // Khi mà thành công thì sẽ lấy ra cái purchase
     const purchase = res.data.data
-    // console.log(purchase)
     // Khi nhấn vào `Mua Ngay` thì chuyển đến trang Cart kèm theo cái state là purchaseId
     navigate(path.cart, {
       state: {

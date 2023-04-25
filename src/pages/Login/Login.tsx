@@ -14,6 +14,7 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constant/path'
+import classNames from 'classnames'
 
 type FormData = LoginSchema
 
@@ -89,15 +90,27 @@ const Login = () => {
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
               <Input
                 className='mt-6'
+                classNameInput={classNames(
+                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
+                  {
+                    'border-red-500 focus:border-red-500': errors.email && errors.email.message
+                  }
+                )}
                 type='email'
                 name='email'
                 autoComplete='on'
                 register={register}
                 placeholder='Email'
-                errorMessage={errors.email?.message}
+                // errorMessage={errors.email?.message}
               />
               <Input
                 className='relative mt-2'
+                classNameInput={classNames(
+                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
+                  {
+                    'border-red-500 focus:border-red-500': errors.password && errors.password.message
+                  }
+                )}
                 type='password'
                 name='password'
                 autoComplete='on'

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Fragment, useContext, useEffect, useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchases.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
@@ -28,7 +28,7 @@ const Cart = () => {
   // useQuery để gọi purchaseList hiển thị Cart product
   const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
+    queryFn: async () => await purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
 
   const updatePurchaseMutation = useMutation({
@@ -58,10 +58,16 @@ const Cart = () => {
 
   // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
+  const navigate = useNavigate()
   // Khi mà ta xóa cái state trên URL thì thằng useEffect sẽ chạy lại
-  const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
+  const choosenPurchaseIdFromLocation = useMemo(
+    () => (location.state as { purchaseId: string } | null)?.purchaseId,
+    [location]
+  )
+  const pathname = location.pathname
 
   const purchasesInCart = purchasesInCartData?.data.data
+  // console.log(purchasesInCart)
   // Tạo 1 biến isAllChecked để khi mà mỗi purchas trong cart checked thì isAllChecked sẽ trả về true
   const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.isChecked), [extendedPurchases])
   const checkedPurchases = useMemo(
@@ -69,9 +75,6 @@ const Cart = () => {
     [extendedPurchases]
   )
   const checkedPurchaseCount = checkedPurchases.length
-
-  // console.log(extendedPurchases.length)
-  // console.log(isAllChecked)
 
   // Lấy ra các purchase được checked để tính tổng tiền
   const totalCheckedPurchasePrice = useMemo(
@@ -106,15 +109,6 @@ const Cart = () => {
       return (
         purchasesInCart?.map((purchase) => {
           const isChoosenPurchaseIdFromLocation = choosenPurchaseIdFromLocation === purchase._id // Nếu cái này là true thì nó sẽ checked
-          // Kiểm tra
-          // if (isChoosenPurchaseIdFromLocation && extendedPurchasesObject[purchase._id]?.isChecked) {
-          //   history.replaceState(null, '')
-          //   return {
-          //     ...purchase,
-          //     disabled: false,
-          //     isChecked: Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
-          //   }
-          // }
           return {
             ...purchase,
             disabled: false,
@@ -123,7 +117,15 @@ const Cart = () => {
         }) || []
       )
     })
-  }, [purchasesInCart, choosenPurchaseIdFromLocation, setExtendedPurchases])
+    // Sau khi nhấn vào `mua ngay` thì nó sẽ chạy lại cái useEffect và biến handler sẽ chạy
+    const handler = setTimeout(
+      () =>
+        // Khi mà change cái checked thì setExtendedPurchases thay đổi làm useEffect chạy lại
+        navigate(pathname, { state: null, replace: true }), // thay thế cái state trên URL
+      500
+    )
+    return () => clearTimeout(handler)
+  }, [purchasesInCart, choosenPurchaseIdFromLocation, setExtendedPurchases, pathname, navigate])
 
   // clean-up func khi mà F5 lại sẽ xóa cái state được lưu trên router
   useEffect(() => {
@@ -134,15 +136,8 @@ const Cart = () => {
 
   // func xử lý checked cho 1 sản phẩm
   const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(choosenPurchaseIdFromLocation)
-
     setExtendedPurchases(
       produce((draft) => {
-        // draft(tham số) sẽ đại diện cho extendedPurchasesPrev giá trị mới nhất, nghĩa là cái Arr mới nhất trước khi gọi đến handleChecked
-        // if (choosenPurchaseIdFromLocation === draft[purchaseIndex]._id && draft[purchaseIndex].isChecked === true) {
-        //   history.replaceState(null, '')
-        //   draft[purchaseIndex].isChecked = event.target.checked
-        // }
         draft[purchaseIndex].isChecked = event.target.checked
       })
     )
@@ -171,7 +166,6 @@ const Cart = () => {
     )
   }
 
-  // Mỗi
   // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart
   const handleQuantity = (purchaseIndex: number, value: number, enabled: boolean) => {
     // Khi mà enabled = true thì mới cho thực hiện

@@ -41,6 +41,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setProfile(null)
   }
   return (
+    // Trong đây truyền những giá trị được khai báo trong AppProvider
     <AppContext.Provider
       value={{
         isAuthenticated,
