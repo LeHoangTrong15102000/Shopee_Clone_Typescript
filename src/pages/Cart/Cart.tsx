@@ -74,6 +74,7 @@ const Cart = () => {
     () => extendedPurchases.filter((purchase) => purchase.isChecked),
     [extendedPurchases]
   )
+  console.log(checkedPurchases)
   const checkedPurchaseCount = checkedPurchases.length
 
   // Lấy ra các purchase được checked để tính tổng tiền
