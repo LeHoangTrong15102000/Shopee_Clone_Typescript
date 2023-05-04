@@ -58,6 +58,7 @@ const Cart = () => {
 
   // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
+
   const navigate = useNavigate()
   // Khi mà ta xóa cái state trên URL thì thằng useEffect sẽ chạy lại
   const choosenPurchaseIdFromLocation = useMemo(
@@ -74,7 +75,7 @@ const Cart = () => {
     () => extendedPurchases.filter((purchase) => purchase.isChecked),
     [extendedPurchases]
   )
-  console.log(checkedPurchases)
+  // console.log(checkedPurchases)
   const checkedPurchaseCount = checkedPurchases.length
 
   // Lấy ra các purchase được checked để tính tổng tiền

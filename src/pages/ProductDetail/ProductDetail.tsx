@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { createSearchParams, useHref, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import productApi from 'src/apis/product.api'
@@ -17,6 +17,7 @@ import purchaseApi from 'src/apis/purchases.api'
 import { Purchase } from 'src/types/purchases.type'
 import { purchasesStatus } from 'src/constant/purchase'
 import { useTranslation } from 'react-i18next'
+import { AppContext } from 'src/contexts/app.context'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -27,11 +28,15 @@ export type AddToCartType = {
 const ProductDetail = () => {
   const { t } = useTranslation('product') // i18next
   const [buyCount, setBuyCount] = useState(1)
+  const { isAuthenticated } = useContext(AppContext)
 
   const { nameId } = useParams() // lấy ra cái nameId chứ không còn là id
   // const _value = productId.value
   const id = getIdFromNameId(nameId as string) // tạo ra cái id từ cái nameId
   const navigate = useNavigate()
+
+  // console.log('URL LOCATION', window.location.href)
+
   const queryClient = useQueryClient()
 
   const { data: productDetailData } = useQuery({
@@ -348,12 +353,28 @@ const ProductDetail = () => {
                   </svg>
                   <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
                 </button>
-                <button
-                  onClick={handleBuyNow}
-                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-[#ee4d2d] px-4 capitalize text-white shadow-sm outline-none hover:bg-[#ee4d2d]/90'
-                >
-                  Mua ngay
-                </button>
+                {isAuthenticated ? (
+                  <button
+                    onClick={handleBuyNow}
+                    className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-[#ee4d2d] px-4 capitalize text-white shadow-sm outline-none hover:bg-[#ee4d2d]/90'
+                  >
+                    Mua ngay
+                  </button>
+                ) : (
+                  <button
+                    onClick={() =>
+                      navigate(path.login, {
+                        state: {
+                          purchaseId: product._id,
+                          purchaseName: product.name
+                        }
+                      })
+                    }
+                    className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-[#ee4d2d] px-4 capitalize text-white shadow-sm outline-none hover:bg-[#ee4d2d]/90'
+                  >
+                    Mua ngay
+                  </button>
+                )}
               </div>
             </div>
           </div>

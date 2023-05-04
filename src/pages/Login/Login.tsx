@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -9,7 +9,7 @@ import { useContext } from 'react'
 import Input from 'src/components/Input'
 import { LoginSchema, getRules, loginSchema } from 'src/utils/rules'
 import authApi from 'src/apis/auth.api'
-import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+import { generateNameId, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
@@ -21,6 +21,18 @@ type FormData = LoginSchema
 const Login = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
+  const location = useLocation()
+  // console.log(location)
+
+  const purchaseIdFromLocation = useMemo(
+    () => (location.state as { purchaseId: string } | null)?.purchaseId,
+    [location]
+  )
+  const purchaseNameFromLocation = useMemo(
+    () => (location.state as { purchaseName: string } | null)?.purchaseName,
+    [location]
+  )
+  // console.log('CHOOSENPURCHASEHREF FROM LOCATION', choosenPurchaseHrefFromLocation)
   const {
     register,
     handleSubmit,
@@ -52,7 +64,14 @@ const Login = () => {
         // console.log(data) // data đầu tiên là axiosRes trả về, data thứ 2 là Successapi sv trả về
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
-        navigate('/')
+        navigate(
+          purchaseIdFromLocation
+            ? `${path.home}${generateNameId({
+                name: purchaseNameFromLocation as string,
+                id: purchaseIdFromLocation as string
+              })}`
+            : '/'
+        )
       },
       onError: (error) => {
         //  isAxiosUn...<truyền vào kiểu type của data khi api lỗi>
@@ -71,6 +90,12 @@ const Login = () => {
       }
     })
   })
+
+  useEffect(() => {
+    return () => {
+      history.replaceState(null, '') // hàm history.replaceState là hàm có sẵn ở trên trình duyệt
+    }
+  }, [])
 
   return (
     <div
