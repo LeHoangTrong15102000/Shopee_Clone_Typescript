@@ -1,20 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { createSearchParams, useHref, useNavigate, useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import productApi from 'src/apis/product.api'
-import InputNumber from 'src/components/InputNumber'
+
 import ProductRating from 'src/components/ProductRating'
 import path from 'src/constant/path'
-import useQueryConfig from 'src/hooks/useQueryConfig'
+
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/apis/purchases.api'
-import { Purchase } from 'src/types/purchases.type'
+
 import { purchasesStatus } from 'src/constant/purchase'
 import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
@@ -141,8 +141,8 @@ const ProductDetail = () => {
       {
         // data đầu tiên là data do Axios trả về, do interceptor chúng ta ko cấu hình response.data nên arg data trong onSuccess do AxiosRes trả về trước rồi mới tới data của SuccResponseApi
         onSuccess: (data) => {
-          toast.success(data.data.message, { autoClose: 1000 })
           queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+          toast.success(data.data.message, { autoClose: 1000 })
         }
       }
     ) // Nếu undefined thì nó đã return null rồi
@@ -153,9 +153,9 @@ const ProductDetail = () => {
     const res = await addToCartMutation.mutateAsync(
       { product_id: product?._id as string, buy_count: buyCount },
       {
-        onSuccess: () => {
-          // toast.success(data.data.message, { autoClose: 1000 })
+        onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+          toast.success(data.data.message, { autoClose: 1000 })
         }
       }
     )

@@ -33,17 +33,17 @@ const Cart = () => {
 
   const updatePurchaseMutation = useMutation({
     mutationFn: purchaseApi.updatePurchase,
-    onSuccess: () => {
+    onSuccess: async () => {
       // refetch() // gọi lại refetch lại getPurchases
-      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
 
   // buyProduct Mutation
   const buyPurchasesMutation = useMutation({
     mutationFn: purchaseApi.buyPurchases,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
       toast.success(data.data.message, { position: 'top-center', autoClose: 1000 })
     }
   })
@@ -51,8 +51,8 @@ const Cart = () => {
   // deleteProduct Mutation
   const deletePurchasesMutation = useMutation({
     mutationFn: purchaseApi.deletePurchase,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
 
