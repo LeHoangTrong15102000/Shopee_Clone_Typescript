@@ -36,7 +36,7 @@ const Login = () => {
     register,
     handleSubmit,
     setError,
-    getValues,
+    getValues, // lấy ra giá trị của mỗi ô input trong react hook form
     formState: { errors }
   } = useForm<FormData>({
     mode: 'onTouched',
