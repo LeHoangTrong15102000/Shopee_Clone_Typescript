@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { toast } from 'react-toastify'
-import { useContext } from 'react'
 import Input from 'src/components/Input'
 import { LoginSchema, getRules, loginSchema } from 'src/utils/rules'
 import authApi from 'src/apis/auth.api'
@@ -40,6 +39,7 @@ const Login = () => {
     getValues,
     formState: { errors }
   } = useForm<FormData>({
+    mode: 'onTouched',
     resolver: yupResolver(loginSchema)
   }) // return cho chúng ta một cái object
   // const rules = getRules(getValues)
@@ -68,7 +68,7 @@ const Login = () => {
           purchaseIdFromLocation
             ? `${path.home}${generateNameId({
                 name: purchaseNameFromLocation as string,
-                id: purchaseIdFromLocation as string
+                id: purchaseIdFromLocation
               })}`
             : '/'
         )
@@ -126,7 +126,7 @@ const Login = () => {
                 autoComplete='on'
                 register={register}
                 placeholder='Email'
-                // errorMessage={errors.email?.message}
+                errorMessage={errors.email?.message}
               />
               <Input
                 className='relative mt-2'
