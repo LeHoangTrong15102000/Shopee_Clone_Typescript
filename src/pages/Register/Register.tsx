@@ -13,6 +13,7 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constant/path'
+import classNames from 'classnames'
 
 type FormData = Schema
 // co ra sau thì ra chứ t vẫn đứng ở đây mà thôi có gì mà đâu mà phải sợ
@@ -28,6 +29,7 @@ const Register = () => {
     getValues,
     formState: { errors }
   } = useForm<FormData>({
+    mode: 'onTouched',
     resolver: yupResolver(registerSchema)
   }) // return cho chúng ta một cái object, truyền genericType chung cho useForm
   // Tạo một cái rules handle việc validate form
@@ -100,6 +102,12 @@ const Register = () => {
               <div className='text-2xl'>Đăng ký</div>
               <Input
                 className='mt-6'
+                classNameInput={classNames(
+                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500 bg-white',
+                  {
+                    'border-red-500 focus:border-red-500': errors.email && errors.email.message
+                  }
+                )}
                 type='email'
                 name='email'
                 autoComplete='on'
@@ -109,6 +117,12 @@ const Register = () => {
               />
               <Input
                 className='relative mt-2'
+                classNameInput={classNames(
+                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
+                  {
+                    'border-red-500 focus:border-red-500': errors.password && errors.password.message
+                  }
+                )}
                 type='password'
                 name='password'
                 autoComplete='on'
@@ -118,6 +132,12 @@ const Register = () => {
               />
               <Input
                 className='relative mt-2'
+                classNameInput={classNames(
+                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
+                  {
+                    'border-red-500 focus:border-red-500': errors.confirm_password && errors.confirm_password.message
+                  }
+                )}
                 type='password'
                 name='confirm_password'
                 autoComplete='on'
