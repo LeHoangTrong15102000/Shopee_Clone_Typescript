@@ -17,7 +17,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
     classNameInput = 'w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
     classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600',
     onChange, // lấy ra onChange là sự kiện trong thẻ Input\
-    value = '', // Nên có giá trị khởi tạo là value rỗng không thì nó sẽ là undefined, undefined mà truyền vào input thì nó không được
+    value, // Nên có giá trị khởi tạo là value rỗng không thì nó sẽ là undefined, undefined mà truyền vào input thì nó không được
     ...rest
   },
   ref
@@ -47,7 +47,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
         // Tự sinh ra cho chúng ta với name là email
         onChange={handleChange} // khi hàm onChange props truyền vào chạy thì onChange <input /> nó sẽ chạy
         ref={ref}
-        value={value || localValue}
+        value={value ?? localValue} // nếu giá trị bên ngoài truyền vào là undefined thì lấy localValue còn không sẽ lấy value, value  === undefined ? localValue : value
         {...rest}
       />
       {/* cho m-height để khi mà không có lỗi thì nó vẫn chiếm được vị trí ở đó */}

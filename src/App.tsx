@@ -4,6 +4,18 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
+import { HelmetProvider } from 'react-helmet-async'
+import ErrorBoundary from './components/ErrorBoundary'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools/build/lib/devtools'
+
+/**
+ * Khi url thay đổi thì các component nào dùng các hook như
+ * useRoutes, useParams, useSearchParams, ...
+ * sẽ bị re-render
+ * Ví dụ component `App` dưới đây bị re-render khi mà url thay đổi
+ * Vì dùng `useRouteElements` (đây là custom hook của `useRoutes`)
+ *
+ */
 
 function App() {
   const routeElements = useRouteElements()
@@ -23,8 +35,13 @@ function App() {
 
   return (
     <div>
-      <ToastContainer autoClose={4000} />
-      {routeElements}
+      <HelmetProvider>
+        <ErrorBoundary>
+          <ToastContainer autoClose={2000} />
+          {routeElements}
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        </ErrorBoundary>
+      </HelmetProvider>
     </div>
   )
 }

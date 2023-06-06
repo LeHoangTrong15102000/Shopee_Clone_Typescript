@@ -31,7 +31,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     control,
     handleSubmit,
     trigger,
-    watch,
+    reset,
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
@@ -70,6 +70,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
 
   //  Chỉ filter AsideFilter, còn sortFilterProduct thì vẫn giữ nguyên
   const handleRemoveAsideFilter = () => {
+    reset() // Nhấn vào reset thì price_max và price_min sẽ trả về chuỗi rỗng
     navigate({
       pathname: path.home,
       search: createSearchParams(

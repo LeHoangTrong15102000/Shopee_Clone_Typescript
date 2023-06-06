@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import userImage from 'src/assets/images/user.svg'
 import config from 'src/constant/config'
+import { ErrorResponseApi } from 'src/types/utils.type'
 
 // Hàm kiểm tra Error từ Axios
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
@@ -10,14 +11,25 @@ export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
 }
 
 // genericType <FormError> khi mà server trả về lỗi
+//  Mong muốn error trả về có kiểu là AxiosError và genericType là FormError
 export function isAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
   // Khi đã có lỗi rồi mình muốn kiểm tra xem lỗi đó có phải là lỗi 422 ?
   return isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE.UnprocessableEntity
 }
 
 // Hàm kiểm tra Unauthorized
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE.Unauthorized
+}
 
-// Hàm kiểm tra ExpiredTokenError()
+// Hàm kiểm tra ExpiredTokenError() -> hàm nay sẽ có lỗi là UnauthorizedTokenError()
+// Cần phải truyền vào cái isAxiosUnauthorizedError để biết kiểu dữ liệu trả về của cái Error này là gì -> Trả về response lỗi và bên trong sẽ có kiểu lỗi khi trả về là gì
+export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return (
+    isAxiosUnauthorizedError<ErrorResponseApi<{ name: string; message: string }>>(error) &&
+    error.response?.data?.data?.name === 'EXPIRED_TOKEN'
+  )
+}
 
 // Tạo 2 function để tính convert giá tiền và số lượt bán trong productList
 export function formatCurrency(currency: number) {

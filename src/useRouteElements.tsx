@@ -43,16 +43,36 @@ function RejectedRoute() {
 const useRouteElements = () => {
   const routeElements = useRoutes([
     {
-      path: path.home,
-      index: true,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<div className='text-center'>Loading...</div>}>
-            <ProductList />
-          </Suspense>
-        </MainLayout>
-      ),
-      errorElement: <div>404 page not found</div>
+      path: '',
+      element: <MainLayout />,
+      children: [
+        {
+          path: path.home,
+          index: true,
+          element: (
+            <Suspense fallback={<div className='text-center'>Loading...</div>}>
+              <ProductList />
+            </Suspense>
+          ),
+          errorElement: <NotFound />
+        },
+        {
+          path: path.productDetail,
+          element: (
+            <Suspense>
+              <ProductDetail />
+            </Suspense>
+          )
+        },
+        {
+          path: '*',
+          element: (
+            <Suspense>
+              <NotFound />
+            </Suspense>
+          )
+        }
+      ]
     },
     {
       path: '',
@@ -70,36 +90,38 @@ const useRouteElements = () => {
         },
         {
           path: path.user,
-          element: (
-            <MainLayout>
-              <UserLayout />
-            </MainLayout>
-          ),
+          element: <MainLayout />,
           // cái children trong router dùng để khai báo cho những thằng Outlet nằm bên trong UserLayout
           children: [
             {
-              path: path.profile,
-              element: (
-                <Suspense>
-                  <Profile />
-                </Suspense>
-              )
-            },
-            {
-              path: path.changePassword,
-              element: (
-                <Suspense>
-                  <ChangePassword />
-                </Suspense>
-              )
-            },
-            {
-              path: path.historyPurchases,
-              element: (
-                <Suspense>
-                  <HistoryPurchases />
-                </Suspense>
-              )
+              path: '',
+              element: <UserLayout />,
+              children: [
+                {
+                  path: path.profile,
+                  element: (
+                    <Suspense>
+                      <Profile />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.changePassword,
+                  element: (
+                    <Suspense>
+                      <ChangePassword />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.historyPurchases,
+                  element: (
+                    <Suspense>
+                      <HistoryPurchases />
+                    </Suspense>
+                  )
+                }
+              ]
             }
           ]
         }
@@ -107,47 +129,34 @@ const useRouteElements = () => {
     },
     {
       path: '',
+      // Cái outlet nằm bên trong rejectedRoute nên nó vẫn re-render cái RegisterLayout
       element: <RejectedRoute />,
+      // Nên ở đây children sẽ là thằng con nằm trong RejectedRoute
       children: [
         {
-          path: path.login,
-          element: (
-            <RegisterLayout>
-              <Suspense>
-                <Login />
-              </Suspense>
-            </RegisterLayout>
-          )
-        },
-        {
-          path: path.register,
-          element: (
-            <RegisterLayout>
-              <Suspense>
-                <Register />
-              </Suspense>
-            </RegisterLayout>
-          )
+          path: '',
+          // Khi mình làm như này thì vẫn đảm bảo rằng thằng <RegisterLayout /> nó có Outlet, khi mà thằng outlet thay đổi thì nó không ảnh hưởng gì đến thằng RegisterLayout
+          element: <RegisterLayout />,
+          children: [
+            {
+              path: path.login,
+              element: (
+                <Suspense>
+                  <Login />
+                </Suspense>
+              )
+            },
+            {
+              path: path.register,
+              element: (
+                <Suspense>
+                  <Register />
+                </Suspense>
+              )
+            }
+          ]
         }
       ]
-    },
-    {
-      path: path.productDetail,
-      element: (
-        <MainLayout>
-          <Suspense>
-            <ProductDetail />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: '*',
-      element: (
-        <Suspense>
-          <NotFound />
-        </Suspense>
-      )
     }
   ])
   return routeElements

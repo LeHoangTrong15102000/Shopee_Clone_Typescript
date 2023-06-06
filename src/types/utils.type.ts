@@ -2,6 +2,7 @@
 // Ở đây coi ResponseApi như hàm và <Data> là param truyền vào thì sẽ có dược type như kia {message: , data?:}
 export interface SuccessResponseApi<Data> {
   message: string
+  // data có kiểu trả về là Data
   data: Data // Quy định như này để dùng cho nhiều loại repsonse trả về
 }
 
