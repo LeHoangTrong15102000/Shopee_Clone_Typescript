@@ -324,35 +324,90 @@ const ProductDetail = () => {
               </div>
               {/* button thêm sản phẩm */}
               <div className='mt-10 flex items-center'>
-                <button
-                  onClick={addToCart}
-                  className='flex h-12 items-center justify-center rounded-sm border border-[#ee4d2d] bg-[#ee4d2d]/10 px-5 capitalize shadow-sm hover:bg-[#ee4d2d]/5'
-                >
-                  <svg
-                    enableBackground='new 0 0 15 15'
-                    viewBox='0 0 15 15'
-                    x={0}
-                    y={0}
-                    className='mr-3 h-[1em] w-[1em] fill-current stroke-[#ee4d2d] text-[1.25rem] text-[#ee4d2d]'
+                {isAuthenticated ? (
+                  <button
+                    onClick={addToCart}
+                    className='flex h-12 items-center justify-center rounded-sm border border-[#ee4d2d] bg-[#ee4d2d]/10 px-5 capitalize shadow-sm hover:bg-[#ee4d2d]/5'
                   >
-                    <g>
+                    <svg
+                      enableBackground='new 0 0 15 15'
+                      viewBox='0 0 15 15'
+                      x={0}
+                      y={0}
+                      className='mr-3 h-[1em] w-[1em] fill-current stroke-[#ee4d2d] text-[1.25rem] text-[#ee4d2d]'
+                    >
                       <g>
-                        <polyline
+                        <g>
+                          <polyline
+                            fill='none'
+                            points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeMiterlimit={10}
+                          />
+                          <circle cx={6} cy='13.5' r={1} stroke='none' />
+                          <circle cx='11.5' cy='13.5' r={1} stroke='none' />
+                        </g>
+                        <line
                           fill='none'
-                          points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
                           strokeLinecap='round'
-                          strokeLinejoin='round'
                           strokeMiterlimit={10}
+                          x1='7.5'
+                          x2='10.5'
+                          y1={7}
+                          y2={7}
                         />
-                        <circle cx={6} cy='13.5' r={1} stroke='none' />
-                        <circle cx='11.5' cy='13.5' r={1} stroke='none' />
+                        <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
                       </g>
-                      <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1='7.5' x2='10.5' y1={7} y2={7} />
-                      <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
-                    </g>
-                  </svg>
-                  <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
-                </button>
+                    </svg>
+                    <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() =>
+                      navigate(path.login, {
+                        state: {
+                          purchaseId: product._id,
+                          purchaseName: product.name
+                        }
+                      })
+                    }
+                    className='flex h-12 items-center justify-center rounded-sm border border-[#ee4d2d] bg-[#ee4d2d]/10 px-5 capitalize shadow-sm hover:bg-[#ee4d2d]/5'
+                  >
+                    <svg
+                      enableBackground='new 0 0 15 15'
+                      viewBox='0 0 15 15'
+                      x={0}
+                      y={0}
+                      className='mr-3 h-[1em] w-[1em] fill-current stroke-[#ee4d2d] text-[1.25rem] text-[#ee4d2d]'
+                    >
+                      <g>
+                        <g>
+                          <polyline
+                            fill='none'
+                            points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeMiterlimit={10}
+                          />
+                          <circle cx={6} cy='13.5' r={1} stroke='none' />
+                          <circle cx='11.5' cy='13.5' r={1} stroke='none' />
+                        </g>
+                        <line
+                          fill='none'
+                          strokeLinecap='round'
+                          strokeMiterlimit={10}
+                          x1='7.5'
+                          x2='10.5'
+                          y1={7}
+                          y2={7}
+                        />
+                        <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
+                      </g>
+                    </svg>
+                    <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
+                  </button>
+                )}
                 {isAuthenticated ? (
                   <button
                     onClick={handleBuyNow}

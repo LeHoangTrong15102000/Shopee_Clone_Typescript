@@ -18,6 +18,8 @@ import config from 'src/constant/config'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
 import { ErrorResponseApi } from 'src/types/utils.type'
 
+// Developer thì phải biết design pattern, đeo hiểu sao mà mạng đ.m nó lag quá nha n
+
 class Http {
   instance: AxiosInstance
   private accessToken: string

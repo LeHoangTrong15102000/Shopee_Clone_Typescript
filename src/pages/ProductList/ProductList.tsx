@@ -22,6 +22,8 @@ const ProductList = () => {
   //   windows
   // }, [queryConfig])
 
+  // Tại sao nó lạ quá vậy t cũng không rõ nữa quá là mơ hồ về cuộc sống này
+
   const { data: productsData } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => {
@@ -52,8 +54,6 @@ const ProductList = () => {
       return categoryApi.getCategories()
     }
   })
-
-  //
 
   // console.log(data)
   // console.log(queryConfig) // Khi render lại component thì cái clg này chạy lại
