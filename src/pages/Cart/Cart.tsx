@@ -187,7 +187,7 @@ const Cart = () => {
   // func xử lý xóa 1 sản phẩm
   const handleDelete = (purchaseIndex: number) => () => {
     const purchaseId = extendedPurchases[purchaseIndex]._id
-    deletePurchasesMutation.mutate([purchaseId])
+    deletePurchasesMutation.mutate([purchaseId]) // này không cần return về gì hết vì BE nó đã xử lý
   }
 
   // func xử lý xóa nhiều sản phẩm
