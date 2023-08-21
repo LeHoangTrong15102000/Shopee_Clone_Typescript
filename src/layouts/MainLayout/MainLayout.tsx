@@ -12,7 +12,7 @@ const MainLayoutInner = ({ children }: Props) => {
   // console.log('MainLayout')
   useEffect(() => {
     window.scrollTo(0, 0)
-  })
+  }, [])
 
   return (
     <div>
