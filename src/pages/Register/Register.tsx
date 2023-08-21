@@ -105,7 +105,8 @@ const Register = () => {
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500 bg-white',
                   {
-                    'border-red-500 focus:border-red-500': errors.email && errors.email.message
+                    'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      errors.email && errors.email.message
                   }
                 )}
                 type='email'
@@ -120,7 +121,8 @@ const Register = () => {
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
                   {
-                    'border-red-500 focus:border-red-500': errors.password && errors.password.message
+                    'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      errors.password && errors.password.message
                   }
                 )}
                 type='password'
@@ -135,7 +137,8 @@ const Register = () => {
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
                   {
-                    'border-red-500 focus:border-red-500': errors.confirm_password && errors.confirm_password.message
+                    'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      errors.confirm_password && errors.confirm_password.message
                   }
                 )}
                 type='password'
