@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import _ from 'lodash'
+import omit from 'lodash/omit'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
@@ -23,6 +24,9 @@ interface Props {
 
 type FormData = NoUndefinedField<InputNumberSchema>
 // có thể khai báo như này type FormData = Pick<Schema, 'price_max' | 'price_min'> -> cú pháp của thằng typescript
+
+// inputNumberShema có thể được viết như sau
+// const priceSchema = schema.pick(['price_min', 'price_max'])
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
   const { t } = useTranslation('home') // Trong trường hợp ko khai báo gì thì chúng ta đang sử dụng namespace mặc định
@@ -74,7 +78,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     navigate({
       pathname: path.home,
       search: createSearchParams(
-        _.omit({ ...queryConfig }, ['price_min', 'price_max', 'category', 'rating_filter'])
+        omit({ ...queryConfig }, ['price_min', 'price_max', 'category', 'rating_filter'])
       ).toString()
     })
   }

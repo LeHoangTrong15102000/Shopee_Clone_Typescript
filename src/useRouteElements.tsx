@@ -62,7 +62,8 @@ const useRouteElements = () => {
             <Suspense>
               <ProductDetail />
             </Suspense>
-          )
+          ),
+          errorElement: <NotFound />
         },
         {
           path: '*',

@@ -136,7 +136,7 @@ export const userSchema = yup.object({
 // Nếu mà thằng Login chỉ cần lấy vào 2 schema là email và password thôi thì có thể làm như sau
 
 export const loginSchema = schema.pick(['email', 'password']) // key của omit là một array
-export const registerSchema = schema.omit(['price_max', 'price_min', 'name'])
+export const registerSchema = schema.omit(['price_max', 'price_min', 'name']) // lấy ra các thuộc tính trong shcema bỏ ra price_max price_min name
 
 export const inputNumberSchema = schema.pick(['price_min', 'price_max']) // có thể dùng pick như này
 

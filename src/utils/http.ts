@@ -20,6 +20,10 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 
 // Developer thì phải biết design pattern, đeo hiểu sao mà mạng đ.m nó lag quá nha n
 
+// type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
+
+const URL = 'http://localhost:4000'
+
 class Http {
   instance: AxiosInstance
   private accessToken: string
@@ -72,6 +76,7 @@ class Http {
         return response
       },
       async (error: AxiosError) => {
+        // Nếu không phải lỗi liên quan đến 422 hoặc là 401
         if (
           ![HTTP_STATUS_CODE.UnprocessableEntity, HTTP_STATUS_CODE.Unauthorized].includes(
             error.response?.status as number
@@ -85,6 +90,7 @@ class Http {
         // Nếu là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponseApi<{ name: string; message: string }>>(error)) {
           const config = error.response?.config ?? {}
+          // const config = error.response?.config || ({ headers: {} } as AxiosRequestConfig) -> dùng như này hoặc là như trên đều được
           const { url } = config
 
           // Nếu đã là lỗi 401 thì kiểm tra tiếp có phải là access_token hết hạn hay không
@@ -95,7 +101,7 @@ class Http {
                   setTimeout(() => {
                     // Giữ api refreshToken lại 10s cho những Api kế bên gọi chung, nêu sau khoảng thời gian này thì mới gọi lại refreshToken
                     this.refreshTokenRequest = null
-                  })
+                  }, 10000)
                 })
 
             return this.refreshTokenRequest?.then((access_token) => {
@@ -103,11 +109,15 @@ class Http {
             })
           }
 
+          // Khi mà đã hết token rồi thì chúng ta sẽ remove localStorage đi và window.location.reload() -> Nhưng mà cách này nó không đủ hay -> Cách hay hơn đó là dùng EventTarget()
+
           // Còn nếu không nhảy vào trường hợp ở trên thì có thể là do refreshToken hết hạn
 
           clearLS()
           this.accessToken = ''
           this.refreshToken = ''
+          window.location.replace(URL) // khi mà hết hạn refresh_token thì chúng ta sẽ quay lại trang đầu tiên
+          toast.error('Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!', { autoClose: 1000 })
           toast.error(error.response?.data?.data?.message ?? error.response?.data.message, { autoClose: 1000 })
         }
         return Promise.reject(error)

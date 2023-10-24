@@ -36,7 +36,7 @@ const Register = () => {
 
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body),
-    onSuccess: (data) => {
+    onSuccess: (_) => {
       toast.success('Đăng ký thành công', { autoClose: 1000 })
     },
     onError: () => {
@@ -46,6 +46,7 @@ const Register = () => {
 
   // func handleSubmit nó sẽ không chạy khi mà cái formState chúng ta không đúng
   const onSubmit = handleSubmit((data) => {
+    // confirm_password chỉ thực hiện validate ở FE mà thôi còn lên trên server thì không cần
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {

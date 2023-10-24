@@ -184,7 +184,7 @@ const Cart = () => {
     }
   }
 
-  // func xử lý xóa 1 sản phẩm
+  // func xử lý xóa 1 sản phẩm, dùng currying để xử lý
   const handleDelete = (purchaseIndex: number) => () => {
     const purchaseId = extendedPurchases[purchaseIndex]._id
     deletePurchasesMutation.mutate([purchaseId]) // này không cần return về gì hết vì BE nó đã xử lý
