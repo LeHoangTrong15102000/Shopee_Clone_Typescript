@@ -18,6 +18,7 @@ import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
 import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
+import NotFound from '../NotFound'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -43,7 +44,7 @@ const ProductDetail = () => {
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
-  const product = productDetailData?.data.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
+  const product = productDetailData?.data.data ? productDetailData.data.data : null // Chỗ này product có thể là undefined, nên sẽ kiểm tra
   // tạo ra state currentIndexImage để quản lí việc click slider
   // console.log(product)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -170,7 +171,7 @@ const ProductDetail = () => {
   }
 
   // console.log(product)
-  if (!product) return null
+  if (!product) return <NotFound />
 
   return (
     <div className='bg-gray-200 py-6'>
