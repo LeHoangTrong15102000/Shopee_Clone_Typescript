@@ -41,6 +41,7 @@ class Http {
         'expire-access-token': 60 * 60 * 24,
         'refresh-access-token': 60 * 60 * 24 * 7 // refreshToken cho là 7 ngày
       }
+      // withCredentials: true
     })
     this.instance.interceptors.request.use(
       (config) => {

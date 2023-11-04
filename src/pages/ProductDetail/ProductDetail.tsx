@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import productApi from 'src/apis/product.api'
@@ -19,6 +19,7 @@ import { purchasesStatus } from 'src/constant/purchase'
 import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
 import NotFound from '../NotFound'
+import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -42,9 +43,11 @@ const ProductDetail = () => {
 
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
-    queryFn: () => productApi.getProductDetail(id as string)
+    queryFn: () => productApi.getProductDetail(id as string),
+    keepPreviousData: true
   })
-  const product = productDetailData?.data.data ? productDetailData.data.data : null // Chỗ này product có thể là undefined, nên sẽ kiểm tra
+  // console.log(productDetailData?.status)
+  const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
   // tạo ra state currentIndexImage để quản lí việc click slider
   // console.log(product)
   const imageRef = useRef<HTMLImageElement>(null)

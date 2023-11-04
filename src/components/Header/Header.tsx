@@ -83,6 +83,7 @@ const Header = () => {
 
   useEffect(() => {
     // Kiểm tra để logic thêm chặt chẽ
+    // Có nghĩa là debounced không có giá trị
     if (!debounced?.trim()) {
       setSearchResult([])
       return
@@ -310,7 +311,7 @@ const Header = () => {
             <Popover
               className=''
               renderPopover={
-                <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
                   {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className='py-[10px] pl-[10px]'>
                       <div className='capitalize text-[rgba(0,0,0,.26)]'>sản phẩm mới thêm</div>

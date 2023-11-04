@@ -45,6 +45,9 @@ const Cart = () => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
       toast.success(data.data.message, { position: 'top-center', autoClose: 1000 })
+    },
+    onError: () => {
+      toast.error('Mua hàng thất bại!', { position: 'top-center', autoClose: 1000 })
     }
   })
 

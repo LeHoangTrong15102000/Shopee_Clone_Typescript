@@ -836,9 +836,10 @@ disabled?: boolean;
     + Nhưng mà chúng ta sẽ phân tích một chút xíu về cái Add-to-cart, khi mà addToCart thì gửi cái method Api addToCart và gửi sản phẩm và số lượng sản phẩm lên
     + Có nhiều cách để dùng useMutation
         + Cách 1: useMutation({
-          mutationFn: (body) => purchaseApi.addToCart(body)
+          mutationFn: (body) => purchaseApi.addToCart(body) hoặc là như này mutationFn: purchaseApi.addToCart
         })
 
+        // 2 cách này chỉ sử dụng khi không cấn sử dụng các options như onSuccess, onError
         + Cách 2: useMutation((body) => purchaseApi.addToCart(body)) -> Cách này cũng vẫn được
         + Cách 3: useMutation(purchaseApi.addToCart) -> Cách này thì cũng được
 
