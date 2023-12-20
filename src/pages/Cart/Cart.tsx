@@ -63,11 +63,14 @@ const Cart = () => {
   const location = useLocation()
 
   const navigate = useNavigate()
+
   // Khi mà ta xóa cái state trên URL thì thằng useEffect sẽ chạy lại
   const choosenPurchaseIdFromLocation = useMemo(
     () => (location.state as { purchaseId: string } | null)?.purchaseId,
     [location]
   )
+
+  // Lấy ra cái pathname khi mà chuyển trang, dùng cái pathname này để xử lý state được lưu trên URL
   const pathname = location.pathname
 
   const purchasesInCart = purchasesInCartData?.data.data

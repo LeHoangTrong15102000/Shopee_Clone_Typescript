@@ -18,7 +18,7 @@ import config from 'src/constant/config'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
 import { ErrorResponseApi } from 'src/types/utils.type'
 
-// Developer thì phải biết design pattern, đeo hiểu sao mà mạng đ.m nó lag quá nha n
+// Developer thì phải biết design pattern,
 
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
@@ -30,6 +30,7 @@ class Http {
   private refreshToken: string
   private refreshTokenRequest: Promise<string> | null
   constructor() {
+    // this.accessToken sẽ lưu vào RAM nên lấy ra sẽ nhanh hơn
     this.accessToken = getAccessTokenFromLS()
     this.refreshToken = getRefreshTokenFromLS()
     this.refreshTokenRequest = null
@@ -136,6 +137,7 @@ class Http {
         setAccessTokenToLS(access_token)
         this.accessToken = access_token
 
+        // return về access_token để khi gọi hàm handleRefreshToken thì sẽ lấy được access_token
         return access_token
       })
       .catch((error) => {

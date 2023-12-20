@@ -50,7 +50,9 @@ const useRouteElements = () => {
           path: path.home,
           index: true,
           element: (
-            <Suspense fallback={<div className='text-center'>Loading...</div>}>
+            <Suspense
+              fallback={<div className='flex items-center justify-center text-center text-[#ee4d2d]'>Loading...</div>}
+            >
               <ProductList />
             </Suspense>
           ),

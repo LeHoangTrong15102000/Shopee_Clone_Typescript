@@ -174,7 +174,7 @@ const ProductDetail = () => {
   }
 
   // console.log(product)
-  if (!product) return <NotFound />
+  if (!product) return
 
   return (
     <div className='bg-gray-200 py-6'>
