@@ -22,7 +22,7 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
-const URL = 'http://localhost:4000'
+const URL = 'https://shopee-clone-ts.netlify.app/login'
 
 class Http {
   instance: AxiosInstance
