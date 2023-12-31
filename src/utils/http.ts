@@ -101,7 +101,7 @@ class Http {
               ? this.refreshTokenRequest
               : this.handleRefreshToken().finally(() => {
                   setTimeout(() => {
-                    // Giữ api refreshToken lại 10s cho những Api kế bên gọi chung, nêu sau khoảng thời gian này thì mới gọi lại refreshToken
+                    // Giữ API refreshToken lại 10s cho những Api kế bên gọi chung để  set lại access_token lấy lại dự liệu, nếu sau khoảng thời gian này thì mới gọi lại refreshTokenRequest = null lại như ban đầu
                     this.refreshTokenRequest = null
                   }, 10000)
                 })

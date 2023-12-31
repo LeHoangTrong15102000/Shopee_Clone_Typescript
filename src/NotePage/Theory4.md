@@ -64,7 +64,7 @@
 
   -> Do sau khi thằng Purchase nó gọi refreshToken xong thì nó set thằng refreshTokenRequest = null nên trong thời gian đó thằng getMe nó gọi `api` refreshToken cho `getMe` -> Nên lí do nó gọi 2 lần là như vậy
 
-  -> Ở cái trường hợp này chúng ta có thể xử lý nó bằng 1 cái tips khá là đơn giản đó là chúng ta sẽ giữ refreshTokenRequest lại khoảng 3 - 5 giây -> để những Api nào nó cần gọi đến refreshTokenRequest
+  -> Ở cái trường hợp này chúng ta có thể xử lý nó bằng 1 cái tips khá là đơn giản đó là chúng ta sẽ giữ refreshTokenRequest lại khoảng 3 - 5 giây -> để những Api nào nó cần gọi đến refreshTokenRequest thì nó sẽ gọi đến sau đó là cập nhật lại `refreshTokenRequest = null`
 
 - -> Lấy ra reset để reset lại cái price_max
   -> Nếu như bên ngoài truyền vào value là undefined thì chúng ta
