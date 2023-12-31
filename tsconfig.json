@@ -12,7 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true, // Có nghĩa là trong file phải có export hoặc là import
     // Hai lỗi khai báo biến nhưng không sử dụng
     "noUnusedLocals": false,
     "noUnusedParameters": false,
