@@ -91,6 +91,8 @@ const Login = () => {
     })
   })
 
+  // Viết các hàm sau cho có thể tái sử dụng được
+
   useEffect(() => {
     return () => {
       history.replaceState(null, '') // hàm history.replaceState là hàm có sẵn ở trên trình duyệt

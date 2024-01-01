@@ -152,3 +152,5 @@ class Http {
 const http = new Http().instance
 
 export default http
+
+// Làm 1 cái project mới trong tháng 1 này mới được rồi qua tháng 2 lên đi làm, cố gắng thôi không còn cự được bao lâu nữa rồi cuộc sống không chờ mình đâu
