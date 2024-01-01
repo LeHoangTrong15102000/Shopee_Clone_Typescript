@@ -22,7 +22,11 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
-const URL = 'https://shopee-clone-ts.netlify.app/login'
+// console.log('Process Env', process.env)
+
+const URL = `${(process.env.BUILD_MODE as string) === 'dev'}`
+  ? 'http://localhost:4000/login'
+  : 'https://shopee-clone-ts.netlify.app/login'
 
 class Http {
   instance: AxiosInstance
@@ -118,9 +122,12 @@ class Http {
           clearLS()
           this.accessToken = ''
           this.refreshToken = ''
-          window.location.replace(URL) // khi mà hết hạn refresh_token thì chúng ta sẽ quay lại trang đầu tiên
           toast.error('Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!', { autoClose: 1000 })
           toast.error(error.response?.data?.data?.message ?? error.response?.data.message, { autoClose: 1000 })
+          setTimeout(() => {
+            window.location.replace(URL)
+          }, 1000)
+          // khi mà hết hạn refresh_token thì chúng ta sẽ quay lại trang đầu tiên
         }
         return Promise.reject(error)
       }

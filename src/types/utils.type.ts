@@ -19,3 +19,5 @@ export interface ErrorResponseApi<Data> {
 export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
 }
+
+// Vế đầu tiên là loại bỏ `optional` attribute - Vế sau có nghĩa là loại bỏ đi giá trị null hoặc undefined của `value`

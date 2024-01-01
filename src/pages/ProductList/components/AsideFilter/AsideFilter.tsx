@@ -22,6 +22,7 @@ interface Props {
   categories: Category[]
 }
 
+// Loại bỏ các kiểu dữ liệu undefined và null trong InputNumberSchema
 type FormData = NoUndefinedField<InputNumberSchema>
 // có thể khai báo như này type FormData = Pick<Schema, 'price_max' | 'price_min'> -> cú pháp của thằng typescript
 
