@@ -20,6 +20,8 @@ import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
 import NotFound from '../NotFound'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -178,6 +180,17 @@ const ProductDetail = () => {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>{product.name} | Shopee Clone</title>
+        <meta
+          name='description'
+          content={convert(product.description, {
+            limits: {
+              maxInputLength: 200
+            }
+          })}
+        />
+      </Helmet>
       {/* Thông tin sản phẩm */}
       <div className='container'>
         <div className='max-h-[896.56px] bg-white p-4 shadow'>

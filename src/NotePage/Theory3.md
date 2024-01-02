@@ -1,4 +1,4 @@
-// **\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\***\*\*\*\***\*\*\*\***\*\*\*\***
+# React Perfomance
 
 > > > > > > > > > > > > > > > > > > > > > > Chương 23 Clone Shopee trang nâng cao - Performance
 > > > > > > > > > > > > > > > > > > > > > > `
@@ -120,3 +120,16 @@
 
 - -> Sau khi thêm vào giỏ hàng theo chức năng `Mua Ngay` thì khi checked được bỏ mà chúng ta nhấn tăng sản phẩm khác thì checked của `Sản phẩm trước` nó sẽ được checked lần nữa
 - -> Về số lượng của một sản phẩm còn tồn động trong kho -> Khi mà trong giỏ hàng đang có 17 sản phẩm mà chúng ta lại thêm số lượng sản phẩm tùy thích < 17 từ trang productDetail thì nó sẽ cộng đồn sản phẩm lên -> Sai với logic khi mà số lượng sản phẩm chúng ta chọn phải < số lượng sản phẩm tồn kho
+
+## SEO với React Helmet
+
+- Cái quan trọng trong SEO là thẻ `title` và `Meta`
+
+- 1 cái page thì chỉ nên có một `meta` = `description` mà thôi
+
+- Thường khi mà làm một dự án thực tế mà có một phần `Admin` những dự án nào mà người ta quan tâm về SEO thì ngta cho submit một cái `Description - mô tả` cho cái `Product` của người ta
+
+  - Còn nếu như mà không có -> API của mình không có `description` thì lấy gì mà `render` ra
+
+- Để mà có một cái title cho nó đúng kiểu thì cần phải có các giải phápp khác -> Vì khi đưa thằng này lên mạng xã hội thì nó chỉ có đọc cái source gốc ở `index.html` của chúng ta mà thôi -> Để khắc phục cái vấn đề này thì có thể dụng các giải pháp khác như là sử dụng `Next.JS` , render cái `title` trênn `server` thì chúng ta sẽ check cái `user agent`
+  - Ví dụ như là `Bot` không phải là `Browser` thì chúng ta sẽ trả về cho nó có đầy đủ các thẻ `<meta />` -> Còn nếu là client thì chúng ta sẽ trả về cái giao diện `React`

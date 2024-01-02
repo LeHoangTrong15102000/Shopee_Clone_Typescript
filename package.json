@@ -26,6 +26,7 @@
     "cross-env": "^7.0.3",
     "dompurify": "3.0.0",
     "framer-motion": "7.6.6",
+    "html-to-text": "^9.0.5",
     "i18next": "22.1.4",
     "immer": "^9.0.21",
     "query-string": "^8.1.0",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.0",
+    "@types/html-to-text": "^9.0.4",
     "@types/jsdom": "20.0.1",
     "@types/lodash": "4.14.188",
     "@types/node": "^18.14.6",

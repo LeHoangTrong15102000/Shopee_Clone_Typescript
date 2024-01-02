@@ -13,6 +13,7 @@ import Product from './components/Product/Product'
 
 import path from 'src/constant/path'
 import useQueryConfig from 'src/hooks/useQueryConfig'
+import { Helmet } from 'react-helmet-async'
 
 const ProductList = () => {
   const queryConfig = useQueryConfig()
@@ -59,6 +60,13 @@ const ProductList = () => {
   // console.log(queryConfig) // Khi render lại component thì cái clg này chạy lại
   return (
     <div className='bg-black/5 py-6'>
+      <Helmet>
+        <title>Trang chủ | Shopee Clone</title>
+        <meta
+          name='description'
+          content='Mua sắm trực tuyến hàng triệu sản phẩm ở tất cả ngành hàng. Giá tốt &amp; Ưu đãi. Mua và bán online trong 30 giây. Shopee Đảm Bảo | Freeship Xtra | Hoàn Xu Xtra'
+        />
+      </Helmet>
       <div className='container'>
         {/* Có data thì render ra danh sách sản phẩm */}
         {productsData && (

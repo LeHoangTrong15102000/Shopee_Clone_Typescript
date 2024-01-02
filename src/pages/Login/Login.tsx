@@ -14,6 +14,7 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constant/path'
 import classNames from 'classnames'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = LoginSchema
 
@@ -109,6 +110,10 @@ const Login = () => {
         backgroundPosition: 'center center'
       }}
     >
+      <Helmet>
+        <title>Đăng nhập | Shopee Clone</title>
+        <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
+      </Helmet>
       <div className='container' style={{ height: '773.94px' }}>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='mt-10 lg:col-span-2 lg:col-start-4'>

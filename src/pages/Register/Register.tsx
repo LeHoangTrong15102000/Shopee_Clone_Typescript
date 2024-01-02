@@ -14,6 +14,7 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constant/path'
 import classNames from 'classnames'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Schema
 // co ra sau thì ra chứ t vẫn đứng ở đây mà thôi có gì mà đâu mà phải sợ
@@ -96,6 +97,10 @@ const Register = () => {
         backgroundPosition: 'center center'
       }}
     >
+      <Helmet>
+        <title>Đăng ký | Shopee Clone</title>
+        <meta name='description' content='Đăng ký tài khoản vào dự án Shopee Clone' />
+      </Helmet>
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
