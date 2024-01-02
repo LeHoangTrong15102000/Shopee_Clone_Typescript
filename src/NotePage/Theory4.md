@@ -2,7 +2,7 @@
 
 ## Chương 25 Viết Unit test & Integration Test cho Project Clone Shopee
 
-### 228 Cài vitest và test function\
+### 228 Cài vitest và test function
 
 - -> Chỉ cần sử dụng đuôi là `.test` thì thằng vistet nó sẽ đọc được và hiểu
 - -> Ở cái hàm đầu tiên thì test nếu là axiosError thì trả về `true` còn không thì sẽ trả về `false`
@@ -71,11 +71,28 @@
 
 - Test bị fail thì có 2 trường hợp xảy ra là 1 là do test chung ta viết sai, 2 là code chúng ta viết chưa dúng
 
+- Khi mà tạo file test thì phải viết các hàm test vào không thì nó sẽ bị lỗi
+
 ### 229 Chuyển sang môi trường jsdom và test các api browser
 
-- -> Khi mà chúng ta test thì chúng ta gặp những cái case rất là khó test -> Ví dụ như các function có liên quan đến access_token trong file auth.ts
+- -> Khi mà chúng ta test thì chúng ta gặp những cái case rất là khó test -> Ví dụ như các function có liên quan đến access_token trong file auth.ts , lại do `localStorage` lại chỉ có trên trình duyệt `browser` mà thôi khó mà có thể test được trên `terminal` -> Thì thằng `Vitest` nó cho phép chúng ta chuyển môi trường để mà test
+
+  - Thì chúng ta sẽ sử dụng thằng `Jsdom` vì thằng này nó chứa nhiều cái API của `browser`
+
+- Đầu tiên chúng ta sẽ kiểm tra xem thằng hàm `setAccessTokenToLS` thì nó có thực sự set `access_token` vào `localStorage` hay không -> Thì đầu tiên là chúng ta sẽ cho chạy cái thằng này `setAccessTokenToLS` xong rồi mình sẽ kiểm tra bằng cách lấy `localStorage.getItem('access_token')` coi thử là nó có `set` được hay không -> Lỡ như có ai đó chơi chúng ta bằng cách sửa tên `access_token` thành `access_token1` thì đường nhiên là chúng ta không `getItem` được
+
+- `toBe` chúng ta có thể thay thế bằng `toEqual` -> Nhưng mà `toEqual` nó sẽ hay hơn vì nó test được những `object nested` -> `toEqual` nó có thể kiểm tra các giá trị trong object bằng nhau thì nó sẽ bằng nhau còn thằng `toBe` thì không kiểm tra được như vậy
+
+  - `toBe` có thể kiểm tra được về `tham chiếu` nhưng thằng `toEqual` nó có thể kiểm tra được `value thật` của các object
+
+- Nên khi test trường hợp `getAccessTokenFromLS` thì đừng cho nó phụ thuộc vào `setAccessTokenToLS` nên là khi test trường hợp này thì nên cho chạy hàm `setAccessTokenToLS` trước khi test `getAccessTokenFromLS` cho nó thật sự chính xác và không phụ thuộc vào thằng kia
+
+- Ngoài ra còn có thể sử dụng các `Teardown` như là `beforeEach` , `afterEach`, `beforeAll`, `afterAll` -> Có thể là các cái describe có thể bị ảnh hưởng lẫn nhau -> Ví dụ chúng ta set cái localStorage và lỡ chúng ta làm cái gì đó rồi thằng ở dưới lấy từ localStorage ra thì nó dẫn đến ảnh hưởng lẫn nhau vì thể làm cho các `test case` chạy không đúng
+  - `beforeEach` nhận vào cái `callback` nó sẽ chạy trước mỗi cái ngữ cảnh
 
 ### 230 Test Axios và test refresh token
+
+- Test `Axios` và test `RefreshToken`
 
 ### 231 Thống kê coverage unit test
 
