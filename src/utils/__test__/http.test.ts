@@ -18,6 +18,11 @@ describe('http axios', () => {
   const refresh_token_1000days =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTBmMDM4NmQ3YzYyMDM0MDg1MGU2ZSIsImVtYWlsIjoibGFuZ3R1cHJvMDQ1NkBnbWFpbC5jb20iLCJyb2xlcyI6WyJVc2VyIl0sImNyZWF0ZWRfYXQiOiIyMDI0LTAxLTAzVDA3OjU4OjEzLjI1MVoiLCJpYXQiOjE3MDQyNjg2OTMsImV4cCI6MTcxMjkwODY5M30.FucRo5A1RZt-0Ai9_zGa5FINoc2XGKsRgAI_q4CoIZM'
 
+  // Hàm xử lý lỗi 401 Auth Request
+  function getAsyncAuthRequest() {
+    return Promise.reject(new Error('Unauthorized User'))
+  }
+
   it('Gọi API', async () => {
     // Không nên đụng đến thư mục Apis
     // Vì chúng ta test riêng file http thì chỉ nên dùng `http` thôi
@@ -36,6 +41,7 @@ describe('http axios', () => {
     })
     const res = await http.get('me')
     expect(res.status).toBe(HTTP_STATUS_CODE.Ok)
+    await expect(() => getAsyncAuthRequest()).rejects.toThrowError('Unauthorized User')
   })
 
   // it('Refresh Token', async () => {
@@ -53,7 +59,8 @@ describe('http axios', () => {
     setRefreshTokenToLS(refresh_token_1000days)
     const httpNew = new Http().instance
     const res = await httpNew.get('me')
-    console.log('Lấy dự liệu khi refresh token thành công', res)
+    // console.log('Lấy dự liệu khi refresh token thành công', res)
     expect(res.status).toBe(HTTP_STATUS_CODE.Ok)
+    await expect(() => getAsyncAuthRequest()).rejects.toThrowError('Unauthorized User')
   })
 })

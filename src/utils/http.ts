@@ -141,7 +141,7 @@ export class Http {
     )
   }
   private async handleRefreshToken() {
-    console.log('Refresh chạy vào đây ------------')
+    // console.log('Refresh chạy vào đây ------------')
     // Nếu chúng ta không return thì nó sẽ trả về Promise() và không thể .finally() được
     return await this.instance
       .post<RefreshTokenResponse>(URL_REFRESH_TOKEN, {

@@ -145,6 +145,9 @@
 
 ### 231 Thống kê coverage unit test
 
+- Khi mà viết `unit test` thì chúng ta phải cover hết các trường hợp có thể xảy ra -> Thì cái `unit test` đó mới đạt được hiệu quả cao
+  - Sẽ demo coverage trong `unit test`
+
 ### 232 Test App Render và React Router
 
 ### 233 Test trang NotFound và mẹo debug unit test

@@ -10,7 +10,32 @@ export default defineConfig({
     'process.env': process.env
   },
   test: {
-    environment: 'jsdom' // giúp chúng ta test những API liên quan đến trình duyệt
+    environment: 'jsdom', // giúp chúng ta test những API liên quan đến trình duyệt
+    dangerouslyIgnoreUnhandledErrors: true
+    // coverageReporters: ['html', 'json', ['lcov', { projectRoot: __dirname }], 'text'],
+    // reporters: 'verbose',
+    // root: './tests/',
+    // coverage: {
+    //   enabled: true,
+    //   include: ['**/src/**'],
+    //   provider: 'v8'
+    // }
+    // reporters: [
+    //   ['text', { projectRoot: '../../' }],
+    //   ['json', { file: 'renamed-report.json' }]
+    // ],
+    // coverage: {
+    //   // enabled: true,
+    //   // provider: 'istanbul',
+    //   clean: true,
+    //   all: false, // should be true.
+    //   reporter: ['html', 'json', 'lcov', 'text'],
+    //   exclude: ['**/*.test.*']
+    // },
+    // include: ['src/**/*.test.{ts,mts}'],
+    // exclude: ['content/**', 'fixtures/**', 'bin.mjs', '_snapshots_'],
+    // root: path.join(__dirname, '../..'),
+    // typecheck: {}
   },
   plugins: [react(), visualizer()] as any,
   server: {
