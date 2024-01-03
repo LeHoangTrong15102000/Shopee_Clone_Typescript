@@ -42,7 +42,7 @@
   "devDependencies": {
     "@types/dompurify": "^3.0.0",
     "@types/html-to-text": "^9.0.4",
-    "@types/jsdom": "20.0.1",
+    "@types/jsdom": "^21.1.6",
     "@types/lodash": "4.14.188",
     "@types/node": "^18.14.6",
     "@types/react": "^18.0.27",
@@ -59,7 +59,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "jsdom": "20.0.3",
+    "jsdom": "^23.0.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.4",

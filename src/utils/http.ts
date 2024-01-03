@@ -28,7 +28,7 @@ const URL = `${(process.env.BUILD_MODE as string) === 'dev'}`
   ? 'http://localhost:4000/login'
   : 'https://shopee-clone-ts.netlify.app/login'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
@@ -58,7 +58,7 @@ class Http {
         return config
       },
       (error) => {
-        console.log('Error', error)
+        // console.log('Error', error)
         return Promise.reject(error)
       }
     )
@@ -92,6 +92,13 @@ class Http {
           const message = data?.message || error.message
           toast.error(message)
         }
+
+        // Lỗi Unauthorized (401) có rất nhiều trường hợp
+        /**
+         * 1. Token không đúng
+         * 2. Không truyền token
+         * 3. token hết hạn
+         */
 
         // Nếu là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponseApi<{ name: string; message: string }>>(error)) {
@@ -134,10 +141,12 @@ class Http {
     )
   }
   private async handleRefreshToken() {
+    console.log('Refresh chạy vào đây ------------')
     // Nếu chúng ta không return thì nó sẽ trả về Promise() và không thể .finally() được
     return await this.instance
       .post<RefreshTokenResponse>(URL_REFRESH_TOKEN, {
-        refreshToken: this.refreshToken
+        // Bắt buộc phải truyền lên `refresh_token` đúng chữ vì ở dưới backend yêu cầu như vậy
+        refresh_token: this.refreshToken
       })
       .then((res) => {
         const { access_token } = res.data.data
@@ -159,5 +168,3 @@ class Http {
 const http = new Http().instance
 
 export default http
-
-// Làm 1 cái project mới trong tháng 1 này mới được rồi qua tháng 2 lên đi làm, cố gắng thôi không còn cự được bao lâu nữa rồi cuộc sống không chờ mình đâu

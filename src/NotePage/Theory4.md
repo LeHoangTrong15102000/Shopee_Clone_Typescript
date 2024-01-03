@@ -88,11 +88,60 @@
 - Nên khi test trường hợp `getAccessTokenFromLS` thì đừng cho nó phụ thuộc vào `setAccessTokenToLS` nên là khi test trường hợp này thì nên cho chạy hàm `setAccessTokenToLS` trước khi test `getAccessTokenFromLS` cho nó thật sự chính xác và không phụ thuộc vào thằng kia
 
 - Ngoài ra còn có thể sử dụng các `Teardown` như là `beforeEach` , `afterEach`, `beforeAll`, `afterAll` -> Có thể là các cái describe có thể bị ảnh hưởng lẫn nhau -> Ví dụ chúng ta set cái localStorage và lỡ chúng ta làm cái gì đó rồi thằng ở dưới lấy từ localStorage ra thì nó dẫn đến ảnh hưởng lẫn nhau vì thể làm cho các `test case` chạy không đúng
-  - `beforeEach` nhận vào cái `callback` nó sẽ chạy trước mỗi cái ngữ cảnh
+
+  - `beforeEach` đăng ký vào 1 cái `callback` nó sẽ chạy trước mỗi context cái ngữ cảnh -> Hiểu nôm na là nó sẽ chạy trước mỗi cái `describe` ->
+  - Còn `beforeAll` thì nó sẽ gọi trước tất cả các hàm `describe()`
+
+  - Ở đây chúng ta sẽ sử dụng `beforeEach` trước mỗi lần `describe()` nó chạy để reset lại `localStorage` -> Để mà test cái case cho nó chính xác nhất
 
 ### 230 Test Axios và test refresh token
 
 - Test `Axios` và test `RefreshToken`
+
+- Thằng `Vitest` nó rất là tương đồng với thằng `Jest` nên mà có những cái mà thằng `vitest` chúng ta kiếm không có ra thì có thể qua thằng `Jest` để mà search
+
+- Trong `http.ts` thì có rất là nhiều trường hợp để mà test -> Như là viết unit gọi API thành công hay không, chúng ta muốn là cấu hình `config` đúng thì mới gọi được API(status là 200 thì gọi API thành công)
+
+  - Test những cái request gọi `access_token`
+
+- Viết code thì nhanh nhưng viết test lại thì lâu lắm
+
+- Hầu hết trong thực tế nên có một account test riêng và một cái server test riêng -> Như vậy thì nó sẽ không ảnh hưởng đến server chính của chúng ta
+
+- Không nên đụng đến thư mục Apis, vì chúng ta test riêng file http thì chỉ `nên` http mà thôi, vì lỡ như thư mục Apis có thay đổi gì đó(abcd-xyz gì đó trong cái thư mục Apis) thì cũng không ảnh hưởng đến cái file `test` của chúng ta -> Chỉ hạn chế thôi không phải là không được dùng hoàn toàn vì `hạn chế` cho nó đỡ ảnh hưởng lẫn nhau
+
+- Sẽ test cái `refresh_token` => Sợ sau này có ông nào vào `change` cái code của chúng ta xong rồi làm cái `refresh_token` bị fail cái là toang luôn -> Để mà test cái refresh_token thì cần phải có `access_token` hết hạn và cái `refresh_token` còn hạn -> Thì sẽ đưa ra một cái trick
+
+  - Để lấy access_token hết hạn thì chúng ta cần gọi Apis và config cái `access_token` thành 1s để cho nó hết hạn liền
+
+  - Khi mà `comment` thằng `access_token` và `refresh_token` thì nó vẫn chạy đúng có nghĩa là có bug
+  - Số lần gọi `request interceptor` không có gì khác -> Nhưng mà tại sao khi test function `refresh_token` không truyền vào `access_token` mà nó vẫn đúng -> À hoá ra là nó lấy giá trị từ `private accessToken` là giá trị mà mình `cache` trong `class http` -> Mặc dù là mình đã xoá `localStorage` rồi nhưng mà nó vẫn còn `cache` trong `class http` -> Làm thế nào để xoá cái `cache http` này đi khá là nan giải -> Nhưng mà thay vì nghĩ đến xoá nó đi vậy tại sao chúng ta không tạo ra một cái `http in  stance mới` dể cho nó độc lập với nhau và không ảnh hưởng lẫn nhau
+
+    - Vậy chúng ta cần phải export cái `class http()` -> Vậy thì nó mắc công quá thay vào đó chúng ta có thể tạo 1 cái `function` để tạo ra 1 cái `instance` mới
+
+    - Cái function mới sẽ tên là `handleNewHttp` -> Nhưng nếu mà làm như vậy thì nó cũng tham chiếu tới cái thằng `class Http` vậy thì cũng không được -> Nên chúng ta vẫn phải `export class Http` để tạo ra một `new http mới`
+
+    - Sau khi đã tạo một `new http` mới thì tránh sử dụng `http cũ` từ file `http.ts`
+
+    - Không cần phải tạo `new http` trong thầng `it('refresh_token')` mà thay vào đo là trước mỗi lần thằng `it('')` chạy thì chúng ta sẽ gán lại một `http` mới như sau `http = new Http().instance`
+
+    - const http = new Http().instance
+      // Không cần phải đăng nhập nữa -> Vì Chúng ta đã mock sẵn access_token rồi, vì khi mà đăng nhập lần nũa thì phải set lại refresh_token
+      setAccessTokenToLS(access_token_1s)
+      setRefreshTokenToLS(refresh_token_7days)
+      const res = await http.get('me')
+      console.log('Response get me >>>', res)
+      expect(res.status).toBe(HTTP_STATUS_CODE.Ok)
+
+    - Nếu mà làm như thế này thì nó sẽ bị lỗi ngay -> Vì sau khi chúng ta `clearLS` rồi chúng ta tạo mới lại một `http instance` thì lúc này cho dù có setAcceessTokenToLS và setRefreshTokenToLS() đi nữa thì nó vẫn lấy `http instance mới` mà lúc tạo mới này thì `access_token` và `refresh_token` chúng ta đều là `''` hết rồi
+
+    - beforeEach(() => {
+      // Mỗi lần trước khi chạy it() thì tạo mới thằng http() để reset cái http trước đó
+      http = new Http().instance
+      localStorage.clear()
+      })
+
+      -> Khi mà để thứ tự như này thì khi nó đi qua thằng `it('Auth Request')` thì nó đã lưu `access_token` và `refresh_token` mới vào rồi nên là lúc này để `test` đúng nhất là chúng ta xoá nó đi trước rồi mới tạo ra một cái `instance http mới`
 
 ### 231 Thống kê coverage unit test
 

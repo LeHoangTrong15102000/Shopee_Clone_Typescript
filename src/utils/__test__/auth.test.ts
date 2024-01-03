@@ -1,5 +1,5 @@
 //  Test những hàm liên quan đến authenticated
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import {
   clearLS,
   getAccessTokenFromLS,
@@ -18,6 +18,11 @@ const refresh_token =
 
 const profile =
   '{"_id":"63e0f0386d7c620340850e6e","roles":["User"],"email":"langtupro0456@gmail.com","createdAt":"2023-02-06T12:19:04.582Z","updatedAt":"2024-01-02T04:56:13.929Z","__v":0,"address":"126/13 đường 17 khu phố 5 phường Linh Trung Tp Thủ Đức","date_of_birth":"1990-04-27T17:00:00.000Z","name":"Lê Hoàng Trọng 1","phone":"0773094710","avatar":"77d9909d-3161-4195-a67c-db4585f80e4b.jpg"}'
+
+// Cẩn thận import thằng beforeEach từ thằng node:test
+beforeEach(() => {
+  localStorage.clear()
+})
 
 describe('access_token', () => {
   it('access_token được set vào localStorage', () => {
@@ -50,19 +55,19 @@ describe('refresh_token', () => {
 // })
 
 // Hầu hết các trường hợp set thì đều test băng `getItem` vì đã chạy hàm setProfile trước rồi
-describe('setProfileToLS', () => {
+describe('profile', () => {
   it('profile được set vào localStorage', () => {
     setProfileToLS(JSON.parse(profile))
     expect(localStorage.getItem('profile')).toEqual(profile)
   })
 })
 
-describe('getProfileFromLS', () => {
-  it('profile được lấy từ localStorage', () => {
-    setProfileToLS(JSON.parse(profile))
-    expect(localStorage.getItem('profile')).toEqual(profile)
-  })
-})
+// describe('getProfileFromLS', () => {
+//   it('profile được lấy từ localStorage', () => {
+//     setProfileToLS(JSON.parse(profile))
+//     expect(localStorage.getItem('profile')).toEqual(profile)
+//   })
+// })
 
 // test với clearLS, hàm clearLS có sử dụng Event là API trên trình duyệt nhưng mà may là thằng jsdom nó vẫn hiểu được Event
 // Thăng tabnine được
