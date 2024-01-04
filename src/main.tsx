@@ -11,14 +11,14 @@ import { HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from './components/ErrorBoundary'
 
 // Khi mà thằng này dùng như context thì chúng ta có thể dùng hook để lấy ra được thằng này
-// const queryClient = new QueryClient({
-//   defaultOptions: {
-//     queries: {
-//       refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
-//       retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
-//     }
-//   }
-// })
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
+      retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
+    }
+  }
+})
 
 // Thay vì export cái queryClient tại đây để sử dụng ở các component thì chúng ta có thể sử dụng hook useQueryClient để lấy ra cái queryClient
 

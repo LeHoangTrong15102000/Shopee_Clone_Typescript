@@ -197,6 +197,24 @@
 
 ### 233 Test trang NotFound và mẹo debug unit test
 
+- Khi người dùng vào một trang không tồn tại thì chúng ta phải trả về là trang `NotFound` -> Thì làm sao để biết được là trang `NotFound` thì sẽ có đoạn `text` là `Page Not Found`
+
+- Bình thường khi mà `render` như thế này `render(<App />,{ wrapper: BrowserRouter})` thì nó sẽ `render` vào `URL` là trang chủ -> Vậy thì ở đây chúng ta không thể sử dụng `BrowserRouter` được ở đây -> Vậy thì mình phải dùng thằng `MemoryRouter` thì chúng ta mới có thể truyền cái `URL` vào được, chứ thầng `BrowserRouter` không truyền `1 route` không tồn tại như `/some/bad/route` vào được
+
+- Như lúc test ở thằng `login` -> Do sau khi `render()` xong thì nó không nhảy vào thằng `Login` nên chúng ta phải dùng `waitFor()` để `test`
+
+- Vậy làm sao chỗ đó không cần `expect()` ra mà vẫn có thể hiển thị ở chỗ `debug` được không để chúng ta có thể `debug lỗi`
+
+- Chúng ta sẽ sử dụng `testUtils` chỉ giành cho việc `test debug các thứ`
+
+- Thì thằng delay cần phải có thời gian để nó log ra lỗi -> Thì chúng ta mong đợi là thằng logScreen nó phải là `true` thì thằng `test` mới không lỗi được -> Nhưng mà nó cùng cần phải có thời gian để `true` nếu mà `true` sớm quá thì nó sẽ `ngắt thời gian` `timeout` của chúng ta mất
+
+  - `time = 1000` -> Khi mà đã gán là mặc định rồi thì không cấn cái type là `number` nữa `time: number = 1000`
+
+- Do là hết `timeout` mà nó vẫn chưa `resolve` ra nên là chúng ta sẽ cho nó resolve sớm hơn một chút xíu
+
+- Dùng hàm `logScreen()` để khi mà thằng nào nó render lâu quá thì chúng ta `log` nó ra
+
 ### 234 Mẹo hay khi test React Router
 
 ### 235 Test lỗi required React Hook Form ở trang Login

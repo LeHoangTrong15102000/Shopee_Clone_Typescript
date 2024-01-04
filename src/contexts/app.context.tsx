@@ -14,7 +14,7 @@ interface AppContextInterface {
 }
 
 // Khởi tạo giá trị cho localStorage
-const initialAppContext: AppContextInterface = {
+export const getInitialAppContext: () => AppContextInterface = () => ({
   isAuthenticated: Boolean(getAccessTokenFromLS()), // ép kiểu cho nó
   setIsAuthenticated: () => null,
   profile: getProfileFromLS(), // ban đầu cho nó giá trị khởi tạo là null, lấy ra user từ localStorage
@@ -22,13 +22,21 @@ const initialAppContext: AppContextInterface = {
   extendedPurchases: [], // ban đầu sẽ cho nó là 1 cái arr rỗng
   setExtendedPurchases: () => null,
   reset: () => null
-}
+})
+
+const initialAppContext = getInitialAppContext()
 
 // Khai báo một context
 export const AppContext = createContext<AppContextInterface>(initialAppContext) // cho nó 1 giá trị khởi tạo
 
 // Khi mà không truyền vào provider cái value thì giá trị khởi tạo sẽ được dùng
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+export const AppProvider = ({
+  children,
+  defaultValue = initialAppContext
+}: {
+  children: React.ReactNode
+  defaultValue?: AppContextInterface
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases)
   const [profile, setProfile] = useState<AppContextInterface['profile']>(initialAppContext.profile)
