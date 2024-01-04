@@ -150,6 +150,40 @@
 
 ### 232 Test App Render và React Router
 
+- Vào trang `testing library` để xem những cái coreAPi có rất là nhiều cái coreApi để chúng ta test những cái kiểu test mà chúng ta có thể tự nghĩ ra được luôn
+
+- Vào phần React `testing library` để xem những cách test mới vì ngoài các kiến thức test trong video ra thì còn `rất rất` là nhiêu kiến thức khác về `testing` trong ứng dụng
+
+  - Kiến thức trong video không thể nào bao quát hết được kiến thức trên `docs` của người ta được
+
+- Có rất rất là nhiều kiến thức -> Có thê vào phần example coi cách `test` cho `react-router-dom`, `redux`, `react-hook-form`, `react-context`
+
+- Test ở app thì test cái gì trước đây -> Thì đầu tiên app của chúng ta phải `render` và phải `chuyển trang` được cái đã
+
+- Đầu tiên làm thế nào để chúng ta `render` ra được cái `component App` ở trong cái terminal thì chúng ta sẽ sử dụng hàm `render()` của thằng `@testing-library/react`,
+  nhưng mà khi chạy thằng `render(<App />)` mà không có `options` thì nó sẽ báo lỗi vì thằng `routes` cho thằng `App` không nằm trong `Router` cha là `BrowserRouter`
+
+- Khi viết unit test Router thì chúng ta không cần phải chuyển hết `Provider` bọc thằng `App` từ file main qua file App và sẽ để lại thằng `BrowserRouter` vì khi viết `unitTest` thì nó sẽ sử dụng `memoryRouter` để biến các đường dẫn `URL` thành một cái `Array` vì vậy chúng ta sẽ linh động và sẽ không chuyển cái `BrowserRouter` qua file App làm gì -> Vì vậy chúng ta sẽ linh động hơn
+
+- Rồi bây giờ làm sao để nó biết `render()` ra cái `HTML` như thế nào -> Chỗ này hơi căng nhờ -> Làm sao để biết, thì ở đây cách mà để biết thì chúng ta sử dụng hàm `screen()` của `@testing-library/react` luôn -> Dùng `screen.debug()` nó sẽ in ra cho chúng ta thấy là nó `render` ra cái gì -> Nhưng mà nó chỉ in ra đến thẻ body mà thôi còn thẻ `<head>` thì nó không có in ra và vẫn đề nữa là nó giới hạn nội dung in ra của chúng ta bằng dấu `3 chấm` thì để fix vấn đề này -> Thì để mà cho nó lấy ra hết thì chúng ta sẽ lấy ra cả cái `<html>` - cú pháp `document.body.parentElement`
+
+  - Ở đây chúng ta thấy rằng từ thằng `Header` rồi đến `Footer` nó không có thằng `Main - nội dung chính` ở giữa cho mình -> Nên là khi `render()` bùm một cái thì nó chửa `render()` ra đủ
+  - Mặc định khi mà để cái route không thì nó sẽ nhảy vào trang `productList`
+  - Và cái thằng `<head />` nó cũng chưa có thẻ `meta` cũng như là `title`
+
+- Vậy thì chúng ta sẽ sử dụng một cái cách khác để biết là có `render` ra đủ hay không -> Bình thường thì `App` chúng ta đã được `render` ra bình thường rồi -> Ở đây chúng sẽ có cách để `test` đó là sử dụng thằng `waitFor()`
+
+- Chúng ta mông đợi thằng `waitFor` nó lấy ra là cái title trong `head` và `title` có `nội dung` là `Trang chủ | Shopee Clone` -> Lúc nảy khi mà cái quá trình render của chúng ta nó chưa đủ thì `nội dung` của thằng `ProductList` nó chưa hiện ra khi mà đã `render` ra dủ rồi thì nó bắt đầu hiện ra -> Như thế này thì nó đã `verify` vào đúng `trang chủ` rồi -> Thì khi mở cái App lên thì phải vào đúng `trang chủ` chứ không phải vào trang `Login hay Register`
+
+- Sẽ `verifyy` thêm một chút xíu nữa
+
+- Những cái test ngoài việc chúng ta lấy ra từ cái requirement của dự án thì chúng ta cần phải sáng tạo ra thêm nữa, không có cái yêu cầu cụ thể nào cho việc này cả -> Bởi vì chúng ta là người `code` ra cái ứng dụng này nên là chúng ta sẽ hiểu cái `ứng dụng` này hoạt động ra làm sao
+
+  - Những cái `testcase` ngoài việc chúng ta lấy ra từ cái `requirement` của dự án ra thì chúng ta cũng cần phải tự sáng tạo ra dựa trên cái suy luận của một `developer`
+
+  - Khi mà render ra được trang chủ rồi để mà chuyển sang trang login thì chúng ta cần phải click vào thẻ `a` -> Để mà click vào được thì chúng ta sử dụng `userEvent`
+  - Thầng `Click` trong `userEvent` thì nó trả về một `Promise` -> Vậy thì chúng ta cần dùng await để đợi nó click xong
+
 ### 233 Test trang NotFound và mẹo debug unit test
 
 ### 234 Mẹo hay khi test React Router

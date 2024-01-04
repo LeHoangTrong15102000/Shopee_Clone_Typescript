@@ -3,8 +3,11 @@ import useRouteElements from './useRouteElements'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LocalStorageEventTarget } from './utils/auth'
-import { AppContext } from './contexts/app.context'
+import { AppContext, AppProvider } from './contexts/app.context'
 import ErrorBoundary from './components/ErrorBoundary'
+import { HelmetProvider } from 'react-helmet-async'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 /**
  * Khi url thay đổi thì các component nào dùng các hook như
@@ -14,6 +17,15 @@ import ErrorBoundary from './components/ErrorBoundary'
  * Vì dùng `useRouteElements` (đây là custom hook của `useRoutes`)
  *
  */
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
+      retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
+    }
+  }
+})
 
 function App() {
   const routeElements = useRouteElements()
@@ -32,33 +44,38 @@ function App() {
   }, [reset])
 
   return (
-    <div>
-      <ErrorBoundary>
-        <ToastContainer
-          // position='top-center'
-          // gutter={12}
-          // containerStyle={{ margin: '8px' }}
-          // toastOptions={{
-          //   success: {
-          //     duration: 3000
-          //   },
-          //   error: {
-          //     duration: 5000
-          //   },
-          //   style: {
-          //     fontSize: '16px',
-          //     maxWidth: '500px',
-          //     padding: '16px 24px',
-          //     backgroundColor: 'var(--color-grey-0)',
-          //     color: 'var(--color-grey-700)'
-          //   }
-          // }}
-          autoClose={2000}
-        />
-        {routeElements}
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-      </ErrorBoundary>
-    </div>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppProvider>
+          <ErrorBoundary>
+            <ToastContainer
+              // position='top-center'
+              // gutter={12}
+              // containerStyle={{ margin: '8px' }}
+              // toastOptions={{
+              //   success: {
+              //     duration: 3000
+              //   },
+              //   error: {
+              //     duration: 5000
+              //   },
+              //   style: {
+              //     fontSize: '16px',
+              //     maxWidth: '500px',
+              //     padding: '16px 24px',
+              //     backgroundColor: 'var(--color-grey-0)',
+              //     color: 'var(--color-grey-700)'
+              //   }
+              // }}
+              autoClose={2000}
+            />
+            {routeElements}
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          </ErrorBoundary>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </AppProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   )
 }
 
