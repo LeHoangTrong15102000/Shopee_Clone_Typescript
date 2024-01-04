@@ -10,7 +10,9 @@ export default defineConfig({
     'process.env': process.env
   },
   test: {
+    globals: true,
     environment: 'jsdom', // giúp chúng ta test những API liên quan đến trình duyệt
+    setupFiles: './vitest.setup.js',
     dangerouslyIgnoreUnhandledErrors: true
     // coverageReporters: ['html', 'json', ['lcov', { projectRoot: __dirname }], 'text'],
     // reporters: 'verbose',

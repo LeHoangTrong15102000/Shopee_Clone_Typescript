@@ -22,7 +22,8 @@
     "paths": {
       "src/*": ["./src/*"]
     }
+    // "types": ["node", "jest", "@testing-library/jest-dom/vitest"]
   },
-  "include": ["src"],
+  "include": ["src", "vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

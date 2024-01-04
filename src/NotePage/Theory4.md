@@ -184,6 +184,17 @@
   - Khi mà render ra được trang chủ rồi để mà chuyển sang trang login thì chúng ta cần phải click vào thẻ `a` -> Để mà click vào được thì chúng ta sử dụng `userEvent`
   - Thầng `Click` trong `userEvent` thì nó trả về một `Promise` -> Vậy thì chúng ta cần dùng await để đợi nó click xong
 
+  - Sau khi `click` vào trang `Login` thì thằng `title` của `head` nó vẫn chưa render ra kịp -> Nhưng mà nó vẫn chỉ có `Header` và `Footer` mà thôi và nó vẫn chưa `render` ra được nội dung bên trong của cái trang đó -> Nên là chúng ta vẫn phải đợi nó một tí
+
+  - Nên là chúng ta sẽ sủ dụng thằng `waitFor()` và chạy cái `callback` đó một vài lần -> Để cho nó render ra giao diện
+
+  - Mặc dù là chúng ta expect thằng queryByText("Bạn mới biết đến Shopee?") là `1s timeout` nhưng mới nửa giây thì nó đã trả về `true` rồi nên những cái khác như `title` của thẻ `head` thì nó `render` ra kịp -> Nên là mới nửa giây là nó đã `render` ra rồi -> Nên là thẻ `head - title` nó không `render` ra được vì vậy chúng ta sẽ expect đống thời của 2
+
+    - expect(screen.queryByText('Bạn mới biết đến Shopee?')).toBeInTheDocument()
+    - expect(document.querySelector('title')?.textContent).toBe('Đăng nhập | Shopee Clone')
+
+    - VÌ nó phải đợi 2 thằng này phải `true` hết hoặc là hết cái `timeout` thì nó mới dừng được
+
 ### 233 Test trang NotFound và mẹo debug unit test
 
 ### 234 Mẹo hay khi test React Router

@@ -1,3 +1,9 @@
+/// <reference types="vitest" />
+
+import '@testing-library/jest-dom'
+
+// import '@testing-library/jest-dom/vitest'
+
 // import { afterAll, afterEach, beforeAll, expect } from 'vitest'
 // import { setupServer } from 'msw/node'
 // import authRequests from './src/msw/auth.msw'
