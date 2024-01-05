@@ -251,9 +251,19 @@
 
 - Cuối cùng cũng đã fix được testcase không nhận vào giá trị trong input
 
+- Vậy những trường hợp chúng ta tìm không ra lỗi khi nhập vào `form` thì chỉ cần(dùng logScreen() để mà debug) rồi `expect()` nó là -> Chỗ này dùng `queryByText` thì nó trả về `lỗi` -> Còn nếu mà chúng ta sử dụng `getByText/findByText` thì nó trả một `promise` -> Khi mà nó tìm không ra thì nó sẽ `throw` ra một cái lỗi (Vì promise khi mà bị rejject thì nó sẽ throw ra một lỗi) làm cho cái unit test bị lỗi theo -> Dùng `query-[function]` trong trường hợp chứng minh là tìm ra hay là không ra -> Nó sẽ tiện hơn khi dùng `findByText/getByText`
+
+  - queryByAllText return về một cái `Array`
+  - queryByText return về một cái `HTMLElement`
+
+  - Dùng vơi `await waitFor()` vẫn đem lại lợi ích thích hợp cho chúng ta, khi mà render thì nó sẽ hiện ra -> Còn mà khi dùng thằng `async/await` khi mà tìm không ra thì nó sẽ quăng ra lỗi rất là khó chịu -> Nên dùng `waitFor()` vẫn thấy dễ chịu
+
 ### 237 Sử dụng MSW để test React Query
 
-- Test `React Query` với `MSW`
+- Test `React Query` với `MSW` -> Là một Mock Service Worker
+
+- `Mock` một cái `API` để thực hiện `giai đoạn nhấn submit` -> Khi mà nhấn `submit` thì sẽ `gọi API` thông qua thằng `ReactQuery` -> Nên là chúng ta cần phải biết cách `React Query` và `cách test Mock API`
+  - Khi mà làm một cái `Unit Test` thì không nên `đụng đến API thật`
 
 ### 238 Cập nhật Mock Service Worker cho các Api còn thiếu
 

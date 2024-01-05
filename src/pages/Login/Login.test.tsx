@@ -16,6 +16,7 @@ describe('Login', () => {
   let submitButton: HTMLButtonElement
   beforeAll(async () => {
     renderWithRouter({ route: path.login })
+    // Chạy trước tất cả để render ra thằng email và password
     await waitFor(() => {
       // thành công render thì phải in ra được thằng input`email`
       expect(screen.queryByPlaceholderText('Email')).toBeInTheDocument()
@@ -39,8 +40,9 @@ describe('Login', () => {
     // Khi mà nhấn submit mà ko nhập thì bắt buộc nó phải quăng ra lỗi thì testcase nó mới pass
     // await logScreen()
     await waitFor(async () => {
-      expect(await screen.findByText('Email là bắt buộc')).toBeTruthy()
-      expect(await screen.findByText('Password là bắt buộc')).toBeTruthy()
+      // queryByText không trả về một promise nên không cần await nữa
+      expect(screen.queryByText('Email là bắt buộc')).toBeTruthy() // trả về lỗi # null thì là truthy
+      expect(screen.queryByText('Password là bắt buộc')).toBeTruthy()
     })
   })
 
