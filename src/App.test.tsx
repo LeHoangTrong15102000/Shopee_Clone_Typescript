@@ -1,22 +1,21 @@
 // Test App
 import { describe, expect, test } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { screen, waitFor } from '@testing-library/react'
 import matchers from '@testing-library/jest-dom/matchers'
-import App from './App'
-import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import path from './constant/path'
-import { logScreen } from './utils/testUtils'
+import { logScreen, renderWithRouter } from './utils/testUtils'
 
-// expect.extend(matchers)
+expect.extend(matchers)
 
 describe('App', () => {
   test('App render và chuyển trang', async () => {
     // làm thế nào để chúng ta render ra được cái component App thì sử dụng hàm  render() của thư viện @testing-library/react
-    render(<App />, {
-      wrapper: BrowserRouter
-    })
-    const user = userEvent.setup()
+    // render(<App />, {
+    //   wrapper: BrowserRouter
+    // })
+    // const user = userEvent.setup()
+
+    const { user } = renderWithRouter()
 
     /**
      * waitFor sẽ run callback 1 vài lần
@@ -43,11 +42,12 @@ describe('App', () => {
 
   test('Về trang not found', async () => {
     const badRoute = '/some/bad/route'
-    render(
-      <MemoryRouter initialEntries={[badRoute]}>
-        <App />
-      </MemoryRouter>
-    )
+    // render(
+    //   <MemoryRouter initialEntries={[badRoute]}>
+    //     <App />
+    //   </MemoryRouter>
+    // )
+    renderWithRouter({ route: badRoute })
     await waitFor(() => {
       expect(screen.getByText(/page not found/i)).toBeInTheDocument()
       // expect()
@@ -60,14 +60,19 @@ describe('App', () => {
   })
 
   test('Render trang Register', async () => {
-    const registerRoute = path.register
-    render(
-      <MemoryRouter initialEntries={[registerRoute]}>
-        <App />
-      </MemoryRouter>
-    )
+    // window.history.pushState({}, 'Test page', path.register)
+    // const registerRoute = path.register
+    // render(<App />, { wrapper: BrowserRouter })
+    // render(
+    //   <MemoryRouter initialEntries={[registerRoute]}>
+    //     <App />
+    //   </MemoryRouter>
+    // )
+    renderWithRouter({ route: path.register })
     await waitFor(() => {
       expect(screen.getByText(/Bạn đã có tài khoản?/i)).toBeInTheDocument()
     })
+
+    // await logScreen()
   })
 })

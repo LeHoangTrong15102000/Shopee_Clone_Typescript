@@ -217,9 +217,37 @@
 
 ### 234 Mẹo hay khi test React Router
 
+- Test trang Register, ở đây chung ta muốn rằng khi người dùng nhấn vào đường đẫn `localhost:4000/register` thì nó vào thẳng trang `register` cho chúng ta luôn
+
+- Mỗi lần `render` ra trang `Login` hay `Register` thì nó sẽ lặp đi lặp lại đoạn code -> Ở đây chúng ta không cần sử dụng `MemoryRouter` mà vẫn có thể test được dẫn `testCase` liên quan đến `Router`
+
+- Thì Cái `window.history.pushState({} 'Test page', path.register)` thì viết nó vào cái `file Utils` để tiện cho việc sử dụng -> Đưa nó vào `file utils` để tái sử dụng lại những cái hàm này
+
+- Hàm `render` nó sẽ return về một cái `object` nó sẽ có một số trong đó
+
 ### 235 Test lỗi required React Hook Form ở trang Login
 
+- Test lỗi `Required React Hook Form` khi chúng ta validate dữ liệu từ trang `Login`
+
+- Chúng ta test React hook form không cần phải test `render` nữa -> Vì khi `test validate` thành công có nghĩa là `test render` thành công
+
+- Nếu chỉ component không thôi thì nó sẽ báo lỗi -> Thì thôi khi chúng ta đã khai báo cái utils `renderWithRouter` rồi thì chúng ta dùng luôn
+
+- Khi mà không nhập vào trường `Email` mà chúng ta nhấn `submit` thử -> Thì có khá nhiều cách để nhấn vào nút `submit` trong môi trường `terminal`
+
+- Khi mà chúng ta đã làm ra được cái `logScreen` rồi thì debug nó khá là dễ -> Sau khi đã debug xong rồi thì chạy `test` nó
+
 ### 236 Test lỗi nhập data không đúng định dạng form
+
+- Để mà chặt chẽ hơn thì mỗi lần thằng `test()` nó chạy thì chúng ta sẽ cho chạy cái thằng `callback` trong `beforeEach()` trước để `render` lại thằng `Router`
+
+- Giờ đây chúng ta không cần thằng user từ `userEvent` để lấy sự kiện `click` nữa -> Chúng ta có thể sử dụng thằng `fireEvent` từ `@testing-library/react`
+
+- Bây giờ sẽ dùng `fireEvent` để input vào cái ô `Email`'
+
+- Khi mà nhấn `submit` thì nó chạy cái hàm `expect()` nhưng mà nó sẽ không `show ra` ngay mà nó cần phải có `await` một tí xíuu thì nó mới showw -> Thì lúc này nó đã render ra mất tiu -> Nên cần phải có `await` để đợi nó chút nên là chúng ta sẽ sử dụng `await waitFor`
+
+- Lỗi Multiple Email là do cái thằng `beforeEach()` nó render 2 lần cái `placeholder="email"` nên trên cái UI trên `terminal` của chúng ta nó có 2 cái `UI` chồng lên nhau luôn nên nó bị lỗi -> Bởi vì mỗi thằng `test()` nó sẽ `render` trước một lần -> Nên chúng ta sẽ chuyển sang dùng `beforeAll()` để chạy trước tất cả các hàm `test()`
 
 ### 237 Sử dụng MSW để test React Query
 
