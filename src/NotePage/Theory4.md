@@ -249,7 +249,11 @@
 
 - Lỗi Multiple Email là do cái thằng `beforeEach()` nó render 2 lần cái `placeholder="email"` nên trên cái UI trên `terminal` của chúng ta nó có 2 cái `UI` chồng lên nhau luôn nên nó bị lỗi -> Bởi vì mỗi thằng `test()` nó sẽ `render` trước một lần -> Nên chúng ta sẽ chuyển sang dùng `beforeAll()` để chạy trước tất cả các hàm `test()`
 
+- Cuối cùng cũng đã fix được testcase không nhận vào giá trị trong input
+
 ### 237 Sử dụng MSW để test React Query
+
+- Test `React Query` với `MSW`
 
 ### 238 Cập nhật Mock Service Worker cho các Api còn thiếu
 

@@ -3,7 +3,8 @@
 import { screen, waitFor, fireEvent } from '@testing-library/react'
 import path from 'src/constant/path'
 import { logScreen, renderWithRouter } from 'src/utils/testUtils'
-
+// import userEvent from '@testing-library/user-event'
+// import fireEvent from '@testing-library/user-event'
 import matchers from '@testing-library/jest-dom/matchers'
 import { beforeAll, describe, expect, test } from 'vitest'
 
@@ -21,9 +22,14 @@ describe('Login', () => {
       expect(screen.queryByPlaceholderText('Password')).toBeInTheDocument()
     })
 
-    emailInput = document.querySelector('form input[type="email"]') as HTMLInputElement
-    passwordInput = document.querySelector('form input[type="password"]') as HTMLInputElement
-    submitButton = document.querySelector('form button[type="submit"]') as HTMLButtonElement
+    // emailInput = document.querySelector('form input[type="email"]') as HTMLInputElement
+    // passwordInput = document.querySelector('form input[type="password"]') as HTMLInputElement
+    // submitButton = document.querySelector('form button[type="submit"]') as HTMLButtonElement
+
+    emailInput = screen.getByPlaceholderText(/email/i) as HTMLInputElement
+    passwordInput = screen.getByPlaceholderText(/password/i) as HTMLInputElement
+    // submitButton = document.querySelector('form button[type="submit"]') as HTMLButtonElement
+    submitButton = screen.getByTestId('button-element') as HTMLButtonElement
   })
 
   test('Hiển thị lỗi required khi mà không nhập gì!', async () => {
@@ -39,6 +45,7 @@ describe('Login', () => {
   })
 
   test('Hiển thị lỗi data không đúng định dạng form!', async () => {
+    // await logScreen()
     fireEvent.change(emailInput, {
       target: {
         // nhập vào cái email không đúng định dạng
@@ -51,10 +58,10 @@ describe('Login', () => {
       }
     })
 
-    // fireEvent.blur(emailInput)
-    // fireEvent.blur(passwordInput)
+    fireEvent.focusOut(emailInput)
+    fireEvent.focusOut(passwordInput)
 
-    await logScreen()
+    // await logScreen()
     // fireEvent.submit(submitButton)
     // Cũng cần phải await nó trước khi render ra
     await waitFor(async () => {
