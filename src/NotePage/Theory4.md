@@ -263,9 +263,37 @@
 - Test `React Query` với `MSW` -> Là một Mock Service Worker
 
 - `Mock` một cái `API` để thực hiện `giai đoạn nhấn submit` -> Khi mà nhấn `submit` thì sẽ `gọi API` thông qua thằng `ReactQuery` -> Nên là chúng ta cần phải biết cách `React Query` và `cách test Mock API`
-  - Khi mà làm một cái `Unit Test` thì không nên `đụng đến API thật`
+
+  - Khi mà làm một cái `Unit Test` thì không nên `đụng đến API thật` mà hãy tạo ra một `Mock Api`
+
+- Nên tạo `Mock API` để nó không phụ thuộc vào `server bên ngoài` gì nữa mà nó chỉ nằm trong `code` của chúng ta mà thôi -> Có thể gọi một cái `HTTP request` nhưng mà nó nằm trong code của chúng ta và nó không phụ thuộc bên ngoài -> Thì sử dụng `Mock Service Worker` thì thằng này nó sẽ `mock một cái API` cho chúng ta -> Thay vì phải làm Mock API bằng `JSON server` hoặc là `Promise setTimeut` gì đó -> Dùng cái này nó sẽ thay thế URL của chúng ta luôn
+
+  - Lên phần `Mocking` của `vitest` nó sẽ hướng đẫn chúng ta tạo ra cái `mock service` để test -> Và chúng ta sẽ đọc phần `Mock Request`
+
+  - Bởi vì `Vitest` nó chạy trong môi trường Node, nên việc `mocking network requests` thì rất là khó khăn, những cái `API` thì nó không có sẵn trên môi trường `Node` -> Nên là sử dụng `Mock Service Worker` nó thực hiện được cho cả `REST API và GraphQL`
+
+  - `restHandler` thì chúng ta sẽ khai báo các cái `mock Api` của chúng ta -> Ví dụ như chúng ta `Login` thì chúng ta dùng `method` là `POST`
+  - Khi chúng ta gọi đến đường dẫn API `https://api-ecom.duthanhduoc.com/` ->Và khi gọi nó trên môi trường `NodeJS` thì nó sẽ được thay thế bằng `Mock Service Worker`
+
+  - Thì khii chúng ta gọi API(trên môi trường NodeJS) cụ thể là khi API để thực hiện cái `UnitTest` thì nó sẽ chạy cái `restHandlers` thay vì nó gọi đến cái `server` `https://api-ecom.duthanhduoc.com/`
+
+- Tạo ra testUtils và Wrap cái App này lại bằng `testUtils` của mình -> Để tắt cái retry 3 lần của thằng `ReactQuery`
+
+  - Sẽ để thằng `QueryClientProvider` ra bên ngoài để cho cái `App` có custom `QueryClientProvider` trong môi trường test rất là `easy`
+
+  - Về mặt logic thì vẫn giữ nguyên mà thôi, nhưng như thế này thì vẫn thuận tiện cho việc `testing` hơn
+
+- Khi mà dùng `screen.queryByText` thì dùng kết hợp với `await` và `waitFor()` -> Còn khi dùng `findbyText` hoặc là `getByText` thì nó trả về một `promise` khi mà có lỗi thì nó log ra `cái lỗi` cho chúng ta luôn nhưng mà chúng ta không muốn dùng cái đó thì dùng `queryByText`
+
+- Khi mà chúng ta test thì cần nên có một `Mock Server` để test những cái API -> Và tạo ra những cái `Endpoint` để khi mà nó có thì nó sẽ nhảy vào còn không thì không cho nó nhảy vào(Còn không có thì show ra lỗi) để tránh trường hợp nó `tác động` đến cái `API thật` của chúng ta
+
+- Và khi test với React Query thì nên tạo ra cái file `testUtils` để trong đó khai báo các hàm `wrapper` để chúng ta `disabled` những cái `retry` trên mỗi trường `unit test`(Khi mà test API đôi khi nó sẽ có lỗi) -> Nên khi mỗi lần `test API` bị lỗi thì nó cứ `retry` thì sẽ rất là mệt
 
 ### 238 Cập nhật Mock Service Worker cho các Api còn thiếu
+
+- `StructuredClone` nó dùng để `Deep Copy` với những `object` lòng sâu nhiều cấp
+
+- Khi mà sử dụng `MSW` thì khi mà test những thứ liên quan đến `getMe` hoặc là `refreshToken` sẽ bị thằng `MSW` nó đè lên
 
 ### 239 Test trang Profile cần authenticated
 

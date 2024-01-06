@@ -61,7 +61,7 @@ const ProductList = () => {
   return (
     <div className='bg-black/5 py-6'>
       <Helmet>
-        <title>Trang chủ | Shopee Clone</title>
+        <title data-testid='title-element'>Trang chủ | Shopee Clone</title>
         <meta
           name='description'
           content='Mua sắm trực tuyến hàng triệu sản phẩm ở tất cả ngành hàng. Giá tốt &amp; Ưu đãi. Mua và bán online trong 30 giây. Shopee Đảm Bảo | Freeship Xtra | Hoàn Xu Xtra'

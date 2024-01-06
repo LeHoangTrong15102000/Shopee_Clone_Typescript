@@ -18,14 +18,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
  *
  */
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
-      retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
-    }
-  }
-})
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
+//       retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
+//     }
+//   }
+// })
 
 function App() {
   const routeElements = useRouteElements()
@@ -45,36 +45,32 @@ function App() {
 
   return (
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <ErrorBoundary>
-            <ToastContainer
-              // position='top-center'
-              // gutter={12}
-              // containerStyle={{ margin: '8px' }}
-              // toastOptions={{
-              //   success: {
-              //     duration: 3000
-              //   },
-              //   error: {
-              //     duration: 5000
-              //   },
-              //   style: {
-              //     fontSize: '16px',
-              //     maxWidth: '500px',
-              //     padding: '16px 24px',
-              //     backgroundColor: 'var(--color-grey-0)',
-              //     color: 'var(--color-grey-700)'
-              //   }
-              // }}
-              autoClose={2000}
-            />
-            {routeElements}
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-          </ErrorBoundary>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </AppProvider>
-      </QueryClientProvider>
+      <ErrorBoundary>
+        <ToastContainer
+          // position='top-center'
+          // gutter={12}
+          // containerStyle={{ margin: '8px' }}
+          // toastOptions={{
+          //   success: {
+          //     duration: 3000
+          //   },
+          //   error: {
+          //     duration: 5000
+          //   },
+          //   style: {
+          //     fontSize: '16px',
+          //     maxWidth: '500px',
+          //     padding: '16px 24px',
+          //     backgroundColor: 'var(--color-grey-0)',
+          //     color: 'var(--color-grey-700)'
+          //   }
+          // }}
+          autoClose={1500}
+        />
+        {routeElements}
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      </ErrorBoundary>
+      <ReactQueryDevtools initialIsOpen={false} />
     </HelmetProvider>
   )
 }
