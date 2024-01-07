@@ -56,6 +56,12 @@ const ProductDetail = () => {
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('') // currentImage cho hình ảnh sản phẩm chính
   // currentImage cho slider dùng cho button(thay đổi khi mà currentIndexImage thay đổi)
+
+  useEffect(() => {
+    // 👇️ scroll to top on page load
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [])
+
   const currentImages = useMemo(
     () => (product ? product?.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]

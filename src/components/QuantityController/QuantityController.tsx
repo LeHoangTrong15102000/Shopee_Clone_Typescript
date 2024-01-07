@@ -13,6 +13,7 @@ interface Props extends InputNumberProps {
   classNameWrapper?: string
   handleDelete?: (value: number) => void
   product?: Product
+  isQuantityInCart?: boolean
 }
 
 const QuantityController = ({
@@ -23,6 +24,7 @@ const QuantityController = ({
   onDecrease,
   onFocusOut,
   onType,
+  isQuantityInCart = false,
   classNameWrapper = 'ml-10',
   value, // Lấy ra value là thuộc tính của thẻ Input
   ...rest
@@ -135,12 +137,14 @@ const QuantityController = ({
         </svg>
       </button>
       {/* Delete Modal */}
-      <DeleteModal
-        product={product as Product} // Vì chúng ta biết chắc chắn là nó có nên chúng ta ép kiểu
-        open={openConfirm}
-        handleIsAgree={handleDeleteProduct}
-        handleIsCancel={hideConfirm}
-      />
+      {isQuantityInCart && (
+        <DeleteModal
+          product={product as Product} // Vì chúng ta biết chắc chắn là nó có nên chúng ta ép kiểu
+          open={openConfirm}
+          handleIsAgree={handleDeleteProduct}
+          handleIsCancel={hideConfirm}
+        />
+      )}
     </div>
   )
 }

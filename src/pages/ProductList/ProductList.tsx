@@ -19,9 +19,9 @@ const ProductList = () => {
   const queryConfig = useQueryConfig()
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   windows
-  // }, [queryConfig])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [queryConfig])
 
   // Tại sao nó lạ quá vậy t cũng không rõ nữa quá là mơ hồ về cuộc sống này
 

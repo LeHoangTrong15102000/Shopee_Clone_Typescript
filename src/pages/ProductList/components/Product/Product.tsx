@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating'
 import path from 'src/constant/path'
@@ -11,6 +11,11 @@ interface Props {
 }
 
 const Product = ({ product }: Props) => {
+  useEffect(() => {
+    // 👇️ scroll to top on page load
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [product?._id])
+
   return (
     // Khi nhấn vào thì truyền lên cái _id của sản phẩm
     <Fragment>

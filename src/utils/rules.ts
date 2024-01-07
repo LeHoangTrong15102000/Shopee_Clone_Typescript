@@ -145,6 +145,7 @@ export type UserSchema = yup.InferType<typeof userSchema>
 
 // Tự genararate ra cái type nhờ hàm InferType của yup
 export type Schema = yup.InferType<typeof schema>
+// typeof có nghĩa là lấy ra các types `value` của các key trong `loginSchema`
 export type LoginSchema = yup.InferType<typeof loginSchema> // Lấy ra cái type từ thằng yup
 export type RegisterSchema = yup.InferType<typeof registerSchema>
 

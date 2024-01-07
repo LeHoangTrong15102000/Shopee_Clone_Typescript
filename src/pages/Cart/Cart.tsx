@@ -350,6 +350,7 @@ const Cart = () => {
                                   )
                                 }
                                 disabled={purchase.disabled}
+                                isQuantityInCart={true}
                               />
                             </div>
                             {/* Tổng tiền */}
