@@ -295,6 +295,8 @@
 
 - Khi mà sử dụng `MSW` thì khi mà test những thứ liên quan đến `getMe` hoặc là `refreshToken` sẽ bị thằng `MSW` nó đè lên
 
+- Sẽ tiến hành `Mock API Service` cho thằng `Login`
+
 ### 239 Test trang Profile cần authenticated
 
 ### 240 Kỹ thuật test snapshot
