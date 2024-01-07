@@ -196,6 +196,7 @@ const Cart = () => {
     deletePurchasesMutation.mutate([purchaseId], {
       onSuccess: () => {
         toast.success('Xoá sản phẩm thành công!', {
+          autoClose: 1000,
           position: 'top-center'
         })
       }

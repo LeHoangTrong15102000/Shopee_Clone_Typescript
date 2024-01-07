@@ -120,7 +120,8 @@ const Login = () => {
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng nhập</div>
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
-              <Input
+              {/*  Input ở đây truyền hay không truyền generic type đều được, nếu mà không truyền generic type thì xóa register đi thì nó sẽ không gợi ý nữa */}
+              <Input<FormData>
                 className='mt-6'
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
@@ -136,7 +137,7 @@ const Login = () => {
                 placeholder='Email'
                 errorMessage={errors.email?.message}
               />
-              <Input
+              <Input<FormData>
                 className='relative mt-2'
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',

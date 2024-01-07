@@ -16,7 +16,9 @@
 
 Với những interface yêu cầu generic type thì chúng ta mới cần truyền thôi.
 
-Còn đối với generic type function thì chúng ta không cần truyền cũng được
+Còn đối với generic type cho function thì chúng ta không cần truyền cũng được
+
+- Tóm lại là đối với cái Function `gốc` khi chúng ta khai báo `Generic Type` cho `Interface` thì cái function đó cũng phải truyền vào Generic Type cho nó chặc chẽ và không bị báo lỗi -> Còn đối với function gọi ở những component khác thì không cần truyền vào `Generic Type` cho nó cũng được -> Chỉ là nó không có kì vọng như là khi chúng ta khai báo một function mà thôi
 
 Ví dụ
 

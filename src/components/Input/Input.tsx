@@ -1,19 +1,45 @@
 // Khi mà dùng function thì hả nên import React
 import { InputHTMLAttributes, useState } from 'react'
-import type { UseFormRegister, RegisterOptions } from 'react-hook-form'
+import type { UseFormRegister, RegisterOptions, FieldValues, FieldPath } from 'react-hook-form'
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+// Mặc định là chúng ta sẽ lấy là FieldValues để nó không có báo lỗi nữa
+// TFieldValue nó kế thừa từ FieldValues mặc định chúng ta sẽ lấy TFieldValues, giá trị mặc định có thể gán hoặc không gán đều không sao cả
+
+// Thằng TFieldValues bên trong interface này thì nó chỉ được dùng trong phạm vi của interface thôi
+// interface Props<TFieldValues extends FieldValues = FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+//   errorMessage?: string
+//   // name: string // để truyền vào tham số thứ nhất cho register
+//   classNameInput?: string
+//   classNameError?: string
+//   classNameEye?: string
+//   register?: UseFormRegister<TFieldValues> // có hay không cũng được
+//   rules?: RegisterOptions // Là những options trong tham số thứ 2 của register{...}
+//   // autoComplete?: string
+//   name: FieldPath<TFieldValues>
+// }
+
+interface Props<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   // name: string // để truyền vào tham số thứ nhất cho register
   classNameInput?: string
   classNameError?: string
   classNameEye?: string
-  register?: UseFormRegister<any> // có hay không cũng được
+  register?: UseFormRegister<TFieldValues> // có hay không cũng được
   rules?: RegisterOptions // Là những options trong tham số thứ 2 của register{...}
   // autoComplete?: string
+  name: TName
 }
 
-const Input = ({
+// Cái Generic Type nó vẫn đóng vai trò là cầu nối dữ liệu giũa `nane` và `register`
+
+// arrow function thì phải viết Generic type như thế này, muốn chặt chẽ hơn thì cho thêm = FieldValues vào
+const Input = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   errorMessage,
   className,
   name,
@@ -23,7 +49,8 @@ const Input = ({
   classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600',
   classNameEye = 'absolute right-[8px] top-[9px] h-6 w-6 cursor-pointer',
   ...rest
-}: Props) => {
+}: // TFieldValues ở đây truyền thông qua
+Props<TFieldValues, TName>) => {
   // state để lưu trữ việc hiển thị con mắt
   const [openEye, setOpenEye] = useState(false)
   const registerResult = register && name ? register(name, rules) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau

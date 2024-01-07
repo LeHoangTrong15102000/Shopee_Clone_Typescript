@@ -319,9 +319,25 @@
 
 ### 246 Fix lỗi Input Min Max không bị reset khi nhấn xóa tất cả
 
+- Làm tới phần này
+
 ### 247 Fix lỗi refresh page ra 404 khi deploy vercel
 
 - -> Đã fix được
+
+### 248 Phân tích generic type cho component Input
+
+- Chúng ta nhận ra rằng khi mà `Controller` truyền vào `control` thì thằng `name` tự được sinh ra dựa vào cái `control` truyền vào -> Thì cái thằng `Input custom` của chúng ta cũng khá là tương đồng khi cái `Input` truyền `register` thì cái `name` được sinh ra dựa vào thằng `register`
+
+- Vậy chúng ta sẽ đi phân tích cái `Controller` nó làm như nào để chúng ta áp dụng vào `dự án` của chúng ta
+
+- Ý tưởng là như thế bây giờ chúng ta cùng thử xem nó có ra cái gì không
+
+- Cái Input, khi mà vào click `UseFormRegister` thì chúng ta có thể thấy cái biến truyền vào nó phải kế thừa từ cái `FieldValues` thì nó mới chấp nhận
+
+- Bây giờ thì cái thằng `name` và `register` đã có cùng điểm chung đó là điều có `Generic Type` chung đó là `TFieldValues`
+
+- Sau khi `custom` `Generic Type` cho thằng `Component Input` thì cuối cùng nó đã gợi ý rồi
 
 ### 249 Tối ưu re-render trong react router dom
 
