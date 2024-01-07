@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useParams, Navigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import productApi from 'src/apis/product.api'
@@ -18,7 +18,6 @@ import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
 import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
-import NotFound from '../NotFound'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
@@ -181,8 +180,9 @@ const ProductDetail = () => {
     })
   }
 
+  // Lỗi là ở đây, cayyyyy
   // console.log(product)
-  if (!product) return
+  if (!product) return null
 
   return (
     <div className='bg-gray-200 py-6'>
