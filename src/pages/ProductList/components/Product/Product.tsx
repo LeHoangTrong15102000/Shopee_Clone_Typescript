@@ -11,11 +11,6 @@ interface Props {
 }
 
 const Product = ({ product }: Props) => {
-  // useEffect(() => {
-  //   // 👇️ scroll to top on page load
-  //   window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-  // }, [product?._id])
-
   return (
     // Khi nhấn vào thì truyền lên cái _id của sản phẩm
     <Fragment>
