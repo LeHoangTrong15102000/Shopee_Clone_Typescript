@@ -20,7 +20,7 @@ const ProductList = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [queryConfig])
 
   // Tại sao nó lạ quá vậy t cũng không rõ nữa quá là mơ hồ về cuộc sống này

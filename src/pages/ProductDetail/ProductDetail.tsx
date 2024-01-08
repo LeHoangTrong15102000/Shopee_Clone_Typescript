@@ -58,7 +58,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // 👇️ scroll to top on page load
-    window.scrollTo({ top: 0, left: 0 })
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [product?._id])
 
   const currentImages = useMemo(
