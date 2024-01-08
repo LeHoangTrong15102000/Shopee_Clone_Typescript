@@ -40,6 +40,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
+      //  Lấy hàm reset của react-hook-form để reset lại giá trị trong ô input
       price_max: '',
       price_min: ''
     },
