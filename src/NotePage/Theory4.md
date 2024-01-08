@@ -299,6 +299,8 @@
 
 ### 239 Test trang Profile cần authenticated
 
+// `https://drive.google.com/drive/folders/1cu9U7UivcMEEdRyOYpd9ktTg65YBnhXB`
+
 ### 240 Kỹ thuật test snapshot
 
 ## Chương 26 Storybook cho React

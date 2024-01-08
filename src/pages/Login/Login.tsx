@@ -121,7 +121,7 @@ const Login = () => {
               <div className='text-2xl'>Đăng nhập</div>
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
               {/*  Input ở đây truyền hay không truyền generic type đều được, nếu mà không truyền generic type thì xóa register đi thì nó sẽ không gợi ý nữa */}
-              <Input<FormData>
+              <Input
                 className='mt-6'
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
