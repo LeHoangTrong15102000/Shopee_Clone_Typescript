@@ -15,6 +15,7 @@ interface AppContextInterface {
 
 // Khởi tạo giá trị cho localStorage
 export const getInitialAppContext: () => AppContextInterface = () => ({
+  // Nó sẽ kiểm tra nếu mà có access_token rồi thì khi mà F5 lại thì nó vẫn đăng nhập
   isAuthenticated: Boolean(getAccessTokenFromLS()), // ép kiểu cho nó
   setIsAuthenticated: () => null,
   profile: getProfileFromLS(), // ban đầu cho nó giá trị khởi tạo là null, lấy ra user từ localStorage
