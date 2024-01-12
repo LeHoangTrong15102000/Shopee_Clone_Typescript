@@ -14,6 +14,7 @@ import Product from './components/Product/Product'
 import path from 'src/constant/path'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { Helmet } from 'react-helmet-async'
+import Loader from 'src/components/Loader'
 
 const ProductList = () => {
   const queryConfig = useQueryConfig()
@@ -25,7 +26,7 @@ const ProductList = () => {
 
   // Tại sao nó lạ quá vậy t cũng không rõ nữa quá là mơ hồ về cuộc sống này
 
-  const { data: productsData } = useQuery({
+  const { data: productsData, isLoading } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)

@@ -21,6 +21,7 @@ import { AppContext } from 'src/contexts/app.context'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
+import Loader from 'src/components/Loader'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -42,13 +43,13 @@ const ProductDetail = () => {
 
   const queryClient = useQueryClient()
 
-  const { data: productDetailData } = useQuery({
+  const { data: productDetailData, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string),
     keepPreviousData: true
   })
   // console.log(productDetailData?.status)
-  const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
+  const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data?.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
   // tạo ra state currentIndexImage để quản lí việc click slider
   // console.log(product)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -187,10 +188,10 @@ const ProductDetail = () => {
   return (
     <div className='bg-gray-200 py-6'>
       <Helmet>
-        <title>{product.name} | Shopee Clone</title>
+        <title>{product?.name} | Shopee Clone</title>
         <meta
           name='description'
-          content={convert(product.description, {
+          content={convert(product?.description, {
             limits: {
               maxInputLength: 200
             }
@@ -212,7 +213,7 @@ const ProductDetail = () => {
               >
                 <img
                   src={activeImage}
-                  alt={product.name}
+                  alt={product?.name}
                   className='pointer-events-none absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover'
                   ref={imageRef}
                 />
@@ -275,16 +276,16 @@ const ProductDetail = () => {
             {/* Thông tin sản phẩm */}
             <div className='col-span-12 md:col-span-7'>
               {/* title */}
-              <h1 className='text-xl font-medium capitalize'>{product.name}</h1>
+              <h1 className='text-xl font-medium capitalize'>{product?.name}</h1>
               {/* đánh giá chung */}
               <div className='mt-6 flex items-center'>
                 {/* đánh giá chung */}
                 {/* rating */}
                 <div className='flex items-center'>
-                  <span className='mr-1 border-b border-b-orange text-[#ee4d2d]'>{product.rating}</span>
+                  <span className='mr-1 border-b border-b-orange text-[#ee4d2d]'>{product?.rating}</span>
                   {/* RatingStar component */}
                   <ProductRating
-                    rating={product.rating}
+                    rating={product?.rating}
                     activeClassname='h-4 w-4 fill-[#ee4d2d] text-[#ee4d2d]'
                     nonActiveClassname='h-4 w-4 fill-current text-gray-300'
                   />
@@ -312,15 +313,15 @@ const ProductDetail = () => {
                     <div className='flex min-h-[1.875rem] w-[625px] basis-[625px] flex-wrap items-center'>
                       {/* giá trước giảm giá */}
                       <div className='mr-3 text-[1rem] text-[#929292] line-through'>
-                        ₫{formatCurrency(product.price_before_discount)}
+                        ₫{formatCurrency(product?.price_before_discount)}
                       </div>
                       {/* giá sau giảm giá */}
                       <div className='flex items-center'>
                         <div className='text-[1.875rem] font-medium text-[#ee4d2d]'>
-                          ₫{formatCurrency(product.price)}
+                          ₫{formatCurrency(product?.price)}
                         </div>
                         <div className='ml-4 rounded bg-[#ee4d2d] py-[2px] px-[4px] text-[0.75rem] font-semibold uppercase text-white'>
-                          {rateSale(product.price, product.price_before_discount)} giảm
+                          {rateSale(product?.price, product?.price_before_discount)} giảm
                         </div>
                       </div>
                     </div>
@@ -334,7 +335,7 @@ const ProductDetail = () => {
                 <div className='capitalize text-gray-500/80'>Số lượng</div>
                 {/* button tăng giảm và input thêm số lượng sản phẩm */}
                 <QuantityController
-                  max={product.quantity}
+                  max={product?.quantity}
                   value={buyCount}
                   onDecrease={handleBuyCount}
                   onIncrease={handleBuyCount}
@@ -342,7 +343,7 @@ const ProductDetail = () => {
                 />
                 {/* Sản phẩm có trong kho */}
                 <div className='ml-7 flex items-center text-gray-500/80'>
-                  {product.quantity} {t('available')}
+                  {product?.quantity} {t('available')}
                 </div>
               </div>
               {/* button thêm sản phẩm */}

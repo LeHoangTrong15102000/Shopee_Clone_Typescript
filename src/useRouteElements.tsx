@@ -11,6 +11,7 @@ import path from './constant/path'
 // import Cart from './pages/Cart'
 import CartLayout from './layouts/CartLayout'
 import UserLayout from './pages/User/layouts/UserLayout'
+import Loader from './components/Loader'
 // import Profile from './pages/User/pages/Profile'
 // import ChangePassword from './pages/User/pages/ChangePassword'
 // import HistoryPurchases from './pages/User/pages/HistoryPurchases'
@@ -51,7 +52,8 @@ const useRouteElements = () => {
           index: true,
           element: (
             <Suspense
-              fallback={<div className='flex items-center justify-center text-center text-[#ee4d2d]'>Loading...</div>}
+              // fallback={<div className='flex items-center justify-center text-center text-[#ee4d2d]'>Loading...</div>}
+              fallback={<Loader />}
             >
               <ProductList />
             </Suspense>
@@ -61,7 +63,7 @@ const useRouteElements = () => {
         {
           path: path.productDetail,
           element: (
-            <Suspense fallback={<div className='text-center'>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <ProductDetail />
             </Suspense>
           ),
@@ -85,7 +87,7 @@ const useRouteElements = () => {
           path: path.cart,
           element: (
             <CartLayout>
-              <Suspense>
+              <Suspense fallback={<Loader />}>
                 <Cart />
               </Suspense>
             </CartLayout>
