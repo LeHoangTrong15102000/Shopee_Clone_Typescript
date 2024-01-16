@@ -2,13 +2,11 @@
 
 import { afterAll, afterEach, beforeAll, expect } from 'vitest'
 import { setupServer } from 'msw/node'
-import { HttpResponse, http, rest } from 'msw'
-import config from './src/constant/config'
-import HTTP_STATUS_CODE from './src/constant/httpStatusCode.enum'
+
 import matchers from '@testing-library/jest-dom/matchers'
 import authRequests from './src/msw/auth.msw'
 import productRequests from './src/msw/product.msw'
-// import userRequests from './src/msw/user.msw'
+import userRequests from './src/msw/user.msw'
 
 // import { afterAll, afterEach, beforeAll, expect } from 'vitest'
 // import { setupServer } from 'msw/node'
@@ -31,7 +29,7 @@ import productRequests from './src/msw/product.msw'
 
 expect.extend(matchers)
 
-const server = setupServer(...authRequests, ...productRequests)
+const server = setupServer(...authRequests, ...productRequests, ...userRequests)
 
 // Start server before all tests
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
