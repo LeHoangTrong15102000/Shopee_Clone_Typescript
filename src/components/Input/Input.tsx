@@ -70,6 +70,14 @@ Props<TFieldValues, TName>) => {
 
   return (
     <div className={className}>
+      {rest.value && (
+        <label
+          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white px-1 py-1 text-[12px] italic text-gray-600 transition-all duration-300 ease-out'
+          htmlFor={name}
+        >
+          {name?.slice(0, 1).toUpperCase() + name?.slice(1)}
+        </label>
+      )}
       <input
         className={classNameInput}
         // Tự sinh ra cho chúng ta với name là email, nó sẽ tự sinh ra cho chúng ta nên không cần truyền vào

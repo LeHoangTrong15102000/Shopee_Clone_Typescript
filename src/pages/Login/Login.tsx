@@ -36,14 +36,18 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    watch,
     setError,
     getValues, // lấy ra giá trị của mỗi ô input trong react hook form
     formState: { errors }
   } = useForm<FormData>({
-    mode: 'onTouched',
+    mode: 'onChange',
     resolver: yupResolver(loginSchema)
   }) // return cho chúng ta một cái object
   // const rules = getRules(getValues)
+
+  const watchEmail = watch('email', '')
+  const watchPassword = watch('password', '')
 
   const loginAccountMutation = useMutation({
     mutationFn: (body: FormData) => authApi.loginAccount(body),
@@ -122,7 +126,7 @@ const Login = () => {
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
               {/*  Input ở đây truyền hay không truyền generic type đều được, nếu mà không truyền generic type thì xóa register đi thì nó sẽ không gợi ý nữa */}
               <Input
-                className='mt-6'
+                className='relative mt-6'
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
                   {
@@ -132,6 +136,7 @@ const Login = () => {
                 )}
                 type='email'
                 name='email'
+                value={watchEmail}
                 autoComplete='on'
                 register={register}
                 placeholder='Email'
@@ -148,6 +153,7 @@ const Login = () => {
                 )}
                 type='password'
                 name='password'
+                value={watchPassword}
                 autoComplete='on'
                 register={register}
                 placeholder='Password'

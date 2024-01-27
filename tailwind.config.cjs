@@ -17,16 +17,51 @@ module.exports = {
         orange: '#ee4d2d',
         white: '#ffffff'
       },
-      animation: {
-        loader: 'loader 0.6s infinite alternate'
-      },
+
       keyframes: {
         loader: {
           to: {
             opacity: 0.1,
             transform: 'translate3d(0, -1rem, 0)'
           }
+        },
+        'slide-top': {
+          '0%': {
+            '-webkit-transform': 'translateY(20px)s',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            ' -webkit-transform': 'translateY(0px)',
+            transform: 'translateY(0px)'
+          }
+        },
+        'slide-top-sm': {
+          '0%': {
+            '-webkit-transform': 'translateY(6px)s',
+            transform: 'translateY(6px)'
+          },
+          '100%': {
+            ' -webkit-transform': 'translateY(0px)',
+            transform: 'translateY(0px)'
+          }
+        },
+
+        'slide-right': {
+          '0%': {
+            '-webkit-transform': 'translateX(-1000px)',
+            transform: 'translateX(-1000px)'
+          },
+          '100%': {
+            '-webkit-transform': 'translateX(0px)',
+            transform: 'translateX(0px)'
+          }
         }
+      },
+      animation: {
+        loader: 'loader 0.6s infinite alternate',
+        'slide-top': 'slide-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+        'slide-top-sm': 'slide-top-sm 0.1s linear both',
+        'slide-right': 'slide-right 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both'
       }
     }
   },

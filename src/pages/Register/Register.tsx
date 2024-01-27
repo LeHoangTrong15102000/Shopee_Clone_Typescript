@@ -35,6 +35,10 @@ const Register = () => {
   }) // return cho chúng ta một cái object, truyền genericType chung cho useForm
   // Tạo một cái rules handle việc validate form
 
+  const watchEmail = watch('email', '')
+  const watchPassword = watch('password', '')
+  const watchConfirmPassword = watch('confirm_password', '')
+
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body),
     onSuccess: (_) => {
@@ -107,7 +111,7 @@ const Register = () => {
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng ký</div>
               <Input
-                className='mt-6'
+                className='relative mt-6'
                 classNameInput={classNames(
                   'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500 bg-white',
                   {
@@ -117,6 +121,7 @@ const Register = () => {
                 )}
                 type='email'
                 name='email'
+                value={watchEmail}
                 autoComplete='on'
                 register={register}
                 placeholder='Email'
@@ -133,6 +138,7 @@ const Register = () => {
                 )}
                 type='password'
                 name='password'
+                value={watchPassword}
                 autoComplete='on'
                 register={register}
                 placeholder='Password'
@@ -149,6 +155,7 @@ const Register = () => {
                 )}
                 type='password'
                 name='confirm_password'
+                value={watchConfirmPassword}
                 autoComplete='on'
                 register={register}
                 placeholder='Confirm Password'
