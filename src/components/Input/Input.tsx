@@ -72,7 +72,7 @@ Props<TFieldValues, TName>) => {
     <div className={className}>
       {rest.value && (
         <label
-          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white px-1 py-1 text-[12px] italic text-gray-600 transition-all duration-300 ease-out'
+          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white px-1 py-1 text-[12px] italic text-gray-700 transition-all duration-300 ease-out'
           htmlFor={name}
         >
           {name?.slice(0, 1).toUpperCase() + name?.slice(1)}

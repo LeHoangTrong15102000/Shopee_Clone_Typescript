@@ -41,7 +41,7 @@ const Login = () => {
     getValues, // lấy ra giá trị của mỗi ô input trong react hook form
     formState: { errors }
   } = useForm<FormData>({
-    mode: 'onChange',
+    mode: 'onTouched',
     resolver: yupResolver(loginSchema)
   }) // return cho chúng ta một cái object
   // const rules = getRules(getValues)
