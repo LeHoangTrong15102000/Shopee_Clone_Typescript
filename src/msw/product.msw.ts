@@ -272,12 +272,22 @@ const productDetailRes = {
 
 export const productsRequest = http.get(`${config.baseUrl}products`, () => {
   // return HttpResponse(ctx.status(HTTP_STATUS_CODE.Ok), ctx.json(productsRes))
-  return HttpResponse.json(productsRes, { status: HTTP_STATUS_CODE.Ok })
+  return HttpResponse.json(productsRes, {
+    status: HTTP_STATUS_CODE.Ok,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
 })
 
 export const productDetailRequest = http.get(`${config.baseUrl}products/:id`, () => {
   // return HttpResponse(ctx.status(HTTP_STATUS_CODE.Ok), ctx.json(productDetailRes))
-  return HttpResponse.json(productDetailRes, { status: HTTP_STATUS_CODE.Ok })
+  return HttpResponse.json(productDetailRes, {
+    status: HTTP_STATUS_CODE.Ok,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
 })
 
 const productRequests = [productsRequest, productDetailRequest]

@@ -15,9 +15,9 @@ describe('http axios', () => {
   })
 
   // Hàm xử lý lỗi 401 Auth Request
-  function getAsyncAuthRequest() {
-    return Promise.reject(new Error('Unauthorized User'))
-  }
+  // function getAsyncAuthRequest() {
+  //   return Promise.reject(new Error('Unauthorized User'))
+  // }
 
   it('Gọi API', async () => {
     // Không nên đụng đến thư mục Apis

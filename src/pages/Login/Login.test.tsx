@@ -31,7 +31,7 @@ describe('Login', () => {
     emailInput = screen.getByPlaceholderText(/email/i) as HTMLInputElement
     passwordInput = screen.getByPlaceholderText(/password/i) as HTMLInputElement
     submitButton = document.querySelector('form button[type="submit"]') as HTMLButtonElement
-    // submitButton = screen.getByTestId('button-element') as HTMLButtonElement
+    submitButton = screen.getByTestId('button-element') as HTMLButtonElement
     await logScreen()
   })
 
@@ -93,6 +93,8 @@ describe('Login', () => {
     })
     // Những trường hợp chứng minh rằng tìm không ra text hay là element
     // Thì nên dùng query hơn là find hay get
+    await logScreen()
+
     await waitFor(() => {
       expect(screen.queryByText('Email không đúng định dạng')).toBeFalsy()
       expect(screen.queryByText('Độ dài từ 6 - 160 ký tự')).toBeFalsy()
@@ -102,8 +104,8 @@ describe('Login', () => {
     await logScreen()
     // console.log('Console fireEvent submit', fireEvent.submit(submitButton))
 
-    // await waitFor(() => {
-    //   expect(document.querySelector('title')?.textContent).toBe('Trang chủ | Shopee Clone')
-    // })
+    await waitFor(() => {
+      expect(document.querySelector('title')?.textContent).toBe('Trang chủ | Shopee Clone')
+    })
   })
 })

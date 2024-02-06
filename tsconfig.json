@@ -20,8 +20,12 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/app/*": ["./app/*"],
+      "@/test/*": ["./test/*"]
     }
+
     // "types": ["node", "jest", "@testing-library/jest-dom/vitest"]
   },
   "include": ["src", "vitest.setup.ts"],

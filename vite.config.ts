@@ -6,15 +6,16 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [react(), visualizer()] as any,
   define: {
     'process.env': process.env
   },
   test: {
-    globals: true,
+    // globals: true,
     environment: 'jsdom', // giúp chúng ta test những API liên quan đến trình duyệt
-    setupFiles: path.resolve(__dirname, './vitest.setup.js'),
+    setupFiles: path.resolve(__dirname, './vitest.setup.js')
     // setupFiles: ['./vitest.setup.js'],
-    dangerouslyIgnoreUnhandledErrors: true
+    // dangerouslyIgnoreUnhandledErrors: true
     // coverageReporters: ['html', 'json', ['lcov', { projectRoot: __dirname }], 'text'],
     // reporters: 'verbose',
     // root: './tests/',
@@ -40,7 +41,6 @@ export default defineConfig({
     // root: path.join(__dirname, '../..'),
     // typecheck: {}
   },
-  plugins: [react(), visualizer()] as any,
   server: {
     port: 4000
   },
