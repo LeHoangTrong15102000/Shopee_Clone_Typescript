@@ -12,7 +12,9 @@
     "prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
     "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@floating-ui/react": "^0.20.1",
@@ -40,6 +42,15 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "1.4.0",
+    "@storybook/addon-essentials": "^8.1.2",
+    "@storybook/addon-interactions": "^8.1.2",
+    "@storybook/addon-links": "^8.1.2",
+    "@storybook/addon-onboarding": "^8.1.2",
+    "@storybook/blocks": "^8.1.2",
+    "@storybook/react": "^8.1.2",
+    "@storybook/react-vite": "^8.1.2",
+    "@storybook/test": "^8.1.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
@@ -63,16 +74,19 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.8.0",
     "jsdom": "^23.0.1",
     "msw": "^2.0.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.4",
     "rollup-plugin-visualizer": "5.9.0",
+    "storybook": "^8.1.2",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
     "vite": "^4.5.0",
     "vitest": "^1.1.1",
     "yarn": "^1.22.19"
-  }
+  },
+  "packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2"
 }
