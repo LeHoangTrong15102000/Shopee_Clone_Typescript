@@ -1,6 +1,6 @@
 import type { RegisterOptions, UseFormGetValues } from 'react-hook-form' // * tips Chỉ import được những cái type(interface) thôi, không thể import được hằng số, biến hay function
 import * as yup from 'yup'
-import { AnyObject } from 'yup/lib/types'
+import { AnyObject } from 'yup'
 
 type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions } // khai báo thêm dấu ?: có hay không có cũng được
 

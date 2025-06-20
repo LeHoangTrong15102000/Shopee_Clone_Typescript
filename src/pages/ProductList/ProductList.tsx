@@ -43,7 +43,7 @@ const ProductList = () => {
     //     })
     //   }
     // },
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
     staleTime: 3 * 60 * 1000 // 3 phut
   })
 

@@ -53,7 +53,7 @@ const Input = <
 Props<TFieldValues, TName>) => {
   // state để lưu trữ việc hiển thị con mắt
   const [openEye, setOpenEye] = useState(false)
-  const registerResult = register && name ? register(name, rules) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
+  const registerResult = register && name ? register(name, rules as any) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
 
   // func toggle eye
   const handleToggleEye = () => {

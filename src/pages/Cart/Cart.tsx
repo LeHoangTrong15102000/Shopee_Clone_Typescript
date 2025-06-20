@@ -9,7 +9,7 @@ import { purchasesStatus } from 'src/constant/purchase'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchases.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
-import produce from 'immer'
+import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from 'src/assets/images/img-product-incart.png'
@@ -177,7 +177,7 @@ const Cart = () => {
   // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart
   const handleQuantity = (purchaseIndex: number, value: number, enabled: boolean) => {
     // Khi mà enabled = true thì mới cho thực hiện
-    updatePurchaseMutation.isLoading // ban đầu phải isLoading trước
+    updatePurchaseMutation.isPending // ban đầu phải isPending trước
     if (enabled) {
       const purchase = extendedPurchases[purchaseIndex] // lấy ra cái purchase
       setExtendedPurchases(
@@ -270,7 +270,7 @@ const Cart = () => {
                     {extendedPurchases?.map((purchase, index) => (
                       <div
                         key={purchase._id}
-                        className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] bg-white py-5 px-4 text-sm text-gray-500 first:mt-0'
+                        className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] bg-white py-5 px-9 text-sm text-gray-500 first:mt-0'
                       >
                         <div className='col-span-6'>
                           <div className='flex items-center'>
@@ -379,7 +379,7 @@ const Cart = () => {
               </div>
             </div>
             {/* Thanh hiện giá tiền, tổng giá tiền và nút Mua Ngay */}
-            <div className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] bg-white p-5 shadow sm:flex-row sm:items-center'>
+            <div className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] bg-white px-9 py-5 shadow sm:flex-row sm:items-center'>
               <div className='flex items-center'>
                 <div className='flex flex-shrink-0 items-center justify-center pr-3'>
                   <input
@@ -428,7 +428,7 @@ const Cart = () => {
                 {/* div chứa button 'Mua Ngay' */}
                 <Button
                   onClick={handleBuyPurchases}
-                  disabled={buyPurchasesMutation.isLoading}
+                  disabled={buyPurchasesMutation.isPending}
                   type='submit'
                   className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
                 >

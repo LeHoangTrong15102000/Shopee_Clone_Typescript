@@ -2,8 +2,7 @@ import { screen, waitFor, render, type waitForOptions } from '@testing-library/r
 import { BrowserRouter } from 'react-router-dom'
 import App from 'src/App'
 import userEvent from '@testing-library/user-event'
-import { QueryClient } from '@tanstack/query-core'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider, getInitialAppContext } from 'src/contexts/app.context'
 import { expect } from 'vitest'
 
@@ -42,13 +41,6 @@ const createWrapper = () => {
       mutations: {
         retry: false
       }
-    },
-    // Để khi có lỗi nó không show ra trên terminal
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      // no more errors on the console - không có còn lỗi trên `terminal`
-      error: () => null
     }
   })
   const Provider = ({ children }: { children: React.ReactNode }) => (

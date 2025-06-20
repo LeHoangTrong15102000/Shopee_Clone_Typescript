@@ -46,7 +46,7 @@ const ProductDetail = () => {
   const { data: productDetailData, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string),
-    keepPreviousData: true
+    placeholderData: (previousData) => previousData
   })
   // console.log(productDetailData?.status)
   const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data?.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra

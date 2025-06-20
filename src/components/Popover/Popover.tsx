@@ -25,7 +25,7 @@ const Popover = ({
   const [isOpen, setIsOpen] = useState(initialOpen || false)
   const id = useId()
   const arrowRef = useRef<HTMLElement>(null)
-  const { x, y, reference, floating, strategy, middlewareData } = useFloating({
+  const { x, y, refs, strategy, middlewareData } = useFloating({
     middleware: [
       offset(6),
       shift(),
@@ -46,7 +46,7 @@ const Popover = ({
   // Dùng kĩ thuật render Props, truyền vào cái props 1 dạng function component
 
   return (
-    <Element className={className} ref={reference} onMouseEnter={showPopover} onMouseLeave={hidePopover}>
+    <Element className={className} ref={refs.setReference} onMouseEnter={showPopover} onMouseLeave={hidePopover}>
       {children}
       {/* <svg
         xmlns='http://www.w3.org/2000/svg'
@@ -77,7 +77,7 @@ const Popover = ({
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              ref={floating}
+              ref={refs.setFloating}
               style={{
                 position: strategy,
                 top: y ?? 0,
