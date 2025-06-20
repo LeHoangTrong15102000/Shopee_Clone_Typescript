@@ -89,7 +89,7 @@ class Http {
 
         // Nếu  là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponseApi<{ name: string; message: string }>>(error)) {
-          const config = error.response?.config ?? {}
+          const config = error.response?.config ?? ({} as AxiosRequestConfig)
           // const config = error.response?.config ?? ({ headers: {} } as AxiosRequestConfig)
           const { url } = config
           // Trường hợp token hết hạn và request đó không phải của  request refresh token
@@ -114,7 +114,7 @@ class Http {
             return this.refreshTokenRequest.then((access_token) => {
               // Nghĩa là chúng ta tiếp tục gọi lại request cũ vừa bị lỗi
               // return lại config để lấy cái access_token mới gắn vào
-              return this.instance({ ...config, headers: { ...config.headers, authorization: access_token } }) // Ở phiên bản axios mới thì chúng ta sẽ làm như này
+              return this.instance({ ...config, headers: { ...(config.headers || {}), authorization: access_token } }) // Ở phiên bản axios mới thì chúng ta sẽ làm như này
             })
             // .catch((refreshTokenError) => {
             //   throw refreshTokenError

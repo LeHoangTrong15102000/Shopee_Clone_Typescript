@@ -44,7 +44,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
       price_max: '',
       price_min: ''
     },
-    resolver: yupResolver(inputNumberSchema),
+    resolver: yupResolver(inputNumberSchema) as any,
     shouldFocusError: false
   })
   const navigate = useNavigate()

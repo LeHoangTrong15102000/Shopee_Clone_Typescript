@@ -31,7 +31,7 @@ const Register = () => {
     formState: { errors }
   } = useForm<FormData>({
     mode: 'onTouched',
-    resolver: yupResolver(registerSchema)
+    resolver: yupResolver(registerSchema) as any
   }) // return cho chúng ta một cái object, truyền genericType chung cho useForm
   // Tạo một cái rules handle việc validate form
 
@@ -53,7 +53,7 @@ const Register = () => {
   const onSubmit = handleSubmit((data) => {
     // confirm_password chỉ thực hiện validate ở FE mà thôi còn lên trên server thì không cần
     const body = omit(data, ['confirm_password'])
-    registerAccountMutation.mutate(body, {
+    registerAccountMutation.mutate(body as any, {
       onSuccess: (data) => {
         // console.log(data)
         setIsAuthenticated(true)

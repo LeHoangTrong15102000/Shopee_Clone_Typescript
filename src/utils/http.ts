@@ -102,7 +102,7 @@ export class Http {
 
         // Nếu là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponseApi<{ name: string; message: string }>>(error)) {
-          const config = error.response?.config ?? {}
+          const config = error.response?.config ?? ({} as AxiosRequestConfig)
           // const config = error.response?.config || ({ headers: {} } as AxiosRequestConfig) -> dùng như này hoặc là như trên đều được
           const { url } = config
 
@@ -118,7 +118,7 @@ export class Http {
                 })
 
             return this.refreshTokenRequest?.then((access_token) => {
-              return this.instance({ ...config, headers: { ...config.headers, authorization: access_token } })
+              return this.instance({ ...config, headers: { ...(config.headers || {}), authorization: access_token } })
             })
           }
 
