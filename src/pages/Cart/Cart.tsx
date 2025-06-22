@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Fragment, useContext, useEffect, useMemo } from 'react'
+import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Tooltip } from '@heroui/react'
+import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
+import { motion } from 'framer-motion'
 import purchaseApi from 'src/apis/purchases.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
@@ -12,7 +15,7 @@ import { formatCurrency, generateNameId } from 'src/utils/utils'
 import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
-import noproduct from 'src/assets/images/img-product-incart.png'
+import noproduct from '../../assets/images/img-product-incart.png'
 
 interface ExtendedPurchase extends Purchase {
   disabled: boolean
@@ -241,14 +244,9 @@ const Cart = () => {
                   {/* Phần sản phẩm và hình ảnh */}
                   <div className='col-span-6'>
                     <div className='flex items-center'>
-                      {/* input checkbox  */}
+                      {/* HeroUI Checkbox với phiên bản ổn định 2.6.14 */}
                       <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                        <input
-                          type='checkbox'
-                          className='h-5 w-5 accent-[#ee4d2d]'
-                          checked={isAllChecked}
-                          onChange={handleCheckedAll}
-                        />
+                        <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
                       </div>
                       {/* Mục sản phẩm */}
                       <div className='flex flex-grow text-black'>Sản phẩm</div>
@@ -268,19 +266,23 @@ const Cart = () => {
                 {extendedPurchases.length > 0 && (
                   <>
                     {extendedPurchases?.map((purchase, index) => (
-                      <div
+                      <motion.div
                         key={purchase._id}
-                        className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] bg-white py-5 px-9 text-sm text-gray-500 first:mt-0'
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                        className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] bg-white py-5 px-9 text-sm text-gray-500 first:mt-0 hover:shadow-md transition-shadow'
                       >
                         <div className='col-span-6'>
                           <div className='flex items-center'>
-                            {/* input checkbox  */}
+                            {/* HeroUI Checkbox với phiên bản ổn định 2.6.14 */}
                             <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                              <input
-                                type='checkbox'
-                                className='h-5 w-5 accent-[#ee4d2d]'
+                              <ShopeeCheckbox
                                 checked={purchase.isChecked}
-                                onChange={handleChecked(index)}
+                                onChange={(checked) => {
+                                  handleChecked(index)({ target: { checked } } as any)
+                                }}
+                                size='md'
                               />
                             </div>
                             {/* Avatar sản phẩm và title */}
@@ -296,7 +298,7 @@ const Cart = () => {
                                 >
                                   <img
                                     src={purchase.product.image}
-                                    className='overflow-hidden'
+                                    className='h-full w-full object-cover rounded'
                                     alt={purchase.product.name}
                                   />
                                 </Link>
@@ -307,7 +309,7 @@ const Cart = () => {
                                       name: purchase.product.name,
                                       id: purchase.product._id
                                     })}`}
-                                    className='line-clamp-2'
+                                    className='line-clamp-2 hover:text-[#ee4d2d] transition-colors'
                                   >
                                     {purchase.product.name}
                                   </Link>
@@ -356,7 +358,7 @@ const Cart = () => {
                             </div>
                             {/* Tổng tiền */}
                             <div className='col-span-1'>
-                              <span className='flex items-center justify-center text-[15px] text-[#ee4d2d]'>
+                              <span className='flex items-center justify-center text-[15px] text-[#ee4d2d] font-medium'>
                                 ₫{formatCurrency(purchase.price * purchase.buy_count)}
                               </span>
                             </div>
@@ -364,35 +366,41 @@ const Cart = () => {
                             <div className='col-span-1 flex items-center justify-center'>
                               <button
                                 onClick={handleDelete(index)}
-                                className='bg-none text-black/90 transition-colors hover:text-[#ee4d2d]'
+                                className='bg-none text-black/90 transition-colors hover:text-[#ee4d2d] hover:font-medium'
                               >
                                 Xóa
                               </button>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                       // div thể hiện các mục giảm giá cho sản phẩm và tiền giao hàng
                     ))}
                   </>
                 )}
               </div>
             </div>
-            {/* Thanh hiện giá tiền, tổng giá tiền và nút Mua Ngay */}
-            <div className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] bg-white px-9 py-5 shadow sm:flex-row sm:items-center'>
+            {/* Thanh hiện giá tiền, tổng giá tiền và nút Mua Ngay với animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] bg-white px-9 py-5 shadow sm:flex-row sm:items-center'
+            >
               <div className='flex items-center'>
                 <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                  <input
-                    type='checkbox'
-                    className='h-5 w-5 accent-[#ee4d2d]'
-                    checked={isAllChecked}
-                    onChange={handleCheckedAll}
-                  />
+                  <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
                 </div>
-                <button onClick={handleCheckedAll} className='mx-3 border-none bg-none capitalize'>
+                <button
+                  onClick={handleCheckedAll}
+                  className='mx-3 border-none bg-none capitalize hover:text-[#ee4d2d] transition-colors'
+                >
                   Chọn tất cả ({extendedPurchases.length})
                 </button>
-                <button onClick={handleDeleteManyPurchases} className='mx-3 border-none bg-none capitalize'>
+                <button
+                  onClick={handleDeleteManyPurchases}
+                  className='mx-3 border-none bg-none capitalize hover:text-red-500 transition-colors'
+                >
                   Xóa
                 </button>
               </div>
@@ -405,19 +413,91 @@ const Cart = () => {
                     <div>
                       Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
                     </div>
-                    <div className='ml-2 text-2xl text-[#ee4d2d]'>₫{formatCurrency(totalCheckedPurchasePrice)}</div>
-                    <div className='ml-2 text-black/60'>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='h-5 w-5'
+                    <motion.div
+                      className='ml-2 text-2xl text-[#ee4d2d] font-medium'
+                      key={totalCheckedPurchasePrice}
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    >
+                      ₫{formatCurrency(totalCheckedPurchasePrice)}
+                    </motion.div>
+
+                    {/* Chỉ hiển thị mũi tên khi có sản phẩm được chọn */}
+                    {checkedPurchaseCount > 0 && (
+                      <Tooltip
+                        content={
+                          <div className='bg-white p-4 w-96 border border-gray-200 rounded-lg shadow-lg'>
+                            <div className='text-sm font-medium text-gray-700 mb-3 border-b border-gray-200 pb-2'>
+                              Chi tiết khuyến mãi
+                            </div>
+                            <div className='space-y-2'>
+                              <div className='flex justify-between text-sm'>
+                                <span className='text-gray-600'>Tổng tiền hàng</span>
+                                <span className='text-gray-900'>
+                                  ₫{formatCurrency(totalCheckedPurchasePrice + totalCheckedPurchaseSavingPrice)}
+                                </span>
+                              </div>
+                              <div className='flex justify-between text-sm'>
+                                <span className='text-gray-600'>Voucher giảm giá</span>
+                                <span className='text-red-500'>
+                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
+                                </span>
+                              </div>
+                              <div className='flex justify-between text-sm'>
+                                <span className='text-gray-600'>Giảm giá sản phẩm</span>
+                                <span className='text-red-500'>
+                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
+                                </span>
+                              </div>
+                              <div className='flex justify-between text-sm'>
+                                <span className='text-gray-600'>Tiết kiệm</span>
+                                <span className='text-red-500'>
+                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
+                                </span>
+                              </div>
+                              <hr className='border-gray-200 my-2' />
+                              <div className='flex justify-between text-sm'>
+                                <span className='text-gray-600'>Tổng số tiền</span>
+                                <span className='text-gray-900 font-medium'>
+                                  ₫{formatCurrency(totalCheckedPurchasePrice)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                        placement='top-end'
+                        showArrow={false}
+                        offset={5}
+                        delay={0}
+                        closeDelay={100}
+                        classNames={{
+                          base: 'p-0 bg-transparent',
+                          content: 'p-0 bg-transparent'
+                        }}
                       >
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M4.5 15.75l7.5-7.5 7.5 7.5' />
-                      </svg>
-                    </div>
+                        <motion.button
+                          className='ml-2 text-gray-600 hover:text-[#ee4d2d] transition-colors group'
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{ duration: 0.1 }}
+                        >
+                          <motion.svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='h-4 w-4 transition-transform duration-75'
+                            initial={{ rotate: 180 }}
+                            whileHover={{ rotate: 0 }}
+                            transition={{ duration: 0.15, ease: 'easeOut' }}
+                          >
+                            <path strokeLinecap='round' strokeLinejoin='round' d='M4.5 15.75l7.5-7.5 7.5 7.5' />
+                          </motion.svg>
+                        </motion.button>
+                      </Tooltip>
+                    )}
                   </div>
                   {/* tiền tiết kiệm */}
                   <div className='flex items-center text-sm sm:justify-end'>
@@ -426,29 +506,51 @@ const Cart = () => {
                   </div>
                 </div>
                 {/* div chứa button 'Mua Ngay' */}
-                <Button
-                  onClick={handleBuyPurchases}
-                  disabled={buyPurchasesMutation.isPending}
-                  type='submit'
-                  className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
-                >
-                  mua hàng
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.1 }}>
+                  <Button
+                    onClick={handleBuyPurchases}
+                    disabled={buyPurchasesMutation.isPending || checkedPurchaseCount === 0}
+                    type='submit'
+                    className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0 transition-all'
+                  >
+                    {buyPurchasesMutation.isPending ? 'Đang xử lý...' : 'mua hàng'}
+                  </Button>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </Fragment>
         ) : (
-          <div className='flex flex-col items-center justify-center'>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className='flex flex-col items-center justify-center py-20'
+          >
             <div className='text-center'>
-              <img src={noproduct} alt='noproduct' className='h-[120px] w-[120px]' />
+              <motion.img
+                src={noproduct}
+                alt='noproduct'
+                className='h-[120px] w-[120px] mx-auto opacity-60'
+                animate={{
+                  y: [0, -10, 0],
+                  rotate: [0, -5, 5, 0]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+              />
             </div>
             <span className='mt-5 text-[0.875rem] font-bold text-black/40'>Giỏ hàng của bạn còn trống</span>
             <Link to={path.home} className='mt-5 text-left'>
-              <Button className='flex h-10 w-[168px] items-center justify-center rounded bg-red-500 text-center text-sm uppercase text-white transition-all hover:bg-red-600 sm:mt-0'>
-                Mua ngay
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.1 }}>
+                <Button className='flex h-10 w-[168px] items-center justify-center rounded bg-red-500 text-center text-sm uppercase text-white transition-all hover:bg-red-600 sm:mt-0'>
+                  Mua ngay
+                </Button>
+              </motion.div>
             </Link>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

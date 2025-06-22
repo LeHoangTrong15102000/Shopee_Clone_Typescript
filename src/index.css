@@ -26,3 +26,6 @@ body {
 .circle {
   @apply my-12 mx-1 h-4 w-4 rounded-full bg-[#ee4d2d/500];
 }
+
+/* ===== SHOPEE CUSTOM CHECKBOX ===== */
+/* Animation được handle bởi Framer Motion trong component */
