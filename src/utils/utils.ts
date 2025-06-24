@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import axios, { AxiosError } from 'axios'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import userImage from 'src/assets/images/user.svg'
@@ -71,3 +70,26 @@ export const getIdFromNameId = (nameId: string) => {
 
 // func lấy ra avatar cho chúng ta
 export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage)
+
+// func format thời gian thành dạng "vừa xong", "5 phút trước", etc.
+export const formatTimeAgo = (dateString: string) => {
+  const now = new Date()
+  const date = new Date(dateString)
+  const diffInMs = now.getTime() - date.getTime()
+  const diffInSeconds = Math.floor(diffInMs / 1000)
+  const diffInMinutes = Math.floor(diffInSeconds / 60)
+  const diffInHours = Math.floor(diffInMinutes / 60)
+  const diffInDays = Math.floor(diffInHours / 24)
+
+  if (diffInSeconds < 60) {
+    return 'Vừa xong'
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes} phút trước`
+  } else if (diffInHours < 24) {
+    return `${diffInHours} giờ trước`
+  } else if (diffInDays < 7) {
+    return `${diffInDays} ngày trước`
+  } else {
+    return date.toLocaleDateString('vi-VN')
+  }
+}

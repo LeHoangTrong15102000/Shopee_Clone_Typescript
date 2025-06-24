@@ -4,7 +4,7 @@ import path from 'src/constant/path'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from 'src/constant/purchase'
@@ -12,12 +12,22 @@ import { purchasesStatus } from 'src/constant/purchase'
 import { getAvatarUrl } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
 import { locales } from 'src/i18n/i18n'
+import NotificationList from '../NotificationList'
+import notificationApi from 'src/apis/notification.api'
 
 const NavHeader = () => {
   const { i18n } = useTranslation() // import hook useTranslation
   const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { setIsAuthenticated, isAuthenticated, profile, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
+
+  // Query để lấy thông báo (chỉ khi đã đăng nhập)
+  const { data: notificationsData } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: notificationApi.getNotifications,
+    enabled: isAuthenticated,
+    staleTime: 5 * 60 * 1000 // 5 phút
+  })
 
   // useMutation để logout
   const logoutMutation = useMutation({
@@ -43,6 +53,9 @@ const NavHeader = () => {
     // khi mà change thì sẽ cho reload
     // lng chính là cái key 'vi' hoặc là 'vi'
   }
+
+  // Lấy số thông báo chưa đọc
+  const unreadCount = notificationsData?.data.data.unreadCount || 0
   return (
     <div className='flex items-center justify-between'>
       {/* Tải ứng dụng, Social kết nối, kênh người bán */}
@@ -239,59 +252,75 @@ const NavHeader = () => {
         {/* Phiên Âm tiếng Việt, Hỗ trợ, Thông báo, Avatar */}
         <Popover
           as='span'
-          className={classNames('flex cursor-pointer items-center py-1 hover:text-white/70')}
+          className={classNames('flex cursor-pointer items-center py-1 hover:text-white/70 relative')}
           renderPopover={
-            <div className='relative h-[21.875rem] w-[400px] cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
-              {/* flex cha, không nên để items-center ở thằng cha vì nó sẽ làm căng giữa ở thằng cha */}
-              <div
-                className={classNames(
-                  'flex h-full flex-col before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
-                )}
-              >
-                {/* Thông báo sản phẩm, flex grow để cho nó bự tối đa */}
-                <div className='flex flex-grow flex-col items-center justify-center'>
-                  <div className='flex items-center'>
-                    <img
-                      className='h-[6.25rem] w-[6.25rem] object-cover'
-                      src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/99e561e3944805a023e87a81d4869600.png'
-                      alt='anh'
-                    />
+            isAuthenticated ? (
+              <div className='before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
+                <NotificationList />
+              </div>
+            ) : (
+              <div className='relative h-[21.875rem] w-[400px] cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+                {/* flex cha, không nên để items-center ở thằng cha vì nó sẽ làm căng giữa ở thằng cha */}
+                <div
+                  className={classNames(
+                    'flex h-full flex-col before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
+                  )}
+                >
+                  {/* Thông báo sản phẩm, flex grow để cho nó bự tối đa */}
+                  <div className='flex flex-grow flex-col items-center justify-center'>
+                    <div className='flex items-center'>
+                      <img
+                        className='h-[6.25rem] w-[6.25rem] object-cover'
+                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/99e561e3944805a023e87a81d4869600.png'
+                        alt='anh'
+                      />
+                    </div>
+                    <span className='mt-5'>Đăng nhập để xem Thông báo</span>
                   </div>
-                  <span className='mt-5'>Đăng nhập để xem Thông báo</span>
-                </div>
-                {/* button đăng ký & đăng nhập */}
-                <div className='flex w-full items-center border-0'>
-                  <Link
-                    to={path.register}
-                    className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d]'
-                  >
-                    Đăng ký
-                  </Link>
-                  <Link
-                    to={path.login}
-                    className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d] '
-                  >
-                    Đăng nhập
-                  </Link>
+                  {/* button đăng ký & đăng nhập */}
+                  <div className='flex w-full items-center border-0'>
+                    <Link
+                      to={path.register}
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d]'
+                    >
+                      Đăng ký
+                    </Link>
+                    <Link
+                      to={path.login}
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d] '
+                    >
+                      Đăng nhập
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           }
         >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            stroke='currentColor'
-            className='h-[22px] w-[22px]'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
-            />
-          </svg>
+          <div className='relative'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className={`h-[22px] w-[22px] transition-transform duration-200 ${
+                isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
+              }`}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+              />
+            </svg>
+            {/* Badge hiển thị số thông báo chưa đọc */}
+            {isAuthenticated && unreadCount > 0 && (
+              <span className='absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-xs text-[#ee4d2d] font-medium border border-[#ee4d2d]'>
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </div>
 
           <span className='mx-1 text-sm capitalize'>Thông báo</span>
         </Popover>

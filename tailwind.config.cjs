@@ -55,13 +55,36 @@ module.exports = {
             '-webkit-transform': 'translateX(0px)',
             transform: 'translateX(0px)'
           }
+        },
+        'bell-shake': {
+          '0%, 50%, 100%': {
+            transform: 'rotate(0deg)'
+          },
+          '10%, 30%': {
+            transform: 'rotate(-10deg)'
+          },
+          '20%, 40%': {
+            transform: 'rotate(10deg)'
+          }
+        },
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(-10px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
         }
       },
       animation: {
         loader: 'loader 0.6s infinite alternate',
         'slide-top': 'slide-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
         'slide-top-sm': 'slide-top-sm 0.1s linear both',
-        'slide-right': 'slide-right 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both'
+        'slide-right': 'slide-right 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+        'bell-shake': 'bell-shake 1s ease-in-out infinite',
+        'fade-in': 'fade-in 0.3s ease-out forwards'
       }
     }
   },

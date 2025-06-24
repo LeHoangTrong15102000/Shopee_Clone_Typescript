@@ -3,7 +3,7 @@
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosInstance } from 'axios'
 import { toast } from 'react-toastify'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
-import { isAxiosExpiredTokenError, isAxiosUnauthorizedError, isAxiosUnprocessableEntityError } from './utils'
+import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { AuthResponse, RefreshTokenResponse } from 'src/types/auth.type'
 import {
   clearLS,
@@ -25,8 +25,8 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 // console.log('Process Env', process.env)
 
 const URL = `${(process.env.BUILD_MODE as string) === 'dev'}`
-  ? 'http://localhost:4000/login'
-  : 'https://shopee-clone-ts.netlify.app/login'
+  ? 'http://localhost:3000/login'
+  : 'https://shop.lehoangtrong.online/login'
 
 export class Http {
   instance: AxiosInstance
