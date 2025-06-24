@@ -47,7 +47,7 @@ const ProductList = () => {
     staleTime: 3 * 60 * 1000 // 3 phut
   })
 
-  // console.log(productsData?.data.data) //  trả về cái mảng các phần tử trong đây
+  // console.log('ProductList - productsData:', productsData?.data.data) //  trả về cái mảng các phần tử trong đây
 
   // Gọi Api cho Category
   const { data: categoriesData } = useQuery({
