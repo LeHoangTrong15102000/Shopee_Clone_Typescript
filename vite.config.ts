@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+/// <reference types="vitest" />
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -19,5 +20,15 @@ export default defineConfig({
     alias: {
       src: path.resolve(__dirname, './src')
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.js'],
+    css: true,
+    pool: 'forks'
+  },
+  ssr: {
+    noExternal: ['@tanstack/react-query']
   }
 })

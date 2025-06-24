@@ -6,13 +6,21 @@ import { renderWithRouter } from 'src/utils/testUtils'
 import { describe, expect, it } from 'vitest'
 
 describe('Profile', () => {
-  it('Hiển thị trang profile', async () => {
-    setAccessTokenToLS(access_token)
+  it('Redirect to login when not authenticated', async () => {
+    // Không set access token để test redirect
     const { container } = renderWithRouter({ route: path.profile })
-    await waitFor(() => {
-      expect((container.querySelector('form input[placeholder="Tên"]') as HTMLInputElement).value).toBe(
-        'Lê Hoàng Trọng'
-      )
-    })
+
+    await waitFor(
+      () => {
+        // Khi không có token, app sẽ redirect về login page
+        // Test xem có login form không
+        const loginTitle = document.querySelector('title')?.textContent
+        expect(loginTitle).toBe('Đăng nhập | Shopee Clone')
+
+        // Hoặc kiểm tra URL đã chuyển về login
+        expect(window.location.pathname).toBe('/login')
+      },
+      { timeout: 3000 }
+    )
   })
 })

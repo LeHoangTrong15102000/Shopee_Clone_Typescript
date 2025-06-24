@@ -59,6 +59,6 @@ export const refreshToken = http.post(`${config.baseUrl}refresh-access-token`, (
   return HttpResponse.json(refreshTokenRes, { status: HTTP_STATUS_CODE.Ok })
 })
 
-const authRequests = [loginRequest, refreshTokenRes]
+const authRequests = [loginRequest, refreshToken]
 
 export default authRequests
