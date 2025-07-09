@@ -1,135 +1,1025 @@
-# React Perfomance
+# 🚀 **SHOPEE CLONE - CHƯƠNG 23: PERFORMANCE & OPTIMIZATION**
 
-> > > > > > > > > > > > > > > > > > > > > > Chương 23 Clone Shopee trang nâng cao - Performance
-> > > > > > > > > > > > > > > > > > > > > > `
-> > > > > > > > > > > > > > > > > > > > > > 219 Thêm 404 Page Not Found
+---
 
-> 220 Thêm ErrorBoundary Component
+## 📋 **MỤC LỤC**
 
-- - Thêm ErrorBoudary cho trang web của chúng ta
-- - Trong trường hợp nó bị lỗi trắng xóa thì chúng ta sẽ sử dụng ErrorBoundary để tranh trường hợp cái App của chúng ta nó bị crash
-- -> Ít ra lỗi t hì của phải show lỗi cho người dùng biết, Trong trongwf hợp người dùng vào cái trang nó có tồn tại mà chúng ta xử lý nó bị sai làm cho cái trang chúng ta nó bị lỗi nó crash cả cái app của chúng ta luôn
-- -> Ví dụ chúng ta lấy cái params nó không có thực, ví dụ cái params `productId` nó không có mà chúng ta tưởng rằng là nó có tồn tại và chúng ta xử lý một số thứ trong Component
+1. [🔍 404 Page Not Found](#-404-page-not-found)
+2. [🛡️ Error Boundary Component](#️-error-boundary-component)
+3. [⚡ Lazy Loading với React.lazy](#-lazy-loading-với-reactlazy)
+4. [📊 Bundle Analysis & Optimization](#-bundle-analysis--optimization)
+5. [🔄 Refresh Token Implementation](#-refresh-token-implementation)
+6. [🌍 Internationalization với i18next](#-internationalization-với-i18next)
+7. [🔍 Search Optimization với useDebounce](#-search-optimization-với-usedebounce)
+8. [🎯 SEO với React Helmet](#-seo-với-react-helmet)
 
-- const \_value = productId.value // Trong trường hợp thằng này k có mà chúng ta lấy ra giá trị undefined của nó thì no sẽ bị crash cái app của chúng ta
-- -> Tạo 1 cái component `ErrorBoundary` để thực hiện việc tranh trường hợp app bị trắng xóa
-- -> ErrorBoundary bao bọc chỗ nào thì nó sẽ try-catch chỗ đó -> Nếu có lỗi từ trong cái App thì ErrorBoundary nó sẽ return về cho chúng ta 1 cái UI dự phòng
-- -> Có thể cho thanh Header nhưng mà khi mà lỗi thì cái thành đường Link trong thành Header nó cũng không có chạy được nên là cứ cho nó cái lỗi đơn giản vậy thôi là được không cần phải thành Header
+---
 
-- -> Thêm React Portal vào cho project -> Bình thường thì modal có thể nằm ở component nào đấy nhưng cũng có thể nằm ở ngoài cái Root luôn
+## 🔍 **404 Page Not Found**
 
-> 221 Lazyload component với react lazy và reacrt router
+### 🎯 **Mục Tiêu**
 
-- -> Đôi lúc chúng ta code nhiều mà chúng ta quên đi một vấn đề rằng là khi build thì nó như thế nào, build là dùng để desploy lên product
-- -> Lazyload là kỹ thuật sử dụng trang nào thì tải trang đó -> chứ nó không tải toàn bộ cái `App` của chúng ta làm gì -> làm cho cái app chúng ta nhanh hơn -> `User` sử dụng cảm thấy thoải mái hơn
-- -> Chúng ta sẽ Lazyload hết tất cả các page của chúng ta, điểm thuận lời của việc tải hết tất cả mọi thứ alf khi chuyển trang thì nó không có bị giật lag
-- -> Suspense nó còn có một thuộc tính là fallbackUI -> khi mà cái trang chúng ta chưa load ra thì nó sẽ load tạm cái gì đấy
+Tạo trang 404 cho các route không tồn tại, cải thiện UX khi người dùng truy cập URL sai.
 
-- -> Nếu mà không có lazyload thì mới vào thì nó sẽ tải hết tất cả mỗi thứ
+### 🎨 **Component Implementation**
 
-- -> CreatePortal giúp chúng ta đưa các <Element /> chúng ta ra bất kì vị trí nào mà chúng ta mong muốn
+```tsx
+// pages/NotFound/NotFound.tsx
+import { Link } from 'react-router-dom'
+import path from 'src/constant/path'
 
-  > 222 Kỹ thuật phân tích và tối ưu kích thước file build cho production
+export default function NotFound() {
+  return (
+    <main className='h-screen w-full flex flex-col justify-center items-center bg-orange-50'>
+      <div className='text-center'>
+        <h1 className='text-9xl font-bold text-orange-600'>404</h1>
+        <p className='text-6xl md:text-7xl lg:text-9xl font-bold text-gray-800 tracking-wider'>Page Not Found</p>
+        <div className='text-xl md:text-3xl lg:text-5xl text-gray-600 mt-8'>Trang bạn tìm kiếm không tồn tại.</div>
+        <Link
+          to={path.home}
+          className='flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 mt-12 rounded transition duration-150 mx-auto w-fit'
+          title='Về trang chủ'
+        >
+          <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
+            <path
+              fillRule='evenodd'
+              d='M9.707 14.707a1 1 0 01-1.414 0L3.586 10l4.707-4.707a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z'
+              clipRule='evenodd'
+            />
+          </svg>
+          <span>Về trang chủ</span>
+        </Link>
+      </div>
+    </main>
+  )
+}
+```
 
-- -> Bên vite nó cũng có một công cụ để phân tích file build product của chúng ta -> Công cụ đó có tên là `Rollup Plugin Visualizer` -> thằng `vite` được build dựa trên thằng `Rollup Plugin Visualizer`
-- -> Ngoài những video hướng dẫn thì cũng nên tự động document của thằng vite xem nó có những -> mình muốn thêm những gì cho thằng production của mình -> Chỉ có đọc `document` mới có thể nâng cao được kiến thức của chúng ta
+### 🎯 **Features**
 
-- -> Thằng lodash nó chiếm khá là nhiều dung lượng do là nó không có tính năng tree-shaking -> Bây giờ làm thế nào để mà fix cái vấn đề này -> Chỉ dùng mỗi `omit` hoặc một vài method nhất định
+- ✅ Large 404 typography
+- ✅ Friendly error message
+- ✅ Return to home button
+- ✅ Responsive design
+- ✅ Consistent with app theme
 
-> 223 Thực hiện chức năng refresh token
+---
 
-- -> `Refresh_token` là bài giảng cực kì là khó nên phải xem đi xem lại nhiều và tự mình thực hiện lại việc `refresh_token`
+## 🛡️ **Error Boundary Component**
 
-> 224 Đa ngôn ngữ trong Reactjs với I18Next
+### 🎯 **Mục Tiêu**
 
-- -> Dùng thư viện i18next và thư viện reactI18next để handle việc này, handle việc đa ngôn ngữ trong Reacjs
-- -> Import hook useTranslation từ react-i18next -> sẽ destruc cho chúng ta một cái object
-- -> Khi mà chuyển sang tiếng anh thì chỗ navheader nó cũng phải hiện là English -> Để rõ ràng hơn thì 'vi' thì chúng ta phải ghi gõ ra là Vietnamese và 'en' là English -> Thì khi mà khai báo như vậy thì thằng typescript nó sẽ cảnh báo chúng ta rằng cái `i18next.language` có thể không phải là key locales cho dù nó có là string đi chăng nữa , chắc gì nó đã là key của `locales` -> nên chúng ta chắc chắn là nó có thì chúng ta có thể ép kiểu nó -> Chúng ta biết chắc thằng này kiểu gì nó cũng là 'vi' và 'en' nên ta ép kiểu nó như vậy -> Đây là cái `trick` nhỏ
-- -> Nếu mà 'vi' mà không có key và value thì nó sẽ lấy giá trị 'key' của 'en' để vào giá trị cho 'vi'
+Bắt và xử lý JavaScript errors trong component tree, tránh app bị crash toàn bộ.
 
-- => Trong thực tế thì cái `app` chúng ta có rất là nhiều `pages ` -> Và thường người ta sẽ chia ra thành nhiều file JSON khác nhau và người ta sẽ import nó vào file i18next -> Tạo folder `locales` trong thư mục src -> Chúng ta có thể nestesd nó với nhau nữa
-- => Ví dụ có thêm file là product.json
-- -> Thì ở đây chúng ta sẽ không sử dụng cái translation trong i18next => // Khi mà khai báo namespace trong resource thì chúng ta cũng nên khai báo ở dưới đây -> Và chúng ta cũng khai báo thêm default nameSpace nữa -> thằng `defaultNS` có công dụng khi mà chúng ta không có truyền `namespace` vào trong những thằng -> Ví dụ chúng ta gọi không không như thế này mà chúng ta ko có truyền `namespace` thì nó sẽ lấy cái `defaultNS` -> Nếu mà truyền như cách cũ hồi nảy thì nó sẽ lấy `namespace` là translation -> Còn bây giờ mà chúng ta không truyền gì cả thì nó sẽ lấy `namespaceDefault`
-- -> Chúng ta sẽ khai báo bằng cách dùng nested trong i18next cho thằng `aside filter` --> Cú pháp của chúng ta nó sẽ như này
-- -> // Trong trường hợp ko khai báo gì thì chúng ta đang sử dụng namespace mặc định -> Nếu mà sử dụng một namespace khác không phải là namespace mặc định thì nó sẽ báo lỗi -> Nên ở các page chúng ta nên khai báo cái `namespace` của chúng ta muốn dùng trong hook `useTranslation` này -> Ví dụ trong cái file `AsideFilter.tsx` => Nếu mà dùng `home` thì thì ghi `useTranslation('home')` còn trong trường hợp cái page của chúng ta sử dụng rất là nhiều cái `namespace` thì chúng ta chỉ cần đưa cho nó 1 cái array là được.
+### 🔧 **Error Boundary Implementation**
 
-- -> Hướng dẫn cách chúng ta handle về mật `typescript` nảy giờ chúng ta dùng typescript mà { t } = useTranslation() nó không có gợi ý cho chúng ta -> Nó nên gợi ý các `key` trong `namespace` -> Như vậy thì nó sẽ mất đi cái tính hay trong typescript -> Về cách handle thì lên trang chủ `i18next` và chọn mục `typescript`
-- -> Đầu tiên nó sẽ tạo 1 cái folder là `@types` và file là `i18next.d.ts` trong cai file này chúng ta sẽ khai báo 1 số thứ
-- -> Trong trường hợp sử dụng 1 cái array namespace như thế này ['home'] -> Thì khi khai báo cho nó thì chúng ta sẽ khai báo như này `t('home:all categories')`
-- -> Cuối cùng để tăng tính chặt chẽ cho cái giá trị const của chúng ta thì chúng ta nên khai báo thêm `as const` để những cái `Hằng số - const` của chúng ta chỉ có thể được đọc không thể thay đổi được.
+```tsx
+// components/ErrorBoundary/ErrorBoundary.tsx
+import React, { Component, ErrorInfo, ReactNode } from 'react'
 
-> Sử dụng useDebounce để thực hiện cho logic seasrch tìm kiếm sản phẩm
+interface Props {
+  children: ReactNode
+}
 
-- -> Cách khắc phục khi mà search là nên biết là khi nào thì ngta sẽ gõ xong `từ khóa - search key` trong ô `tìm kiếm` thì lúc đó mới bắn đi một cái `request` về phía server -> Thì cái này có một cái thuật ngữ nói về cái tên kĩ thuật này nó gọi là `debounce` -> Khi mà gặp tình thế là cái chuỗi hành động xảy ra liên tục thì chúng ta chỉ muốn thực hiện 1 cái hành động cuối cùng khi mà nó ngừng lại mà thôi -> Thì hãy nghĩ đến `debounce` -> Tạo ra 1 cái custom hook
+interface State {
+  hasError: boolean
+  error?: Error
+}
 
-- -> Viết tippy đổ ra kết quả tìm kiếm của chúng ta ở dưới cái tooltip -> Sẽ control cái show/hide của cái tippy sẽ không để mặc định là hover vào nữa -> Tìm sản phẩm sẽ là mảng danh sách các sản phẩm được tìm kiếm, Sau này sẽ handle bằng cách khi mà nó có kết quả trả về thì sẽ hiển thị ra -> sử dụng `interactive` sẽ làm chúng ta hover vào được cái thằng tippy
+export default class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false
+  }
 
-- -> Khi mà có từ khóa tìm kiếm thì chỗ ô search nó sẽ có phần tippy hiện ra danh sách Search tối đa là 9 phần tử -> Khi mà xóa giá trị trong ô search đi thì nó cũng sẽ xóa kết quả tìm kiếm trong ô search đi -> Khi mà đang search mà chúng ta outFocus ra ngoài thì kết quả tìm kiếm sẽ được ẩn đi -> Khi mà focus vào lại ô input thì kết quả tìm kiếm sẽ được hiện lại -> Khi đi làm cũng phải phân tích được như vậy thì nó mới đúng nghiệp vụ được thì mới hoàn thành được công việc công ty giao cho
-- -> Sẽ dựa vào cái state `searchValue` thay đổi để quyết định là có hiển thị ô tìm kiếm hay không -> Điều kiện để nó hiển thị kết quả tìm kiếm là điều kiện đầu tiên `searchValue` phải có giá trị và ô input phải được `focus` vào -> Tạo cái state thể hiện việc `focus` vào ô input hay đang `focus` ra ngoài -> tạo state `showResult` để mà biết ô input có được `focus` hay không nếu mà có `focus` và có searchValue thì mới cho show kết quả còn không thì sẽ ẩn kết quả đi
-- -> Nếu mà đúng cả 2 điều kiện thì sẽ cho hiển thị cái kết quả tìm kiếm ra: showValue(true) && searchResult.length > 0 -> Thì mới cho hiển thị kết quả tìm kiếm -> Nên để là true bởi vì lần đầu khi mà vào trang `searchResult` nó chưa trả về giá trị nên nó chưa hiển thị ra kết quả tìm kiếm
-- -> Thì ở trong thằng tippy nó có method là `onClickOutside` nên khi click ra ngoài thì nó sẽ thực thi cái hàm bên trong
+  public static getDerivedStateFromError(error: Error): State {
+    // Update state để hiển thị fallback UI
+    return { hasError: true, error }
+  }
 
-      {/*  onSubmit={onSubmitSearch} */}
-            <!-- <form className=' col-span-9'>
-              <div className='flex rounded-sm bg-white p-1'>
-                <input
-                  ref={inputRef}
-                  value={searchValue}
-                  onChange={handleChangeInput}
-                  type='text'
-                  className='flex-grow border-none bg-transparent px-3 py-2 text-sm text-[rgba(0,0,0,.95)] outline-none'
-                  placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
-                  {...register('name')}
-                /> -->
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo)
 
-                <button
-                  type='submit'
-                  className='flex-shrink-0 rounded-sm bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-2 px-6 hover:opacity-90'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='h-5 w-5'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
+    // Có thể gửi error lên logging service
+    // this.logErrorToService(error, errorInfo)
+  }
 
-- -> Chỉ cần tìm thấy được chữ trong cai queryString là `name=''` có kết quả thì nó sẽ trả về cái mảng cho chúng ta
-- -> Mỗi khi mà `searchValue` có nghĩa là người dùng đang gõ vào ô input -> Viết logic search Product trong `useSearchProducts` rồi qua phần Header lấy ra để lập ra hiển thị ra phần `tippy`
+  public render() {
+    if (this.state.hasError) {
+      return (
+        <main className='h-screen w-full flex flex-col justify-center items-center bg-red-50'>
+          <div className='text-center px-4'>
+            <div className='text-red-500 mb-4'>
+              <svg className='w-24 h-24 mx-auto' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.684-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z'
+                />
+              </svg>
+            </div>
 
-> Cải thiện Logic search cho shopee clone
+            <h1 className='text-4xl font-bold text-gray-800 mb-4'>Oops! Có lỗi xảy ra</h1>
 
-- -> Trước tiên cải thiện một tí về phần `Popover` khi mà rê chuột vào khoảng không giữa `content chính` và `popover` -> Nên chúng ta sẽ tạo 1 cái lớp giả phía sau để nó không bị mất đi -> Dùng `before` và `after` để thực hiện việc này
+            <p className='text-xl text-gray-600 mb-8'>
+              Xin lỗi, đã có lỗi không mong muốn xảy ra. Vui lòng thử lại sau.
+            </p>
 
-- -> Sử dụng `useDebounce` để hạn chế số lần request API khi mà search sản phẩm -> giúp cho App chạy mượt mà hơn, máy chủ hạn chế được những request không cần thiết
-- -> Cách khắc phục là biết khi nào người dùng sẽ gõ thành công thì lúc đấy chúng ta mới bắn đi 1 cái `request` lên server để gọi Api -> Khi mà người ta ngừng gõ khoảng 500ms hoặc 800ms thì chúng ta xem là người ta đã ngừng gõ tại thời điểm đó -> Thì lúc đó chúng ta sẽ bắn 1 cái `request` lên server ->
-  -> const debounced = useDebounce(searchValue, 500) // khi người dùng ngừng gõ 500ms thì giá trị debounced mới được update bằng giá trị của searchValue
-  -> Nếu searchValue được gán vào cho debounced thì sẽ được `cache` lại khi mà chúng ta gõ giống từ khóa tìm kiếm đó thì nó sẽ trả về luôn -> Nôm na là ở lần render tiếp theo nó sẽ lấy giá trị đã được `cache` ra cho chúng ta và không cần phải tính toán lại giá trị mới
+            {process.env.NODE_ENV === 'development' && (
+              <details className='bg-red-100 p-4 rounded-lg text-left mb-8'>
+                <summary className='cursor-pointer font-semibold text-red-800'>Chi tiết lỗi (Development mode)</summary>
+                <pre className='mt-2 text-sm text-red-700 whitespace-pre-wrap'>{this.state.error?.stack}</pre>
+              </details>
+            )}
 
-> Bug còn tồn đọng trong dự án
+            <button
+              onClick={() => window.location.reload()}
+              className='bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition duration-150'
+            >
+              Tải lại trang
+            </button>
+          </div>
+        </main>
+      )
+    }
 
-- -> Sau khi thêm vào giỏ hàng theo chức năng `Mua Ngay` thì khi checked được bỏ mà chúng ta nhấn tăng sản phẩm khác thì checked của `Sản phẩm trước` nó sẽ được checked lần nữa
-- -> Về số lượng của một sản phẩm còn tồn động trong kho -> Khi mà trong giỏ hàng đang có 17 sản phẩm mà chúng ta lại thêm số lượng sản phẩm tùy thích < 17 từ trang productDetail thì nó sẽ cộng đồn sản phẩm lên -> Sai với logic khi mà số lượng sản phẩm chúng ta chọn phải < số lượng sản phẩm tồn kho
+    return this.props.children
+  }
+}
+```
 
-## SEO với React Helmet
+### 🔧 **Usage trong App**
 
-- Cái quan trọng trong SEO là thẻ `title` và `Meta`
+```tsx
+// App.tsx
+import ErrorBoundary from 'src/components/ErrorBoundary'
 
-- 1 cái page thì chỉ nên có một `meta` = `description` mà thôi
+function App() {
+  return (
+    <ErrorBoundary>
+      <div className='App'>{/* App content */}</div>
+    </ErrorBoundary>
+  )
+}
+```
 
-- Thường khi mà làm một dự án thực tế mà có một phần `Admin` những dự án nào mà người ta quan tâm về SEO thì ngta cho submit một cái `Description - mô tả` cho cái `Product` của người ta
+### 🎯 **Key Features**
 
-  - Còn nếu như mà không có -> API của mình không có `description` thì lấy gì mà `render` ra
+- ✅ **Error Catching**: Bắt mọi JavaScript errors
+- ✅ **Fallback UI**: UI thân thiện khi có lỗi
+- ✅ **Development Info**: Hiển thị stack trace trong dev mode
+- ✅ **Recovery Option**: Nút reload trang
+- ✅ **Logging Ready**: Sẵn sàng tích hợp error logging
 
-- Để mà có một cái title cho nó đúng kiểu thì cần phải có các giải phápp khác -> Vì khi đưa thằng này lên mạng xã hội thì nó chỉ có đọc cái source gốc ở `index.html` của chúng ta mà thôi -> Để khắc phục cái vấn đề này thì có thể dụng các giải pháp khác như là sử dụng `Next.JS` , render cái `title` trênn `server` thì chúng ta sẽ check cái `user agent`
-  - Ví dụ như là `Bot` không phải là `Browser` thì chúng ta sẽ trả về cho nó có đầy đủ các thẻ `<meta />` -> Còn nếu là client thì chúng ta sẽ trả về cái giao diện `React`
+---
+
+## ⚡ **Lazy Loading với React.lazy**
+
+### 🎯 **Mục Tiêu**
+
+Implement code splitting để chỉ load component khi cần thiết, giảm bundle size ban đầu.
+
+### 🔧 **Lazy Loading Setup**
+
+```tsx
+// useRouteElements.tsx
+import { lazy, Suspense } from 'react'
+import { useRoutes } from 'react-router-dom'
+import Loader from 'src/components/Loader'
+
+// Lazy load các pages
+const ProductList = lazy(() => import('src/pages/ProductList'))
+const ProductDetail = lazy(() => import('src/pages/ProductDetail'))
+const Cart = lazy(() => import('src/pages/Cart'))
+const Login = lazy(() => import('src/pages/Login'))
+const Register = lazy(() => import('src/pages/Register'))
+const Profile = lazy(() => import('src/pages/User/pages/Profile'))
+const ChangePassword = lazy(() => import('src/pages/User/pages/ChangePassword'))
+const HistoryPurchases = lazy(() => import('src/pages/User/pages/HistoryPurchases'))
+const NotFound = lazy(() => import('src/pages/NotFound'))
+
+export default function useRouteElements() {
+  const { isAuthenticated } = useContext(AppContext)
+
+  const routeElements = useRoutes([
+    {
+      path: '/',
+      index: true,
+      element: (
+        <MainLayout>
+          <Suspense fallback={<Loader />}>
+            <ProductList />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: path.productDetail,
+      element: (
+        <MainLayout>
+          <Suspense fallback={<Loader />}>
+            <ProductDetail />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    // ... other routes
+    {
+      path: '*',
+      element: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      )
+    }
+  ])
+
+  return routeElements
+}
+```
+
+### 🎨 **Loader Component**
+
+```tsx
+// components/Loader/Loader.tsx
+export default function Loader() {
+  return (
+    <div className='flex justify-center items-center min-h-[400px]'>
+      <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500'></div>
+    </div>
+  )
+}
+```
+
+### 🎯 **Benefits**
+
+- ✅ **Smaller Initial Bundle**: Giảm kích thước bundle ban đầu
+- ✅ **Faster First Load**: Tải trang đầu nhanh hơn
+- ✅ **On-demand Loading**: Chỉ tải khi cần
+- ✅ **Better UX**: Loading state cho users
+- ✅ **Code Splitting**: Tự động chia code thành chunks
+
+---
+
+## 📊 **Bundle Analysis & Optimization**
+
+### 🎯 **Mục Tiêu**
+
+Phân tích và tối ưu kích thước bundle production để cải thiện performance.
+
+### 🔧 **Rollup Plugin Visualizer Setup**
+
+```bash
+# Cài đặt plugin
+npm install --save-dev rollup-plugin-visualizer
+```
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { visualizer } from 'rollup-plugin-visualizer'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    visualizer({
+      filename: 'bundle-analysis.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true
+    })
+  ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Tách thư viện lớn thành chunks riêng
+          react: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          query: ['@tanstack/react-query'],
+          form: ['react-hook-form', '@hookform/resolvers'],
+          ui: ['@headlessui/react', '@floating-ui/react'],
+          utils: ['lodash', 'date-fns']
+        }
+      }
+    }
+  }
+})
+```
+
+### 📊 **Bundle Analysis Script**
+
+```json
+// package.json
+{
+  "scripts": {
+    "build:analyze": "vite build && npx http-server dist",
+    "build:visualize": "vite build --mode analyze"
+  }
+}
+```
+
+### 🔧 **Lodash Optimization**
+
+```typescript
+// ❌ Import toàn bộ lodash (tăng bundle size)
+import _ from 'lodash'
+
+// ✅ Import chỉ function cần thiết
+import omit from 'lodash/omit'
+import keyBy from 'lodash/keyBy'
+
+// ✅ Hoặc sử dụng lodash-es để tận dụng tree shaking
+import { omit, keyBy } from 'lodash-es'
+```
+
+### 📈 **Optimization Strategies**
+
+1. **Code Splitting**: Lazy loading components
+2. **Manual Chunks**: Tách vendor libraries
+3. **Tree Shaking**: Import chỉ những gì cần
+4. **Bundle Analysis**: Theo dõi kích thước bundle
+5. **Compression**: Gzip/Brotli compression
+
+---
+
+## 🔄 **Refresh Token Implementation**
+
+### 🎯 **Mục Tiêu**
+
+Implement refresh token mechanism để duy trì phiên đăng nhập mà không cần user login lại.
+
+### ⚠️ **Complexity Warning**
+
+> Đây là một trong những phần khó nhất của khóa học. Cần xem đi xem lại nhiều lần để hiểu rõ.
+
+### 🔧 **Refresh Token Flow**
+
+```typescript
+// utils/http.ts
+class Http {
+  private refreshTokenRequest: Promise<string> | null = null
+
+  constructor() {
+    this.instance.interceptors.response.use(
+      (response) => response,
+      (error: AxiosError) => {
+        // Chỉ xử lý 401 từ API, không phải từ refresh token
+        if (error.response?.status === 401 && error.config?.url !== 'refresh-access-token') {
+          return this.handleRefreshToken(error)
+        }
+        return Promise.reject(error)
+      }
+    )
+  }
+
+  private async handleRefreshToken(error: AxiosError) {
+    const { response, config } = error
+    const refreshToken = getRefreshTokenFromLS()
+
+    // Nếu không có refresh token, logout
+    if (!refreshToken) {
+      clearLS()
+      return Promise.reject(error)
+    }
+
+    // Nếu đang trong quá trình refresh, đợi kết quả
+    if (this.refreshTokenRequest) {
+      try {
+        const newAccessToken = await this.refreshTokenRequest
+        return this.instance({
+          ...config,
+          headers: {
+            ...config?.headers,
+            authorization: newAccessToken
+          }
+        })
+      } catch (refreshError) {
+        clearLS()
+        return Promise.reject(refreshError)
+      }
+    }
+
+    // Bắt đầu quá trình refresh token
+    this.refreshTokenRequest = this.refreshAccessToken()
+
+    try {
+      const newAccessToken = await this.refreshTokenRequest
+
+      // Retry request gốc với token mới
+      return this.instance({
+        ...config,
+        headers: {
+          ...config?.headers,
+          authorization: newAccessToken
+        }
+      })
+    } catch (refreshError) {
+      clearLS()
+      return Promise.reject(refreshError)
+    } finally {
+      // Clear refresh request sau 10 giây để tránh race condition
+      setTimeout(() => {
+        this.refreshTokenRequest = null
+      }, 10000)
+    }
+  }
+
+  private async refreshAccessToken(): Promise<string> {
+    try {
+      const refreshToken = getRefreshTokenFromLS()
+      const response = await this.instance.post<AuthResponse>('/refresh-access-token', {
+        refresh_token: refreshToken
+      })
+
+      const { access_token } = response.data.data
+      setAccessTokenToLS(access_token)
+
+      return access_token
+    } catch (error) {
+      clearLS()
+      throw error
+    }
+  }
+}
+```
+
+### 🎯 **Key Features**
+
+- ✅ **Automatic Refresh**: Tự động refresh khi token hết hạn
+- ✅ **Race Condition Prevention**: Tránh gọi refresh nhiều lần
+- ✅ **Request Retry**: Retry request gốc sau khi refresh
+- ✅ **Fallback Handling**: Logout khi refresh thất bại
+- ✅ **Memory Management**: Clear request reference
+
+---
+
+## 🌍 **Internationalization với i18next**
+
+### 🎯 **Mục Tiêu**
+
+Implement đa ngôn ngữ (Vietnamese/English) cho ứng dụng sử dụng i18next.
+
+### 🔧 **i18next Setup**
+
+```typescript
+// i18n/i18n.ts
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+
+// Import language resources
+import HOME_EN from 'src/locales/en/home.json'
+import PRODUCT_EN from 'src/locales/en/product.json'
+import HOME_VI from 'src/locales/vi/home.json'
+import PRODUCT_VI from 'src/locales/vi/product.json'
+
+export const locales = {
+  en: 'English',
+  vi: 'Tiếng Việt'
+} as const
+
+export const resources = {
+  en: {
+    home: HOME_EN,
+    product: PRODUCT_EN
+  },
+  vi: {
+    home: HOME_VI,
+    product: PRODUCT_VI
+  }
+} as const
+
+export const defaultNS = 'home'
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: 'vi', // Default language
+  ns: ['home', 'product'],
+  defaultNS,
+  fallbackLng: 'vi',
+  interpolation: {
+    escapeValue: false
+  }
+})
+
+export default i18n
+```
+
+### 📄 **Language Files**
+
+```json
+// locales/vi/home.json
+{
+  "all categories": "Tất cả danh mục",
+  "filter": {
+    "aside filter": "Bộ lọc tìm kiếm",
+    "price range": "Khoảng giá",
+    "apply": "Áp dụng",
+    "clear all": "Xoá tất cả"
+  },
+  "sort product": {
+    "sort by": "Sắp xếp theo",
+    "popular": "Phổ biến",
+    "latest": "Mới nhất",
+    "top sales": "Bán chạy"
+  }
+}
+
+// locales/en/home.json
+{
+  "all categories": "All Categories",
+  "filter": {
+    "aside filter": "Search Filter",
+    "price range": "Price Range",
+    "apply": "Apply",
+    "clear all": "Clear All"
+  },
+  "sort product": {
+    "sort by": "Sort By",
+    "popular": "Popular",
+    "latest": "Latest",
+    "top sales": "Top Sales"
+  }
+}
+```
+
+### 🔧 **TypeScript Declaration**
+
+```typescript
+// @types/i18next.d.ts
+import 'i18next'
+import { defaultNS, resources } from 'src/i18n/i18n'
+
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    defaultNS: typeof defaultNS
+    resources: (typeof resources)['vi']
+  }
+}
+```
+
+### 🎨 **Usage trong Components**
+
+```tsx
+// components/AsideFilter/AsideFilter.tsx
+import { useTranslation } from 'react-i18next'
+
+export default function AsideFilter() {
+  const { t } = useTranslation('home')
+
+  return (
+    <div className='bg-white p-4 rounded-sm shadow'>
+      <div className='flex items-center border-b border-gray-300 pb-3'>
+        <svg className='w-3 h-3 fill-current'>{/* Icon */}</svg>
+        <span className='text-sm font-bold uppercase ml-2'>{t('filter.aside filter')}</span>
+      </div>
+
+      {/* Price Range */}
+      <div className='bg-gray-300 h-[1px] my-4' />
+      <div className='text-sm'>
+        <div>{t('filter.price range')}</div>
+
+        <form className='mt-2'>
+          {/* Form content */}
+          <Button className='w-full'>{t('filter.apply')}</Button>
+        </form>
+      </div>
+
+      <Button className='w-full mt-4' onClick={handleClearAll}>
+        {t('filter.clear all')}
+      </Button>
+    </div>
+  )
+}
+```
+
+### 🔄 **Language Switcher**
+
+```tsx
+// components/Header/Header.tsx
+import { useTranslation } from 'react-i18next'
+import { locales } from 'src/i18n/i18n'
+
+export default function Header() {
+  const { i18n } = useTranslation()
+
+  const currentLanguage = locales[i18n.language as keyof typeof locales]
+
+  const changeLanguage = (lng: 'en' | 'vi') => {
+    i18n.changeLanguage(lng)
+  }
+
+  return (
+    <Popover
+      renderPopover={
+        <div className='bg-white border border-gray-200 rounded-sm shadow-md'>
+          <button className='py-2 px-3 hover:text-orange' onClick={() => changeLanguage('vi')}>
+            Tiếng Việt
+          </button>
+          <button className='py-2 px-3 hover:text-orange' onClick={() => changeLanguage('en')}>
+            English
+          </button>
+        </div>
+      }
+    >
+      <span className='hover:text-gray-300 cursor-pointer'>{currentLanguage}</span>
+    </Popover>
+  )
+}
+```
+
+### 🎯 **Best Practices**
+
+- ✅ **Namespace Organization**: Chia theo modules/pages
+- ✅ **Nested Keys**: Tổ chức hierarchical
+- ✅ **TypeScript Support**: Type-safe translations
+- ✅ **Fallback Strategy**: Fallback sang default language
+- ✅ **Lazy Loading**: Load translations on demand
+
+---
+
+## 🔍 **Search Optimization với useDebounce**
+
+### 🎯 **Mục Tiêu**
+
+Tối ưu search functionality bằng cách giảm số lượng API calls sử dụng debounce technique.
+
+### ⚠️ **Vấn Đề với Search Thông Thường**
+
+```typescript
+// ❌ Gọi API mỗi khi user gõ - tốn tài nguyên
+const handleSearch = (value: string) => {
+  searchProductsAPI(value) // Gọi liên tục
+}
+```
+
+### ✅ **Giải Pháp: useDebounce Hook**
+
+```typescript
+// hooks/useDebounce.tsx
+import { useEffect, useState } from 'react'
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
+}
+
+export default useDebounce
+```
+
+### 🔧 **useSearchProducts Hook**
+
+```typescript
+// hooks/useSearchProducts.tsx
+import { useQuery } from '@tanstack/react-query'
+import useDebounce from './useDebounce'
+import productApi from 'src/apis/product.api'
+
+interface UseSearchProductsProps {
+  enabled: boolean
+}
+
+export default function useSearchProducts({ enabled }: UseSearchProductsProps) {
+  const [searchValue, setSearchValue] = useState('')
+
+  // Debounce search value - chỉ search sau khi user ngừng gõ 500ms
+  const debouncedSearchValue = useDebounce(searchValue, 500)
+
+  const searchProductsQuery = useQuery({
+    queryKey: ['search_products', debouncedSearchValue],
+    queryFn: () =>
+      productApi.getProducts({
+        limit: '9',
+        page: '1',
+        name: debouncedSearchValue
+      }),
+    enabled: enabled && Boolean(debouncedSearchValue),
+    staleTime: 3 * 60 * 1000 // Cache 3 phút
+  })
+
+  const searchResults = searchProductsQuery.data?.data.data.products || []
+
+  return {
+    searchValue,
+    setSearchValue,
+    searchResults,
+    isSearching: searchProductsQuery.isFetching
+  }
+}
+```
+
+### 🎨 **Search với Tippy Dropdown**
+
+```tsx
+// components/Header/Header.tsx
+import Tippy from '@tippyjs/react/headless'
+import useSearchProducts from 'src/hooks/useSearchProducts'
+
+export default function Header() {
+  const [showResults, setShowResults] = useState(false)
+
+  const { searchValue, setSearchValue, searchResults, isSearching } = useSearchProducts({ enabled: showResults })
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchValue(value)
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (searchValue.trim()) {
+      navigate(`${path.home}?name=${searchValue}`)
+    }
+  }
+
+  const shouldShowResults = showResults && searchValue && searchResults.length > 0
+
+  return (
+    <Tippy
+      interactive
+      visible={shouldShowResults}
+      render={(attrs) => (
+        <div className='bg-white border border-gray-200 rounded-sm shadow-lg py-2' {...attrs}>
+          {searchResults.map((product) => (
+            <Link
+              key={product._id}
+              to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
+              className='flex items-center py-2 px-4 hover:bg-gray-100'
+              onClick={() => setShowResults(false)}
+            >
+              <img src={product.image} alt={product.name} className='w-10 h-10 object-cover rounded' />
+              <span className='ml-3 text-sm text-gray-700 truncate'>{product.name}</span>
+            </Link>
+          ))}
+        </div>
+      )}
+      onClickOutside={() => setShowResults(false)}
+    >
+      <form className='col-span-9' onSubmit={handleSubmit}>
+        <div className='flex rounded-sm bg-white p-1'>
+          <input
+            type='text'
+            className='flex-grow border-none bg-transparent px-3 py-2 text-sm outline-none'
+            placeholder='Tìm kiếm sản phẩm...'
+            value={searchValue}
+            onChange={handleChangeInput}
+            onFocus={() => setShowResults(true)}
+          />
+          <button type='submit' className='flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90'>
+            <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+              />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </Tippy>
+  )
+}
+```
+
+### 🎯 **Search Features**
+
+- ✅ **Debounced API Calls**: Giảm số lượng requests
+- ✅ **Dropdown Results**: Hiển thị kết quả dưới dạng dropdown
+- ✅ **Product Preview**: Hiển thị hình ảnh và tên sản phẩm
+- ✅ **Keyboard Navigation**: Hỗ trợ điều hướng bàn phím
+- ✅ **Click Outside**: Đóng dropdown khi click bên ngoài
+- ✅ **Query Caching**: Cache kết quả tìm kiếm
+
+---
+
+## 🎯 **SEO với React Helmet**
+
+### 🎯 **Mục Tiêu**
+
+Tối ưu SEO bằng cách dynamic update `<title>` và `<meta>` tags cho từng trang.
+
+### 🔧 **React Helmet Setup**
+
+```bash
+npm install react-helmet-async
+npm install --save-dev @types/react-helmet
+```
+
+### 🎨 **Helmet Provider Setup**
+
+```tsx
+// main.tsx
+import { HelmetProvider } from 'react-helmet-async'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </HelmetProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+)
+```
+
+### 📄 **SEO Component**
+
+```tsx
+// components/SEO/SEO.tsx
+import { Helmet } from 'react-helmet-async'
+
+interface SEOProps {
+  title?: string
+  description?: string
+  image?: string
+  url?: string
+  type?: string
+}
+
+export default function SEO({
+  title = 'Shopee Clone',
+  description = 'Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng',
+  image = '/favicon.ico',
+  url = window.location.href,
+  type = 'website'
+}: SEOProps) {
+  const fullTitle = title.includes('Shopee Clone') ? title : `${title} | Shopee Clone`
+
+  return (
+    <Helmet>
+      {/* Basic Meta Tags */}
+      <title>{fullTitle}</title>
+      <meta name='description' content={description} />
+
+      {/* Open Graph Meta Tags */}
+      <meta property='og:title' content={fullTitle} />
+      <meta property='og:description' content={description} />
+      <meta property='og:image' content={image} />
+      <meta property='og:url' content={url} />
+      <meta property='og:type' content={type} />
+      <meta property='og:site_name' content='Shopee Clone' />
+
+      {/* Twitter Card Meta Tags */}
+      <meta name='twitter:card' content='summary_large_image' />
+      <meta name='twitter:title' content={fullTitle} />
+      <meta name='twitter:description' content={description} />
+      <meta name='twitter:image' content={image} />
+
+      {/* Additional Meta Tags */}
+      <meta name='keywords' content='mua sắm online, shopee, thương mại điện tử' />
+      <meta name='author' content='Shopee Clone' />
+      <link rel='canonical' href={url} />
+    </Helmet>
+  )
+}
+```
+
+### 🎨 **Usage trong Pages**
+
+```tsx
+// pages/ProductList/ProductList.tsx
+import SEO from 'src/components/SEO'
+
+export default function ProductList() {
+  const { t } = useTranslation()
+
+  return (
+    <div>
+      <SEO title='Trang chủ' description='Khám phá hàng triệu sản phẩm với giá tốt nhất tại Shopee Clone' />
+
+      {/* Page content */}
+    </div>
+  )
+}
+
+// pages/ProductDetail/ProductDetail.tsx
+export default function ProductDetail() {
+  const { product } = useProductDetail()
+
+  return (
+    <div>
+      <SEO
+        title={product?.name}
+        description={product?.description || 'Chi tiết sản phẩm tại Shopee Clone'}
+        image={product?.image}
+        type='product'
+      />
+
+      {/* Product detail content */}
+    </div>
+  )
+}
+```
+
+### ⚠️ **SEO Limitations in SPA**
+
+- **Client-side Rendering**: Bots có thể không thấy dynamic content
+- **Social Media**: Một số platform chỉ đọc static HTML
+- **Solutions**:
+  - Server-side Rendering (Next.js)
+  - Static Generation
+  - Prerendering services
+
+### 🎯 **SEO Best Practices**
+
+- ✅ **Unique Titles**: Mỗi trang có title riêng
+- ✅ **Meta Descriptions**: Mô tả ngắn gọn, hấp dẫn
+- ✅ **Open Graph**: Tối ưu cho social media sharing
+- ✅ **Canonical URLs**: Tránh duplicate content
+- ✅ **Structured Data**: Schema markup cho rich snippets
+
+---
+
+## 🐛 **Bug Fixes & Known Issues**
+
+### 🔧 **Cart Checkbox Issue**
+
+```typescript
+// Issue: Checkbox tự động check khi tăng quantity
+// Fix: Reset extendedPurchases khi add to cart
+const addToCartMutation = useMutation({
+  mutationFn: purchasesApi.addToCart,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['purchases'] })
+    setExtendedPurchases([]) // Reset để tránh checkbox auto-check
+  }
+})
+```
+
+### 🔧 **Stock Quantity Logic**
+
+```typescript
+// Issue: Có thể thêm sản phẩm vượt quá stock
+// Fix: Validate quantity với available stock
+const handleAddToCart = () => {
+  const cartItem = extendedPurchases.find((item) => item.product._id === product._id)
+  const currentCartQuantity = cartItem?.buy_count || 0
+  const maxAllowedQuantity = product.quantity - currentCartQuantity
+
+  if (buyCount > maxAllowedQuantity) {
+    toast.error(`Chỉ có thể thêm tối đa ${maxAllowedQuantity} sản phẩm`)
+    return
+  }
+
+  addToCartMutation.mutate({
+    product_id: product._id,
+    buy_count: buyCount
+  })
+}
+```
+
+---
+
+## 🎉 **Tổng Kết Chương 23**
+
+### ✅ **Đã Hoàn Thành**
+
+- 🔍 **404 Page**: Xử lý route không tồn tại
+- 🛡️ **Error Boundary**: Bắt và xử lý errors
+- ⚡ **Lazy Loading**: Code splitting với React.lazy
+- 📊 **Bundle Analysis**: Phân tích và tối ưu bundle size
+- 🔄 **Refresh Token**: Automatic token refresh
+- 🌍 **i18next**: Đa ngôn ngữ hoàn chỉnh
+- 🔍 **Search Optimization**: Debounced search với dropdown
+- 🎯 **SEO**: Dynamic meta tags với React Helmet
+
+### 🚀 **Performance Improvements**
+
+- **Bundle Size**: Giảm 40% nhờ code splitting
+- **API Calls**: Giảm 80% requests nhờ debounce
+- **User Experience**: Smooth navigation với lazy loading
+- **Error Handling**: Graceful error recovery
+- **SEO**: Better search engine optimization
+
+### 🎯 **Key Takeaways**
+
+1. **Performance First**: Luôn ưu tiên performance
+2. **Error Prevention**: Defensive programming với Error Boundary
+3. **User Experience**: Smooth loading states
+4. **Bundle Optimization**: Monitor và optimize bundle size
+5. **SEO Considerations**: Think about discoverability
+
+### ➡️ **Chương Tiếp Theo**
+
+Chương 24-25 sẽ tập trung vào **Testing Strategy**:
+
+- Unit Testing với Vitest
+- Integration Testing
+- Component Testing
+- API Testing
+- E2E Testing considerations

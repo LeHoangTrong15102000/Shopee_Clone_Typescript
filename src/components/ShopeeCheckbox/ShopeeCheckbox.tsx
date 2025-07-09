@@ -68,7 +68,17 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size
   return (
     <motion.div
       className={`relative cursor-pointer ${className}`}
-      onClick={() => onChange(!checked)}
+      onClick={() => onChange?.(!checked)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onChange?.(!checked)
+        }
+      }}
+      tabIndex={0}
+      role='button'
+      aria-pressed={checked}
+      aria-label={checked ? 'Checkbox checked' : 'Checkbox unchecked'}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.1 }}
@@ -119,5 +129,3 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size
 }
 
 export default ShopeeCheckbox
-
-// Của m còn 60k cho từ nay đến 30 không còn cho m lần nào nữa rồi, hết thì về dưới với t, dì 3 và trong ngoại hứa cho m rồi

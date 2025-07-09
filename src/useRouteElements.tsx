@@ -20,6 +20,7 @@ import Loader from './components/Loader'
 // Khai báo lazyload cho các page
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const Home = lazy(() => import('./pages/Home'))
 const ProductList = lazy(() => import('./pages/ProductList'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const Cart = lazy(() => import('./pages/Cart'))
@@ -55,6 +56,15 @@ const useRouteElements = () => {
               // fallback={<div className='flex items-center justify-center text-center text-[#ee4d2d]'>Loading...</div>}
               fallback={<Loader />}
             >
+              <Home />
+            </Suspense>
+          ),
+          errorElement: <NotFound />
+        },
+        {
+          path: path.products,
+          element: (
+            <Suspense fallback={<Loader />}>
               <ProductList />
             </Suspense>
           ),

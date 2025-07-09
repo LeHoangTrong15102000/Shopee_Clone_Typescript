@@ -66,7 +66,19 @@ Props<TFieldValues, TName>) => {
       return openEye ? 'text' : 'password'
     }
     // Còn không phải là `password` thì return lại rest.type
+    return rest.type
   }
+
+  // Tính toán className với border đỏ khi có error
+  const getInputClassName = () => {
+    if (errorMessage) {
+      return classNameInput.replace('border-gray-300', 'border-red-600')
+    }
+    return classNameInput
+  }
+
+  // Tạo unique ID cho error message
+  const errorId = errorMessage ? `${name}-error` : undefined
 
   return (
     <div className={className}>
@@ -79,12 +91,16 @@ Props<TFieldValues, TName>) => {
         </label>
       )}
       <input
-        className={classNameInput}
+        className={getInputClassName()}
         // Tự sinh ra cho chúng ta với name là email, nó sẽ tự sinh ra cho chúng ta nên không cần truyền vào
         {...registerResult}
         {...rest}
-        // không phải là sự kiện thì chúng ta thực thi func luôn
+        // Ensure name and type are passed through properly
+        name={name}
         type={handleTypeToggleEye()}
+        // ARIA attributes for accessibility
+        aria-invalid={errorMessage ? 'true' : 'false'}
+        aria-describedby={errorId}
       />
       {/* Eye-open */}
       {rest.type === 'password' && openEye && (
@@ -124,7 +140,9 @@ Props<TFieldValues, TName>) => {
       )}
       {/* Eye-close */}
       {/* cho m-height để khi mà không có lỗi thì nó vẫn chiếm được vị trí ở đó */}
-      <div className={classNameError}>{errorMessage}</div>
+      <div className={classNameError} id={errorId}>
+        {errorMessage}
+      </div>
     </div>
   )
 }

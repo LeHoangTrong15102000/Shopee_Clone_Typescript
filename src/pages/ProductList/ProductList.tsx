@@ -87,7 +87,11 @@ const ProductList = () => {
                 ))}
               </div>
               {/* Pagination */}
-              <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
+              <Pagination
+                queryConfig={queryConfig}
+                pageSize={productsData.data.data.pagination.page_size}
+                basePath={path.products}
+              />
             </div>
           </div>
         )}

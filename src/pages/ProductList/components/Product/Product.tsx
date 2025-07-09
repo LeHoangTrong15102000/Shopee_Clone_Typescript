@@ -53,7 +53,7 @@ const Product = ({ product }: Props) => {
             {/* Đia điểm bán */}
             <div className='p-2'>
               <div className='flex items-center justify-start'>
-                <span className='text-[13px] text-[rgba(0,0,0,.7)]'>TP. Hồ Chí Minh</span>
+                <span className='text-[13px] text-[rgba(0,0,0,.7)]'>{product.location}</span>
               </div>
             </div>
           </div>

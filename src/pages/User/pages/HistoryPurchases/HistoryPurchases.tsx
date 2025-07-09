@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchases.api'
+import reviewApi from 'src/apis/review.api'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
 import useQueryParams from 'src/hooks/useQueryParams'
-import { PurchaseListStatus } from 'src/types/purchases.type'
+import { PurchaseListStatus, Purchase } from 'src/types/purchases.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
+import ProductReviewModal from 'src/components/ProductReviewModal'
 
 // Tạo ra Array để map() các tabs dễ dàng hơn
 const purchaseTabs = [
@@ -23,12 +25,38 @@ const HistoryPurchases = () => {
   const queryParams: { status?: string } = useQueryParams() // queryParams có hoặc không có `status`
   const status: number = Number(queryParams.status) || purchasesStatus.all // Ép kiểu thằng status lại vì nó luôn là `string` khi lấy từ trên params về
 
+  // Review modal state
+  const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null)
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status }],
     queryFn: () => purchaseApi.getPurchases({ status: status as PurchaseListStatus }) // Do thằng status có kiểu là PurListStatus
   })
 
   const purchasesInCart = purchasesInCartData?.data.data // PurchasesInCart là một cái Purchase[]
+
+  // Check review status for each purchase
+  const checkReviewStatus = async (purchaseId: string) => {
+    try {
+      const response = await reviewApi.canReviewPurchase(purchaseId)
+      return response.data.data
+    } catch (error) {
+      return { can_review: false, reason: 'Lỗi khi kiểm tra' }
+    }
+  }
+
+  // Handle review button click
+  const handleReviewClick = (purchase: Purchase) => {
+    setSelectedPurchase(purchase)
+    setIsReviewModalOpen(true)
+  }
+
+  // Close review modal
+  const closeReviewModal = () => {
+    setIsReviewModalOpen(false)
+    setSelectedPurchase(null)
+  }
 
   // Tạo ra 1 cái biến đại diện cho `jsx` để map() các thẻ Link
   const purchaseTabsLink = purchaseTabs.map((tab, index) => (
@@ -89,7 +117,30 @@ const HistoryPurchases = () => {
                         <span className='ml-1 truncate text-orange'>₫{formatCurrency(purchase.product.price)}</span>
                       </div>
                     </Link>
+                    {/* Status và Review Actions */}
+                    <div className='mt-4 flex items-center justify-between'>
+                      <div className='flex items-center'>
+                        {purchase.status === purchasesStatus.delivered && (
+                          <span className='text-green-600 font-medium'>HOÀN THÀNH</span>
+                        )}
+                      </div>
+
+                      <div className='flex items-center space-x-3'>
+                        {purchase.status === purchasesStatus.delivered && (
+                          <button
+                            onClick={() => handleReviewClick(purchase)}
+                            className='px-4 py-2 text-orange-500 border border-orange-500 rounded hover:bg-orange-50 transition-colors'
+                          >
+                            Đánh Giá Sản Phẩm
+                          </button>
+                        )}
+                        <button className='px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors'>
+                          Xem Đánh Giá Shop
+                        </button>
+                      </div>
+                    </div>
                   </div>
+
                   {/* Thành tiền */}
                   <div className='flex items-center justify-end rounded bg-neutral-50 p-6'>
                     <div className='flex items-center'>
@@ -129,6 +180,11 @@ const HistoryPurchases = () => {
           </div>
         </div>
       </div>
+
+      {/* Review Modal */}
+      {selectedPurchase && (
+        <ProductReviewModal isOpen={isReviewModalOpen} onClose={closeReviewModal} purchase={selectedPurchase} />
+      )}
     </Fragment>
   )
 }

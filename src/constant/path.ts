@@ -1,6 +1,7 @@
 // Đường dẫn này chỉ có thể đọc thôi, đánh tránh trong quá trình code gõ sai
 const path = {
   home: '/',
+  products: '/products',
   user: '/user',
   profile: '/user/profile',
   changePassword: '/user/password',

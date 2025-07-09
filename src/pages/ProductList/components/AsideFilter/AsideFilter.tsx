@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import _ from 'lodash'
 import omit from 'lodash/omit'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
@@ -52,7 +51,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
   const onSubmit = handleSubmit(
     (data) => {
       navigate({
-        pathname: path.home,
+        pathname: path.products,
         search: createSearchParams({
           ...queryConfig,
           price_max: data.price_max,
@@ -78,7 +77,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
   const handleRemoveAsideFilter = () => {
     reset() // Nhấn vào reset thì price_max và price_min sẽ trả về chuỗi rỗng
     navigate({
-      pathname: path.home,
+      pathname: path.products,
       search: createSearchParams(
         omit({ ...queryConfig }, ['price_min', 'price_max', 'category', 'rating_filter'])
       ).toString()
@@ -89,7 +88,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     <div className='py-4 text-[rgba(0,0,0,.8)]'>
       {/* Tất cả danh mục */}
       <Link
-        to={path.home}
+        to={path.products}
         className={classNames('flex items-center font-bold', {
           'text-orange': !category // active khi không có query category
         })}
@@ -117,7 +116,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
             <li className='py-2 pl-2' key={categoryItem._id}>
               <Link
                 to={{
-                  pathname: path.home,
+                  pathname: path.products,
                   search: createSearchParams({
                     ...queryConfig, // nó sẽ lấy lại tất cả config như sort_by,order
                     category: categoryItem._id
@@ -144,7 +143,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         </li> */}
       </ul>
       {/* Bộ lọc tìm kiếm */}
-      <Link to={path.home} className='mt-4 flex items-center font-bold uppercase'>
+      <Link to={path.products} className='mt-4 flex items-center font-bold uppercase'>
         <svg
           enableBackground='new 0 0 15 15'
           viewBox='0 0 15 15'

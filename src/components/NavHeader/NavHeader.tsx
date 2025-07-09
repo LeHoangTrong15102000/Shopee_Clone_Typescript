@@ -61,19 +61,19 @@ const NavHeader = () => {
       {/* Tải ứng dụng, Social kết nối, kênh người bán */}
       {isAuthenticated ? (
         <div className='flex items-center justify-center'>
-          {/* Kênh người bán */}
-          <Link to='https://banhang.shopee.vn/' className='ml-2'>
+          {/* Kênh người bán - Ẩn trên mobile */}
+          <Link to='https://banhang.shopee.vn/' className='ml-2 hidden lg:block'>
             <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
               <span className='mx-1 text-sm capitalize'>Kênh người bán</span>
             </div>
           </Link>
-          <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          {/* Tải ứng dụng */}
+          <div className='h-4 border-r-[1px] border-r-white/40 hidden lg:block'></div>
+          {/* Tải ứng dụng - Ẩn trên mobile */}
           <Popover
             as='span'
             enableArrow={false}
             placement='bottom-start'
-            className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70'
+            className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70 hidden lg:flex'
             renderPopover={
               <div className='relative cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 <div
@@ -113,13 +113,13 @@ const NavHeader = () => {
           >
             <span className='mx-1 text-sm capitalize'>Tải ứng dụng</span>
           </Popover>
-          <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          {/* Kết nối */}
-          <div className='ml-2 flex items-center py-1 hover:text-white/70'>
+          <div className='h-4 border-r-[1px] border-r-white/40 hidden lg:block'></div>
+          {/* Kết nối - Ẩn trên mobile */}
+          <div className='ml-2 flex items-center py-1 hover:text-white/70 hidden lg:flex'>
             <span className='mx-1 text-sm capitalize'>Kết nối</span>
           </div>
-          {/* facebook, intargram */}
-          <div className='flex items-center justify-center'>
+          {/* facebook, intargram - Ẩn trên mobile */}
+          <div className='flex items-center justify-center hidden lg:flex'>
             <Link
               to='https://www.facebook.com/ShopeeVN'
               className='mr-2 h-[16px] w-[16px] overflow-hidden text-center indent-[-9999px]'
@@ -151,26 +151,26 @@ const NavHeader = () => {
         </div>
       ) : (
         <div className='flex items-center justify-center'>
-          {/* Kênh người bán */}
-          <Link to='https://banhang.shopee.vn/' className='ml-2 mr-2'>
+          {/* Kênh người bán - Ẩn trên mobile */}
+          <Link to='https://banhang.shopee.vn/' className='ml-2 mr-2 hidden lg:block'>
             <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
               <span className='mx-1 text-sm capitalize'>Kênh người bán</span>
             </div>
           </Link>
-          <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          {/* Trở thành người bán shopee */}
-          <Link to='https://shopee.vn/seller/signup' className='ml-1 mr-2'>
+          <div className='h-4 border-r-[1px] border-r-white/40 hidden lg:block'></div>
+          {/* Trở thành người bán shopee - Ẩn trên mobile */}
+          <Link to='https://shopee.vn/seller/signup' className='ml-1 mr-2 hidden lg:block'>
             <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
               <span className='mx-1 text-sm capitalize'>Trở thành người bán shopee</span>
             </div>
           </Link>
-          <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          {/* Tải ứng dụng */}
+          <div className='h-4 border-r-[1px] border-r-white/40 hidden lg:block'></div>
+          {/* Tải ứng dụng - Ẩn trên mobile */}
           <Popover
             as='span'
             enableArrow={false}
             placement='bottom-start'
-            className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70'
+            className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70 hidden lg:flex'
             renderPopover={
               <div className='relative cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 <div
@@ -210,13 +210,13 @@ const NavHeader = () => {
           >
             <span className='mx-1 text-sm capitalize'>Tải ứng dụng</span>
           </Popover>
-          <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          {/* Kết nối */}
-          <div className='ml-2 flex items-center py-1 hover:text-white/70'>
+          <div className='h-4 border-r-[1px] border-r-white/40 hidden lg:block'></div>
+          {/* Kết nối - Ẩn trên mobile */}
+          <div className='ml-2 flex items-center py-1 hover:text-white/70 hidden lg:flex'>
             <span className='mx-1 text-sm capitalize'>Kết nối</span>
           </div>
-          {/* facebook, intargram */}
-          <div className='flex items-center justify-center'>
+          {/* facebook, intargram - Ẩn trên mobile */}
+          <div className='flex items-center justify-center hidden lg:flex'>
             <Link
               to='https://www.facebook.com/ShopeeVN'
               className='mr-2 h-[16px] w-[16px] overflow-hidden text-center indent-[-9999px]'
@@ -259,7 +259,7 @@ const NavHeader = () => {
                 <NotificationList />
               </div>
             ) : (
-              <div className='relative h-[21.875rem] w-[400px] cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+              <div className='relative h-[21.875rem] w-[300px] md:w-[400px] cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 {/* flex cha, không nên để items-center ở thằng cha vì nó sẽ làm căng giữa ở thằng cha */}
                 <div
                   className={classNames(
@@ -270,24 +270,24 @@ const NavHeader = () => {
                   <div className='flex flex-grow flex-col items-center justify-center'>
                     <div className='flex items-center'>
                       <img
-                        className='h-[6.25rem] w-[6.25rem] object-cover'
+                        className='h-[5rem] w-[5rem] md:h-[6.25rem] md:w-[6.25rem] object-cover'
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/99e561e3944805a023e87a81d4869600.png'
                         alt='anh'
                       />
                     </div>
-                    <span className='mt-5'>Đăng nhập để xem Thông báo</span>
+                    <span className='mt-5 text-xs md:text-sm'>Đăng nhập để xem Thông báo</span>
                   </div>
                   {/* button đăng ký & đăng nhập */}
                   <div className='flex w-full items-center border-0'>
                     <Link
                       to={path.register}
-                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d]'
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-[#ee4d2d]'
                     >
                       Đăng ký
                     </Link>
                     <Link
                       to={path.login}
-                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center hover:bg-[#e8e8e8] hover:text-[#ee4d2d] '
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-[#ee4d2d] '
                     >
                       Đăng nhập
                     </Link>
@@ -304,7 +304,7 @@ const NavHeader = () => {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className={`h-[22px] w-[22px] transition-transform duration-200 ${
+              className={`h-[18px] w-[18px] md:h-[22px] md:w-[22px] transition-transform duration-200 ${
                 isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
               }`}
             >
@@ -316,16 +316,16 @@ const NavHeader = () => {
             </svg>
             {/* Badge hiển thị số thông báo chưa đọc */}
             {isAuthenticated && unreadCount > 0 && (
-              <span className='absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-xs text-[#ee4d2d] font-medium border border-[#ee4d2d]'>
+              <span className='absolute -top-1 -right-1 flex h-3 w-3 md:h-4 md:w-4 items-center justify-center rounded-full bg-white text-[10px] md:text-xs text-[#ee4d2d] font-medium border border-[#ee4d2d]'>
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
           </div>
 
-          <span className='mx-1 text-sm capitalize'>Thông báo</span>
+          <span className='mx-1 text-xs md:text-sm capitalize hidden md:inline'>Thông báo</span>
         </Popover>
-        {/* Hỗ trợ */}
-        <Link to={path.login} className='mt-[1px]'>
+        {/* Hỗ trợ - Ẩn text trên mobile */}
+        <Link to={path.login} className='mt-[1px] hidden md:block'>
           <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -333,7 +333,7 @@ const NavHeader = () => {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='h-[22px] w-[22px]'
+              className='h-[18px] w-[18px] md:h-[22px] md:w-[22px]'
             >
               <path
                 strokeLinecap='round'
@@ -344,7 +344,7 @@ const NavHeader = () => {
             <span className='mx-1 text-sm capitalize'>Hỗ trợ</span>
           </div>
         </Link>
-        {/* Language */}
+        {/* Language - Responsive */}
         <Popover
           as='span'
           className={classNames('flex cursor-pointer items-center py-1 hover:text-white/70')}
@@ -352,13 +352,19 @@ const NavHeader = () => {
             <div className='relative rounded-sm border border-gray-200 bg-white shadow-md transition-all'>
               <div
                 className={classNames(
-                  'flex flex-col py-2 pr-28 pl-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
+                  'flex flex-col py-2 pr-20 md:pr-28 pl-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
                 )}
               >
-                <button onClick={() => handleTranslateLanguage('vi')} className='py-2 px-1 hover:text-orange'>
+                <button
+                  onClick={() => handleTranslateLanguage('vi')}
+                  className='py-2 px-1 hover:text-orange text-xs md:text-sm'
+                >
                   Tiếng Việt
                 </button>
-                <button onClick={() => handleTranslateLanguage('en')} className='py-2 px-1 text-left hover:text-orange'>
+                <button
+                  onClick={() => handleTranslateLanguage('en')}
+                  className='py-2 px-1 text-left hover:text-orange text-xs md:text-sm'
+                >
                   English
                 </button>
               </div>
@@ -371,7 +377,7 @@ const NavHeader = () => {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-5 w-5'
+            className='h-4 w-4 md:h-5 md:w-5'
           >
             <path
               strokeLinecap='round'
@@ -379,60 +385,18 @@ const NavHeader = () => {
               d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
             />
           </svg>
-          <span className='mx-1 text-sm'>{currentLanguage}</span>
+          <span className='mx-1 text-xs md:text-sm hidden md:inline'>{currentLanguage}</span>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-5 w-5'
+            className='h-3 w-3 md:h-5 md:w-5'
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
           </svg>
         </Popover>
-        {/* <div
-    className='flex cursor-pointer items-center py-1 hover:text-white/70'
-    ref={reference}
-    onMouseEnter={showPopover}
-    onMouseLeave={hidePopover}
-  >
-    <FloatingPortal>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            ref={floating}
-            style={{
-              position: strategy,
-              top: y ?? 0,
-              left: x ?? 0,
-              width: 'max-content',
-              transformOrigin: `${middlewareData.arrow?.x}px top`
-            }}
-            initial={{ opacity: 0, transform: 'scale(0)' }}
-            animate={{ opacity: 1, transform: 'scale(1)' }}
-            exit={{ opacity: 0, transform: 'scale(0)' }}
-            transition={{ duration: 0.2 }}
-          >
-            <span
-              ref={arrowRef}
-              className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white'
-              style={{
-                left: middlewareData.arrow?.x,
-                top: middlewareData.arrow?.y
-              }}
-            ></span>
-            <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
-              <div className='flex flex-col py-2 px-3'>
-                <button className='py-2 px-2 hover:text-orange'>Tiếng Việt</button>
-                <button className='py-2 px-2 hover:text-orange'>English</button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </FloatingPortal>
-  </div> */}
         {/* Avatar và tên người dùng */}
         {isAuthenticated && (
           <Popover
@@ -447,28 +411,28 @@ const NavHeader = () => {
                 >
                   <Link
                     to={path.profile}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
                   >
                     Tài Khoản Của Tôi
                   </Link>
                   <Link
                     to={path.historyPurchases}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
                   >
                     Đơn Mua
                   </Link>
                   <button
                     onClick={() => handleLogout()}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
                   >
                     Đăng Xuất
                   </button>
                 </div>
               </div>
             }
-            className={classNames('ml-5 flex cursor-pointer items-center py-1 hover:text-white/70')}
+            className={classNames('ml-2 md:ml-5 flex cursor-pointer items-center py-1 hover:text-white/70')}
           >
-            <div className='mr-2 h-6 w-6 flex-shrink-0'>
+            <div className='mr-1 md:mr-2 h-5 w-5 md:h-6 md:w-6 flex-shrink-0'>
               <img
                 src={getAvatarUrl(profile?.avatar)}
                 alt='avatar'
@@ -479,26 +443,16 @@ const NavHeader = () => {
           </Popover>
         )}
         {!isAuthenticated && (
-          <div className='mt-[1.5px] flex items-center text-[14px]'>
-            <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
+          <div className='mt-[1.5px] flex items-center text-[12px] md:text-[14px]'>
+            <Link to={path.register} className='mx-2 md:mx-3 capitalize hover:text-white/70'>
               Đăng ký
             </Link>
             <div className='h-4 border-r-[1px] border-r-white/40'></div>
-            <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
+            <Link to={path.login} className='mx-2 md:mx-3 capitalize hover:text-white/70'>
               Đăng nhập
             </Link>
           </div>
         )}
-        {/* <div className='ml-6 flex cursor-pointer items-center py-1 hover:text-white/70'>
-    <div className='mr-2 h-6 w-6 flex-shrink-0'>
-      <img
-        src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
-        alt='avatar'
-        className='h-full w-full rounded-full object-cover'
-      />
-    </div>
-    <span className='text-sm'>HoangTrong</span>
-  </div> */}
       </div>
     </div>
   )

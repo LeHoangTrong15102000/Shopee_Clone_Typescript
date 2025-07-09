@@ -290,6 +290,21 @@ export const productDetailRequest = http.get(`${config.baseUrl}products/:id`, ()
   })
 })
 
-const productRequests = [productsRequest, productDetailRequest]
+export const searchHistoryRequest = http.get(`${config.baseUrl}products/search/history`, () => {
+  return HttpResponse.json(
+    {
+      message: 'Lấy lịch sử tìm kiếm thành công',
+      data: ['áo thun', 'điện thoại', 'laptop', 'giày dép']
+    },
+    {
+      status: HTTP_STATUS_CODE.Ok,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+})
+
+const productRequests = [productsRequest, productDetailRequest, searchHistoryRequest]
 
 export default productRequests

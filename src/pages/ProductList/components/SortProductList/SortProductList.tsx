@@ -25,7 +25,7 @@ const SortProductList = ({ queryConfig, pageSize }: Props) => {
   // Viết function Navigate khi mà nhấn vào sẽ tạo ra đường dẫn URL để Active button
   const handleSortNavigate = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
     navigate({
-      pathname: path.home,
+      pathname: path.products,
       search: createSearchParams(
         omit(
           {
@@ -41,7 +41,7 @@ const SortProductList = ({ queryConfig, pageSize }: Props) => {
   // Function handle cho việc sort order `Giá`
   const handlePriceOrder = (orderValue: Exclude<ProductListConfig['order'], undefined>) => {
     navigate({
-      pathname: path.home,
+      pathname: path.products,
       search: createSearchParams({
         ...queryConfig,
         sort_by: sortBy.price,
@@ -126,7 +126,7 @@ const SortProductList = ({ queryConfig, pageSize }: Props) => {
             ) : (
               <Link
                 to={{
-                  pathname: path.home,
+                  pathname: path.products,
                   search: createSearchParams({
                     ...queryConfig,
                     page: (page - 1).toString()
@@ -162,7 +162,7 @@ const SortProductList = ({ queryConfig, pageSize }: Props) => {
             ) : (
               <Link
                 to={{
-                  pathname: path.home,
+                  pathname: path.products,
                   search: createSearchParams({
                     ...queryConfig,
                     page: (page + 1).toString()

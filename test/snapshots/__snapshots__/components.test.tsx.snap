@@ -1,0 +1,136 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Component Snapshots > Button component disabled state > Button-disabled 1`] = `
+<button
+  class="cursor-not-allowed"
+  disabled=""
+>
+  <span>
+    Disabled button
+  </span>
+</button>
+`;
+
+exports[`Component Snapshots > Button component renders correctly > Button-default 1`] = `
+<button
+  class=""
+>
+  <span>
+    Click me
+  </span>
+</button>
+`;
+
+exports[`Component Snapshots > Input component renders correctly > Input-default 1`] = `
+<div>
+  <input
+    aria-invalid="false"
+    class="w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500"
+    name="test"
+    placeholder="Test input"
+  />
+  <div
+    class="mt-1 min-h-[1.25rem] text-sm text-red-600"
+  />
+</div>
+`;
+
+exports[`Component Snapshots > Input component with error state > Input-error 1`] = `
+<div>
+  <input
+    aria-describedby="test-error-error"
+    aria-invalid="true"
+    class="w-full rounded-sm border border-red-600 p-3 shadow-sm outline-none focus:border-gray-500"
+    name="test-error"
+    placeholder="Test input"
+  />
+  <div
+    class="mt-1 min-h-[1.25rem] text-sm text-red-600"
+    id="test-error-error"
+  >
+    This field is required
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots > Pagination component renders correctly > Pagination-default 1`] = `
+<nav
+  aria-label="Pagination Navigation"
+  class="mt-6 flex flex-wrap items-center justify-center"
+  role="navigation"
+>
+  <span
+    class="flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-4 py-2 "
+  >
+    <svg
+      class="h-5 w-5 text-[rgba(0,0,0,0.6)]"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M15.75 19.5L8.25 12l7.5-7.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+  <a
+    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] bg-[#ee4d2d] text-white hover:bg-[#ee4d2d]"
+    href="/?page=1"
+  >
+    1
+  </a>
+  <a
+    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
+    href="/?page=2"
+  >
+    2
+  </a>
+  <a
+    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
+    href="/?page=3"
+  >
+    3
+  </a>
+  <span
+    class="flex items-center justify-center border bg-white px-3 py-2 shadow-sm"
+  >
+    ...
+  </span>
+  <a
+    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
+    href="/?page=19"
+  >
+    19
+  </a>
+  <a
+    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
+    href="/?page=20"
+  >
+    20
+  </a>
+  <a
+    aria-label="Go to next page"
+    class="flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm border-transparent  px-4 py-2 "
+    href="/?page=2"
+  >
+    <svg
+      class="h-5 w-5 text-[rgba(0,0,0,.6)] "
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </a>
+</nav>
+`;

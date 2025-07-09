@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
 
 import ProductRating from 'src/components/ProductRating'
+import ProductReviews from 'src/components/ProductReviews'
 import path from 'src/constant/path'
 
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
@@ -477,6 +478,12 @@ const ProductDetail = () => {
               />
             </div>
           </div>
+        </div>
+      </div>
+      {/* Đánh giá sản phẩm */}
+      <div className='mt-8'>
+        <div className='container'>
+          <ProductReviews productId={product._id} />
         </div>
       </div>
       {/* Mục sản phẩm yêu thích */}

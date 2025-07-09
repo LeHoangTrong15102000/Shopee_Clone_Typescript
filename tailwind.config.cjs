@@ -101,8 +101,8 @@ module.exports = {
           paddingRight: theme('spacing.4')
         }
       })
-    }),
-    require('@tailwindcss/line-clamp')
+    })
+    // @tailwindcss/line-clamp đã được tích hợp mặc định từ Tailwind CSS v3.3+
   ],
   variants: {
     extends: {}

@@ -26,7 +26,6 @@ export const resources = {
 export const defaultNS = 'home' // export ra để dùng cho trong khai báo cái type của chúng ta
 
 // Khi mà khai báo namespace trong resource thì chúng ta cũng nên khai báo ở dưới đây
-// eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   resources,
   lng: 'vi',

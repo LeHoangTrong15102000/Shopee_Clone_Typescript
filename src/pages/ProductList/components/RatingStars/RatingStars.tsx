@@ -11,7 +11,7 @@ const RatingStars = ({ queryConfig }: Props) => {
 
   const handleFilterStar = (ratingFilterNumber: number) => {
     navigate({
-      pathname: path.home,
+      pathname: path.products,
       search: createSearchParams({
         ...queryConfig,
         rating_filter: String(ratingFilterNumber)

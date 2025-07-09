@@ -62,23 +62,3 @@ function InputV2<
 }
 
 export default InputV2
-
-// type Gen<TFunc> = {
-//   getName: TFunc
-// }
-
-// function Hexa<T extends string>(props: { name: T; lastName: T }) {
-//   return null
-// }
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// function Hexa<<TFunc extends () =>  string, TLastName extends ReturnType<TFunc>>(props: {person: Gen<TFunc>, lastName: TLastName})> {
-//   return null
-// }
-
-// const handleName: () => 'Trong' = () => 'Trong' // handleName nó có kiểu trả về là () => 'Trong'
-
-// // Mình mong muốn thằng lastName nhận vào giá trị return của func getName
-// function App() {
-//   return <Hexa person={{ getName: handleName }} lastName='Trong' />
-// }

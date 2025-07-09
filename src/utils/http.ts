@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // viết lại file utils cho nó sạch
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosInstance } from 'axios'
 import { toast } from 'react-toastify'
@@ -88,7 +87,7 @@ export class Http {
             error.response?.status as number
           )
         ) {
-          const data: any | undefined = error.response?.data
+          const data = error.response?.data as { message?: string } | undefined
           const message = data?.message || error.message
           toast.error(message)
         }

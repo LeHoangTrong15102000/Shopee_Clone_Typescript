@@ -5,6 +5,7 @@ import { setupServer } from 'msw/node'
 import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import { http, HttpResponse } from 'msw'
+import { vi } from 'vitest'
 
 import authRequests from './src/msw/auth.msw'
 import productRequests from './src/msw/product.msw'
@@ -80,6 +81,25 @@ const additionalMocks = [
   })
 ]
 
+// Mock react-i18next
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next')
+  return {
+    ...actual,
+    useTranslation: () => ({
+      t: (key) => key,
+      i18n: {
+        changeLanguage: vi.fn(),
+        language: 'vi'
+      }
+    }),
+    initReactI18next: {
+      type: '3rdParty',
+      init: vi.fn()
+    }
+  }
+})
+
 const server = setupServer(...authRequests, ...productRequests, ...userRequests, ...additionalMocks)
 
 // Start server before all tests với warn thay vì error
@@ -94,4 +114,23 @@ afterEach(() => {
   cleanup()
   // Clear localStorage after each test
   localStorage.clear()
+  vi.clearAllMocks()
+})
+
+// Mock PointerEvent cho framer-motion trong test environment
+global.PointerEvent = class PointerEvent extends Event {
+  constructor(type, options = {}) {
+    super(type, options)
+    this.pointerId = options.pointerId || 1
+    this.clientX = options.clientX || 0
+    this.clientY = options.clientY || 0
+    this.pointerType = options.pointerType || 'mouse'
+    this.pressure = options.pressure || 0.5
+    this.isPrimary = options.isPrimary || true
+  }
+}
+
+// Mock additional globals for test environment
+Object.defineProperty(window, 'HTMLElement', {
+  value: HTMLElement
 })

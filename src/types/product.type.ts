@@ -15,6 +15,7 @@ export interface Product {
     name: string
   }
   image: string
+  location: string // địa điểm bán sản phẩm
   createdAt: string
   updatedAt: string
 }
