@@ -3,6 +3,11 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
+import os from 'os'
+
+// Workaround cho Windows path length issues
+const isWindows = os.platform() === 'win32'
+const customCacheDir = isWindows ? path.join(os.tmpdir(), 'vite-cache-shopee') : 'node_modules/.vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +16,20 @@ export default defineConfig({
     'process.env': process.env
   },
   server: {
-    port: 4000
+    port: 4000,
+    host: true,
+    fs: {
+      // Allow serving files from one level up to the project root
+      allow: ['..']
+    }
+  },
+  // Tối ưu cho Windows - sử dụng temp directory
+  optimizeDeps: {
+    force: true,
+    esbuildOptions: {
+      // Tăng buffer size cho Windows
+      target: 'es2020'
+    }
   },
   css: {
     devSourcemap: true
@@ -21,6 +39,8 @@ export default defineConfig({
       src: path.resolve(__dirname, './src')
     }
   },
+  // Cấu hình cache để tránh conflict trên Windows - sử dụng system temp
+  cacheDir: customCacheDir,
   build: {
     rollupOptions: {
       output: {

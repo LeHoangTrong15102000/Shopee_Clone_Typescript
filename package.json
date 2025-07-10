@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env BUILD_MODE=dev vite",
+    "dev:win": "cross-env BUILD_MODE=dev NODE_OPTIONS=\"--max-old-space-size=4096\" VITE_FORCE_COLOR=1 vite --force",
+    "dev:safe": "cross-env BUILD_MODE=dev vite --force --clearScreen false",
+    "dev:bypass": "cross-env BUILD_MODE=dev NODE_OPTIONS=\"--max-old-space-size=4096\" vite --force --config ./vite.config.ts",
     "build": "cross-env BUILD_MODE=production tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint --ext ts,tsx src/",
