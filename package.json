@@ -9,6 +9,8 @@
     "dev:safe": "cross-env BUILD_MODE=dev vite --force --clearScreen false",
     "dev:bypass": "cross-env BUILD_MODE=dev NODE_OPTIONS=\"--max-old-space-size=4096\" vite --force --config ./vite.config.ts",
     "build": "cross-env BUILD_MODE=production tsc && vite build",
+    "build:production": "cross-env BUILD_MODE=production NODE_ENV=production tsc && vite build",
+    "deploy": "pnpm run build:production && pnpm run preview",
     "preview": "vite preview",
     "lint": "eslint --ext ts,tsx src/",
     "lint:fix": "eslint --fix --ext ts,tsx src/",

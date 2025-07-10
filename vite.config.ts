@@ -12,6 +12,8 @@ const customCacheDir = isWindows ? path.join(os.tmpdir(), 'vite-cache-shopee') :
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), visualizer()] as any,
+  // Base URL cho production deployment
+  base: process.env.NODE_ENV === 'production' ? '/' : '/',
   define: {
     'process.env': process.env
   },
@@ -22,6 +24,10 @@ export default defineConfig({
       // Allow serving files from one level up to the project root
       allow: ['..']
     }
+  },
+  preview: {
+    port: 4173,
+    host: true
   },
   // Tối ưu cho Windows - sử dụng temp directory
   optimizeDeps: {
@@ -42,6 +48,10 @@ export default defineConfig({
   // Cấu hình cache để tránh conflict trên Windows - sử dụng system temp
   cacheDir: customCacheDir,
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {

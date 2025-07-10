@@ -27,7 +27,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AppProvider>
-          <App />
+          <HelmetProvider>
+            <ErrorBoundary>
+              <App />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ErrorBoundary>
+          </HelmetProvider>
         </AppProvider>
       </QueryClientProvider>
     </BrowserRouter>
