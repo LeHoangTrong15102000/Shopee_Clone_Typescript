@@ -12,27 +12,29 @@ export const locales = {
 
 export const resources = {
   en: {
-    // gọi là namespacee, bỏ các translation: {} trong `en` khai báo như kiểu bên dưới chúng ta dễ kiểm soát hơn
-    home: HOME_EN, //
+    home: HOME_EN,
     product: PRODUCT_EN
   },
   vi: {
     home: HOME_VI,
     product: PRODUCT_VI
   }
+} as const
+
+export const defaultNS = 'home'
+
+// Chỉ khởi tạo i18n nếu không phải test environment
+if (typeof window !== 'undefined' && !window?.location?.href?.includes('vitest')) {
+  i18n.use(initReactI18next).init({
+    resources,
+    lng: 'vi',
+    ns: ['home', 'product'],
+    fallbackLng: 'vi',
+    defaultNS,
+    interpolation: {
+      escapeValue: false // react already does escaping
+    }
+  })
 }
 
-// Khai báo một namespace Default
-export const defaultNS = 'home' // export ra để dùng cho trong khai báo cái type của chúng ta
-
-// Khi mà khai báo namespace trong resource thì chúng ta cũng nên khai báo ở dưới đây
-i18n.use(initReactI18next).init({
-  resources,
-  lng: 'vi',
-  ns: ['home', 'product'], // Dùng bao nhiêu namespace thì chúng ta khai báo trong đây(NS dùng trong project)
-  fallbackLng: 'vi', //  Trong trường hợp chúng ta không xác định được ngôn ngữ thì cho nó về 'vi'
-  defaultNS, // Khai báo defaultNS
-  interpolation: {
-    escapeValue: false // Nên set là false vì thằng react nó đã có khả năng chống XSS khi render ra JSX rồi
-  }
-})
+export default i18n
