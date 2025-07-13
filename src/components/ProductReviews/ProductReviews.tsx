@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import reviewApi from 'src/apis/review.api'
 import { Review, ReviewComment, CreateCommentData } from 'src/types/review.type'
 import ProductRating from 'src/components/ProductRating'
-import { useOptimisticReviewLike } from 'src/hooks/useOptimisticCart'
+import { useOptimisticReviewLike } from 'src/hooks/optimistic'
 // Temporary date formatter - install date-fns for better formatting
 const formatDistanceToNow = (date: Date, options?: { addSuffix?: boolean; locale?: any }) => {
   const now = new Date()

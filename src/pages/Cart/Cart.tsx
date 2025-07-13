@@ -16,7 +16,7 @@ import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from '../../assets/images/img-product-incart.png'
-import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart } from 'src/hooks/useOptimisticCart'
+import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart } from 'src/hooks/optimistic'
 
 interface ExtendedPurchase extends Purchase {
   disabled: boolean

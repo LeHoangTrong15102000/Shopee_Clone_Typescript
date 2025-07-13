@@ -23,7 +23,7 @@ import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
 import Loader from 'src/components/Loader'
-import { useOptimisticAddToCart } from 'src/hooks/useOptimisticCart'
+import { useOptimisticAddToCart } from 'src/hooks/optimistic'
 
 // Type cho purchase
 export type AddToCartType = {
