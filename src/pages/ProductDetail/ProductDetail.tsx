@@ -23,6 +23,7 @@ import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
 import Loader from 'src/components/Loader'
+import { useOptimisticAddToCart } from 'src/hooks/useOptimisticCart'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -81,10 +82,8 @@ const ProductDetail = () => {
   // Ban đầu khi mà category chưa có dữ liệu thì nó sẽ render ra 20 product page 1
   // console.log(productsData?.data.data)
 
-  // Mutation xử lý addToCart
-  const addToCartMutation = useMutation({
-    mutationFn: (body: AddToCartType) => purchaseApi.addToCart(body)
-  })
+  // Mutation xử lý addToCart với Optimistic Updates
+  const addToCartMutation = useOptimisticAddToCart()
 
   useEffect(() => {
     // Khi mà product mà có thì set active ảnh đầu tiên
@@ -147,39 +146,41 @@ const ProductDetail = () => {
     setBuyCount(value)
   }
 
-  // func xử lý AddToCart
+  // func xử lý AddToCart với Optimistic Updates
   const addToCart = () => {
-    addToCartMutation.mutate(
-      { product_id: product?._id as string, buy_count: buyCount },
-      {
-        // data đầu tiên là data do Axios trả về, do interceptor chúng ta ko cấu hình response.data nên arg data trong onSuccess do AxiosRes trả về trước rồi mới tới data của SuccResponseApi
-        onSuccess: (data) => {
-          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-          toast.success(data.data.message, { autoClose: 1000 })
-        }
-      }
-    ) // Nếu undefined thì nó đã return null rồi
+    if (!product) return
+
+    addToCartMutation.mutate({
+      product_id: product._id,
+      buy_count: buyCount
+    })
   }
 
-  // func xử lý `Mua Ngay`
+  // func xử lý `Mua Ngay` với Optimistic Updates
   const handleBuyNow = async () => {
-    const res = await addToCartMutation.mutateAsync(
-      { product_id: product?._id as string, buy_count: buyCount },
-      {
-        onSuccess: (data) => {
-          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-          toast.success(data.data.message, { autoClose: 1000 })
+    if (!product) return
+
+    try {
+      const res = await addToCartMutation.mutateAsync({
+        product_id: product._id,
+        buy_count: buyCount
+      })
+
+      // Khi mà thành công thì sẽ lấy ra cái purchase
+      const purchase = res.data.data
+      // Khi nhấn vào `Mua Ngay` thì chuyển đến trang Cart kèm theo cái state là purchaseId
+      navigate(path.cart, {
+        state: {
+          purchaseId: purchase._id // lấy ra _id của mỗi sản phẩm trong giỏ
         }
-      }
-    )
-    // Khi mà thành công thì sẽ lấy ra cái purchase
-    const purchase = res.data.data
-    // Khi nhấn vào `Mua Ngay` thì chuyển đến trang Cart kèm theo cái state là purchaseId
-    navigate(path.cart, {
-      state: {
-        purchaseId: purchase._id // lấy ra _id của mỗi sản phẩm trong giỏ
-      }
-    })
+      })
+    } catch (error) {
+      console.error('Buy now error:', error)
+      toast.error('Không thể mua ngay. Vui lòng thử lại!', {
+        autoClose: 2000,
+        position: 'top-center'
+      })
+    }
   }
 
   // Lỗi là ở đây, cayyyyy

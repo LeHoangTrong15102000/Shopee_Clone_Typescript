@@ -16,6 +16,7 @@ import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from '../../assets/images/img-product-incart.png'
+import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart } from 'src/hooks/useOptimisticCart'
 
 interface ExtendedPurchase extends Purchase {
   disabled: boolean
@@ -34,13 +35,8 @@ const Cart = () => {
     queryFn: async () => await purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
 
-  const updatePurchaseMutation = useMutation({
-    mutationFn: purchaseApi.updatePurchase,
-    onSuccess: async () => {
-      // refetch() // gọi lại refetch lại getPurchases
-      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-    }
-  })
+  // Sử dụng Optimistic Updates cho update quantity
+  const updatePurchaseMutation = useOptimisticUpdateQuantity()
 
   // buyProduct Mutation
   const buyPurchasesMutation = useMutation({
@@ -54,13 +50,8 @@ const Cart = () => {
     }
   })
 
-  // deleteProduct Mutation
-  const deletePurchasesMutation = useMutation({
-    mutationFn: purchaseApi.deletePurchase,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-    }
-  })
+  // deleteProduct Mutation với Optimistic Updates
+  const deletePurchasesMutation = useOptimisticRemoveFromCart()
 
   // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
@@ -177,44 +168,33 @@ const Cart = () => {
     )
   }
 
-  // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart
+  // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart với Optimistic Updates
   const handleQuantity = (purchaseIndex: number, value: number, enabled: boolean) => {
-    // Khi mà enabled = true thì mới cho thực hiện
-    updatePurchaseMutation.isPending // ban đầu phải isPending trước
     if (enabled) {
       const purchase = extendedPurchases[purchaseIndex] // lấy ra cái purchase
-      setExtendedPurchases(
-        produce((draft) => {
-          draft[purchaseIndex].disabled = true
-        })
-      )
-      // Gọi Api updatem khi mà tăng giảm thì nó sẽ gửi Api lên server cập nhật lại giá trị
-      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+
+      // Với Optimistic Updates, không cần disable UI
+      // setExtendedPurchases sẽ được xử lý trong hook useOptimisticUpdateQuantity
+
+      // Gọi Api update với optimistic behavior
+      updatePurchaseMutation.mutate({
+        product_id: purchase.product._id,
+        buy_count: value
+      })
     }
   }
 
-  // func xử lý xóa 1 sản phẩm, dùng currying để xử lý
+  // func xử lý xóa 1 sản phẩm với Optimistic Updates
   const handleDelete = (purchaseIndex: number) => () => {
     const purchaseId = extendedPurchases[purchaseIndex]._id
-    deletePurchasesMutation.mutate([purchaseId], {
-      onSuccess: () => {
-        toast.success('Xoá sản phẩm thành công!', {
-          autoClose: 1000,
-          position: 'top-center'
-        })
-      }
-    }) // này không cần return về gì hết vì BE nó đã xử lý
+    deletePurchasesMutation.mutate([purchaseId])
   }
 
-  // func xử lý xóa nhiều sản phẩm
+  // func xử lý xóa nhiều sản phẩm với Optimistic Updates
   const handleDeleteManyPurchases = () => {
     // lấy ra các mảng purchasesIds từ mảng filter checkedPurchase
     const purchaseIds = checkedPurchases.map((purchase) => purchase._id)
-    deletePurchasesMutation.mutate(purchaseIds, {
-      onSuccess: () => {
-        toast.success('Xóa tất cả sản phẩm thành công', { position: 'top-center', autoClose: 1000 })
-      }
-    })
+    deletePurchasesMutation.mutate(purchaseIds)
   }
 
   // func xử lý buy product
@@ -352,7 +332,7 @@ const Cart = () => {
                                       value !== (purchasesInCart as Purchase[])[index].buy_count
                                   )
                                 }
-                                disabled={purchase.disabled}
+                                disabled={false} // Với Optimistic Updates, không disable UI
                                 isQuantityInCart={true}
                               />
                             </div>

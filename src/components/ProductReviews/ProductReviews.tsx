@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import reviewApi from 'src/apis/review.api'
 import { Review, ReviewComment, CreateCommentData } from 'src/types/review.type'
 import ProductRating from 'src/components/ProductRating'
+import { useOptimisticReviewLike } from 'src/hooks/useOptimisticCart'
 // Temporary date formatter - install date-fns for better formatting
 const formatDistanceToNow = (date: Date, options?: { addSuffix?: boolean; locale?: any }) => {
   const now = new Date()
@@ -48,10 +49,8 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
       })
   })
 
-  // Like/Unlike mutation
-  const likeMutation = useMutation({
-    mutationFn: reviewApi.toggleReviewLike
-  })
+  // Like/Unlike mutation với Optimistic Updates
+  const likeMutation = useOptimisticReviewLike(productId)
 
   // Comment mutation
   const commentMutation = useMutation({
@@ -62,16 +61,9 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
   const stats = reviewsData?.data.data.stats
   const pagination = reviewsData?.data.data.pagination
 
-  // Handle like/unlike
+  // Handle like/unlike với Optimistic Updates
   const handleLike = (reviewId: string) => {
-    likeMutation.mutate(reviewId, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['product-reviews', productId] })
-      },
-      onError: () => {
-        toast.error('Có lỗi xảy ra khi thích đánh giá')
-      }
-    })
+    likeMutation.mutate(reviewId)
   }
 
   // Handle comment submit
