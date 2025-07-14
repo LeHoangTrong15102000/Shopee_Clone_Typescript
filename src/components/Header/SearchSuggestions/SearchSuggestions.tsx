@@ -19,46 +19,78 @@ interface Props {
 // Mock data để fallback khi API lỗi
 const mockProducts = [
   {
-    _id: '60afafe76ef5b902180aacb5',
-    name: 'Điện thoại Apple iPhone 12 64GB - Hàng chính hãng VNA',
-    image: 'https://down-vn.img.susercontent.com/file/2c3cb693e7d5c78d875e82c4a18d1eb9',
-    price: 20990000
+    _id: 'mock-1',
+    name: 'iPhone 15 Pro Max',
+    image: '/src/assets/images/img-product-incart.png',
+    price: 28999000
   },
   {
-    _id: '60afb1c76ef5b902180aacba',
-    name: 'Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng',
-    image: 'https://down-vn.img.susercontent.com/file/3fb746c8df6774e65b2d8dd87dd8a15b',
-    price: 2590000
+    _id: 'mock-2',
+    name: 'Samsung Galaxy S24 Ultra',
+    image: '/src/assets/images/img-product-incart.png',
+    price: 25999000
   },
   {
-    _id: '60afb07e6ef5b902180aacb8',
-    name: 'Điện Thoại Xiaomi Redmi 9A 2GB/32GB - Hàng Chính Hãng',
-    image: 'https://down-vn.img.susercontent.com/file/bccaf5c5087e89b51b00dcba5f1b181d',
-    price: 1949000
+    _id: 'mock-3',
+    name: 'MacBook Pro M3',
+    image: '/src/assets/images/img-product-incart.png',
+    price: 45999000
   }
 ]
 
+/**
+ * SearchSuggestions Component với Query Cancellation
+ * Tự động hủy các request search cũ khi user gõ tiếp
+ */
 const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide }: Props) => {
-  const debouncedSearchValue = useDebounce(searchValue, 500)
+  const debouncedSearchValue = useDebounce(searchValue, 300) // Giảm từ 500ms xuống 300ms cho responsive hơn
   const [searchHistory, setSearchHistory] = useState<string[]>([])
+
   // State để track các hình ảnh bị lỗi và ngăn re-render liên tục
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
 
-  // Query để lấy search suggestions
-  const { data: suggestionsData, isError: suggestionsError } = useQuery({
+  /**
+   * Query để lấy search suggestions với Query Cancellation
+   * TanStack Query sẽ tự động hủy request cũ khi debouncedSearchValue thay đổi
+   */
+  const {
+    data: suggestionsData,
+    isError: suggestionsError,
+    isFetching
+  } = useQuery({
     queryKey: ['searchSuggestions', debouncedSearchValue],
-    queryFn: () => productApi.getSearchSuggestions({ q: debouncedSearchValue || '' }),
-    enabled: Boolean(debouncedSearchValue?.trim()),
+    queryFn: ({ signal }) => {
+      // Truyền AbortSignal vào API call để support cancellation
+      return productApi.getSearchSuggestions({ q: debouncedSearchValue || '' }, { signal })
+    },
+    enabled: Boolean(debouncedSearchValue?.trim()) && (debouncedSearchValue?.length ?? 0) > 1,
     staleTime: 30000, // Cache 30 giây
-    retry: 1 // Retry tối đa 1 lần nếu lỗi
+    retry: (failureCount, error: any) => {
+      // Không retry nếu request bị abort (do cancellation)
+      if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
+        return false
+      }
+      return failureCount < 1 // Retry tối đa 1 lần nếu lỗi khác
+    }
   })
 
-  // Query để lấy search history
+  /**
+   * Query để lấy search history với Query Cancellation
+   */
   const { data: historyData, isError: historyError } = useQuery({
     queryKey: ['searchHistory'],
-    queryFn: () => productApi.getSearchHistory(),
+    queryFn: ({ signal }) => {
+      // Truyền AbortSignal vào API call
+      return productApi.getSearchHistory({ signal })
+    },
     staleTime: 60000, // Cache 1 phút
-    retry: 1 // Retry tối đa 1 lần nếu lỗi
+    retry: (failureCount, error: any) => {
+      // Không retry nếu request bị abort
+      if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
+        return false
+      }
+      return failureCount < 1
+    }
   })
 
   useEffect(() => {
@@ -102,9 +134,13 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
   const handleSelectSuggestion = useCallback(
     (suggestion: string) => {
       onSelectSuggestion(suggestion)
-      // Lưu vào search history với error handling
-      productApi.saveSearchHistory({ keyword: suggestion }).catch((error) => {
-        console.warn('Không thể lưu lịch sử tìm kiếm:', error)
+
+      // Lưu vào search history với error handling và cancellation support
+      productApi.saveSearchHistory({ keyword: suggestion }, {}).catch((error) => {
+        // Bỏ qua lỗi nếu request bị cancel
+        if (error?.name !== 'AbortError' && error?.code !== 'ERR_CANCELED') {
+          console.warn('Không thể lưu lịch sử tìm kiếm:', error)
+        }
       })
       onHide()
     },
@@ -166,96 +202,77 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
 
   if (!isVisible) return null
 
+  // Hiển thị loading state khi đang fetch
+  const showLoading = isFetching && (debouncedSearchValue?.length ?? 0) > 1
+
   return (
-    <div className='absolute top-full left-0 z-50 mt-[-6px] max-h-[350px] md:max-h-[400px] min-h-[50px] w-full min-w-[280px] md:min-w-[300px] overflow-hidden rounded-sm bg-white py-2 shadow-lg border border-gray-200'>
-      <div className='max-h-[330px] md:max-h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400'>
-        {searchValue.trim() ? (
-          <>
-            {/* Gợi ý tìm kiếm */}
-            {suggestions.length > 0 && (
-              <div className='px-3 md:px-4 py-2'>
-                <div className='text-xs text-gray-500 mb-2'>Gợi ý tìm kiếm</div>
-                {suggestions.map((suggestion, index) => (
-                  <SearchSuggestionItem
-                    key={index}
-                    suggestion={suggestion}
-                    searchValue={searchValue}
-                    onSelect={() => handleSelectSuggestion(suggestion)}
-                  />
+    <div className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
+      {showLoading && (
+        <div className='flex items-center justify-center py-4'>
+          <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-[#ee4d2d]'></div>
+          <span className='ml-2 text-sm text-gray-600'>Đang tìm kiếm...</span>
+        </div>
+      )}
+
+      {!showLoading && (debouncedSearchValue?.length ?? 0) > 1 && (
+        <>
+          {/* Search Suggestions */}
+          {suggestions.length > 0 && (
+            <div className='border-b border-gray-100'>
+              <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>
+                Gợi ý tìm kiếm
+              </div>
+              {suggestions.slice(0, 5).map((suggestion, index) => (
+                <SearchSuggestionItem
+                  key={index}
+                  suggestion={suggestion}
+                  searchValue={debouncedSearchValue || ''}
+                  onSelect={() => handleSelectSuggestion(suggestion)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Product Results */}
+          {products.length > 0 && (
+            <div>
+              <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>
+                Sản phẩm ({products.length > 5 ? '5+' : products.length})
+              </div>
+              <div className='px-4 pb-2'>
+                {products.slice(0, 5).map((product) => (
+                  <ProductItem key={product._id} product={product} />
                 ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Sản phẩm gợi ý */}
-            {products.length > 0 && (
-              <div className='border-t border-gray-100 px-3 md:px-4 py-2'>
-                <div className='text-xs text-gray-500 mb-2'>Sản phẩm gợi ý</div>
-                <div className='space-y-1'>
-                  {products.map((product) => (
-                    <ProductItem key={product._id} product={product} />
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* No Results */}
+          {suggestions.length === 0 && products.length === 0 && !showLoading && (
+            <div className='px-4 py-6 text-center text-gray-500'>
+              <svg className='mx-auto h-8 w-8 text-gray-400 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                />
+              </svg>
+              <p className='text-sm'>Không tìm thấy kết quả cho "{debouncedSearchValue}"</p>
+            </div>
+          )}
+        </>
+      )}
 
-            {/* Không có kết quả */}
-            {suggestions.length === 0 && products.length === 0 && debouncedSearchValue && !suggestionsError && (
-              <div className='px-3 md:px-4 py-6 md:py-8 text-center'>
-                <svg
-                  className='w-10 h-10 md:w-12 md:h-12 text-gray-300 mx-auto mb-2'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={1}
-                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-                  />
-                </svg>
-                <p className='text-gray-500 text-xs md:text-sm'>Không tìm thấy kết quả cho "{debouncedSearchValue}"</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            {/* Lịch sử tìm kiếm */}
-            {searchHistory.length > 0 && (
-              <div className='px-3 md:px-4 py-2'>
-                <div className='text-xs text-gray-500 mb-2'>Tìm kiếm gần đây</div>
-                {searchHistory.slice(0, 5).map((historyItem, index) => (
-                  <SearchHistoryItem
-                    key={index}
-                    historyItem={historyItem}
-                    onSelect={() => handleSelectSuggestion(historyItem)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Thông báo mặc định */}
-            {searchHistory.length === 0 && (
-              <div className='px-3 md:px-4 py-6 md:py-8 text-center'>
-                <svg
-                  className='w-10 h-10 md:w-12 md:h-12 text-gray-300 mx-auto mb-2'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={1}
-                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-                  />
-                </svg>
-                <p className='text-gray-500 text-xs md:text-sm'>Nhập từ khóa để tìm kiếm sản phẩm</p>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {/* Search History - Hiển thị khi không có search value */}
+      {!debouncedSearchValue && searchHistory.length > 0 && (
+        <div>
+          <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>Lịch sử tìm kiếm</div>
+          {searchHistory.slice(0, 5).map((item, index) => (
+            <SearchHistoryItem key={index} historyItem={item} onSelect={() => handleSelectSuggestion(item)} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

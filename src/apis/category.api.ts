@@ -4,9 +4,16 @@ import http from 'src/utils/http'
 
 const URL = '/categories'
 
+// Interface cho API options với AbortSignal
+export interface ApiOptions {
+  signal?: AbortSignal
+}
+
 const categoryApi = {
-  getCategories: () => {
-    return http.get<SuccessResponseApi<Category[]>>(URL)
+  getCategories: (options?: ApiOptions) => {
+    return http.get<SuccessResponseApi<Category[]>>(URL, {
+      signal: options?.signal
+    })
   }
 }
 

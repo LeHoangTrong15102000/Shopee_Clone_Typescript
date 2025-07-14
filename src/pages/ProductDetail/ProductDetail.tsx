@@ -31,6 +31,10 @@ export type AddToCartType = {
   buy_count: number
 }
 
+/**
+ * ProductDetail Component với Query Cancellation
+ * Tự động hủy request cũ khi user navigate giữa các sản phẩm khác nhau
+ */
 const ProductDetail = () => {
   const { t } = useTranslation('product') // i18next
   const [buyCount, setBuyCount] = useState(1)
@@ -45,13 +49,38 @@ const ProductDetail = () => {
 
   const queryClient = useQueryClient()
 
-  const { data: productDetailData, isLoading } = useQuery({
+  /**
+   * Query Product Detail với automatic cancellation
+   * TanStack Query sẽ tự động hủy request cũ khi id thay đổi
+   */
+  const {
+    data: productDetailData,
+    isLoading,
+    error
+  } = useQuery({
     queryKey: ['product', id],
-    queryFn: () => productApi.getProductDetail(id as string),
-    placeholderData: (previousData) => previousData
+    queryFn: ({ signal }) => {
+      // Truyền AbortSignal vào API call để support cancellation
+      return productApi.getProductDetail(id as string, { signal })
+    },
+    placeholderData: (previousData) => previousData, // Giữ data cũ khi navigation
+    staleTime: 5 * 60 * 1000, // Cache 5 phút
+    retry: (failureCount, error: any) => {
+      // Không retry nếu request bị abort (do cancellation)
+      if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
+        return false
+      }
+      // Không retry cho lỗi 404 (sản phẩm không tồn tại)
+      if (error?.response?.status === 404) {
+        return false
+      }
+      return failureCount < 1 // Retry tối đa 1 lần cho các lỗi khác
+    }
   })
+
   // console.log(productDetailData?.status)
   const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data?.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
+
   // tạo ra state currentIndexImage để quản lí việc click slider
   // console.log(product)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -71,26 +100,111 @@ const ProductDetail = () => {
 
   //  Sẽ lấy ra id sản phẩm có cùng danh mục, và gán cái id của categories đó vào cho queryConfig để render ra danh sách sản phẩm cùng category
   const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
+
+  /**
+   * Query Related Products với Query Cancellation
+   * Chỉ fetch khi có product và category
+   */
   const { data: productsData } = useQuery({
     queryKey: ['products', queryConfig],
-    queryFn: () => {
-      return productApi.getProducts(queryConfig) // Lấy ra những sản phẩm cùng danh mục, chứa các _id sản phẩm cùng danh mục
+    queryFn: ({ signal }) => {
+      // Truyền AbortSignal vào API call
+      return productApi.getProducts(queryConfig, { signal })
     },
-    enabled: Boolean(product), // ban đầu product có data, lấy được categories thì mới cho chạy useQuery() này
-    staleTime: 3 * 60 * 1000 // Tóm lại cùng Categories khi mà staleTime chưa hết thì nó cũng ko gọi lại Api
+    enabled: Boolean(product?.category._id), // Chỉ chạy khi có category
+    staleTime: 3 * 60 * 1000, // Cache 3 phút
+    retry: (failureCount, error: any) => {
+      if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
+        return false
+      }
+      return failureCount < 1
+    }
   })
-  // Ban đầu khi mà category chưa có dữ liệu thì nó sẽ render ra 20 product page 1
-  // console.log(productsData?.data.data)
 
-  // Mutation xử lý addToCart với Optimistic Updates
-  const addToCartMutation = useOptimisticAddToCart()
-
+  // Set active image khi product load
   useEffect(() => {
-    // Khi mà product mà có thì set active ảnh đầu tiên
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
     }
   }, [product])
+
+  // Reset buy count khi chuyển sản phẩm
+  useEffect(() => {
+    setBuyCount(1)
+  }, [product?._id])
+
+  // Mutation xử lý addToCart với Optimistic Updates - phải đặt trước early returns
+  const addToCartMutation = useOptimisticAddToCart()
+
+  // Handle 404 case
+  if (productDetailData?.status === HTTP_STATUS_CODE.NotFound) {
+    return (
+      <div className='bg-gray-200 py-6'>
+        <div className='container'>
+          <div className='text-center py-16'>
+            <h1 className='text-2xl font-semibold text-gray-700 mb-4'>Sản phẩm không tồn tại</h1>
+            <p className='text-gray-500 mb-6'>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa</p>
+            <button
+              onClick={() => navigate(path.home)}
+              className='bg-orange hover:bg-orange/90 text-white px-6 py-3 rounded-sm transition-colors'
+            >
+              Về trang chủ
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Loading state
+  if (isLoading || !product) {
+    return (
+      <div className='bg-gray-200 py-6'>
+        <div className='container'>
+          <div className='grid grid-cols-12 gap-9'>
+            {/* Product images skeleton */}
+            <div className='col-span-5'>
+              <div className='relative w-full pt-[100%] bg-gray-300 animate-pulse rounded'></div>
+              <div className='relative mt-3 grid grid-cols-5 gap-1'>
+                {[...Array(5)].map((_, index) => (
+                  <div key={index} className='relative w-full pt-[100%] bg-gray-300 animate-pulse rounded'></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Product info skeleton */}
+            <div className='col-span-7'>
+              <div className='h-8 bg-gray-300 animate-pulse rounded mb-4'></div>
+              <div className='h-6 bg-gray-300 animate-pulse rounded mb-4 w-3/4'></div>
+              <div className='h-8 bg-gray-300 animate-pulse rounded mb-6 w-1/2'></div>
+              <div className='h-20 bg-gray-300 animate-pulse rounded mb-6'></div>
+              <div className='h-12 bg-gray-300 animate-pulse rounded w-1/3'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error && !product) {
+    return (
+      <div className='bg-gray-200 py-6'>
+        <div className='container'>
+          <div className='text-center py-16'>
+            <h1 className='text-2xl font-semibold text-gray-700 mb-4'>Có lỗi xảy ra</h1>
+            <p className='text-gray-500 mb-6'>Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className='bg-orange hover:bg-orange/90 text-white px-6 py-3 rounded-sm transition-colors'
+            >
+              Thử lại
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   // func hoverActiveImage -> set lại Image cho ảnh sản phẩm chính khi hover vào
   const hoverActiveImage = (img: string) => {
