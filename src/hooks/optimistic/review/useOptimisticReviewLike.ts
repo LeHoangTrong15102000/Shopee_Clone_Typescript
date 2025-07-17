@@ -4,9 +4,11 @@ import reviewApi from 'src/apis/review.api'
 import { ReviewLikeContext, QUERY_KEYS } from '../shared/types'
 import { updatePurchasesCache, showSuccessToast, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
+import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticReviewLike = (productId: string) => {
   const queryClient = useQueryClient()
+  const { invalidateProductReviews } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: reviewApi.toggleReviewLike,
@@ -93,10 +95,8 @@ export const useOptimisticReviewLike = (productId: string) => {
     },
 
     onSettled: () => {
-      // Đảm bảo sync với server
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.PRODUCT_REVIEWS(productId)
-      })
+      // Invalidate product reviews để sync với server
+      invalidateProductReviews(productId)
     }
   })
 }

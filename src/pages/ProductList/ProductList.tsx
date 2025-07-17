@@ -13,6 +13,7 @@ import Product from './components/Product/Product'
 
 import path from 'src/constant/path'
 import useQueryConfig from 'src/hooks/useQueryConfig'
+import { useScrollRestoration } from 'src/hooks/useScrollRestoration'
 import { Helmet } from 'react-helmet-async'
 import Loader from 'src/components/Loader'
 
@@ -24,9 +25,19 @@ const ProductList = () => {
   const queryConfig = useQueryConfig()
   const navigate = useNavigate()
 
+  // Scroll Restoration - tự động lưu và khôi phục vị trí scroll
+  const { saveCurrentPosition, scrollToTop } = useScrollRestoration(`product-list-${JSON.stringify(queryConfig)}`, true)
+
+  // Scroll to top chỉ khi có thay đổi filter/search/sort (không phải pagination)
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-  }, [queryConfig])
+    const { page, ...restConfig } = queryConfig
+    const isFilterChange = Object.values(restConfig).some((value) => value && value !== '')
+
+    // Chỉ scroll to top khi có filter change, không scroll khi chỉ thay đổi page
+    if (isFilterChange && page === '1') {
+      scrollToTop()
+    }
+  }, [queryConfig, scrollToTop])
 
   /**
    * Query Products với automatic cancellation

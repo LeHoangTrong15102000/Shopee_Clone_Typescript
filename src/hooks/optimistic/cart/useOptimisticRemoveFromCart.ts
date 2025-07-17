@@ -16,10 +16,12 @@ import {
 } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
 import { TOAST_CONFIG } from '../shared/utils'
+import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticRemoveFromCart = () => {
   const queryClient = useQueryClient()
   const { setExtendedPurchases } = useContext(AppContext)
+  const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: purchaseApi.deletePurchase,
@@ -107,11 +109,17 @@ export const useOptimisticRemoveFromCart = () => {
       showSuccessToast(TOAST_MESSAGES.REMOVE_FROM_CART_FINAL_SUCCESS(purchaseIds.length))
     },
 
-    onSettled: () => {
-      // Sync với server
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.PURCHASES_IN_CART
-      })
+    onSettled: (data, error, variables) => {
+      // Invalidate cart để sync với server
+      invalidateCart()
+
+      // Invalidate product details của các sản phẩm đã remove
+      // để update stock quantity
+      if (variables && Array.isArray(variables)) {
+        // variables là array của purchase IDs, cần tìm product IDs
+        // Điều này phức tạp hơn, có thể invalidate toàn bộ product lists thay vì
+        queryClient.invalidateQueries({ queryKey: ['products', 'list'] })
+      }
     }
   })
 }

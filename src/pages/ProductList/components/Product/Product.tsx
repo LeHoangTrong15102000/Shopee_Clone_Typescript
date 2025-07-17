@@ -1,9 +1,11 @@
-import { Fragment, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Fragment, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating'
 import path from 'src/constant/path'
 import { Product as ProductType } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
+import { scrollManager } from 'src/hooks/useScrollRestoration'
+import { useHoverPrefetch } from 'src/hooks/useHoverPrefetch'
 import NotFound from 'src/pages/NotFound'
 
 interface Props {
@@ -11,11 +13,42 @@ interface Props {
 }
 
 const Product = ({ product }: Props) => {
+  const navigate = useNavigate()
+
+  // Hover prefetching với optimal strategy
+  const {
+    handleMouseEnter,
+    handleMouseLeave,
+    handleClick: handlePrefetchClick,
+    prefetchState,
+    isPrefetched
+  } = useHoverPrefetch(product._id, {
+    delay: 300, // 300ms delay cho balance tốt
+    strategy: 'delayed', // Sử dụng delayed strategy
+    enabled: true
+  })
+
+  const handleProductClick = useCallback(() => {
+    // Trigger prefetch nếu chưa prefetch
+    handlePrefetchClick()
+
+    // Lưu vị trí scroll hiện tại trước khi navigate
+    scrollManager.savePosition(window.location.pathname, window.location.search, window.scrollY)
+
+    // Navigate đến product detail
+    navigate(`${path.home}${generateNameId({ name: product.name, id: product._id })}`)
+  }, [navigate, product.name, product._id, handlePrefetchClick])
+
   return (
     // Khi nhấn vào thì truyền lên cái _id của sản phẩm
     <Fragment>
       {product ? (
-        <Link to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}>
+        <div
+          onClick={handleProductClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={`cursor-pointer transition-all duration-200 ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
+        >
           <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.055rem] hover:shadow-md'>
             {/* Ảnh sản phẩm */}
             <div className='relative w-full pt-[100%]'>
@@ -57,7 +90,7 @@ const Product = ({ product }: Props) => {
               </div>
             </div>
           </div>
-        </Link>
+        </div>
       ) : (
         <NotFound />
       )}

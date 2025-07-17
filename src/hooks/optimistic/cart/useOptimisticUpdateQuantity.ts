@@ -8,10 +8,12 @@ import { Purchase } from 'src/types/purchases.type'
 import { UpdateQuantityPayload, UpdateQuantityContext, QUERY_KEYS } from '../shared/types'
 import { updatePurchasesCache, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
+import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticUpdateQuantity = () => {
   const queryClient = useQueryClient()
   const { setExtendedPurchases } = useContext(AppContext)
+  const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: purchaseApi.updatePurchase,
@@ -90,11 +92,14 @@ export const useOptimisticUpdateQuantity = () => {
       )
     },
 
-    onSettled: () => {
-      // Sync với server
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.PURCHASES_IN_CART
-      })
+    onSettled: (data, error, variables) => {
+      // Invalidate cart để sync với server
+      invalidateCart()
+
+      // Invalidate product detail để update stock
+      if (variables.product_id) {
+        invalidateProductDetail(variables.product_id)
+      }
     }
   })
 }

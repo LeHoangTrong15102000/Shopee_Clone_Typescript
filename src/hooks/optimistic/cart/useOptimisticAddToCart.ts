@@ -16,10 +16,12 @@ import {
   logOptimisticError
 } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
+import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticAddToCart = () => {
   const queryClient = useQueryClient()
   const { setExtendedPurchases } = useContext(AppContext)
+  const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: purchaseApi.addToCart,
@@ -104,11 +106,14 @@ export const useOptimisticAddToCart = () => {
       )
     },
 
-    onSettled: () => {
-      // Đảm bảo sync với server
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.PURCHASES_IN_CART
-      })
+    onSettled: (data, error, variables) => {
+      // Invalidate cart để đảm bảo sync với server
+      invalidateCart()
+
+      // Invalidate product detail để update stock quantity nếu cần
+      if (variables.product_id) {
+        invalidateProductDetail(variables.product_id)
+      }
     }
   })
 }
