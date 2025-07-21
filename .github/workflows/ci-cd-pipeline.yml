@@ -1,0 +1,322 @@
+name: 🚀 Shopee Clone CI/CD Pipeline
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '9'
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ==================== CHANGES DETECTION ====================
+  changes:
+    name: 🔍 Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      tests: ${{ steps.filter.outputs.tests }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Detect Changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+              - 'public/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'vite.config.ts'
+              - 'tsconfig.json'
+            tests:
+              - 'test/**'
+              - 'vitest.setup.js'
+              - 'src/**/*.test.{ts,tsx}'
+            docs:
+              - 'docs/**'
+              - '*.md'
+
+  # ==================== CODE QUALITY ====================
+  code-quality:
+    name: 🔍 Code Quality & Type Safety
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.src == 'true'
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔒 TypeScript Type Check
+        run: pnpm run build # tsc check included
+
+      - name: 🧹 ESLint Check
+        run: pnpm run lint
+
+      - name: 💅 Prettier Check
+        run: pnpm run prettier
+
+      - name: 📊 Upload ESLint Results
+        if: always()
+        uses: github/super-linter/slim@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_TYPESCRIPT_STANDARD: true
+
+  # ==================== SECURITY SCANNING ====================
+  security:
+    name: 🛡️ Security Scanning
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.src == 'true'
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🔍 Dependency Audit
+        run: pnpm audit --audit-level moderate
+
+      - name: 🔐 Secret Detection
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+      - name: 🛡️ SAST Scan with CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: typescript, javascript
+
+      - name: 🔍 CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # ==================== TESTING ====================
+  test:
+    name: 🧪 Testing Suite
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true'
+
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🧪 Run Unit Tests
+        run: pnpm run test:unit
+
+      - name: 🔗 Run Integration Tests
+        run: pnpm run test:integration
+
+      - name: 📸 Run Snapshot Tests
+        run: pnpm run test:snapshots
+
+      - name: 📊 Generate Coverage Report
+        run: pnpm run test:coverage
+
+      - name: 📈 Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: shopee-clone-coverage
+          fail_ci_if_error: false
+
+  # ==================== BUILD ====================
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: [code-quality, security, test]
+    if: always() && !cancelled() && needs.changes.outputs.src == 'true'
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build Production
+        run: pnpm run build:production
+
+      - name: 📊 Bundle Analysis
+        run: |
+          # Analyze bundle size
+          npx vite-bundle-analyzer --analyzer-mode=json --report-filename=bundle-analysis.json
+
+      - name: 💾 Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-assets
+          path: |
+            dist/
+            bundle-analysis.json
+          retention-days: 7
+
+      - name: 📊 Comment Bundle Size
+        if: github.event_name == 'pull_request'
+        uses: github/super-linter/slim@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ==================== DEPLOYMENT STAGING ====================
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.preview-url }}
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 💾 Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-assets
+
+      - name: 🚀 Deploy to Vercel Staging
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+
+      - name: 🏥 Health Check
+        run: |
+          sleep 30
+          curl -f ${{ steps.deploy.outputs.preview-url }} || exit 1
+
+      - name: 💡 Lighthouse Performance Audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: ${{ steps.deploy.outputs.preview-url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  # ==================== DEPLOYMENT PRODUCTION ====================
+  deploy-production:
+    name: 🚀 Production Deployment
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://shopee-clone-typescript.vercel.app
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 💾 Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-assets
+
+      - name: 🚀 Deploy to Vercel Production
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      - name: 🧪 Smoke Tests
+        run: |
+          # Critical path testing
+          curl -f https://shopee-clone-typescript.vercel.app
+          curl -f https://shopee-clone-typescript.vercel.app/login
+          curl -f https://shopee-clone-typescript.vercel.app/products
+
+      - name: 💡 Production Performance Audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://shopee-clone-typescript.vercel.app
+            https://shopee-clone-typescript.vercel.app/login
+            https://shopee-clone-typescript.vercel.app/products
+          uploadArtifacts: true
+
+      - name: 📢 Notify Success
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: '🎉 Shopee Clone đã deploy thành công lên production!'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: 📢 Notify Failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: '❌ Deployment thất bại! Cần kiểm tra ngay.'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}

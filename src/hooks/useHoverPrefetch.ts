@@ -25,7 +25,7 @@ export const useHoverPrefetch = (productId: string, options: UseHoverPrefetchOpt
   const [prefetchState, setPrefetchState] = useState<'idle' | 'queued' | 'prefetched'>('idle')
   const [hoverCount, setHoverCount] = useState(0)
   const [lastHoverTime, setLastHoverTime] = useState(0)
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   /**
    * Handle mouse enter với different strategies

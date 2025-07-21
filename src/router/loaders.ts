@@ -168,13 +168,13 @@ export const cartLoader: LoaderFunction = async () => {
         // Prefetch cart
         queryClient.prefetchQuery({
           ...QueryFilters.purchases.cart(),
-          queryFn: ({ signal }) => purchasesApi.getPurchases({ status: purchasesStatus.inCart })
+          queryFn: () => purchasesApi.getPurchases({ status: purchasesStatus.inCart })
         }),
 
         // Prefetch user profile
         queryClient.prefetchQuery({
           ...QueryFilters.user.profile(),
-          queryFn: ({ signal }) => userApi.getProfile({ signal })
+          queryFn: () => userApi.getProfile()
         })
       ])
     }
@@ -204,13 +204,13 @@ export const userProfileLoader: LoaderFunction = async () => {
       // User profile
       queryClient.prefetchQuery({
         ...QueryFilters.user.profile(),
-        queryFn: ({ signal }) => userApi.getProfile({ signal })
+        queryFn: () => userApi.getProfile()
       }),
 
       // Purchase history
       queryClient.prefetchQuery({
         ...QueryFilters.purchases.history(),
-        queryFn: ({ signal }) => purchasesApi.getPurchases({ status: purchasesStatus.waitForConfirmation }, { signal })
+        queryFn: () => purchasesApi.getPurchases({ status: purchasesStatus.waitForConfirmation })
       })
     ])
   } catch (error) {
@@ -259,7 +259,11 @@ export const createSmartLoader = (
             queryClient.prefetchQuery({
               ...QueryFilters.products.trending(),
               queryFn: ({ signal }) => {
-                const trendingFilters = { sort_by: 'sold', order: 'desc', limit: String(maxPrefetchItems) }
+                const trendingFilters: ProductListConfig = {
+                  sort_by: 'sold',
+                  order: 'desc',
+                  limit: String(maxPrefetchItems)
+                }
                 return productApi.getProducts(trendingFilters, { signal })
               }
             })

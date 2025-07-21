@@ -93,7 +93,7 @@ export const usePrefetch = () => {
     prefetchUserProfile: useCallback(() => {
       queryClient.prefetchQuery({
         ...QueryFilters.user.profile(),
-        queryFn: ({ signal }) => userApi.getProfile({ signal }),
+        queryFn: () => userApi.getProfile(),
         staleTime: 5 * 60 * 1000, // 5 phút
         gcTime: 10 * 60 * 1000 // 10 phút
       })
@@ -108,7 +108,7 @@ export const usePrefetch = () => {
     prefetchCart: useCallback(() => {
       queryClient.prefetchQuery({
         ...QueryFilters.purchases.cart(),
-        queryFn: ({ signal }) => purchasesApi.getPurchases({ status: purchasesStatus.inCart }, { signal }),
+        queryFn: () => purchasesApi.getPurchases({ status: purchasesStatus.inCart }),
         staleTime: 1 * 60 * 1000, // 1 phút
         gcTime: 5 * 60 * 1000 // 5 phút
       })
@@ -156,7 +156,7 @@ export const usePrefetch = () => {
        * Prefetch trending products
        */
       trendingProducts: useCallback(() => {
-        const trendingFilters = { sort_by: 'sold', order: 'desc', limit: '20' }
+        const trendingFilters: ProductListConfig = { sort_by: 'sold', order: 'desc', limit: '20' }
         queryClient.prefetchQuery({
           ...QueryFilters.products.trending(),
           queryFn: ({ signal }) => productApi.getProducts(trendingFilters, { signal }),
