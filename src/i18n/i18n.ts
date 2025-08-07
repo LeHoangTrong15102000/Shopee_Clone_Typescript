@@ -23,8 +23,11 @@ export const resources = {
 
 export const defaultNS = 'home'
 
-// Chỉ khởi tạo i18n nếu không phải test environment
-if (typeof window !== 'undefined' && !window?.location?.href?.includes('vitest')) {
+// Khởi tạo i18n chỉ khi không phải test environment
+const isTestEnvironment =
+  process.env.NODE_ENV === 'test' || (typeof window !== 'undefined' && window.location.href.includes('vitest'))
+
+if (!isTestEnvironment) {
   i18n.use(initReactI18next).init({
     resources,
     lng: 'vi',

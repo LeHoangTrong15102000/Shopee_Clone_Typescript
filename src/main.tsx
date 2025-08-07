@@ -22,6 +22,17 @@ const queryClient = new QueryClient({
 
 // Thay vì export cái queryClient tại đây để sử dụng ở các component thì chúng ta có thể sử dụng hook useQueryClient để lấy ra cái queryClient
 
+// Production error logging
+if (process.env.NODE_ENV === 'production') {
+  window.addEventListener('error', (event) => {
+    console.error('Production Error:', event.error)
+  })
+
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled Promise Rejection:', event.reason)
+  })
+}
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -30,7 +41,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <HelmetProvider>
             <ErrorBoundary>
               <App />
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* CHỈ render ReactQueryDevtools trong development */}
+              {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
             </ErrorBoundary>
           </HelmetProvider>
         </AppProvider>

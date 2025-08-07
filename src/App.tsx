@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
+import SEO from './components/SEO'
 
 /**
  * Khi url thay đổi thì các component nào dùng các hook như
@@ -30,6 +31,8 @@ function App() {
 
   return (
     <>
+      {/* Default SEO cho toàn bộ app */}
+      <SEO />
       <ToastContainer autoClose={1500} />
       {routeElements}
     </>
