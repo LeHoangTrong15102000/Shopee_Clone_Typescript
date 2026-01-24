@@ -54,31 +54,75 @@ export default defineConfig(({ mode }) => {
       minify: 'esbuild' as const,
       rollupOptions: {
         output: {
-          manualChunks: {
-            // React core
-            'react-vendor': ['react', 'react-dom'],
+          // Use function-based manualChunks to ensure proper dependency ordering
+          // This prevents the "Cannot read properties of undefined (reading 'createContext')" error
+          // by ensuring React is always bundled with libraries that depend on it
+          manualChunks(id: string) {
+            // React core + libraries that directly depend on React.createContext
+            // framer-motion MUST be bundled with react to avoid loading order issues
+            if (
+              id.includes('node_modules/react/') ||
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/framer-motion/')
+            ) {
+              return 'react-vendor'
+            }
 
-            // UI Libraries
-            'ui-vendor': ['@heroui/react', '@floating-ui/react', '@tippyjs/react', 'tippy.js'],
-
-            // Animation
-            'animation-vendor': ['framer-motion'],
+            // UI Libraries (these also depend on React but load after react-vendor)
+            if (
+              id.includes('node_modules/@heroui/') ||
+              id.includes('node_modules/@floating-ui/react') ||
+              id.includes('node_modules/@tippyjs/react') ||
+              id.includes('node_modules/tippy.js')
+            ) {
+              return 'ui-vendor'
+            }
 
             // HTTP & State Management
-            'http-vendor': ['axios', '@tanstack/react-query', '@tanstack/react-query-devtools'],
+            if (
+              id.includes('node_modules/axios/') ||
+              id.includes('node_modules/@tanstack/react-query')
+            ) {
+              return 'http-vendor'
+            }
 
             // Form & Validation
-            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
+            if (
+              id.includes('node_modules/react-hook-form/') ||
+              id.includes('node_modules/@hookform/resolvers') ||
+              id.includes('node_modules/yup/')
+            ) {
+              return 'form-vendor'
+            }
 
-            // Router & Utils
-            'router-vendor': ['react-router-dom'],
-            'utils-vendor': ['classnames', 'immer', 'query-string'],
+            // Router
+            if (id.includes('node_modules/react-router-dom/') || id.includes('node_modules/react-router/')) {
+              return 'router-vendor'
+            }
+
+            // Utilities (no React dependency)
+            if (
+              id.includes('node_modules/classnames/') ||
+              id.includes('node_modules/immer/') ||
+              id.includes('node_modules/query-string/')
+            ) {
+              return 'utils-vendor'
+            }
 
             // i18n
-            'i18n-vendor': ['i18next', 'react-i18next'],
+            if (id.includes('node_modules/i18next/') || id.includes('node_modules/react-i18next/')) {
+              return 'i18n-vendor'
+            }
 
             // Other utilities
-            'misc-vendor': ['dompurify', 'html-to-text', 'react-helmet-async', 'react-toastify']
+            if (
+              id.includes('node_modules/dompurify/') ||
+              id.includes('node_modules/html-to-text/') ||
+              id.includes('node_modules/react-helmet-async/') ||
+              id.includes('node_modules/react-toastify/')
+            ) {
+              return 'misc-vendor'
+            }
           }
         },
         // Tree shaking optimization - giữ side effects cho CSS và các module quan trọng
