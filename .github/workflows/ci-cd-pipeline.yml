@@ -1,7 +1,7 @@
 name: 🚀 Shopee Clone CI/CD Pipeline
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '22'
   PNPM_VERSION: '9'
 
 on:
@@ -133,7 +133,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [20, 22]
 
     steps:
       - name: 📥 Checkout Code

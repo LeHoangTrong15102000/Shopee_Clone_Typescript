@@ -22,8 +22,8 @@ const queryClient = new QueryClient({
 
 // Thay vì export cái queryClient tại đây để sử dụng ở các component thì chúng ta có thể sử dụng hook useQueryClient để lấy ra cái queryClient
 
-// Production error logging
-if (process.env.NODE_ENV === 'production') {
+// Production error logging - sử dụng import.meta.env của Vite
+if (import.meta.env.PROD) {
   window.addEventListener('error', (event) => {
     console.error('Production Error:', event.error)
   })
@@ -42,7 +42,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <ErrorBoundary>
               <App />
               {/* CHỈ render ReactQueryDevtools trong development */}
-              {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
+              {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
             </ErrorBoundary>
           </HelmetProvider>
         </AppProvider>

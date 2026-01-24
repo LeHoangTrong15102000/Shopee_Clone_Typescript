@@ -1,8 +1,7 @@
 // viết lại file utils cho nó sạch
-import axios, { AxiosError, type AxiosRequestConfig, type AxiosInstance } from 'axios'
+import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
-import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { AuthResponse, RefreshTokenResponse } from 'src/types/auth.type'
 import {
   clearLS,
@@ -12,19 +11,19 @@ import {
   setProfileToLS,
   setRefreshTokenToLS
 } from './auth'
+import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 
-import config from 'src/constant/config'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
+import config from 'src/constant/config'
 import { ErrorResponseApi } from 'src/types/utils.type'
 
 // Developer thì phải biết design pattern,
 
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
-// console.log('Process Env', process.env)
-
-const URL = `${(process.env.BUILD_MODE as string) === 'dev'}`
-  ? 'http://localhost:3000/login'
+// Sử dụng import.meta.env của Vite thay vì process.env (không hoạt động trong browser)
+const LOGIN_REDIRECT_URL = import.meta.env.DEV
+  ? 'http://localhost:4000/login'
   : 'https://shop.lehoangtrong.online/login'
 
 export class Http {
@@ -131,7 +130,7 @@ export class Http {
           toast.error('Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!', { autoClose: 1000 })
           toast.error(error.response?.data?.data?.message ?? error.response?.data.message, { autoClose: 1000 })
           setTimeout(() => {
-            window.location.replace(URL)
+            window.location.replace(LOGIN_REDIRECT_URL)
           }, 1000)
           // khi mà hết hạn refresh_token thì chúng ta sẽ quay lại trang đầu tiên
         }
@@ -167,3 +166,5 @@ export class Http {
 const http = new Http().instance
 
 export default http
+
+// const truyền và là scascacas

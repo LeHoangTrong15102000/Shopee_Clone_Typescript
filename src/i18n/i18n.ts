@@ -24,8 +24,9 @@ export const resources = {
 export const defaultNS = 'home'
 
 // Khởi tạo i18n chỉ khi không phải test environment
+// Sử dụng import.meta.env của Vite thay vì process.env
 const isTestEnvironment =
-  process.env.NODE_ENV === 'test' || (typeof window !== 'undefined' && window.location.href.includes('vitest'))
+  import.meta.env.MODE === 'test' || (typeof window !== 'undefined' && window.location.href.includes('vitest'))
 
 if (!isTestEnvironment) {
   i18n.use(initReactI18next).init({

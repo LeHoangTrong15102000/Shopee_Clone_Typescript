@@ -16,10 +16,7 @@ export default defineConfig(({ mode }) => {
   const baseConfig = {
     plugins: [react(), visualizer()] as any,
     // Base URL cho production deployment
-    base: process.env.NODE_ENV === 'production' ? '/' : '/',
-    define: {
-      'process.env': process.env
-    },
+    base: '/',
     server: {
       port: 4000,
       host: true,
@@ -84,9 +81,9 @@ export default defineConfig(({ mode }) => {
             'misc-vendor': ['dompurify', 'html-to-text', 'react-helmet-async', 'react-toastify']
           }
         },
-        // Tree shaking optimization
+        // Tree shaking optimization - giữ side effects cho CSS và các module quan trọng
         treeshake: {
-          moduleSideEffects: false
+          moduleSideEffects: true
         }
       },
       chunkSizeWarningLimit: 1000
