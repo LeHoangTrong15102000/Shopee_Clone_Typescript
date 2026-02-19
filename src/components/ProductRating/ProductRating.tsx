@@ -1,7 +1,7 @@
 const ProductRating = ({
   rating,
-  activeClassname = 'h-3 w-3 fill-yellow-300 text-yellow-300',
-  nonActiveClassname = 'h-3 w-3 fill-current text-gray-300'
+  activeClassname = 'h-3 w-3 md:h-4 md:w-4 fill-orange text-orange dark:fill-orange-400 dark:text-orange-400',
+  nonActiveClassname = 'h-3 w-3 md:h-4 md:w-4 fill-current text-gray-300 dark:text-slate-600'
 }: {
   rating: number
   activeClassname?: string
@@ -20,7 +20,11 @@ const ProductRating = ({
     return '0%'
   }
   return (
-    <div className='flex items-center'>
+    <div
+      className='flex items-center'
+      role='img'
+      aria-label={`${rating} out of 5 stars`}
+    >
       {/* thẻ cha chứa relative để 2 ngôi sao chồng chéo */}
       {Array(5)
         .fill(0)

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
 import { generateNameId } from 'src/utils/utils'
@@ -43,6 +44,7 @@ const mockProducts = [
  * Tự động hủy các request search cũ khi user gõ tiếp
  */
 const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide }: Props) => {
+  const queryClient = useQueryClient()
   const debouncedSearchValue = useDebounce(searchValue, 300) // Giảm từ 500ms xuống 300ms cho responsive hơn
   const [searchHistory, setSearchHistory] = useState<string[]>([])
 
@@ -90,6 +92,34 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
         return false
       }
       return failureCount < 1
+    }
+  })
+
+  /**
+   * Mutation để xóa một keyword khỏi lịch sử tìm kiếm
+   */
+  const deleteHistoryItemMutation = useMutation({
+    mutationFn: (keyword: string) => productApi.deleteSearchHistoryItem(keyword),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['searchHistory'] })
+      toast.success('Đã xóa khỏi lịch sử tìm kiếm')
+    },
+    onError: () => {
+      toast.error('Không thể xóa lịch sử tìm kiếm')
+    }
+  })
+
+  /**
+   * Mutation để xóa toàn bộ lịch sử tìm kiếm
+   */
+  const clearHistoryMutation = useMutation({
+    mutationFn: () => productApi.deleteSearchHistory(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['searchHistory'] })
+      toast.success('Đã xóa toàn bộ lịch sử tìm kiếm')
+    },
+    onError: () => {
+      toast.error('Không thể xóa lịch sử tìm kiếm')
     }
   })
 
@@ -175,24 +205,24 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       <Link
         key={product._id}
         to={`${path.products}${generateNameId({ name: product.name, id: product._id })}`}
-        className='flex items-center py-2 hover:bg-gray-50 rounded px-2 -mx-2 transition-colors'
+        className='flex items-center py-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded px-2 -mx-2 transition-colors'
         onClick={onHide}
       >
         <div className='flex-shrink-0 w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-3'>
           <img
             src={imageUrl}
             alt={product.name}
-            className='w-full h-full object-cover rounded border border-gray-200 bg-gray-100'
+            className='w-full h-full object-cover rounded border border-gray-200 dark:border-slate-600 bg-gray-100 dark:bg-slate-700'
             onError={(e) => handleImageError(e, product._id)}
             loading='lazy'
           />
         </div>
         <div className='flex-1 min-w-0'>
-          <div className='text-xs md:text-sm text-gray-900 truncate font-medium leading-tight'>{product.name}</div>
-          <div className='text-xs text-[#ee4d2d] font-semibold'>₫{product.price.toLocaleString('vi-VN')}</div>
+          <div className='text-xs md:text-sm text-gray-900 dark:text-gray-100 truncate font-medium leading-tight'>{product.name}</div>
+          <div className='text-xs text-orange font-semibold'>₫{product.price.toLocaleString('vi-VN')}</div>
         </div>
         <div className='flex-shrink-0'>
-          <svg className='w-3 h-3 md:w-4 md:h-4 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <svg className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
           </svg>
         </div>
@@ -206,11 +236,11 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
   const showLoading = isFetching && (debouncedSearchValue?.length ?? 0) > 1
 
   return (
-    <div className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
+    <div className='absolute top-full left-0 right-0 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg z-50 max-h-[60vh] sm:max-h-96 overflow-y-auto'>
       {showLoading && (
         <div className='flex items-center justify-center py-4'>
-          <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-[#ee4d2d]'></div>
-          <span className='ml-2 text-sm text-gray-600'>Đang tìm kiếm...</span>
+          <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-orange'></div>
+          <span className='ml-2 text-sm text-gray-600 dark:text-gray-400'>Đang tìm kiếm...</span>
         </div>
       )}
 
@@ -218,8 +248,8 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
         <>
           {/* Search Suggestions */}
           {suggestions.length > 0 && (
-            <div className='border-b border-gray-100'>
-              <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>
+            <div className='border-b border-gray-100 dark:border-slate-700'>
+              <div className='px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
                 Gợi ý tìm kiếm
               </div>
               {suggestions.slice(0, 5).map((suggestion, index) => (
@@ -236,7 +266,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* Product Results */}
           {products.length > 0 && (
             <div>
-              <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>
+              <div className='px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
                 Sản phẩm ({products.length > 5 ? '5+' : products.length})
               </div>
               <div className='px-4 pb-2'>
@@ -249,8 +279,8 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
 
           {/* No Results */}
           {suggestions.length === 0 && products.length === 0 && !showLoading && (
-            <div className='px-4 py-6 text-center text-gray-500'>
-              <svg className='mx-auto h-8 w-8 text-gray-400 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <div className='px-4 py-6 text-center text-gray-500 dark:text-gray-400'>
+              <svg className='mx-auto h-8 w-8 text-gray-400 dark:text-gray-500 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -267,9 +297,23 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       {/* Search History - Hiển thị khi không có search value */}
       {!debouncedSearchValue && searchHistory.length > 0 && (
         <div>
-          <div className='px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide'>Lịch sử tìm kiếm</div>
+          <div className='px-4 py-2 flex items-center justify-between'>
+            <span className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>Lịch sử tìm kiếm</span>
+            <button
+              onClick={() => clearHistoryMutation.mutate()}
+              disabled={clearHistoryMutation.isPending}
+              className='text-xs text-orange hover:underline disabled:opacity-50'
+            >
+              Xóa tất cả
+            </button>
+          </div>
           {searchHistory.slice(0, 5).map((item, index) => (
-            <SearchHistoryItem key={index} historyItem={item} onSelect={() => handleSelectSuggestion(item)} />
+            <SearchHistoryItem
+              key={index}
+              historyItem={item}
+              onSelect={() => handleSelectSuggestion(item)}
+              onDelete={() => deleteHistoryItemMutation.mutate(item)}
+            />
           ))}
         </div>
       )}

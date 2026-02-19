@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from 'src/App'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider } from './contexts/app.context'
+import { ThemeProvider } from './contexts/theme.context'
+import { SocketProvider } from './contexts/socket.context'
 import 'src/i18n/i18n'
 import { HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from './components/ErrorBoundary'
+import { HeroUIProvider } from '@heroui/system'
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v6'
+
+// Lazy load ReactQueryDevtools - chỉ load trong development
+const ReactQueryDevtools = lazy(() =>
+  import('@tanstack/react-query-devtools').then((mod) => ({
+    default: mod.ReactQueryDevtools
+  }))
+)
 
 // Khi mà thằng này dùng như context thì chúng ta có thể dùng hook để lấy ra được thằng này
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false, // để không gọi lại APi mỗi lần focusWindow
-      retry: 0 // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
+      retry: 0, // Không cho nó retry lại, khi mà gọi Api sai thì báo lỗi 1 lần
+      staleTime: 3 * 60 * 1000, // 3 phút - data được coi là fresh trong 3 phút
+      gcTime: 10 * 60 * 1000 // 10 phút - giữ cache trong 10 phút sau khi inactive
     }
   }
 })
@@ -33,20 +45,41 @@ if (import.meta.env.PROD) {
   })
 }
 
+// Register Service Worker - only in production to avoid HMR conflicts
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((error) => {
+      console.error('Service Worker registration failed:', error)
+    })
+  })
+}
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <HelmetProvider>
-            <ErrorBoundary>
-              <App />
-              {/* CHỈ render ReactQueryDevtools trong development */}
-              {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-            </ErrorBoundary>
-          </HelmetProvider>
-        </AppProvider>
-      </QueryClientProvider>
+      <NuqsAdapter>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppProvider>
+              <SocketProvider>
+                <HelmetProvider>
+                  <HeroUIProvider>
+                    <ErrorBoundary>
+                      <App />
+                      {/* CHỈ render ReactQueryDevtools trong development */}
+                      {import.meta.env.DEV && (
+                        <Suspense fallback={null}>
+                          <ReactQueryDevtools initialIsOpen={false} />
+                        </Suspense>
+                      )}
+                    </ErrorBoundary>
+                  </HeroUIProvider>
+                </HelmetProvider>
+              </SocketProvider>
+            </AppProvider>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </NuqsAdapter>
     </BrowserRouter>
   </React.StrictMode>
 )

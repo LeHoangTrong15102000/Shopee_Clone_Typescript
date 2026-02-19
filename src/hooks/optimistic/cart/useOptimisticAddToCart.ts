@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
-import { produce } from 'immer'
 
 import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
@@ -66,7 +65,7 @@ export const useOptimisticAddToCart = () => {
       return { previousPurchases, optimisticPurchase: productData }
     },
 
-    onError: (err, newItem, context) => {
+    onError: (err, _newItem, context) => {
       // Rollback khi có lỗi
       if (context?.previousPurchases) {
         queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, context.previousPurchases)
@@ -82,7 +81,7 @@ export const useOptimisticAddToCart = () => {
       logOptimisticError('Add to cart', err, context)
     },
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, _variables, _context) => {
       // Thay thế item tạm thời bằng data thật từ server
       const realPurchase = data.data.data
 
@@ -106,7 +105,7 @@ export const useOptimisticAddToCart = () => {
       )
     },
 
-    onSettled: (data, error, variables) => {
+    onSettled: (_data, _error, variables) => {
       // Invalidate cart để đảm bảo sync với server
       invalidateCart()
 

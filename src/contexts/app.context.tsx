@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useMemo, useCallback } from 'react'
 import { ExtendedPurchase } from 'src/types/purchases.type'
 import { User } from 'src/types/user.type'
 import { getAccessTokenFromLS, getProfileFromLS } from 'src/utils/auth'
@@ -32,8 +32,7 @@ export const AppContext = createContext<AppContextInterface>(initialAppContext) 
 
 // Khi mà không truyền vào provider cái value thì giá trị khởi tạo sẽ được dùng
 export const AppProvider = ({
-  children,
-  defaultValue = initialAppContext
+  children
 }: {
   children: React.ReactNode
   defaultValue?: AppContextInterface
@@ -43,25 +42,29 @@ export const AppProvider = ({
   const [profile, setProfile] = useState<AppContextInterface['profile']>(initialAppContext.profile)
 
   // Mỗi khi mà clearLS thì hàm reset này nó sẽ gọi lại
-  const reset = () => {
+  const reset = useCallback(() => {
     // Không nên reset lại bằng giá trị của initalAppContext
     setIsAuthenticated(false)
     setExtendedPurchases([])
     setProfile(null)
-  }
+  }, [])
+
+  const value = useMemo(
+    () => ({
+      isAuthenticated,
+      setIsAuthenticated,
+      profile,
+      setProfile,
+      extendedPurchases,
+      setExtendedPurchases,
+      reset
+    }),
+    [isAuthenticated, profile, extendedPurchases, reset]
+  )
+
   return (
     // Trong đây truyền những giá trị được khai báo trong AppProvider
-    <AppContext.Provider
-      value={{
-        isAuthenticated,
-        setIsAuthenticated,
-        profile,
-        setProfile,
-        extendedPurchases,
-        setExtendedPurchases,
-        reset
-      }}
-    >
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   )

@@ -3,7 +3,6 @@ import { Http } from '../http'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { setAccessTokenToLS, setRefreshTokenToLS } from 'src/utils/auth'
 import { access_token_1s, refresh_token_1000days } from 'src/msw/auth.msw'
-import { productsRequest } from 'src/msw/product.msw'
 
 describe('http axios', () => {
   // Tạo một instance mới tránh ảnh hưởng từ thằng instance cũ

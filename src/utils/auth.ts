@@ -28,8 +28,12 @@ export const getRefreshTokenFromLS = () => localStorage.getItem('refresh_token')
 
 // mặc định khi mà không có thì nó sẽ về null
 export const getProfileFromLS = () => {
-  const result = localStorage.getItem('profile')
-  return result ? JSON.parse(result) : null
+  try {
+    const result = localStorage.getItem('profile')
+    return result ? JSON.parse(result) : null
+  } catch {
+    return null
+  }
 }
 
 export const setProfileToLS = (profile: User) => {

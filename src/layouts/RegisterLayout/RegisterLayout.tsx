@@ -2,6 +2,7 @@ import React, { memo, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from 'src/components/Footer'
 import RegisterHeader from 'src/components/RegisterHeader'
+import PageTransition from 'src/components/PageTransition'
 
 interface Props {
   children?: React.ReactNode // này có cũng được không có cũng được
@@ -15,10 +16,12 @@ const RegisterLayoutInner = ({ children }: Props) => {
   })
 
   return (
-    <div>
+    <div className='min-h-screen bg-gray-100 dark:bg-slate-900 transition-colors duration-200'>
       <RegisterHeader />
-      {children}
-      <Outlet />
+      <PageTransition>
+        {children}
+        <Outlet />
+      </PageTransition>
       <Footer />
     </div>
   )

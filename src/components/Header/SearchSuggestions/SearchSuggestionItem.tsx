@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface Props {
   suggestion: string
   searchValue: string
@@ -16,7 +14,7 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
 
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <span key={index} className='text-[#ee4d2d] font-medium'>
+        <span key={index} className='text-orange font-medium'>
           {part}
         </span>
       ) : (
@@ -27,11 +25,11 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
 
   return (
     <div
-      className='flex items-center py-2 px-2 hover:bg-gray-50 rounded cursor-pointer -mx-2 transition-colors'
+      className='flex items-center py-2 px-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded cursor-pointer -mx-2 transition-colors'
       onClick={onSelect}
     >
       <svg
-        className='w-3 h-3 md:w-4 md:h-4 text-gray-400 mr-2 md:mr-3 flex-shrink-0'
+        className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500 mr-2 md:mr-3 flex-shrink-0'
         fill='none'
         stroke='currentColor'
         viewBox='0 0 24 24'
@@ -43,7 +41,7 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
           d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
         />
       </svg>
-      <span className='text-xs md:text-sm text-gray-700 flex-1 leading-tight'>
+      <span className='text-xs md:text-sm text-gray-700 dark:text-gray-300 flex-1 leading-tight'>
         {highlightSearchValue(suggestion, searchValue)}
       </span>
     </div>

@@ -45,19 +45,19 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
 
   return (
     <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-      <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Ngày sinh</div>
+      <div className='text-[rgba(85,85,85, .6)] dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Ngày sinh</div>
       <div className='sm:w-[70%] sm:pl-5'>
-        <div className='flex justify-between'>
+        <div className='flex flex-col gap-2 sm:flex-row sm:justify-between'>
           <select
             onChange={handleChange}
             name='date'
-            className='h-10 w-[30%] cursor-pointer rounded-sm border border-black/10 px-3 hover:border-[#ee4d2d]'
+            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
             value={value?.getDate() || date.date}
           >
             <option disabled>Ngày</option>
             {/* Những option khác sẽ generate ra */}
             {range(1, 32).map((item) => (
-              <option className='cursor-pointer hover:text-[#ee4d2d]' value={item} key={item}>
+              <option className='cursor-pointer hover:text-[#ee4d2d] dark:bg-slate-800' value={item} key={item}>
                 {item}
               </option>
             ))}
@@ -65,12 +65,12 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           <select
             onChange={handleChange}
             name='month'
-            className='h-10 w-[30%] cursor-pointer rounded-sm border border-black/10 px-3 hover:border-[#ee4d2d]'
+            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
             value={value?.getMonth() || date.month}
           >
             <option disabled>Tháng</option>
             {range(0, 12).map((item) => (
-              <option className='cursor-pointer hover:text-[#ee4d2d]' value={item} key={item}>
+              <option className='cursor-pointer hover:text-[#ee4d2d] dark:bg-slate-800' value={item} key={item}>
                 {item + 1}
               </option>
             ))}
@@ -78,12 +78,12 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           <select
             onChange={handleChange}
             name='year'
-            className='h-10 w-[30%] cursor-pointer rounded-sm border border-black/10 px-3 hover:border-[#ee4d2d]'
+            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
             value={value?.getFullYear() || date.year}
           >
             <option disabled>Năm</option>
             {range(1990, 2024).map((item) => (
-              <option className='cursor-pointer hover:text-[#ee4d2d]' value={item} key={item}>
+              <option className='cursor-pointer hover:text-[#ee4d2d] dark:bg-slate-800' value={item} key={item}>
                 {item}
               </option>
             ))}

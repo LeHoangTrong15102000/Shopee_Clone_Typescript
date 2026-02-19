@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
-import { useState, useRef, useId, type ElementType } from 'react'
-import { useFloating, FloatingPortal, arrow, FloatingArrow, shift, offset, type Placement } from '@floating-ui/react'
+import { useState, useRef, useId, useEffect, useCallback, type ElementType } from 'react'
+import { useFloating, FloatingPortal, arrow, shift, offset, type Placement } from '@floating-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props {
@@ -43,10 +42,28 @@ const Popover = ({
     setIsOpen(false)
   }
 
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && isOpen) {
+      event.preventDefault()
+      hidePopover()
+      // Return focus to trigger element
+      if (refs.reference.current && 'focus' in refs.reference.current) {
+        ;(refs.reference.current as HTMLElement).focus()
+      }
+    }
+  }, [isOpen, refs.reference])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, handleKeyDown])
+
   // Dùng kĩ thuật render Props, truyền vào cái props 1 dạng function component
 
   return (
-    <Element className={className} ref={refs.setReference} onMouseEnter={showPopover} onMouseLeave={hidePopover}>
+    <Element className={className} ref={refs.setReference} onMouseEnter={showPopover} onMouseLeave={hidePopover} aria-expanded={isOpen} aria-haspopup='true'>
       {children}
       {/* <svg
         xmlns='http://www.w3.org/2000/svg'
@@ -83,7 +100,8 @@ const Popover = ({
                 top: y ?? 0,
                 left: x ?? 0,
                 width: 'max-content',
-                transformOrigin: `${middlewareData.arrow?.x}px top` // nơi đầu khi transform
+                transformOrigin: `${middlewareData.arrow?.x}px top`, // nơi đầu khi transform
+                zIndex: 50
               }}
               initial={{ opacity: 0, transform: 'scale(0)' }}
               animate={{ opacity: 1, transform: 'scale(1)' }}
@@ -93,7 +111,7 @@ const Popover = ({
               {enableArrow && (
                 <span
                   ref={arrowRef}
-                  className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white'
+                  className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white dark:border-b-slate-800'
                   style={{
                     left: middlewareData.arrow?.x,
                     top: middlewareData.arrow?.y

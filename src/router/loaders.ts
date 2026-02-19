@@ -1,13 +1,13 @@
 import { QueryClient } from '@tanstack/react-query'
 import { LoaderFunction } from 'react-router-dom'
 
-import productApi from 'src/apis/product.api'
 import categoryApi from 'src/apis/category.api'
-import userApi from 'src/apis/user.api'
+import productApi from 'src/apis/product.api'
 import purchasesApi from 'src/apis/purchases.api'
-import { QueryFilters } from 'src/utils/queryFilters'
-import { ProductListConfig } from 'src/types/product.type'
+import userApi from 'src/apis/user.api'
 import { purchasesStatus } from 'src/constant/purchase'
+import { ProductListConfig } from 'src/types/product.type'
+import { QueryFilters } from 'src/utils/queryFilters'
 
 /**
  * Create optimized QueryClient for prefetching

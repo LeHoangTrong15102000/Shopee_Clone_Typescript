@@ -5,6 +5,7 @@ import App from 'src/App'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider, getInitialAppContext } from 'src/contexts/app.context'
+import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
 import { expect } from 'vitest'
 
 // Viết các function chỉ dành cho việc test
@@ -54,6 +55,13 @@ const createWrapper = () => {
 
 const Provider = createWrapper()
 
+// Composite wrapper that provides BrowserRouter + NuqsTestingAdapter (matching main.tsx provider order)
+const RouterWithNuqs = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter>
+    <NuqsTestingAdapter>{children}</NuqsTestingAdapter>
+  </BrowserRouter>
+)
+
 // Tạo lại thằng renderWithRouter để chạy trong môi trường NodeJS
 export const renderWithRouter = ({ route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route)
@@ -66,7 +74,7 @@ export const renderWithRouter = ({ route = '/' } = {}) => {
           <App />
         </AppProvider>
       </Provider>,
-      { wrapper: BrowserRouter }
+      { wrapper: RouterWithNuqs }
     )
   }
 }

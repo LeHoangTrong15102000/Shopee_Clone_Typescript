@@ -21,7 +21,7 @@ import { useQueryInvalidation } from '../../useQueryInvalidation'
 export const useOptimisticRemoveFromCart = () => {
   const queryClient = useQueryClient()
   const { setExtendedPurchases } = useContext(AppContext)
-  const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
+  const { invalidateCart } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: purchaseApi.deletePurchase,
@@ -73,7 +73,7 @@ export const useOptimisticRemoveFromCart = () => {
       return { previousData, removedItems, undoToast }
     },
 
-    onError: (err, purchaseIds, context) => {
+    onError: (err, _purchaseIds, context) => {
       // Rollback khi có lỗi
       if (context?.previousData) {
         queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, context.previousData)
@@ -99,7 +99,7 @@ export const useOptimisticRemoveFromCart = () => {
       logOptimisticError('Remove from cart', err, context)
     },
 
-    onSuccess: (data, purchaseIds, context) => {
+    onSuccess: (_data, purchaseIds, context) => {
       // Dismiss undo toast khi thành công
       if (context?.undoToast) {
         toast.dismiss(context.undoToast)
@@ -109,7 +109,7 @@ export const useOptimisticRemoveFromCart = () => {
       showSuccessToast(TOAST_MESSAGES.REMOVE_FROM_CART_FINAL_SUCCESS(purchaseIds.length))
     },
 
-    onSettled: (data, error, variables) => {
+    onSettled: (_data, _error, variables) => {
       // Invalidate cart để sync với server
       invalidateCart()
 

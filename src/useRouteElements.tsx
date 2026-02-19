@@ -1,17 +1,14 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-// import ProductList from './pages/ProductList'
-// import Login from './pages/Login'
-// import Register from './pages/Register'
-import RegisterLayout from './layouts/RegisterLayout'
-import MainLayout from './layouts/MainLayout'
 import { useContext, lazy, Suspense } from 'react'
 import { AppContext } from './contexts/app.context'
 import path from './constant/path'
-// import ProductDetail from './pages/ProductDetail'
-// import Cart from './pages/Cart'
-import CartLayout from './layouts/CartLayout'
-import UserLayout from './pages/User/layouts/UserLayout'
 import Loader from './components/Loader'
+
+// Lazy load layouts - giảm initial bundle size
+const MainLayout = lazy(() => import('./layouts/MainLayout'))
+const RegisterLayout = lazy(() => import('./layouts/RegisterLayout'))
+const CartLayout = lazy(() => import('./layouts/CartLayout'))
+const UserLayout = lazy(() => import('./pages/User/layouts/UserLayout'))
 // import Profile from './pages/User/pages/Profile'
 // import ChangePassword from './pages/User/pages/ChangePassword'
 // import HistoryPurchases from './pages/User/pages/HistoryPurchases'
@@ -24,9 +21,19 @@ const Home = lazy(() => import('./pages/Home'))
 const ProductList = lazy(() => import('./pages/ProductList'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const Cart = lazy(() => import('./pages/Cart'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const Wishlist = lazy(() => import('./pages/Wishlist'))
+const Compare = lazy(() => import('./pages/Compare'))
 const Profile = lazy(() => import('./pages/User/pages/Profile'))
 const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
 const HistoryPurchases = lazy(() => import('./pages/User/pages/HistoryPurchases'))
+const OrderList = lazy(() => import('./pages/User/pages/OrderList'))
+const OrderDetail = lazy(() => import('./pages/User/pages/OrderDetail'))
+const MyVouchers = lazy(() => import('./pages/User/pages/MyVouchers'))
+const DailyCheckInPage = lazy(() => import('./pages/User/pages/DailyCheckIn'))
+const FollowedShopsPage = lazy(() => import('./pages/User/pages/FollowedShops'))
+const AddressBook = lazy(() => import('./pages/User/pages/AddressBook'))
+const Notifications = lazy(() => import('./pages/User/pages/Notifications'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Khai báo một Route Protected(Vì nó return về Outlet nên hàm này được coi là component)
@@ -46,7 +53,11 @@ const useRouteElements = () => {
   const routeElements = useRoutes([
     {
       path: '',
-      element: <MainLayout />,
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MainLayout />
+        </Suspense>
+      ),
       children: [
         {
           path: path.home,
@@ -80,6 +91,15 @@ const useRouteElements = () => {
           errorElement: <NotFound />
         },
         {
+          path: path.compare,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <Compare />
+            </Suspense>
+          ),
+          errorElement: <NotFound />
+        },
+        {
           path: '*',
           element: (
             <Suspense>
@@ -96,21 +116,55 @@ const useRouteElements = () => {
         {
           path: path.cart,
           element: (
-            <CartLayout>
-              <Suspense fallback={<Loader />}>
-                <Cart />
-              </Suspense>
-            </CartLayout>
+            <Suspense fallback={<Loader />}>
+              <CartLayout>
+                <Suspense fallback={<Loader />}>
+                  <Cart />
+                </Suspense>
+              </CartLayout>
+            </Suspense>
+          )
+        },
+        {
+          path: path.checkout,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CartLayout>
+                <Suspense fallback={<Loader />}>
+                  <Checkout />
+                </Suspense>
+              </CartLayout>
+            </Suspense>
+          )
+        },
+        {
+          path: path.wishlist,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MainLayout>
+                <Suspense fallback={<Loader />}>
+                  <Wishlist />
+                </Suspense>
+              </MainLayout>
+            </Suspense>
           )
         },
         {
           path: path.user,
-          element: <MainLayout />,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MainLayout />
+            </Suspense>
+          ),
           // cái children trong router dùng để khai báo cho những thằng Outlet nằm bên trong UserLayout
           children: [
             {
               path: '',
-              element: <UserLayout />,
+              element: (
+                <Suspense fallback={<Loader />}>
+                  <UserLayout />
+                </Suspense>
+              ),
               children: [
                 {
                   path: path.profile,
@@ -135,6 +189,62 @@ const useRouteElements = () => {
                       <HistoryPurchases />
                     </Suspense>
                   )
+                },
+                {
+                  path: path.orderDetail,
+                  element: (
+                    <Suspense>
+                      <OrderDetail />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.orderList,
+                  element: (
+                    <Suspense>
+                      <OrderList />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.myVouchers,
+                  element: (
+                    <Suspense>
+                      <MyVouchers />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.dailyCheckIn,
+                  element: (
+                    <Suspense>
+                      <DailyCheckInPage />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.followedShops,
+                  element: (
+                    <Suspense>
+                      <FollowedShopsPage />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.addressBook,
+                  element: (
+                    <Suspense>
+                      <AddressBook />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.notifications,
+                  element: (
+                    <Suspense>
+                      <Notifications />
+                    </Suspense>
+                  )
                 }
               ]
             }
@@ -151,7 +261,11 @@ const useRouteElements = () => {
         {
           path: '',
           // Khi mình làm như này thì vẫn đảm bảo rằng thằng <RegisterLayout /> nó có Outlet, khi mà thằng outlet thay đổi thì nó không ảnh hưởng gì đến thằng RegisterLayout
-          element: <RegisterLayout />,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <RegisterLayout />
+            </Suspense>
+          ),
           children: [
             {
               path: path.login,

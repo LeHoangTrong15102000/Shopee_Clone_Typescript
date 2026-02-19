@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import reviewApi from 'src/apis/review.api'
 import { ReviewLikeContext, QUERY_KEYS } from '../shared/types'
-import { updatePurchasesCache, showSuccessToast, showErrorToast, logOptimisticError } from '../shared/utils'
+import { showSuccessToast, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
 import { useQueryInvalidation } from '../../useQueryInvalidation'
 
@@ -57,7 +57,7 @@ export const useOptimisticReviewLike = (productId: string) => {
       return { previousReviews, reviewId }
     },
 
-    onError: (err, reviewId, context) => {
+    onError: (err, _reviewId, context) => {
       // Rollback khi có lỗi
       if (context?.previousReviews) {
         queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), context.previousReviews)
@@ -68,7 +68,7 @@ export const useOptimisticReviewLike = (productId: string) => {
       logOptimisticError('Review like', err, context)
     },
 
-    onSuccess: (data, reviewId, context) => {
+    onSuccess: (data, reviewId, _context) => {
       // Cập nhật với data thật từ server
       queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), (old: any) => {
         if (!old) return old

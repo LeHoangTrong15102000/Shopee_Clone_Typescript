@@ -4,6 +4,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== THEME CSS VARIABLES ===== */
+@layer base {
+  :root {
+    /* Light Theme (Default) */
+    --color-bg-primary: 255 255 255;
+    --color-bg-secondary: 245 245 245;
+    --color-bg-tertiary: 238 238 238;
+
+    --color-text-primary: 17 24 39;
+    --color-text-secondary: 107 114 128;
+    --color-text-muted: 156 163 175;
+
+    --color-border: 229 231 235;
+    --color-ring: 238 77 45;
+
+    --color-surface-card: 255 255 255;
+    --color-surface-hover: 249 250 251;
+
+    /* Input tokens */
+    --color-input-bg: 255 255 255;
+    --color-input-border: 209 213 219;
+    --color-input-text: 17 24 39;
+    --color-input-placeholder: 156 163 175;
+
+    /* Modal tokens */
+    --color-modal-bg: 255 255 255;
+    --color-modal-overlay: 0 0 0;
+    --color-modal-border: 229 231 235;
+
+    /* Card tokens */
+    --color-card-bg: 255 255 255;
+    --color-card-border: 229 231 235;
+    --color-card-hover: 249 250 251;
+
+    /* Tooltip/Badge tokens */
+    --color-tooltip-bg: 31 41 55;
+    --color-tooltip-text: 255 255 255;
+    --color-badge-bg: 243 244 246;
+    --color-badge-text: 55 65 81;
+  }
+
+  .dark {
+    /* Dark Theme */
+    --color-bg-primary: 26 26 46;
+    --color-bg-secondary: 22 33 62;
+    --color-bg-tertiary: 15 23 42;
+
+    --color-text-primary: 248 250 252;
+    --color-text-secondary: 161 161 170;
+    --color-text-muted: 113 113 122;
+
+    --color-border: 63 63 70;
+    --color-ring: 251 146 60;
+
+    --color-surface-card: 30 41 59;
+    --color-surface-hover: 51 65 85;
+
+    /* Input tokens - dark */
+    --color-input-bg: 30 41 59;
+    --color-input-border: 71 85 105;
+    --color-input-text: 248 250 252;
+    --color-input-placeholder: 148 163 184;
+
+    /* Modal tokens - dark */
+    --color-modal-bg: 30 41 59;
+    --color-modal-overlay: 0 0 0;
+    --color-modal-border: 51 65 85;
+
+    /* Card tokens - dark */
+    --color-card-bg: 30 41 59;
+    --color-card-border: 51 65 85;
+    --color-card-hover: 51 65 85;
+
+    /* Tooltip/Badge tokens - dark (inverted for visibility) */
+    --color-tooltip-bg: 248 250 252;
+    --color-tooltip-text: 15 23 42;
+    --color-badge-bg: 51 65 85;
+    --color-badge-text: 226 232 240;
+  }
+}
+
 html {
   height: 100%;
   line-height: 1.2;
@@ -12,6 +93,9 @@ html {
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  background-color: rgb(var(--color-bg-primary));
+  color: rgb(var(--color-text-primary));
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @layer utilities {
@@ -20,6 +104,13 @@ body {
   }
   .animation-delay-400 {
     animation-delay: 0.4s;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -44,6 +135,25 @@ body {
   20%,
   40% {
     transform: rotate(10deg);
+  }
+}
+
+/* Animation cho message icon */
+@keyframes message-shake {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  10%,
+  30% {
+    transform: rotate(-8deg) scale(1.1);
+  }
+  20%,
+  40% {
+    transform: rotate(8deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
   }
 }
 
@@ -109,4 +219,101 @@ body {
     white-space: nowrap;
     max-width: 100px;
   }
+}
+
+/* ===== ANIMATION ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== ANIMATION UTILITY CLASSES ===== */
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fade-in-up 0.3s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out forwards;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  .focus-ring-orange {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Status badge pulse animation for waiting states */
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(238, 77, 45, 0.4);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 0 4px rgba(238, 77, 45, 0);
+  }
+}
+
+@keyframes status-pulse-blue {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0);
+  }
+}
+
+/* ===== FOCUS VISIBLE STYLES ===== */
+*:focus-visible {
+  outline: 2px solid #ee4d2d;
+  outline-offset: 2px;
+}
+
+/* Remove default focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
 }

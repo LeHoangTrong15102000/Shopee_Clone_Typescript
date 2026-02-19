@@ -15,7 +15,7 @@ interface ProductReviewModalProps {
 const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalProps) => {
   const [rating, setRating] = useState<number>(5)
   const [comment, setComment] = useState<string>('')
-  const [images, setImages] = useState<string[]>([])
+  const [images, _setImages] = useState<string[]>([])
 
   const queryClient = useQueryClient()
 
@@ -62,11 +62,11 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-      <div className='w-full max-w-2xl mx-4 bg-white rounded-lg shadow-xl max-h-[90vh] overflow-hidden'>
+      <div className='w-full max-w-2xl mx-4 bg-white dark:bg-slate-800 rounded-lg shadow-xl max-h-[90vh] overflow-hidden'>
         {/* Header */}
-        <div className='flex items-center justify-between p-6 border-b'>
-          <h2 className='text-xl font-semibold text-gray-800'>Đánh Giá Sản Phẩm</h2>
-          <button onClick={onClose} className='text-gray-400 hover:text-gray-600 text-2xl font-bold'>
+        <div className='flex items-center justify-between p-6 border-b dark:border-slate-700'>
+          <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200'>Đánh Giá Sản Phẩm</h2>
+          <button onClick={onClose} className='text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl font-bold'>
             ×
           </button>
         </div>
@@ -74,15 +74,15 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
         {/* Body */}
         <div className='p-6 max-h-[70vh] overflow-y-auto'>
           {/* Product Info */}
-          <div className='flex items-center mb-6 p-4 bg-gray-50 rounded-lg'>
+          <div className='flex items-center mb-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-lg'>
             <img
               src={purchase.product.image}
               alt={purchase.product.name}
-              className='w-16 h-16 object-cover rounded border'
+              className='w-16 h-16 object-cover rounded border dark:border-slate-600'
             />
             <div className='ml-4 flex-1'>
-              <h3 className='font-medium text-gray-800 line-clamp-2'>{purchase.product.name}</h3>
-              <p className='text-sm text-gray-600 mt-1'>
+              <h3 className='font-medium text-gray-800 dark:text-gray-200 line-clamp-2'>{purchase.product.name}</h3>
+              <p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
                 Phân loại hàng:{' '}
                 {typeof purchase.product.category === 'object'
                   ? purchase.product.category?.name
@@ -93,12 +93,12 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
 
           {/* Rating */}
           <div className='mb-6'>
-            <h4 className='font-medium text-gray-800 mb-3'>Chất lượng sản phẩm</h4>
+            <h4 className='font-medium text-gray-800 dark:text-gray-200 mb-3'>Chất lượng sản phẩm</h4>
             <div className='flex items-center space-x-2'>
               {[1, 2, 3, 4, 5].map((star) => (
                 <button key={star} onClick={() => handleRatingClick(star)} className='focus:outline-none'>
                   <svg
-                    className={`w-8 h-8 ${star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                    className={`w-8 h-8 ${star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'}`}
                     viewBox='0 0 20 20'
                   >
                     <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
@@ -117,59 +117,59 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
 
           {/* Comment */}
           <div className='mb-6'>
-            <h4 className='font-medium text-gray-800 mb-3'>Đánh giá của bạn</h4>
+            <h4 className='font-medium text-gray-800 dark:text-gray-200 mb-3'>Đánh giá của bạn</h4>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder='Hãy chia sẻ những điều bạn thích về sản phẩm này với những người mua khác nhé.'
-              className='w-full p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
+              className='w-full p-3 border border-gray-300 dark:border-slate-600 rounded-md resize-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100'
               rows={4}
               maxLength={2000}
             />
-            <div className='text-right text-sm text-gray-500 mt-1'>{comment.length}/2000</div>
+            <div className='text-right text-sm text-gray-500 dark:text-gray-400 mt-1'>{comment.length}/2000</div>
           </div>
 
           {/* Images Upload - Simplified for now */}
           <div className='mb-6'>
-            <h4 className='font-medium text-gray-800 mb-3'>Thêm Hình ảnh</h4>
+            <h4 className='font-medium text-gray-800 dark:text-gray-200 mb-3'>Thêm Hình ảnh</h4>
             <div className='flex items-center space-x-4'>
-              <div className='w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-orange-500'>
+              <div className='w-20 h-20 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-orange-500'>
                 <div className='text-center'>
                   <svg
-                    className='w-8 h-8 text-gray-400 mx-auto mb-1'
+                    className='w-8 h-8 text-gray-400 dark:text-gray-500 mx-auto mb-1'
                     fill='none'
                     stroke='currentColor'
                     viewBox='0 0 24 24'
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 6v6m0 0v6m0-6h6m-6 0H6' />
                   </svg>
-                  <p className='text-xs text-gray-500'>Thêm Hình ảnh</p>
+                  <p className='text-xs text-gray-500 dark:text-gray-400'>Thêm Hình ảnh</p>
                 </div>
               </div>
             </div>
-            <p className='text-xs text-gray-500 mt-2'>Tối đa 10 hình ảnh</p>
+            <p className='text-xs text-gray-500 dark:text-gray-400 mt-2'>Tối đa 10 hình ảnh</p>
           </div>
 
           {/* Service Rating */}
           <div className='mb-6'>
-            <h4 className='font-medium text-gray-800 mb-3'>Về Dịch vụ</h4>
+            <h4 className='font-medium text-gray-800 dark:text-gray-200 mb-3'>Về Dịch vụ</h4>
 
             <div className='mb-4'>
-              <label className='block text-sm text-gray-700 mb-2'>Dịch vụ của người bán</label>
+              <label className='block text-sm text-gray-700 dark:text-gray-300 mb-2'>Dịch vụ của người bán</label>
               <ProductRating
                 rating={5}
                 activeClassname='w-5 h-5 fill-yellow-400 text-yellow-400'
-                nonActiveClassname='w-5 h-5 fill-gray-300 text-gray-300'
+                nonActiveClassname='w-5 h-5 fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
               />
               <span className='ml-2 text-sm text-orange-500'>Tuyệt vời</span>
             </div>
 
             <div className='mb-4'>
-              <label className='block text-sm text-gray-700 mb-2'>Dịch vụ vận chuyển</label>
+              <label className='block text-sm text-gray-700 dark:text-gray-300 mb-2'>Dịch vụ vận chuyển</label>
               <ProductRating
                 rating={5}
                 activeClassname='w-5 h-5 fill-yellow-400 text-yellow-400'
-                nonActiveClassname='w-5 h-5 fill-gray-300 text-gray-300'
+                nonActiveClassname='w-5 h-5 fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
               />
               <span className='ml-2 text-sm text-orange-500'>Tuyệt vời</span>
             </div>
@@ -177,10 +177,10 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
         </div>
 
         {/* Footer */}
-        <div className='flex justify-end space-x-3 p-6 border-t bg-gray-50'>
+        <div className='flex justify-end space-x-3 p-6 border-t dark:border-slate-700 bg-gray-50 dark:bg-slate-900'>
           <button
             onClick={onClose}
-            className='px-6 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-100'
+            className='px-6 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded hover:bg-gray-100 dark:hover:bg-slate-700'
           >
             Trở Lại
           </button>

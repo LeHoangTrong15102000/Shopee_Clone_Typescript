@@ -1,10 +1,16 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, lazy, Suspense } from 'react'
 import useRouteElements from './useRouteElements'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
 import SEO from './components/SEO'
+import { KeyboardShortcutsProvider } from './components/KeyboardShortcutsProvider'
+
+// Lazy load heavy components - giảm main chunk size
+const ChatbotWidget = lazy(() => import('./components/ChatbotWidget'))
+const SellerDashboardPanel = lazy(() => import('./components/SellerDashboardPanel/SellerDashboardPanel'))
+const PWAInstallPrompt = lazy(() => import('./components/PWAInstallPrompt'))
 
 /**
  * Khi url thay đổi thì các component nào dùng các hook như
@@ -30,12 +36,24 @@ function App() {
   }, [reset])
 
   return (
-    <>
+    <KeyboardShortcutsProvider>
       {/* Default SEO cho toàn bộ app */}
       <SEO />
-      <ToastContainer autoClose={1500} />
+      <ToastContainer autoClose={1500} role='alert' />
       {routeElements}
-    </>
+      {/* Chatbot Widget - hiển thị trên tất cả các trang */}
+      <Suspense fallback={null}>
+        <ChatbotWidget />
+      </Suspense>
+      {/* Seller Dashboard Panel - chỉ hiển thị cho Admin */}
+      <Suspense fallback={null}>
+        <SellerDashboardPanel className='fixed bottom-4 left-4 w-80 z-40' />
+      </Suspense>
+      {/* PWA Install Prompt */}
+      <Suspense fallback={null}>
+        <PWAInstallPrompt />
+      </Suspense>
+    </KeyboardShortcutsProvider>
   )
 }
 

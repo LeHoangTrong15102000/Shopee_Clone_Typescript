@@ -3,8 +3,7 @@
 import { screen, waitFor, fireEvent } from '@testing-library/react'
 import path from 'src/constant/path'
 import { logScreen, renderWithRouter } from 'src/utils/testUtils'
-import userEvent from '@testing-library/user-event'
-import { beforeAll, describe, expect, test, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Login', () => {
   let emailInput: HTMLInputElement

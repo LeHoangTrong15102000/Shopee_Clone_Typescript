@@ -538,8 +538,10 @@ Fetch data từ API và hiển thị lên form, xử lý form validation và sub
 
 ### 🔧 **Schema Validation**
 
+> ⚠️ **Lưu ý**: Project hiện tại đã migrate sang Zod. Các ví dụ Yup bên dưới chỉ mang tính tham khảo lịch sử. Xem `src/utils/rules.ts` để tham khảo cách sử dụng Zod với baseSchema pattern và .superRefine() cho cross-field validation.
+
 ```typescript
-// utils/rules.ts
+// utils/rules.ts (ví dụ cũ với Yup - chỉ tham khảo)
 export const userSchema = schema.pick(['name', 'phone', 'address', 'date_of_birth', 'avatar'])
 
 // Thêm validation cho date_of_birth
@@ -702,7 +704,7 @@ export default function Profile() {
 - **EventTarget Pattern**: Giải pháp elegant cho token expiration
 - **Nested Routes**: Tái sử dụng layout hiệu quả
 - **Type Safety**: TypeScript typing chặt chẽ
-- **Form Validation**: Yup schema validation
+- **Form Validation**: Zod schema validation (đã migrate từ Yup)
 - **Responsive Design**: Mobile-first approach
 
 ### ➡️ **Chương Tiếp Theo**

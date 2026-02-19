@@ -6,12 +6,23 @@ const path = {
   profile: '/user/profile',
   changePassword: '/user/password',
   historyPurchases: '/user/purchase',
+  orderList: '/user/orders',
+  myVouchers: '/user/vouchers',
+  addressBook: '/user/address', // Trang quản lý địa chỉ giao hàng
   login: '/login',
   register: '/register',
   logout: '/logout',
   categories: '/categories',
   productDetail: ':nameId', // sửa lại thành nameId cho nó đồng bộ với logic productDetail, tuy không để dấu '/' nhưng nó vẫn hiểu là có dấu /
-  cart: '/cart' // dường dẫn trên UI do chúng ta tự tạo ra để phù hợp
+  cart: '/cart', // dường dẫn trên UI do chúng ta tự tạo ra để phù hợp
+  checkout: '/checkout', // Trang thanh toán
+  wishlist: '/wishlist', // Trang danh sách yêu thích
+  compare: '/compare', // Trang so sánh sản phẩm
+  orderDetail: '/user/order/:orderId', // Chi tiết đơn hàng
+  voucherCollection: '/vouchers', // Trang thu thập voucher
+  dailyCheckIn: '/user/daily-checkin', // Trang điểm danh hàng ngày
+  followedShops: '/user/followed-shops', // Trang shop đang theo dõi
+  notifications: '/user/notifications' // Trang thông báo
 } as const
 
 export default path

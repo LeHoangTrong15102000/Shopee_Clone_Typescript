@@ -51,7 +51,7 @@ export const useOptimisticUpdateQuantity = () => {
       return { previousData, product_id }
     },
 
-    onError: (err, variables, context) => {
+    onError: (err, _variables, context) => {
       // Rollback changes
       if (context?.previousData) {
         queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, context.previousData)
@@ -92,7 +92,7 @@ export const useOptimisticUpdateQuantity = () => {
       )
     },
 
-    onSettled: (data, error, variables) => {
+    onSettled: (_data, _error, variables) => {
       // Invalidate cart để sync với server
       invalidateCart()
 

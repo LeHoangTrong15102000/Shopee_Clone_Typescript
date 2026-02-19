@@ -1,13 +1,14 @@
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, FormProvider, useFormContext } from 'react-hook-form'
+import { motion } from 'framer-motion'
 import userApi, { BodyUpdateProfile } from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
-import { User } from 'src/types/user.type'
-import { UserSchema, userSchema } from 'src/utils/rules'
+import ProfileCompletion from 'src/components/ProfileCompletion'
+import { UserSchema, baseUserSchema } from 'src/utils/rules'
 import DateSelect from '../../components/DateSelect'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
@@ -15,6 +16,8 @@ import { setProfileToLS } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import AvatarCropModal from 'src/components/AvatarCropModal'
 
 // Khai báo 1 cái component Info
 function Info() {
@@ -27,7 +30,7 @@ function Info() {
     <Fragment>
       {/* Tên */}
       <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Tên</div>
+        <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Tên</div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Input
             register={register}
@@ -35,13 +38,13 @@ function Info() {
             placeholder='Tên'
             errorMessage={errors.name?.message}
             autoComplete='on'
-            classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 shadow-sm outline-none focus:border-gray-500'
+            classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
           />
         </div>
       </div>
       {/* Số điện thoại */}
       <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Số điện thoại</div>
+        <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Số điện thoại</div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Controller
             control={control}
@@ -53,7 +56,7 @@ function Info() {
                   className='grow'
                   placeholder='Số điện thoại'
                   errorMessage={errors.phone?.message}
-                  classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 shadow-sm outline-none focus:border-gray-500'
+                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
                   {...field}
                   onChange={(event) => field.onChange(event)}
                 />
@@ -73,12 +76,14 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
   date_of_birth: string
 }
 
-const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar']) // Dùng cho yup.resolvers rồi
+const profileSchema = baseUserSchema.pick({ name: true, address: true, phone: true, date_of_birth: true, avatar: true })
 // URL.createObjectURL(file)
 
 const Profile = () => {
-  const { setProfile } = useContext(AppContext)
+  const { setProfile, profile: profileFromContext } = useContext(AppContext)
   const [file, setFile] = useState<File>()
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false)
   // file này ban đầu không có giá trị gì hết
   const queryClient = useQueryClient()
 
@@ -96,7 +101,7 @@ const Profile = () => {
       date_of_birth: new Date(1990, 0, 1), // giá trị khởi tạo là Date() nên khởi tọa theo như vậy
       avatar: ''
     },
-    resolver: yupResolver(profileSchema) // để profileSchema vào
+    resolver: zodResolver(profileSchema)
   })
   const {
     register,
@@ -109,6 +114,7 @@ const Profile = () => {
   } = methods
   // theo dõi giá trị của Avatar mỗi lần changed
   const avatar = watch('avatar') // dùng watch() theo dõi giá trị của Avatar
+  const reducedMotion = useReducedMotion()
 
   // useQuery để lấy ra cái getProfile
   const { data: profileData } = useQuery({
@@ -141,7 +147,23 @@ const Profile = () => {
 
   // Func HandleChange File và truyền xuống cho component InputFile
   const handleChangeFile = (file?: File) => {
-    setFile(file)
+    if (file) {
+      setPendingFile(file)
+      setIsCropModalOpen(true)
+    }
+  }
+
+  // Handle crop modal close
+  const handleCropModalClose = () => {
+    setIsCropModalOpen(false)
+    setPendingFile(null)
+  }
+
+  // Handle crop confirm
+  const handleCropConfirm = (croppedFile: File) => {
+    setFile(croppedFile)
+    setIsCropModalOpen(false)
+    setPendingFile(null)
   }
 
   // Func Submit xử lý lưu thông tin User
@@ -173,6 +195,8 @@ const Profile = () => {
         // console.log(res.data.data)
         setProfile(res.data.data)
         setProfileToLS(res.data.data)
+        // Reset file state để hiển thị avatar từ server thay vì previewImage
+        setFile(undefined)
         toast.success(res.data?.message, { autoClose: 1000, position: 'top-center' })
       }
     } catch (error) {
@@ -194,12 +218,25 @@ const Profile = () => {
   })
 
   return (
-    <div className='rounded-md bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
+    <motion.div
+      className='rounded-md bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'
+      initial={reducedMotion ? undefined : { opacity: 0, y: 15 }}
+      animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
+      {/* Profile Completion Progress */}
+      <ProfileCompletion user={profile || null} className='mb-6 mt-6' />
+
       {/* Tiêu đề */}
-      <div className='border-b border-b-gray-100 py-6 text-center sm:text-left'>
-        <h1 className='text-lg font-medium capitalize text-gray-700'>Hồ sơ của tôi</h1>
-        <div className='mt-[0.1875rem] text-[.875rem]'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
-      </div>
+      <motion.div
+        className='border-b border-b-gray-100 dark:border-b-slate-600 py-6 text-center sm:text-left'
+        initial={reducedMotion ? undefined : { opacity: 0, x: -10 }}
+        animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        <h1 className='text-lg font-medium capitalize text-gray-700 dark:text-gray-200'>Hồ sơ của tôi</h1>
+        <div className='mt-[0.1875rem] text-[.875rem] dark:text-gray-300'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
+      </motion.div>
       {/* Form và Avatar */}
       <FormProvider {...methods}>
         <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
@@ -208,25 +245,25 @@ const Profile = () => {
             {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Email</div>
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Email</div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-3 text-gray-500'>{profile?.email}</div>
+                <div className='pt-3 text-gray-500 dark:text-gray-400'>{profile?.email}</div>
               </div>
             </div>
             {/* Tên đăng nhập */}
             <div className='mt-4 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
                 Tên đăng nhập
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-3 text-gray-500'>{profile?.name}</div>
+                <div className='pt-3 text-gray-500 dark:text-gray-400'>{profile?.name}</div>
               </div>
             </div>
             {/* Info thông tin người dùng */}
             <Info />
             {/* Địa chỉ */}
             <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Địa chỉ</div>
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Địa chỉ</div>
               <div className='sm:w-[70%] sm:pl-5'>
                 <Input
                   register={register}
@@ -234,7 +271,7 @@ const Profile = () => {
                   placeholder='Địa chỉ'
                   errorMessage={errors.address?.message}
                   autoComplete='on'
-                  classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 shadow-sm outline-none focus:border-gray-500'
+                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
                 />
               </div>
             </div>
@@ -258,11 +295,11 @@ const Profile = () => {
 
             {/* button lưu thay đổi */}
             <div className='mt-3 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right' />
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right' />
               <div className='w-[100%] sm:w-[70%] sm:pl-5'>
                 <Button
                   type='submit'
-                  className='flex h-10 min-w-[70px] max-w-[220px] items-center justify-center rounded-sm bg-[#ee4d2d] px-5 text-center text-sm text-white hover:bg-[#ee4d2d]/90'
+                  className='flex h-10 min-w-[100px] max-w-[220px] items-center justify-center rounded-lg bg-orange dark:bg-orange-400 px-5 text-center text-sm text-white hover:bg-orange/90 dark:hover:bg-orange-400/90'
                 >
                   Lưu
                 </Button>
@@ -270,13 +307,18 @@ const Profile = () => {
             </div>
           </div>
           {/* Avatar */}
-          <div className='flex items-center justify-center md:w-72 md:border-l md:border-l-gray-100'>
+          <motion.div
+            className='flex items-center justify-center md:w-72 md:border-l md:border-l-gray-100 dark:md:border-l-slate-600'
+            initial={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
+            animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
             {/* flex-col cho nó dàn hàng ngang */}
             <div className='flex flex-col items-center'>
               {/* Avatar */}
-              <div className='my-5 h-[115px] w-[115px] flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
+              <div className='my-5 h-20 w-20 sm:h-24 sm:w-24 md:h-[115px] md:w-[115px] flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
                 <img
-                  src={previewImage || getAvatarUrl(profile?.avatar)}
+                  src={previewImage || getAvatarUrl(profileFromContext?.avatar)}
                   alt='Avatar'
                   className='h-full w-full object-cover'
                 />
@@ -284,15 +326,23 @@ const Profile = () => {
               {/* Input file */}
               <InputFile onChange={(value) => handleChangeFile(value)} />
               <div className='mt-2'>
-                <div className='text-[0.875rem] text-[#999]'>Dung lượng file tối đa 1 MB</div>
-                <div className='text-[0.875rem] text-[#999]'>Định dạng:.JPEG,.PNG</div>
+                <div className='text-[0.875rem] text-gray-400'>Dung lượng file tối đa 1 MB</div>
+                <div className='text-[0.875rem] text-gray-400'>Định dạng:.JPEG,.PNG</div>
                 <div></div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </form>
       </FormProvider>
-    </div>
+
+      {/* Avatar Crop Modal */}
+      <AvatarCropModal
+        isOpen={isCropModalOpen}
+        onClose={handleCropModalClose}
+        onConfirm={handleCropConfirm}
+        imageFile={pendingFile}
+      />
+    </motion.div>
   )
 }
 

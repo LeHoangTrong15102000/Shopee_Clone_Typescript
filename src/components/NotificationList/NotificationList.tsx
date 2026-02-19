@@ -1,58 +1,75 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
+import { useCallback } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import notificationApi from 'src/apis/notification.api'
-import { Notification } from 'src/types/notification.type'
+import { useOptimisticNotification } from 'src/hooks/optimistic'
 import { formatTimeAgo } from 'src/utils/utils'
+import { useKeyboardNavigation } from 'src/hooks/useKeyboardNavigation'
 
 interface NotificationListProps {
   className?: string
 }
 
 const NotificationList = ({ className }: NotificationListProps) => {
-  const queryClient = useQueryClient()
+  const { markAsReadMutation, markAllAsReadMutation } = useOptimisticNotification()
 
-  // Query để lấy danh sách thông báo
   const { data: notificationsData, isLoading } = useQuery({
     queryKey: ['notifications'],
-    queryFn: notificationApi.getNotifications,
-    staleTime: 5 * 60 * 1000 // 5 phút
-  })
-
-  // Mutation để đánh dấu thông báo đã đọc
-  const markAsReadMutation = useMutation({
-    mutationFn: notificationApi.markAsRead,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] })
-    }
-  })
-
-  // Mutation để đánh dấu tất cả thông báo đã đọc
-  const markAllAsReadMutation = useMutation({
-    mutationFn: notificationApi.markAllAsRead,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] })
-      toast.success('Đã đánh dấu tất cả thông báo là đã đọc')
-    }
+    queryFn: () => notificationApi.getNotifications(),
+    staleTime: 5 * 60 * 1000
   })
 
   const notifications = notificationsData?.data.data.notifications || []
   const unreadCount = notificationsData?.data.data.unreadCount || 0
 
-  const handleMarkAsRead = (notificationId: string) => {
-    markAsReadMutation.mutate(notificationId)
-  }
+  const handleMarkAsRead = useCallback(
+    (notificationId: string) => {
+      markAsReadMutation.mutate(notificationId)
+    },
+    [markAsReadMutation]
+  )
 
-  const handleMarkAllAsRead = () => {
+  const handleMarkAllAsRead = useCallback(() => {
     markAllAsReadMutation.mutate()
+  }, [markAllAsReadMutation])
+
+  const handleNotificationKeyDown = useCallback(
+    (e: React.KeyboardEvent, notificationId: string, isRead: boolean) => {
+      if ((e.key === 'Enter' || e.key === ' ') && !isRead && !markAsReadMutation.isPending) {
+        e.preventDefault()
+        handleMarkAsRead(notificationId)
+      }
+    },
+    [handleMarkAsRead, markAsReadMutation.isPending]
+  )
+
+  const { handleKeyDown: handleMarkAllKeyDown } = useKeyboardNavigation({
+    onEnter: handleMarkAllAsRead,
+    enabled: unreadCount > 0 && !markAllAsReadMutation.isPending
+  })
+
+  const getNotificationTypeLabel = (type: string) => {
+    switch (type) {
+      case 'order':
+        return 'Thông báo đơn hàng'
+      case 'promotion':
+        return 'Thông báo khuyến mãi'
+      case 'system':
+        return 'Thông báo hệ thống'
+      default:
+        return 'Thông báo khác'
+    }
   }
 
   if (isLoading) {
     return (
       <div
-        className={`relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+        role='status'
+        aria-busy='true'
+        aria-label='Đang tải thông báo'
+        className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
       >
-        <div className='flex h-[250px] w-[400px] items-center justify-center'>
-          <div className='text-sm text-gray-500'>Đang tải thông báo...</div>
+        <div className='flex h-[250px] w-full items-center justify-center'>
+          <div className='text-sm text-gray-500 dark:text-gray-400'>Đang tải thông báo...</div>
         </div>
       </div>
     )
@@ -61,13 +78,15 @@ const NotificationList = ({ className }: NotificationListProps) => {
   if (notifications.length === 0) {
     return (
       <div
-        className={`relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+        role='region'
+        aria-label='Danh sách thông báo trống'
+        className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
       >
-        <div className='flex h-[250px] w-[400px] flex-col items-center justify-center p-2'>
-          <svg className='h-16 w-16 text-gray-300' fill='currentColor' viewBox='0 0 20 20'>
+        <div className='flex h-[250px] w-full flex-col items-center justify-center p-2'>
+          <svg className='h-16 w-16 text-gray-300 dark:text-gray-600' fill='currentColor' viewBox='0 0 20 20' aria-hidden='true'>
             <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
           </svg>
-          <span className='mt-2 text-sm text-gray-500'>Bạn hiện chưa có thông báo nào</span>
+          <span className='mt-2 text-sm text-gray-500 dark:text-gray-400'>Bạn hiện chưa có thông báo nào</span>
         </div>
       </div>
     )
@@ -75,43 +94,59 @@ const NotificationList = ({ className }: NotificationListProps) => {
 
   return (
     <div
-      className={`relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+      role='region'
+      aria-label='Danh sách thông báo'
+      className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
     >
       <div className='py-[10px] pl-[10px] pr-[15px]'>
-        <div className='capitalize text-[rgba(0,0,0,.26)]'>Thông báo mới nhận</div>
+        <div className='flex items-center justify-between'>
+          <div className='capitalize text-[rgba(0,0,0,.26)] dark:text-gray-400'>Thông báo mới nhận</div>
+          <span aria-live='polite' aria-atomic='true' className='sr-only'>
+            {unreadCount > 0 ? `Bạn có ${unreadCount} thông báo chưa đọc` : 'Không có thông báo chưa đọc'}
+          </span>
+          {unreadCount > 0 && (
+            <span className='rounded-full bg-orange px-2 py-0.5 text-xs text-white' aria-hidden='true'>
+              {unreadCount}
+            </span>
+          )}
+        </div>
 
         {/* Notification List */}
-        <div className='mt-5 max-h-[300px] overflow-y-auto'>
-          {notifications.map((notification) => (
-            <div
+        <ul role='list' aria-label='Danh sách thông báo' className='mt-5 max-h-[300px] overflow-y-auto'>
+          {notifications.map((notification, _index) => (
+            <li
               key={notification._id}
-              className={`mt-2 flex cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 hover:shadow-sm animate-fade-in ${
-                !notification.isRead ? 'bg-[#fff5f5] border-l-2 border-[#ee4d2d]' : 'hover:scale-[1.01]'
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${getNotificationTypeLabel(notification.type)}: ${notification.title}. ${notification.isRead ? 'Đã đọc' : 'Chưa đọc'}. ${formatTimeAgo(notification.createdAt)}`}
+              className={`mt-2 flex cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-slate-700 hover:shadow-sm animate-fade-in focus:outline-none focus:ring-2 focus:ring-orange focus:ring-inset ${
+                !notification.isRead ? 'bg-[#fff5f5] dark:bg-slate-700/50 border-l-2 border-orange' : 'hover:scale-[1.01]'
               }`}
               onClick={() =>
                 !notification.isRead && !markAsReadMutation.isPending && handleMarkAsRead(notification._id)
               }
+              onKeyDown={(e) => handleNotificationKeyDown(e, notification._id, notification.isRead)}
             >
               {/* Icon */}
-              <div className='flex-shrink-0'>
+              <div className='flex-shrink-0' aria-hidden='true'>
                 <div
                   className={`h-[2.5rem] w-[2.5rem] rounded-full flex items-center justify-center ${
                     notification.type === 'order'
-                      ? 'bg-green-100'
+                      ? 'bg-green-100 dark:bg-green-900/30'
                       : notification.type === 'promotion'
-                        ? 'bg-red-100'
+                        ? 'bg-red-100 dark:bg-red-900/30'
                         : notification.type === 'system'
-                          ? 'bg-blue-100'
-                          : 'bg-gray-100'
+                          ? 'bg-blue-100 dark:bg-blue-900/30'
+                          : 'bg-gray-100 dark:bg-slate-700'
                   }`}
                 >
                   {notification.type === 'order' && (
-                    <svg className='h-5 w-5 text-green-600' fill='currentColor' viewBox='0 0 20 20'>
+                    <svg className='h-5 w-5 text-green-600 dark:text-green-400' fill='currentColor' viewBox='0 0 20 20'>
                       <path d='M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z' />
                     </svg>
                   )}
                   {notification.type === 'promotion' && (
-                    <svg className='h-5 w-5 text-red-600' fill='currentColor' viewBox='0 0 20 20'>
+                    <svg className='h-5 w-5 text-red-600 dark:text-red-400' fill='currentColor' viewBox='0 0 20 20'>
                       <path
                         fillRule='evenodd'
                         d='M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.934 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.179-4.456A1 1 0 0112 2z'
@@ -120,7 +155,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
                     </svg>
                   )}
                   {notification.type === 'system' && (
-                    <svg className='h-5 w-5 text-blue-600' fill='currentColor' viewBox='0 0 20 20'>
+                    <svg className='h-5 w-5 text-blue-600 dark:text-blue-400' fill='currentColor' viewBox='0 0 20 20'>
                       <path
                         fillRule='evenodd'
                         d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
@@ -129,7 +164,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
                     </svg>
                   )}
                   {notification.type === 'other' && (
-                    <svg className='h-5 w-5 text-gray-600' fill='currentColor' viewBox='0 0 20 20'>
+                    <svg className='h-5 w-5 text-gray-600 dark:text-gray-400' fill='currentColor' viewBox='0 0 20 20'>
                       <path
                         fillRule='evenodd'
                         d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
@@ -144,36 +179,51 @@ const NotificationList = ({ className }: NotificationListProps) => {
               <div className='ml-2 flex-grow overflow-hidden'>
                 <div className='flex items-start justify-between'>
                   <div
-                    className={`truncate text-sm ${!notification.isRead ? 'font-medium text-black' : 'text-gray-700'}`}
+                    className={`truncate text-sm ${!notification.isRead ? 'font-medium text-black dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}
                   >
                     {notification.title}
                   </div>
-                  {!notification.isRead && <div className='ml-2 h-2 w-2 flex-shrink-0 rounded-full bg-[#ee4d2d]'></div>}
+                  {!notification.isRead && (
+                    <div
+                      className='ml-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange'
+                      aria-hidden='true'
+                    ></div>
+                  )}
                 </div>
-                <div className='mt-1 text-xs text-gray-500 line-clamp-2'>{notification.content}</div>
-                <div className='mt-1 text-xs text-gray-400'>{formatTimeAgo(notification.createdAt)}</div>
+                <div className='mt-1 text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>{notification.content}</div>
+                <div className='mt-1 text-xs text-gray-400 dark:text-gray-500'>{formatTimeAgo(notification.createdAt)}</div>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         {/* Footer */}
-        <div className='mt-6 flex items-center justify-between text-gray-500'>
+        <div className='mt-6 flex items-center justify-between text-gray-500 dark:text-gray-400'>
           <div className='text-xs capitalize'>
             {unreadCount > 0 ? (
               <button
+                type='button'
                 onClick={handleMarkAllAsRead}
+                onKeyDown={(e) => handleMarkAllKeyDown(e as unknown as KeyboardEvent)}
                 disabled={markAllAsReadMutation.isPending}
-                className='text-[#ee4d2d] hover:text-[#ee4d2d]/80 disabled:opacity-50 transition-colors'
+                aria-label={`Đánh dấu tất cả ${unreadCount} thông báo là đã đọc`}
+                aria-busy={markAllAsReadMutation.isPending}
+                className='text-orange hover:text-orange/80 disabled:opacity-50 transition-colors focus:outline-none focus:underline'
                 title='Đánh dấu tất cả thông báo là đã đọc'
               >
                 {markAllAsReadMutation.isPending ? 'Đang xử lý...' : 'Đánh dấu đã đọc tất cả'}
               </button>
             ) : (
-              <span className='text-green-600'>✓ Tất cả đã đọc</span>
+              <span className='text-green-600 dark:text-green-400' role='status'>
+                ✓ Tất cả đã đọc
+              </span>
             )}
           </div>
-          <button className='rounded-sm bg-[#ee4d2d] px-4 py-2 text-xs capitalize text-white hover:bg-opacity-90'>
+          <button
+            type='button'
+            aria-label='Xem tất cả thông báo'
+            className='rounded-sm bg-orange px-4 py-2 text-xs capitalize text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2'
+          >
             Xem tất cả
           </button>
         </div>

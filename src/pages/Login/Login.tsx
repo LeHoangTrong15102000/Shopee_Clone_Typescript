@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo, useContext } from 'react'
+import { useEffect, useMemo, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from 'react-toastify'
+import { motion } from 'framer-motion'
 import Input from 'src/components/Input'
-import { LoginSchema, getRules, loginSchema } from 'src/utils/rules'
+import { LoginSchema, loginSchema } from 'src/utils/rules'
 import authApi from 'src/apis/auth.api'
 import { generateNameId, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
@@ -15,6 +16,8 @@ import Button from 'src/components/Button'
 import path from 'src/constant/path'
 import classNames from 'classnames'
 import { Helmet } from 'react-helmet-async'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
 
 type FormData = LoginSchema
 
@@ -22,6 +25,8 @@ const Login = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const location = useLocation()
+  const reducedMotion = useReducedMotion()
+  const containerVariants = staggerContainer(STAGGER_DELAY.normal)
   // console.log(location)
 
   const purchaseIdFromLocation = useMemo(
@@ -38,11 +43,10 @@ const Login = () => {
     handleSubmit,
     watch,
     setError,
-    getValues, // lấy ra giá trị của mỗi ô input trong react hook form
     formState: { errors }
   } = useForm<FormData>({
     mode: 'onTouched',
-    resolver: yupResolver(loginSchema)
+    resolver: zodResolver(loginSchema)
   }) // return cho chúng ta một cái object
   // const rules = getRules(getValues)
 
@@ -118,70 +122,87 @@ const Login = () => {
         <title>Đăng nhập | Shopee Clone</title>
         <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
       </Helmet>
-      <div className='container' style={{ height: '773.94px' }}>
-        <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
+      <div className='container min-h-[60vh] lg:min-h-[773.94px]'>
+        <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='mt-10 lg:col-span-2 lg:col-start-4'>
-            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
-              <div className='text-2xl'>Đăng nhập</div>
+            <motion.form
+              className='rounded bg-white dark:bg-slate-800 p-10 shadow-sm dark:shadow-slate-900/50'
+              onSubmit={onSubmit}
+              noValidate
+              variants={reducedMotion ? undefined : containerVariants}
+              initial={reducedMotion ? undefined : 'hidden'}
+              animate={reducedMotion ? undefined : 'visible'}
+            >
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <div className='text-2xl text-gray-900 dark:text-gray-100'>Đăng nhập</div>
+              </motion.div>
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
               {/*  Input ở đây truyền hay không truyền generic type đều được, nếu mà không truyền generic type thì xóa register đi thì nó sẽ không gợi ý nữa */}
-              <Input
-                className='relative mt-6'
-                classNameInput={classNames(
-                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
-                  {
-                    'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
-                      errors.email && errors.email.message
-                  }
-                )}
-                type='email'
-                name='email'
-                value={watchEmail}
-                autoComplete='on'
-                register={register}
-                placeholder='Email'
-                errorMessage={errors.email?.message}
-              />
-              <Input<FormData>
-                className='relative mt-2'
-                classNameInput={classNames(
-                  'w-full rounded-md border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
-                  {
-                    'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
-                      errors.password && errors.password.message
-                  }
-                )}
-                type='password'
-                name='password'
-                value={watchPassword}
-                autoComplete='on'
-                register={register}
-                placeholder='Password'
-                errorMessage={errors.password?.message}
-              />
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <Input
+                  className='relative mt-6'
+                  classNameInput={classNames(
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    {
+                      'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                        errors.email && errors.email.message
+                    }
+                  )}
+                  type='email'
+                  name='email'
+                  value={watchEmail}
+                  autoComplete='on'
+                  register={register}
+                  placeholder='Email'
+                  errorMessage={errors.email?.message}
+                />
+              </motion.div>
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <Input<FormData>
+                  className='relative mt-2'
+                  classNameInput={classNames(
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    {
+                      'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                        errors.password && errors.password.message
+                    }
+                  )}
+                  type='password'
+                  name='password'
+                  value={watchPassword}
+                  autoComplete='on'
+                  register={register}
+                  placeholder='Password'
+                  errorMessage={errors.password?.message}
+                />
+              </motion.div>
 
-              <div className='mt-2'>
-                <Button
-                  // data-testid='button-element'
-                  // role='button'
-                  isLoading={loginAccountMutation.isPending}
-                  disabled={loginAccountMutation.isPending}
-                  type='submit'
-                  className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'
-                >
-                  đăng nhập
-                </Button>
-              </div>
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <div className='mt-2'>
+                  <Button
+                    // data-testid='button-element'
+                    // role='button'
+                    isLoading={loginAccountMutation.isPending}
+                    disabled={loginAccountMutation.isPending}
+                    type='submit'
+                    className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'
+                  >
+                    đăng nhập
+                  </Button>
+                </div>
+              </motion.div>
 
-              <div className='mt-6 flex items-center justify-center text-center'>
-                <span className='mr-1' style={{ color: 'rgba(0,0,0,.26)' }}>
-                  Bạn mới biết đến Shopee?
-                </span>
-                <Link to={path.register} className='' style={{ color: '#ee4d2d' }}>
-                  <span className=''>Đăng ký</span>
-                </Link>
-              </div>
-            </form>
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <div className='mt-6 flex items-center justify-center text-center'>
+                  <span className='mr-1 text-black/25 dark:text-gray-400'>
+                    Bạn mới biết đến Shopee?
+                  </span>
+                  <Link to={path.register} className='text-orange dark:text-orange-400'>
+                    <span className=''>Đăng ký</span>
+                  </Link>
+                </div>
+              </motion.div>
+            </motion.form>
           </div>
         </div>
       </div>

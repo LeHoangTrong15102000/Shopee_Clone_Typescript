@@ -22,27 +22,32 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
 // Sử dụng import.meta.env của Vite thay vì process.env (không hoạt động trong browser)
-const LOGIN_REDIRECT_URL = import.meta.env.DEV
-  ? 'http://localhost:4000/login'
-  : 'https://shop.lehoangtrong.online/login'
+const LOGIN_REDIRECT_URL = import.meta.env.VITE_LOGIN_REDIRECT_URL
+  ?? (import.meta.env.DEV ? 'http://localhost:4000/login' : 'https://shop.lehoangtrong.online/login')
+
+interface HttpOptions {
+  redirectOnTokenExpiry?: boolean
+}
 
 export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
   private refreshTokenRequest: Promise<string> | null
-  constructor() {
+  private redirectOnTokenExpiry: boolean
+  constructor(options?: HttpOptions) {
     // this.accessToken sẽ lưu vào RAM nên lấy ra sẽ nhanh hơn
     this.accessToken = getAccessTokenFromLS()
     this.refreshToken = getRefreshTokenFromLS()
     this.refreshTokenRequest = null
+    this.redirectOnTokenExpiry = options?.redirectOnTokenExpiry ?? true
     this.instance = axios.create({
       baseURL: config.baseUrl,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
         'expire-access-token': 60 * 60 * 24,
-        'refresh-access-token': 60 * 60 * 24 * 7 // refreshToken cho là 7 ngày
+        'refresh-access-token': 60 * 60 * 24 * 7
       }
       // withCredentials: true
     })
@@ -127,11 +132,13 @@ export class Http {
           clearLS()
           this.accessToken = ''
           this.refreshToken = ''
-          toast.error('Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!', { autoClose: 1000 })
-          toast.error(error.response?.data?.data?.message ?? error.response?.data.message, { autoClose: 1000 })
-          setTimeout(() => {
-            window.location.replace(LOGIN_REDIRECT_URL)
-          }, 1000)
+          const errorMessage = error.response?.data?.data?.message ?? error.response?.data.message ?? 'Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!'
+          toast.error(errorMessage, { autoClose: 1000 })
+          if (this.redirectOnTokenExpiry) {
+            setTimeout(() => {
+              window.location.replace(LOGIN_REDIRECT_URL)
+            }, 1000)
+          }
           // khi mà hết hạn refresh_token thì chúng ta sẽ quay lại trang đầu tiên
         }
         return Promise.reject(error)
@@ -166,5 +173,3 @@ export class Http {
 const http = new Http().instance
 
 export default http
-
-// const truyền và là scascacas

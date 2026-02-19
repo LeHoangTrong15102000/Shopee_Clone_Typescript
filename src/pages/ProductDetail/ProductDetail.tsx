@@ -1,29 +1,39 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import productApi from 'src/apis/product.api'
 
-import ProductRating from 'src/components/ProductRating'
+import SellerFollowButton from 'src/components/SellerFollowButton'
 import ProductReviews from 'src/components/ProductReviews'
+import PriceHistoryChart from 'src/components/PriceHistoryChart'
+import ProductQA from 'src/components/ProductQA'
+import ShippingEstimate from 'src/components/ShippingEstimate'
 import path from 'src/constant/path'
 
-import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
-import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
-import Product from '../ProductList/components/Product'
-import QuantityController from 'src/components/QuantityController'
-import purchaseApi from 'src/apis/purchases.api'
+import { getIdFromNameId } from 'src/utils/utils'
+import { ProductImages, ProductInfo, ProductActions, RelatedProducts } from './components'
 
-import { purchasesStatus } from 'src/constant/purchase'
-import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
-import Loader from 'src/components/Loader'
-import { useOptimisticAddToCart } from 'src/hooks/optimistic'
+import { useRecentlyViewed } from 'src/hooks/useRecentlyViewed'
+import useLivePriceUpdate from 'src/hooks/useLivePriceUpdate'
+import usePresence from 'src/hooks/usePresence'
+import OnlineIndicator from 'src/components/OnlineIndicator'
+import useViewerCount from 'src/hooks/useViewerCount'
+import useLiveReviews from 'src/hooks/useLiveReviews'
+import useLiveQA from 'src/hooks/useLiveQA'
+import useActivityFeed from 'src/hooks/useActivityFeed'
+import LiveReviewFeed from 'src/components/LiveReviewFeed'
+import LiveQASection from 'src/components/LiveQASection'
+import ActivityFeedWidget from 'src/components/ActivityFeedWidget'
+import { motion } from 'framer-motion'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { staggerContainer, sectionEntrance, STAGGER_DELAY } from 'src/styles/animations'
+import Button from 'src/components/Button'
 
 // Type cho purchase
 export type AddToCartType = {
@@ -36,18 +46,31 @@ export type AddToCartType = {
  * Tự động hủy request cũ khi user navigate giữa các sản phẩm khác nhau
  */
 const ProductDetail = () => {
-  const { t } = useTranslation('product') // i18next
-  const [buyCount, setBuyCount] = useState(1)
   const { isAuthenticated } = useContext(AppContext)
+  const reducedMotion = useReducedMotion()
+  const infoContainerVariants = staggerContainer(STAGGER_DELAY.normal)
 
-  const { nameId } = useParams() // lấy ra cái nameId chứ không còn là id
-  // const _value = productId.value
-  const id = getIdFromNameId(nameId as string) // tạo ra cái id từ cái nameId
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const navigate = useNavigate()
 
-  // console.log('URL LOCATION', window.location.href)
+  // Hook để track sản phẩm đã xem gần đây
+  const { addProduct: addToRecentlyViewed } = useRecentlyViewed()
 
-  const queryClient = useQueryClient()
+  // WebSocket: Live price updates for this product
+  const { price: livePrice, priceBeforeDiscount: livePriceBeforeDiscount, hasChanged: priceHasChanged, previousPrice } = useLivePriceUpdate(id)
+
+  // WebSocket: Real-time viewer count for this product
+  const { viewerCount, isPopular } = useViewerCount(id)
+
+  // WebSocket: Live reviews for this product
+  const { newReviews, newComments: _newComments, likeUpdates: _reviewLikeUpdates, clearNewReviews } = useLiveReviews(id)
+
+  // WebSocket: Live Q&A for this product
+  const { newQuestions, newAnswers, likeUpdates: _qaLikeUpdates, clearNewQuestions: _clearNewQuestions } = useLiveQA(id)
+
+  // WebSocket: Activity feed for this product
+  const { latestActivity } = useActivityFeed(id)
 
   /**
    * Query Product Detail với automatic cancellation
@@ -60,96 +83,52 @@ const ProductDetail = () => {
   } = useQuery({
     queryKey: ['product', id],
     queryFn: ({ signal }) => {
-      // Truyền AbortSignal vào API call để support cancellation
       return productApi.getProductDetail(id as string, { signal })
     },
-    placeholderData: (previousData) => previousData, // Giữ data cũ khi navigation
-    staleTime: 5 * 60 * 1000, // Cache 5 phút
+    placeholderData: (previousData) => previousData,
+    staleTime: 5 * 60 * 1000,
     retry: (failureCount, error: any) => {
-      // Không retry nếu request bị abort (do cancellation)
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }
-      // Không retry cho lỗi 404 (sản phẩm không tồn tại)
       if (error?.response?.status === 404) {
-        return false
-      }
-      return failureCount < 1 // Retry tối đa 1 lần cho các lỗi khác
-    }
-  })
-
-  // console.log(productDetailData?.status)
-  const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data?.data // Chỗ này product có thể là undefined, nên sẽ kiểm tra
-
-  // tạo ra state currentIndexImage để quản lí việc click slider
-  // console.log(product)
-  const imageRef = useRef<HTMLImageElement>(null)
-  const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
-  const [activeImage, setActiveImage] = useState('') // currentImage cho hình ảnh sản phẩm chính
-  // currentImage cho slider dùng cho button(thay đổi khi mà currentIndexImage thay đổi)
-
-  useEffect(() => {
-    // 👇️ scroll to top on page load
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-  }, [product?._id])
-
-  const currentImages = useMemo(
-    () => (product ? product?.images.slice(...currentIndexImages) : []),
-    [product, currentIndexImages]
-  ) // Thay đổi mỗi khi mà currentIndexImage thay đổi -> render lại slider
-
-  //  Sẽ lấy ra id sản phẩm có cùng danh mục, và gán cái id của categories đó vào cho queryConfig để render ra danh sách sản phẩm cùng category
-  const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
-
-  /**
-   * Query Related Products với Query Cancellation
-   * Chỉ fetch khi có product và category
-   */
-  const { data: productsData } = useQuery({
-    queryKey: ['products', queryConfig],
-    queryFn: ({ signal }) => {
-      // Truyền AbortSignal vào API call
-      return productApi.getProducts(queryConfig, { signal })
-    },
-    enabled: Boolean(product?.category._id), // Chỉ chạy khi có category
-    staleTime: 3 * 60 * 1000, // Cache 3 phút
-    retry: (failureCount, error: any) => {
-      if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }
       return failureCount < 1
     }
   })
 
-  // Set active image khi product load
-  useEffect(() => {
-    if (product && product.images.length > 0) {
-      setActiveImage(product.images[0])
-    }
-  }, [product])
+  const product = productDetailData?.status === HTTP_STATUS_CODE.NotFound ? null : productDetailData?.data?.data
 
-  // Reset buy count khi chuyển sản phẩm
+  // WebSocket: Seller online presence (using shop/category ID as seller proxy)
+  const { isOnline: isSellerOnline, lastSeen: sellerLastSeen } = usePresence(product?.category?._id ? `shop_${product.category._id}` : undefined)
+
+  // Track sản phẩm đã xem khi product load thành công
   useEffect(() => {
-    setBuyCount(1)
+    if (product) {
+      addToRecentlyViewed(product)
+    }
   }, [product?._id])
 
-  // Mutation xử lý addToCart với Optimistic Updates - phải đặt trước early returns
-  const addToCartMutation = useOptimisticAddToCart()
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [product?._id])
 
   // Handle 404 case
   if (productDetailData?.status === HTTP_STATUS_CODE.NotFound) {
     return (
-      <div className='bg-gray-200 py-6'>
+      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
         <div className='container'>
           <div className='text-center py-16'>
-            <h1 className='text-2xl font-semibold text-gray-700 mb-4'>Sản phẩm không tồn tại</h1>
-            <p className='text-gray-500 mb-6'>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa</p>
-            <button
+            <h1 className='text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4'>Sản phẩm không tồn tại</h1>
+            <p className='text-gray-500 dark:text-gray-400 mb-6'>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa</p>
+            <Button
+              variant='primary'
               onClick={() => navigate(path.home)}
-              className='bg-orange hover:bg-orange/90 text-white px-6 py-3 rounded-sm transition-colors'
+              className='px-6 py-3 rounded-sm'
             >
               Về trang chủ
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -159,26 +138,26 @@ const ProductDetail = () => {
   // Loading state
   if (isLoading || !product) {
     return (
-      <div className='bg-gray-200 py-6'>
+      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
         <div className='container'>
-          <div className='grid grid-cols-12 gap-9'>
+          <div className='grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-9'>
             {/* Product images skeleton */}
-            <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] bg-gray-300 animate-pulse rounded'></div>
-              <div className='relative mt-3 grid grid-cols-5 gap-1'>
+            <div className='col-span-12 md:col-span-5'>
+              <div className='relative w-full pt-[100%] bg-gray-300 dark:bg-slate-700 animate-pulse rounded'></div>
+              <div className='relative mt-3 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1'>
                 {[...Array(5)].map((_, index) => (
-                  <div key={index} className='relative w-full pt-[100%] bg-gray-300 animate-pulse rounded'></div>
+                  <div key={index} className='relative w-full pt-[100%] bg-gray-300 dark:bg-slate-700 animate-pulse rounded'></div>
                 ))}
               </div>
             </div>
 
             {/* Product info skeleton */}
             <div className='col-span-7'>
-              <div className='h-8 bg-gray-300 animate-pulse rounded mb-4'></div>
-              <div className='h-6 bg-gray-300 animate-pulse rounded mb-4 w-3/4'></div>
-              <div className='h-8 bg-gray-300 animate-pulse rounded mb-6 w-1/2'></div>
-              <div className='h-20 bg-gray-300 animate-pulse rounded mb-6'></div>
-              <div className='h-12 bg-gray-300 animate-pulse rounded w-1/3'></div>
+              <div className='h-8 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-4'></div>
+              <div className='h-6 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-4 w-3/4'></div>
+              <div className='h-8 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-6 w-1/2'></div>
+              <div className='h-20 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-6'></div>
+              <div className='h-12 bg-gray-300 dark:bg-slate-700 animate-pulse rounded w-1/3'></div>
             </div>
           </div>
         </div>
@@ -189,120 +168,28 @@ const ProductDetail = () => {
   // Error state
   if (error && !product) {
     return (
-      <div className='bg-gray-200 py-6'>
+      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
         <div className='container'>
           <div className='text-center py-16'>
-            <h1 className='text-2xl font-semibold text-gray-700 mb-4'>Có lỗi xảy ra</h1>
-            <p className='text-gray-500 mb-6'>Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.</p>
-            <button
+            <h1 className='text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4'>Có lỗi xảy ra</h1>
+            <p className='text-gray-500 dark:text-gray-400 mb-6'>Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.</p>
+            <Button
+              variant='primary'
               onClick={() => window.location.reload()}
-              className='bg-orange hover:bg-orange/90 text-white px-6 py-3 rounded-sm transition-colors'
+              className='px-6 py-3 rounded-sm'
             >
               Thử lại
-            </button>
+            </Button>
           </div>
         </div>
       </div>
     )
   }
 
-  // func hoverActiveImage -> set lại Image cho ảnh sản phẩm chính khi hover vào
-  const hoverActiveImage = (img: string) => {
-    setActiveImage(img)
-  }
-
-  // func handleNextPrevButton -> set lại currentIndexImage -> currentImages sẽ render lại
-  const handleNextSlider = () => {
-    if (currentIndexImages[1] < (product as ProductType).images.length) {
-      setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
-    }
-  }
-
-  // func handlePrev currentIndexImage[0] > 0 thì mới Prev được
-  const handlePrevSlider = () => {
-    if (currentIndexImages[0] > 0) {
-      setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
-    }
-  }
-
-  // func hanldeZoom
-  const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    // console.log(rect)
-    const image = imageRef.current as HTMLImageElement // vì chúng ta chắc rằng image ko thể null được
-    const { naturalHeight, naturalWidth } = image
-    // console.log(event.target)
-
-    // Cách 1 : Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event
-    // const { offsetX, offsetY } = event.nativeEvent
-
-    // Cách 2: Lấy offsetX, offsetY khi chúng ta không xử lý được bubble event
-    const offsetX = event.pageX - (rect.x + window.scrollX)
-    const offsetY = event.pageY - (rect.y + window.scrollY)
-
-    const top = offsetY * (1 - naturalHeight / rect.height) // top là trục Y
-    const left = offsetX * (1 - naturalWidth / rect.width) // left là trục X
-
-    image.style.width = naturalWidth + 'px'
-    image.style.height = naturalHeight + 'px'
-    image.style.maxWidth = 'unset'
-    image.style.top = top + 'px'
-    image.style.left = left + 'px'
-  }
-
-  // func reset sự kiện hoverZoom
-  const handleRemoveZoom = () => {
-    imageRef.current?.removeAttribute('style')
-  }
-
-  // func handle việc tăng giảm số lượng productList
-  const handleBuyCount = (value: number) => {
-    setBuyCount(value)
-  }
-
-  // func xử lý AddToCart với Optimistic Updates
-  const addToCart = () => {
-    if (!product) return
-
-    addToCartMutation.mutate({
-      product_id: product._id,
-      buy_count: buyCount
-    })
-  }
-
-  // func xử lý `Mua Ngay` với Optimistic Updates
-  const handleBuyNow = async () => {
-    if (!product) return
-
-    try {
-      const res = await addToCartMutation.mutateAsync({
-        product_id: product._id,
-        buy_count: buyCount
-      })
-
-      // Khi mà thành công thì sẽ lấy ra cái purchase
-      const purchase = res.data.data
-      // Khi nhấn vào `Mua Ngay` thì chuyển đến trang Cart kèm theo cái state là purchaseId
-      navigate(path.cart, {
-        state: {
-          purchaseId: purchase._id // lấy ra _id của mỗi sản phẩm trong giỏ
-        }
-      })
-    } catch (error) {
-      console.error('Buy now error:', error)
-      toast.error('Không thể mua ngay. Vui lòng thử lại!', {
-        autoClose: 2000,
-        position: 'top-center'
-      })
-    }
-  }
-
-  // Lỗi là ở đây, cayyyyy
-  // console.log(product)
   if (!product) return null
 
   return (
-    <div className='bg-gray-200 py-6'>
+    <div className='bg-gray-200 dark:bg-slate-900 py-6'>
       <Helmet>
         <title>{product?.name} | Shopee Clone</title>
         <meta
@@ -313,278 +200,160 @@ const ProductDetail = () => {
             }
           })}
         />
+        <script type='application/ld+json'>
+          {JSON.stringify({
+            '@context': 'https://schema.org/',
+            '@type': 'Product',
+            name: product.name,
+            image: product.image,
+            description: convert(product.description, { limits: { maxInputLength: 500 } }),
+            offers: {
+              '@type': 'Offer',
+              price: product.price,
+              priceCurrency: 'VND',
+              availability: product.quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'
+            },
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: product.rating,
+              reviewCount: product.sold
+            }
+          })}
+        </script>
       </Helmet>
       {/* Thông tin sản phẩm */}
       <div className='container'>
-        <div className='max-h-[896.56px] bg-white p-4 shadow'>
+        <div className='bg-white dark:bg-slate-800 p-4 shadow dark:shadow-slate-900/50'>
           <div className='grid grid-cols-12 gap-2 lg:gap-9'>
             {/* Ảnh sản phẩm và slider */}
-            <div className='col-span-12 md:col-span-5'>
-              {/* Ảnh */}
-              <div
-                aria-hidden='true'
-                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%]'
-                onMouseMove={handleZoom}
-                onMouseLeave={handleRemoveZoom}
-              >
-                <img
-                  src={activeImage}
-                  alt={product?.name}
-                  className='pointer-events-none absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover'
-                  ref={imageRef}
-                />
-              </div>
-              {/* Phần slider sản phẩm */}
-              <div className='relative mt-4 grid grid-cols-5 gap-1'>
-                <button
-                  onClick={handlePrevSlider}
-                  className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='h-5 w-5'
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
-                  </svg>
-                </button>
-                {currentImages.map((img, index) => {
-                  // Cái border thì xử lý tại isActive
-                  const isActive = img === activeImage
-                  return (
-                    <div
-                      className='relative w-full pt-[100%]'
-                      key={index}
-                      role='button'
-                      tabIndex={0}
-                      aria-hidden='true'
-                      onMouseEnter={() => hoverActiveImage(img)}
-                    >
-                      <img
-                        src={img}
-                        alt='anhSlider'
-                        className='absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover'
-                      />
-                      {isActive && <div className='absolute inset-0 border-2 border-[#ee4d2d]'></div>}
-                    </div>
-                  )
-                })}
-                <button
-                  onClick={handleNextSlider}
-                  className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='h-5 w-5'
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <ProductImages
+              product={product}
+              reducedMotion={reducedMotion}
+            />
             {/* Thông tin sản phẩm */}
             <div className='col-span-12 md:col-span-7'>
-              {/* title */}
-              <h1 className='text-xl font-medium capitalize'>{product?.name}</h1>
-              {/* đánh giá chung */}
-              <div className='mt-6 flex items-center'>
-                {/* đánh giá chung */}
-                {/* rating */}
-                <div className='flex items-center'>
-                  <span className='mr-1 border-b border-b-orange text-[#ee4d2d]'>{product?.rating}</span>
-                  {/* RatingStar component */}
-                  <ProductRating
-                    rating={product?.rating}
-                    activeClassname='h-4 w-4 fill-[#ee4d2d] text-[#ee4d2d]'
-                    nonActiveClassname='h-4 w-4 fill-current text-gray-300'
-                  />
-                </div>
-                <div className='mx-4 h-7 w-[1px] bg-gray-300/80'></div>
-                {/* đánh giá */}
-                <div className='flex items-center'>
-                  <span className='mr-1 border-b border-b-black/90 text-black/90'>3k</span>
-                  <span className='text-sm capitalize text-black/60'>Đánh giá</span>
-                </div>
-                <div className='mx-4 h-7 w-[1px] bg-gray-300/80'></div>
-                {/* đã bán */}
-                <div className='flex items-center'>
-                  <span className='mr-1 text-black/90'>{formatNumberToSocialStyle(product.sold)}</span>
-                  <span className='text-sm capitalize text-black/60'>Đã bán</span>
-                </div>
-                {/* Tố cáo */}
-                <button className='ml-auto text-sm text-black/60'>Tố cáo</button>
-              </div>
-              {/* Giá tiền sản phẩm */}
-              <div className='mt-3 bg-[#fafafa]'>
-                <div className='flex flex-col items-start justify-center px-[20px] py-[15px]'>
-                  {/* Giá sản phẩm */}
-                  <div className='flex items-center'>
-                    <div className='flex min-h-[1.875rem] w-[625px] basis-[625px] flex-wrap items-center'>
-                      {/* giá trước giảm giá */}
-                      <div className='mr-3 text-[1rem] text-[#929292] line-through'>
-                        ₫{formatCurrency(product?.price_before_discount)}
-                      </div>
-                      {/* giá sau giảm giá */}
-                      <div className='flex items-center'>
-                        <div className='text-[1.875rem] font-medium text-[#ee4d2d]'>
-                          ₫{formatCurrency(product?.price)}
-                        </div>
-                        <div className='ml-4 rounded bg-[#ee4d2d] py-[2px] px-[4px] text-[0.75rem] font-semibold uppercase text-white'>
-                          {rateSale(product?.price, product?.price_before_discount)} giảm
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Tiêu đề shopee */}
-                  <div className='mt-3 flex items-center'></div>
-                </div>
-              </div>
-              {/* Số lượng sản phẩm */}
-              <div className='mt-8 flex items-center'>
-                <div className='capitalize text-gray-500/80'>Số lượng</div>
-                {/* button tăng giảm và input thêm số lượng sản phẩm */}
-                <QuantityController
-                  max={product?.quantity}
-                  value={buyCount}
-                  onDecrease={handleBuyCount}
-                  onIncrease={handleBuyCount}
-                  onType={handleBuyCount}
-                />
-                {/* Sản phẩm có trong kho */}
-                <div className='ml-7 flex items-center text-gray-500/80'>
-                  {product?.quantity} {t('available')}
-                </div>
-              </div>
-              {/* button thêm sản phẩm */}
-              <div className='mt-10 flex items-center'>
-                {isAuthenticated ? (
-                  <button
-                    onClick={addToCart}
-                    className='flex h-12 items-center justify-center rounded-sm border border-[#ee4d2d] bg-[#ee4d2d]/10 px-5 capitalize shadow-sm hover:bg-[#ee4d2d]/5'
-                  >
-                    <svg
-                      enableBackground='new 0 0 15 15'
-                      viewBox='0 0 15 15'
-                      x={0}
-                      y={0}
-                      className='mr-3 h-[1em] w-[1em] fill-current stroke-[#ee4d2d] text-[1.25rem] text-[#ee4d2d]'
-                    >
-                      <g>
-                        <g>
-                          <polyline
-                            fill='none'
-                            points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeMiterlimit={10}
-                          />
-                          <circle cx={6} cy='13.5' r={1} stroke='none' />
-                          <circle cx='11.5' cy='13.5' r={1} stroke='none' />
-                        </g>
-                        <line
-                          fill='none'
-                          strokeLinecap='round'
-                          strokeMiterlimit={10}
-                          x1='7.5'
-                          x2='10.5'
-                          y1={7}
-                          y2={7}
-                        />
-                        <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
-                      </g>
-                    </svg>
-                    <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() =>
-                      navigate(path.login, {
-                        state: {
-                          purchaseId: product._id,
-                          purchaseName: product.name
-                        }
-                      })
-                    }
-                    className='flex h-12 items-center justify-center rounded-sm border border-[#ee4d2d] bg-[#ee4d2d]/10 px-5 capitalize shadow-sm hover:bg-[#ee4d2d]/5'
-                  >
-                    <svg
-                      enableBackground='new 0 0 15 15'
-                      viewBox='0 0 15 15'
-                      x={0}
-                      y={0}
-                      className='mr-3 h-[1em] w-[1em] fill-current stroke-[#ee4d2d] text-[1.25rem] text-[#ee4d2d]'
-                    >
-                      <g>
-                        <g>
-                          <polyline
-                            fill='none'
-                            points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeMiterlimit={10}
-                          />
-                          <circle cx={6} cy='13.5' r={1} stroke='none' />
-                          <circle cx='11.5' cy='13.5' r={1} stroke='none' />
-                        </g>
-                        <line
-                          fill='none'
-                          strokeLinecap='round'
-                          strokeMiterlimit={10}
-                          x1='7.5'
-                          x2='10.5'
-                          y1={7}
-                          y2={7}
-                        />
-                        <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
-                      </g>
-                    </svg>
-                    <span className='text-[#ee4d2d]'>thêm vào giỏ hàng</span>
-                  </button>
-                )}
-                {isAuthenticated ? (
-                  <button
-                    onClick={handleBuyNow}
-                    className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-[#ee4d2d] px-4 capitalize text-white shadow-sm outline-none hover:bg-[#ee4d2d]/90'
-                  >
-                    Mua ngay
-                  </button>
-                ) : (
-                  <button
-                    onClick={() =>
-                      navigate(path.login, {
-                        state: {
-                          purchaseId: product._id,
-                          purchaseName: product.name
-                        }
-                      })
-                    }
-                    className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-[#ee4d2d] px-4 capitalize text-white shadow-sm outline-none hover:bg-[#ee4d2d]/90'
-                  >
-                    Mua ngay
-                  </button>
-                )}
-              </div>
+              <ProductInfo
+                product={product}
+                viewerCount={viewerCount}
+                isPopular={isPopular}
+                reducedMotion={reducedMotion}
+                livePrice={livePrice}
+                livePriceBeforeDiscount={livePriceBeforeDiscount}
+                priceHasChanged={priceHasChanged}
+                previousPrice={previousPrice}
+                infoContainerVariants={infoContainerVariants}
+              />
+              <ProductActions
+                product={product}
+                isAuthenticated={isAuthenticated}
+                reducedMotion={reducedMotion}
+              />
             </div>
           </div>
         </div>
       </div>
-      {/* Mô tả sản phẩm */}
-      <div className='mt-8'>
+      {/* Thông tin Shop */}
+      <motion.div
+        className='mt-8'
+        variants={reducedMotion ? undefined : sectionEntrance}
+        initial={reducedMotion ? undefined : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className='container'>
-          <div className='bg-white p-8 shadow'>
+          <div className='bg-white dark:bg-slate-800 p-4 shadow dark:shadow-slate-900/50 rounded-sm'>
+            <div className='flex items-center gap-4'>
+              {/* Shop Avatar */}
+              <div className='flex-shrink-0'>
+                <div className='w-20 h-20 rounded-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-2 border-orange'>
+                  <svg className='w-10 h-10 text-gray-400 dark:text-gray-500' fill='currentColor' viewBox='0 0 24 24'>
+                    <path d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' />
+                  </svg>
+                </div>
+              </div>
+              {/* Shop Info */}
+              <div className='flex-1'>
+                <h3 className='font-medium text-lg text-gray-900 dark:text-gray-100'>Shop {product.location || 'Shopee'}</h3>
+                <OnlineIndicator
+                  isOnline={isSellerOnline}
+                  lastSeen={sellerLastSeen}
+                  size='sm'
+                  className='mt-1'
+                />
+                <div className='flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400'>
+                  <span className='flex items-center gap-1'>
+                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
+                    </svg>
+                    {product.location || 'Việt Nam'}
+                  </span>
+                  <span className='flex items-center gap-1'>
+                    <svg className='w-4 h-4 text-yellow-400 fill-current' viewBox='0 0 20 20'>
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                    {product.rating.toFixed(1)}
+                  </span>
+                </div>
+              </div>
+              {/* Follow Button */}
+              <div className='flex-shrink-0'>
+                <SellerFollowButton
+                  seller={{
+                    _id: `shop_${product.category._id}`,
+                    name: `Shop ${product.location || 'Shopee'}`,
+                    location: product.location,
+                    rating: product.rating
+                  }}
+                  size='md'
+                  variant='outline'
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+      {/* Thông tin vận chuyển và lịch sử giá */}
+      <motion.div
+        className='mt-8'
+        variants={reducedMotion ? undefined : sectionEntrance}
+        initial={reducedMotion ? undefined : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className='container'>
+          <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+            {/* Shipping Estimate */}
+            <ShippingEstimate
+              productLocation='TP. Hồ Chí Minh'
+              selectedAddress=''
+              className='h-fit'
+            />
+            {/* Price History Chart */}
+            <PriceHistoryChart
+              productId={product._id}
+              currentPrice={product.price}
+              className='h-fit'
+            />
+          </div>
+        </div>
+      </motion.div>
+      {/* Mô tả sản phẩm */}
+      <motion.div
+        className='mt-8'
+        variants={reducedMotion ? undefined : sectionEntrance}
+        initial={reducedMotion ? undefined : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className='container'>
+          <div className='bg-white dark:bg-slate-800 p-8 shadow dark:shadow-slate-900/50'>
             {/* Title */}
-            <div className='rounded text-[1.125rem] font-medium uppercase text-[rgba(0,0,0,.87)]'>
+            <div className='rounded text-base md:text-lg font-medium uppercase text-[rgba(0,0,0,.87)] dark:text-gray-100'>
               Chi tiết sản phẩm
             </div>
             {/* Thông tin chi tiết sản phẩm */}
-            <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
+            <div className='mx-4 mt-12 mb-4 text-sm leading-loose text-gray-700 dark:text-gray-300'>
               <div
                 dangerouslySetInnerHTML={{
                   // __html: DOMPurify.sanitize(`<div onClick={alert('Ok')}>hehe</div>`) -> DOMpurify chống tấn công XSS
@@ -594,29 +363,80 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
+      {/* Live Review Feed - Phase 3 */}
+      {newReviews.length > 0 && (
+        <div className='mt-4'>
+          <div className='container'>
+            <LiveReviewFeed
+              newReviewCount={newReviews.length}
+              latestReview={newReviews.length > 0 ? {
+                name: newReviews[newReviews.length - 1].user.name,
+                rating: newReviews[newReviews.length - 1].rating,
+              } : undefined}
+              onViewReviews={() => {
+                clearNewReviews()
+                document.getElementById('product-reviews')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            />
+          </div>
+        </div>
+      )}
       {/* Đánh giá sản phẩm */}
-      <div className='mt-8'>
+      <motion.div
+        className='mt-8'
+        variants={reducedMotion ? undefined : sectionEntrance}
+        initial={reducedMotion ? undefined : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, amount: 0.1 }}
+      >
         <div className='container'>
-          <ProductReviews productId={product._id} />
+          <div id='product-reviews'>
+            <ProductReviews productId={product._id} />
+          </div>
         </div>
-      </div>
+      </motion.div>
+      {/* Live Q&A Section - Phase 3 */}
+      {(newQuestions.length > 0 || newAnswers.length > 0) && (
+        <div className='mt-4'>
+          <div className='container'>
+            <LiveQASection
+              newQuestionCount={newQuestions.length}
+              newAnswers={newAnswers.map((a) => ({
+                question_id: a.question_id,
+                answer: a.answer
+              }))}
+              onViewQuestions={() => {
+                document.getElementById('product-qa')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {/* Hỏi đáp sản phẩm */}
+      <motion.div
+        className='mt-8'
+        variants={reducedMotion ? undefined : sectionEntrance}
+        initial={reducedMotion ? undefined : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <div className='container'>
+          <div id='product-qa'>
+            <ProductQA productId={product._id} />
+          </div>
+        </div>
+      </motion.div>
       {/* Mục sản phẩm yêu thích */}
-      <div className='mt-8'>
-        <div className='container'>
-          {/* Title mục yêu thích */}
-          <div className='uppercase text-gray-400'>Có thể bạn cũng thích</div>
-          {productsData && (
-            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-              {productsData.data.data.products.map((product, index) => (
-                <div className='col-span-1' key={product._id}>
-                  <Product product={product} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <RelatedProducts
+        categoryId={product.category._id}
+        reducedMotion={reducedMotion}
+      />
+      {/* Activity Feed Widget - Phase 3 */}
+      <ActivityFeedWidget
+        latestActivity={latestActivity}
+        className='fixed bottom-4 left-4 z-50 max-w-xs'
+      />
     </div>
   )
 }

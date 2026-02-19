@@ -1,0 +1,41 @@
+import classNames from 'classnames'
+import { purchasesStatus } from 'src/constant/purchase'
+
+interface PurchaseTabBarProps {
+  status: number
+  onStatusChange: (status: number) => void
+}
+
+const purchaseTabs = [
+  { status: purchasesStatus.all, name: 'Tất cả' },
+  { status: purchasesStatus.waitForConfirmation, name: 'Chờ xác nhận' },
+  { status: purchasesStatus.waitForGetting, name: 'Chờ lấy hàng' },
+  { status: purchasesStatus.inProgress, name: 'Đang giao hàng' },
+  { status: purchasesStatus.delivered, name: 'Hoàn thành' },
+  { status: purchasesStatus.cancelled, name: 'Đã hủy' }
+]
+
+const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
+  return (
+    <div className='sticky top-0 z-20 flex items-center rounded-t-sm bg-white dark:bg-slate-800 shadow-sm'>
+      {purchaseTabs.map((tab) => (
+        <button
+          key={tab.status}
+          onClick={() => onStatusChange(tab.status)}
+          className={classNames(
+            'flex flex-1 items-center justify-center border-b-2 bg-white dark:bg-slate-800 py-4 text-center transition-all hover:text-orange dark:hover:text-orange-400',
+            {
+              'border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400': status === tab.status,
+              'border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': status !== tab.status
+            }
+          )}
+        >
+          {tab.name}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+export default PurchaseTabBar
+

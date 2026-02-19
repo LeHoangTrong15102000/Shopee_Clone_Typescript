@@ -1,10 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
+    <!-- Preconnect and DNS-prefetch for API server -->
+    <link rel="preconnect" href="https://api-ecom.duthanhduoc.com" />
+    <link rel="dns-prefetch" href="https://api-ecom.duthanhduoc.com" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ee4d2d" />
+    <link rel="manifest" href="/manifest.json" />
     <!-- Meta tags sẽ được React Helmet quản lý động -->
+
+    <!-- FOUC Prevention: Apply theme before React mounts -->
+    <script>
+      (function() {
+        var STORAGE_KEY = 'shopee_theme';
+        var stored = null;
+        try {
+          stored = localStorage.getItem(STORAGE_KEY);
+        } catch (e) {}
+
+        var theme = 'light';
+        if (stored === 'dark') {
+          theme = 'dark';
+        } else if (stored === 'system' || !stored) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        document.documentElement.classList.add(theme);
+
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.content = theme === 'dark' ? '#1a1a2e' : '#ee4d2d';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

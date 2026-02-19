@@ -14,8 +14,8 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
     maxValue,
     errorMessage,
     className,
-    classNameInput = 'w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
-    classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600',
+    classNameInput = 'w-full rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 md:p-3 text-sm md:text-base shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500',
+    classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600 dark:text-red-400',
     onChange, // lấy ra onChange là sự kiện trong thẻ Input\
     value, // Nên có giá trị khởi tạo là value rỗng không thì nó sẽ là undefined, undefined mà truyền vào input thì nó không được
     ...rest

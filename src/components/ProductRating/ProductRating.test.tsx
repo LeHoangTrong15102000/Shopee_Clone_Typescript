@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import ProductRating from './ProductRating'
 
 describe('ProductRating Component Unit Tests', () => {
@@ -14,7 +14,7 @@ describe('ProductRating Component Unit Tests', () => {
     test('should render with default classes when not provided', () => {
       const { container } = render(<ProductRating rating={3} />)
 
-      const activeStars = container.querySelectorAll('.fill-yellow-300')
+      const activeStars = container.querySelectorAll('.fill-orange')
       const inactiveStars = container.querySelectorAll('.text-gray-300')
 
       expect(activeStars.length).toBeGreaterThan(0)

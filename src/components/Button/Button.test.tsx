@@ -190,7 +190,6 @@ describe('Button Component Unit Tests', () => {
   describe('Form Integration', () => {
     test('should work as submit button in forms', async () => {
       const mockOnSubmit = vi.fn((e) => e.preventDefault())
-      const user = userEvent.setup()
 
       render(
         <form onSubmit={mockOnSubmit}>
@@ -199,7 +198,6 @@ describe('Button Component Unit Tests', () => {
       )
 
       // Click the submit button - this should trigger form submission
-      const form = document.querySelector('form')
       const button = screen.getByRole('button')
 
       // Ensure button has correct type

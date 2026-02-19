@@ -210,6 +210,8 @@ const Input = ({ errorMessage, className, classNameInput, classNameError, ...res
 
 ### 🎬 Video 160: Sử Dụng Yup Validation
 
+> ⚠️ **Lưu ý**: Project hiện tại đã migrate sang Zod. Các ví dụ Yup bên dưới chỉ mang tính tham khảo lịch sử. Xem `src/utils/rules.ts` để tham khảo cách sử dụng Zod với baseSchema pattern.
+
 #### 📦 Schema Setup
 
 ```typescript
@@ -1107,7 +1109,7 @@ const useSearchProducts = () => {
 
 - **Frontend**: React 18, TypeScript, TailwindCSS
 - **State Management**: React Query, Context API
-- **Form**: React Hook Form, Yup validation
+- **Form**: React Hook Form, Zod validation (đã migrate từ Yup)
 - **Routing**: React Router DOM v6
 - **HTTP Client**: Axios với interceptors
 - **Animation**: Framer Motion

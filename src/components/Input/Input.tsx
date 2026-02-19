@@ -1,6 +1,9 @@
 // Khi mà dùng function thì hả nên import React
 import { InputHTMLAttributes, useState } from 'react'
 import type { UseFormRegister, RegisterOptions, FieldValues, FieldPath } from 'react-hook-form'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { errorSlideIn } from 'src/styles/animations'
 
 // Mặc định là chúng ta sẽ lấy là FieldValues để nó không có báo lỗi nữa
 // TFieldValue nó kế thừa từ FieldValues mặc định chúng ta sẽ lấy TFieldValues, giá trị mặc định có thể gán hoặc không gán đều không sao cả
@@ -45,14 +48,15 @@ const Input = <
   name,
   register,
   rules,
-  classNameInput = 'w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500',
-  classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600',
-  classNameEye = 'absolute right-[8px] top-[9px] h-6 w-6 cursor-pointer',
+  classNameInput = 'w-full rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-3 shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500',
+  classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600 dark:text-red-400',
+  classNameEye = 'absolute right-[5px] top-[6px] h-8 w-8 md:right-[8px] md:top-[9px] md:h-6 md:w-6 cursor-pointer p-1 md:p-0 dark:text-gray-300',
   ...rest
 }: // TFieldValues ở đây truyền thông qua
 Props<TFieldValues, TName>) => {
   // state để lưu trữ việc hiển thị con mắt
   const [openEye, setOpenEye] = useState(false)
+  const reducedMotion = useReducedMotion()
   const registerResult = register && name ? register(name, rules as any) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
 
   // func toggle eye
@@ -71,10 +75,11 @@ Props<TFieldValues, TName>) => {
 
   // Tính toán className với border đỏ khi có error
   const getInputClassName = () => {
+    const baseClass = classNameInput + ' transition-colors duration-150'
     if (errorMessage) {
-      return classNameInput.replace('border-gray-300', 'border-red-600')
+      return baseClass.replace('border-gray-300', 'border-red-600')
     }
-    return classNameInput
+    return baseClass
   }
 
   // Tạo unique ID cho error message
@@ -84,7 +89,7 @@ Props<TFieldValues, TName>) => {
     <div className={className}>
       {rest.value && (
         <label
-          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white px-1 py-1 text-[12px] italic text-gray-700 transition-all duration-300 ease-out'
+          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white dark:bg-slate-800 px-1 py-1 text-[12px] italic text-gray-700 dark:text-gray-300 transition-all duration-300 ease-out'
           htmlFor={name}
         >
           {name?.slice(0, 1).toUpperCase() + name?.slice(1)}
@@ -140,9 +145,23 @@ Props<TFieldValues, TName>) => {
       )}
       {/* Eye-close */}
       {/* cho m-height để khi mà không có lỗi thì nó vẫn chiếm được vị trí ở đó */}
-      <div className={classNameError} id={errorId}>
-        {errorMessage}
-      </div>
+      <AnimatePresence mode='wait'>
+        {errorMessage ? (
+          <motion.div
+            key='error'
+            className={classNameError}
+            id={errorId}
+            variants={reducedMotion ? undefined : errorSlideIn}
+            initial={reducedMotion ? undefined : 'hidden'}
+            animate={reducedMotion ? undefined : 'visible'}
+            exit={reducedMotion ? undefined : 'exit'}
+          >
+            {errorMessage}
+          </motion.div>
+        ) : (
+          <div className={classNameError} />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

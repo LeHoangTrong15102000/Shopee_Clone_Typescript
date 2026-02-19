@@ -1,26 +1,19 @@
-import React from 'react'
-
-interface Notification {
-  id: string
-  title: string
-  message: string
-  time: string
-  isRead: boolean
-  type: 'promotion' | 'order' | 'sale'
-  image?: string
-}
+import { formatDistanceToNow } from 'date-fns'
+import vi from 'date-fns/locale/vi'
+import { NotificationPayload } from 'src/types/socket.types'
 
 interface Props {
-  notification: Notification
+  notification: NotificationPayload
+  onMarkAsRead?: (id: string) => void
 }
 
-const NotificationItem = ({ notification }: Props) => {
-  const getTypeIcon = (type: Notification['type']) => {
+const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
+  const getTypeIcon = (type: NotificationPayload['type']) => {
     switch (type) {
       case 'promotion':
         return (
-          <div className='w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-yellow-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <div className='w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center'>
+            <svg className='w-4 h-4 text-yellow-600 dark:text-yellow-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -32,8 +25,8 @@ const NotificationItem = ({ notification }: Props) => {
         )
       case 'order':
         return (
-          <div className='w-8 h-8 bg-green-100 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <div className='w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center'>
+            <svg className='w-4 h-4 text-green-600 dark:text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -43,49 +36,77 @@ const NotificationItem = ({ notification }: Props) => {
             </svg>
           </div>
         )
-      case 'sale':
+      case 'system':
         return (
-          <div className='w-8 h-8 bg-red-100 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-red-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <div className='w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center'>
+            <svg className='w-4 h-4 text-blue-600 dark:text-blue-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
                 strokeWidth={2}
-                d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+                d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
               />
             </svg>
           </div>
         )
+      case 'new_message':
+        return (
+          <div className='w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center'>
+            <svg className='w-4 h-4 text-purple-600 dark:text-purple-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+              />
+            </svg>
+          </div>
+        )
+      case 'other':
       default:
-        return null
+        return (
+          <div className='w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center'>
+            <svg className='w-4 h-4 text-gray-600 dark:text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'
+              />
+            </svg>
+          </div>
+        )
+    }
+  }
+
+  const formatTime = (dateString: string) => {
+    try {
+      return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale: vi })
+    } catch {
+      return dateString
+    }
+  }
+
+  const handleClick = () => {
+    if (onMarkAsRead) {
+      onMarkAsRead(notification._id)
     }
   }
 
   return (
     <div
-      className={`flex items-start p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 ${!notification.isRead ? 'bg-blue-50' : ''}`}
+      onClick={handleClick}
+      className='flex items-start p-4 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-100 dark:border-slate-700 last:border-b-0 bg-blue-50 dark:bg-slate-700/50 cursor-pointer'
     >
-      {/* Icon hoặc hình ảnh */}
-      <div className='flex-shrink-0 mr-3'>
-        {notification.image ? (
-          <img src={notification.image} alt={notification.title} className='w-8 h-8 rounded object-cover' />
-        ) : (
-          getTypeIcon(notification.type)
-        )}
-      </div>
+      <div className='flex-shrink-0 mr-3'>{getTypeIcon(notification.type)}</div>
 
-      {/* Nội dung thông báo */}
       <div className='flex-1 min-w-0'>
         <div className='flex items-start justify-between'>
-          <h4
-            className={`text-sm font-medium text-gray-900 line-clamp-1 ${!notification.isRead ? 'font-semibold' : ''}`}
-          >
-            {notification.title}
-          </h4>
-          {!notification.isRead && <div className='w-2 h-2 bg-[#ee4d2d] rounded-full ml-2 flex-shrink-0'></div>}
+          <h4 className='text-sm font-semibold text-gray-900 dark:text-gray-100 line-clamp-1'>{notification.title}</h4>
+          <div className='w-2 h-2 bg-orange rounded-full ml-2 flex-shrink-0'></div>
         </div>
-        <p className='text-sm text-gray-600 mt-1 line-clamp-2'>{notification.message}</p>
-        <p className='text-xs text-gray-400 mt-1'>{notification.time}</p>
+        <p className='text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2'>{notification.content}</p>
+        <p className='text-xs text-gray-400 dark:text-gray-500 mt-1'>{formatTime(notification.created_at)}</p>
       </div>
     </div>
   )

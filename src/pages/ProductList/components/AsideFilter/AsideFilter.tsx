@@ -1,10 +1,8 @@
 import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
-import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
-import omit from 'lodash/omit'
+import { Link, createSearchParams } from 'react-router-dom'
+import { zodResolver } from '@hookform/resolvers/zod'
 import Button from 'src/components/Button'
-import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import path from 'src/constant/path'
 
@@ -12,25 +10,24 @@ import { Category } from 'src/types/category.type'
 import { InputNumberSchema, inputNumberSchema } from 'src/utils/rules'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from 'src/pages/ProductList/components/RatingStars'
-import { QueryConfig } from 'src/hooks/useQueryConfig'
-import InputV2 from 'src/components/InputV2'
+import { useProductQueryStates } from 'src/hooks/nuqs'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
-  queryConfig: QueryConfig
   categories: Category[]
 }
 
-// Loại bỏ các kiểu dữ liệu undefined và null trong InputNumberSchema
 type FormData = NoUndefinedField<InputNumberSchema>
-// có thể khai báo như này type FormData = Pick<Schema, 'price_max' | 'price_min'> -> cú pháp của thằng typescript
 
-// inputNumberShema có thể được viết như sau
-// const priceSchema = schema.pick(['price_min', 'price_max'])
+const AsideFilter = ({ categories }: Props) => {
+  const { t } = useTranslation('home')
+  const [filters, setFilters] = useProductQueryStates()
+  const { category } = filters
 
-const AsideFilter = ({ categories, queryConfig }: Props) => {
-  const { t } = useTranslation('home') // Trong trường hợp ko khai báo gì thì chúng ta đang sử dụng namespace mặc định
-  const { category, sort_by } = queryConfig // Lấy ra category config -> lấy ra cái categoriesId
+  const filtersAsStrings = Object.fromEntries(
+    Object.entries(filters).filter(([_, v]) => v != null).map(([k, v]) => [k, String(v)])
+  ) as Record<string, string>
+
   const {
     control,
     handleSubmit,
@@ -39,58 +36,37 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
-      //  Lấy hàm reset của react-hook-form để reset lại giá trị trong ô input
       price_max: '',
       price_min: ''
     },
-    resolver: yupResolver(inputNumberSchema) as any,
+    resolver: zodResolver(inputNumberSchema),
     shouldFocusError: false
   })
-  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(
     (data) => {
-      navigate({
-        pathname: path.products,
-        search: createSearchParams({
-          ...queryConfig,
-          price_max: data.price_max,
-          price_min: data.price_min
-        }).toString()
+      setFilters({
+        price_max: data.price_max ? Number(data.price_max) : null,
+        price_min: data.price_min ? Number(data.price_min) : null
       })
     },
     (err) => {
       console.log(err)
-      // err.price_max.ref.focus()
-      // err.price_min.ref.focus()
     }
   )
-  // },
-  // // Khi mà onSubmit mà bị lỗi thì nó sẽ chạy function này
-  // // function này gọi là function handle lỗi của handleSubmit
-  // (err) => {
-  //   // err.price_max?.ref?.focus()
-  //   console.log(err)
-  // }
 
-  //  Chỉ filter AsideFilter, còn sortFilterProduct thì vẫn giữ nguyên
   const handleRemoveAsideFilter = () => {
-    reset() // Nhấn vào reset thì price_max và price_min sẽ trả về chuỗi rỗng
-    navigate({
-      pathname: path.products,
-      search: createSearchParams(
-        omit({ ...queryConfig }, ['price_min', 'price_max', 'category', 'rating_filter'])
-      ).toString()
-    })
+    reset()
+    setFilters({ price_min: null, price_max: null, category: null, rating_filter: null })
   }
 
   return (
-    <div className='py-4 text-[rgba(0,0,0,.8)]'>
+    <div className='py-4 text-black/80 dark:text-gray-200' role="navigation" aria-label="Bộ lọc sản phẩm">
       {/* Tất cả danh mục */}
       <Link
         to={path.products}
         className={classNames('flex items-center font-bold', {
-          'text-orange': !category // active khi không có query category
+          'text-orange dark:text-orange-400': !category // active khi không có query category
         })}
       >
         <svg viewBox='0 0 12 10' className='mr-2 h-4 w-3 fill-current'>
@@ -108,7 +84,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         </svg>
         <span className='capitalize'>{t('aside filter.all categories')}</span>
       </Link>
-      <div className='my-4 h-[1px] bg-gray-300'></div>
+      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
       <ul>
         {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id
@@ -118,16 +94,16 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                 to={{
                   pathname: path.products,
                   search: createSearchParams({
-                    ...queryConfig, // nó sẽ lấy lại tất cả config như sort_by,order
+                    ...filtersAsStrings,
                     category: categoryItem._id
                   }).toString()
                 }}
                 className={classNames('relative px-2', {
-                  'font-semibold text-orange': isActive
+                  'font-semibold text-orange dark:text-orange-400': isActive
                 })}
               >
                 {isActive && (
-                  <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange'>
+                  <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'>
                     <polygon points='4 3.5 0 0 0 7' />
                   </svg>
                 )}
@@ -163,7 +139,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         </svg>
         <span className=''>{t('aside filter.search filter')}</span>
       </Link>
-      <div className='my-4 h-[1px] bg-gray-300'></div>
+      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
       {/* Filter theo khoảng giá */}
       <div className='my-4'>
         <div className='capitalize'>Khoảng giá</div>
@@ -179,14 +155,14 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     className='grow'
                     classNameError='hidden'
                     placeholder='₫ TỪ'
-                    classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 focus:border-gray-500 focus:shadow-sm'
+                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
                     // onChange={(event) => field.onChange(event)} // onChange trong field có nhận vào cái event
                     {...field}
                     onChange={(event) => {
                       field.onChange(event)
                       trigger('price_max')
                     }} // có thể viết gọn lại như này
-                    /** 
+                    /**
                      *  Nó vẫn sẽ hiểu là có hai thằng này trong thẻ Input
                      *  // value={field.value}
                         // ref={field.ref}
@@ -196,7 +172,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
               }}
             />
             {/* shrink-0 cho nó đừng có bị co lại */}
-            <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd]'>--</div>
+            <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
             {/* <InputV2
               control={control}
               name='price_max'
@@ -220,7 +196,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
                     className='grow'
                     classNameError='hidden'
                     placeholder='₫ ĐẾN'
-                    classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 focus:border-gray-500 focus:shadow-sm'
+                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
                     maxValue={'50000000'}
                     {...field}
                     onChange={(event) => {
@@ -232,11 +208,11 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
               }}
             />
           </div>
-          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>{errors.price_min?.message}</div>
-          <Button className='flex w-full items-center justify-center bg-[rgba(238,77,45)] p-2 text-sm uppercase text-white hover:bg-[rgba(238,77,45)]/80'>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>{errors.price_min?.message}</div>
+          <Button aria-label="Áp dụng bộ lọc giá" className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'>
             áp dụng
           </Button>
-          <div className='my-4 h-[1px] bg-gray-300 '></div>
+          <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
         </form>
         {/* Đánh giá */}
         <div className='my-4'>
@@ -244,12 +220,13 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
         </div>
       </div>
       {/* Sao đánh giá sản phẩm */}
-      <RatingStars queryConfig={queryConfig} />
+      <RatingStars />
       {/* Button Xóa tất cả filter */}
-      <div className='my-4 h-[1px] bg-gray-300'></div>
+      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
       <Button
         onClick={handleRemoveAsideFilter}
-        className='flex w-full items-center justify-center bg-[rgba(238,77,45)] p-2 text-sm uppercase text-white hover:bg-[rgba(238,77,45)]/80'
+        aria-label="Xóa tất cả bộ lọc"
+        className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
       >
         xóa tất cả
       </Button>

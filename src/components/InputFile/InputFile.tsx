@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useRef, useState } from 'react'
+import React, { Fragment, useRef } from 'react'
 import config from 'src/constant/config'
 import { toast } from 'react-toastify'
 
@@ -46,7 +46,7 @@ const InputFile = ({ onChange }: Props) => {
       />
       <button
         type='button'
-        className='m-w-[70px] flex h-10 items-center justify-center rounded-sm border bg-white px-[20px] capitalize text-[#555] outline-none'
+        className='min-w-[70px] md:min-w-[90px] flex h-9 md:h-10 items-center justify-center rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 md:px-5 capitalize text-xs md:text-sm text-[#555] dark:text-gray-300 outline-none hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors'
         onClick={handleUpload}
       >
         chọn ảnh

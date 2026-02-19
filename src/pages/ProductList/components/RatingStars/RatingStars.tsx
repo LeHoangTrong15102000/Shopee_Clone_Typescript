@@ -1,22 +1,10 @@
-import { createSearchParams, useNavigate } from 'react-router-dom'
-import path from 'src/constant/path'
-import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useProductQueryStates } from 'src/hooks/nuqs'
 
-interface Props {
-  queryConfig: QueryConfig
-}
-
-const RatingStars = ({ queryConfig }: Props) => {
-  const navigate = useNavigate()
+const RatingStars = () => {
+  const [, setFilters] = useProductQueryStates()
 
   const handleFilterStar = (ratingFilterNumber: number) => {
-    navigate({
-      pathname: path.products,
-      search: createSearchParams({
-        ...queryConfig,
-        rating_filter: String(ratingFilterNumber)
-      }).toString()
-    })
+    setFilters({ rating_filter: ratingFilterNumber })
   }
 
   return (
@@ -24,14 +12,15 @@ const RatingStars = ({ queryConfig }: Props) => {
       {Array(5)
         .fill(0)
         .map((_, index) => (
-          <li className='py-1 pl-2' key={index}>
+          <li className='min-h-[44px] py-1 pl-2' key={index}>
             {/* Thường là những sự kiện như onClick thì Eslint nó bắt các thẻ để click nên là button,... */}
             <div
-              className='flex cursor-pointer items-center text-sm'
+              className='flex cursor-pointer items-center rounded-md px-2 py-1 text-sm transition-colors duration-150 hover:bg-orange-50'
               onClick={() => handleFilterStar(5 - index)}
+              onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleFilterStar(5 - index); } }}
               tabIndex={0}
               role='button'
-              aria-hidden='true'
+              aria-label={`${5 - index} sao trở lên`}
             >
               {Array(5)
                 .fill(0)
@@ -39,7 +28,7 @@ const RatingStars = ({ queryConfig }: Props) => {
                   // Xử lý thuật toán in ra ngôi sao theo đánh giá sao
                   if (indexStar < 5 - index) {
                     return (
-                      <svg viewBox='0 0 9.5 8' className='mr-[1.7px] h-4 w-[16px] fill-current' key={indexStar}>
+                      <svg viewBox='0 0 9.5 8' className='mr-1 h-5 w-5 fill-current' key={indexStar}>
                         <defs>
                           <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
                             <stop offset={0} stopColor='#ffca11' />
@@ -68,7 +57,7 @@ const RatingStars = ({ queryConfig }: Props) => {
                   }
                   // Còn không return về ngôi sao màu trắng
                   return (
-                    <svg viewBox='0 0 30 30' className='mr-[1.7px] h-4 w-[16px] fill-current' key={indexStar}>
+                    <svg viewBox='0 0 30 30' className='mr-1 h-5 w-5 fill-current' key={indexStar}>
                       <defs>
                         <linearGradient id='star__hollow' x1='50%' x2='50%' y1='0%' y2='99.0177926%'>
                           <stop offset='0%' stopColor='#FFD211' />

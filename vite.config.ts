@@ -52,9 +52,28 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       sourcemap: false,
       minify: 'esbuild' as const,
-      // Let Vite/Rollup handle chunking automatically to avoid circular dependency issues
-      // Manual chunking was causing TDZ errors like "Cannot access 'T' before initialization"
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        treeshake: {
+          moduleSideEffects: false
+        },
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'ui-vendor': ['@heroui/react', '@floating-ui/react', '@tippyjs/react', 'tippy.js'],
+            'animation-vendor': ['framer-motion'],
+            'http-vendor': ['axios', '@tanstack/react-query'],
+            'devtools-vendor': ['@tanstack/react-query-devtools'],
+            'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+            'socket-vendor': ['socket.io-client'],
+            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+            'router-vendor': ['react-router-dom', 'nuqs'],
+            'utils-vendor': ['classnames', 'immer', 'date-fns'],
+            'i18n-vendor': ['i18next', 'react-i18next'],
+            'misc-vendor': ['dompurify', 'html-to-text', 'react-helmet-async', 'react-toastify']
+          }
+        }
+      }
     },
     ssr: {
       noExternal: ['@tanstack/react-query']

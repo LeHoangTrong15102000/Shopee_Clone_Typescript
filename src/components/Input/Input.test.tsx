@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Input from './Input'
 
@@ -163,7 +163,10 @@ describe('Input Component Unit Tests', () => {
       // Clear error
       rerender(<Input {...defaultProps} />)
 
-      expect(screen.queryByText('This field is required')).not.toBeInTheDocument()
+      // Wait for AnimatePresence exit animation to complete
+      await waitFor(() => {
+        expect(screen.queryByText('This field is required')).not.toBeInTheDocument()
+      })
     })
 
     test('should show error when validation fails', () => {

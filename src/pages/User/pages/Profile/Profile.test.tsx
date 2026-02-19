@@ -1,14 +1,12 @@
 import { waitFor } from '@testing-library/react'
 import path from 'src/constant/path'
-import { access_token } from 'src/msw/auth.msw'
-import { setAccessTokenToLS } from 'src/utils/auth'
 import { renderWithRouter } from 'src/utils/testUtils'
 import { describe, expect, it } from 'vitest'
 
 describe('Profile', () => {
   it('Redirect to login when not authenticated', async () => {
     // Không set access token để test redirect
-    const { container } = renderWithRouter({ route: path.profile })
+    renderWithRouter({ route: path.profile })
 
     await waitFor(
       () => {

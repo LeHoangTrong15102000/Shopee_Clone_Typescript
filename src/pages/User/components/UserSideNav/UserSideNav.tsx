@@ -1,19 +1,59 @@
 import classNames from 'classnames'
-import React, { useContext } from 'react'
+import { motion } from 'framer-motion'
+import { useContext } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import path from 'src/constant/path'
 import { AppContext } from 'src/contexts/app.context'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { getAvatarUrl } from 'src/utils/utils'
+
+// Mobile tab navigation items
+const mobileNavItems = [
+  { to: path.profile, label: 'Tài khoản' },
+  { to: path.changePassword, label: 'Mật khẩu' },
+  { to: path.historyPurchases, label: 'Đơn mua' },
+  { to: path.orderList, label: 'Đơn hàng' },
+  { to: path.dailyCheckIn, label: 'Điểm danh' },
+  { to: path.followedShops, label: 'Shop' },
+  { to: path.addressBook, label: 'Địa chỉ' },
+  { to: path.notifications, label: 'Thông báo' }
+]
 
 const UserSideNav = () => {
   const { profile } = useContext(AppContext)
+  const reducedMotion = useReducedMotion()
 
   return (
     <div>
+      {/* Mobile horizontal tab bar */}
+      <div className='md:hidden -mx-1 mb-3'>
+        <div className='flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide'>
+          {mobileNavItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                classNames(
+                  'flex-shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-colors whitespace-nowrap border',
+                  {
+                    'border-[#ee4d2d] dark:border-orange-400 bg-[#ee4d2d]/10 dark:bg-orange-400/10 text-[#ee4d2d] dark:text-orange-400': isActive,
+                    'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700': !isActive
+                  }
+                )
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop sidebar - hidden on mobile */}
+      <div className='hidden md:block'>
       {/* Avatar */}
-      <div className='flex items-center border border-b-gray-200 py-4'>
+      <div className='flex items-center border-b border-b-gray-200 dark:border-b-slate-700 py-4'>
         {/* Avatar */}
-        <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
+        <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-gray-200 dark:border-slate-600'>
           <img
             // src='https://down-vn.img.susercontent.com/file/b34a1e6b65aaa8ba6474c7886dc59df2_tn'
             src={getAvatarUrl(profile?.avatar)}
@@ -23,18 +63,18 @@ const UserSideNav = () => {
         </Link>
         {/* Tên user, mục: sửa hồ sơ */}
         <div className='flex-grow pl-[14px]'>
-          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name}</div>
+          <div className='mb-1 truncate font-semibold text-gray-600 dark:text-gray-300'>{profile?.name}</div>
           <Link to={path.profile} className='flex items-center bg-transparent capitalize'>
             {/* Icon */}
-            <svg width={12} height={12} viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' className='mr-1'>
+            <svg width={12} height={12} viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' className='mr-1 text-gray-400 dark:text-gray-500'>
               <path
                 d='M8.54 0L6.987 1.56l3.46 3.48L12 3.48M0 8.52l.073 3.428L3.46 12l6.21-6.18-3.46-3.48'
-                fill='#9B9B9B'
+                fill='currentColor'
                 fillRule='evenodd'
               />
             </svg>
             {/* Title Sửa hồ sơ */}
-            <span className='capitalize text-[#888]'>Sửa hồ sơ</span>
+            <span className='capitalize text-[#888] dark:text-gray-400'>Sửa hồ sơ</span>
           </Link>
         </div>
       </div>
@@ -76,59 +116,342 @@ const UserSideNav = () => {
         <NavLink
           to={path.profile}
           className={({ isActive }) =>
-            classNames('mb-[0.9375rem] flex items-center justify-start capitalize transition-colors', {
+            classNames('relative mb-[0.9375rem] flex items-center justify-start capitalize transition-colors', {
               'text-[#ee4d2d]': isActive,
-              'text-gray-600': !isActive
+              'text-gray-600 dark:text-gray-300': !isActive
             })
           }
         >
-          <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
-              alt='Avatar'
-              className='h-6 w-6'
-            />
-          </div>
-          <span className='font-medium capitalize'>Tài khoản của tôi</span>
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <img
+                    src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
+                    alt='Avatar'
+                    className='h-6 w-6'
+                  />
+                </div>
+                <span className='font-medium capitalize'>Tài khoản của tôi</span>
+              </div>
+            </>
+          )}
         </NavLink>
         {/* Đổi mật khẩu */}
         <NavLink
           to={path.changePassword}
           className={({ isActive }) =>
-            classNames('mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
               'text-[#ee4d2d]': isActive,
-              'text-gray-600': !isActive
+              'text-gray-600 dark:text-gray-300': !isActive
             })
           }
         >
-          <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/e10a43b53ec8605f4829da5618e0717c'
-              alt='Avatar'
-              className='h-6 w-6'
-            />
-          </div>
-          <span className='font-medium capitalize'>Đổi mật khẩu</span>
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-blue-500'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Đổi mật khẩu</span>
+              </div>
+            </>
+          )}
         </NavLink>
         {/* Đơn mua */}
         <NavLink
           to={path.historyPurchases}
           className={({ isActive }) =>
-            classNames('mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
               'text-[#ee4d2d]': isActive,
-              'text-gray-600': !isActive
+              'text-gray-600 dark:text-gray-300': !isActive
             })
           }
         >
-          <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
-              alt='Avatar'
-              className='h-6 w-6'
-            />
-          </div>
-          <span className='font-medium capitalize'>Đơn mua</span>
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <img
+                    src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
+                    alt='Avatar'
+                    className='h-6 w-6'
+                  />
+                </div>
+                <span className='font-medium capitalize'>Đơn mua</span>
+              </div>
+            </>
+          )}
         </NavLink>
+        {/* Đơn hàng */}
+        <NavLink
+          to={path.orderList}
+          className={({ isActive }) =>
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600 dark:text-gray-300': !isActive
+            })
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-blue-500'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Đơn hàng</span>
+              </div>
+            </>
+          )}
+        </NavLink>
+        {/* Điểm danh hàng ngày */}
+        <NavLink
+          to={path.dailyCheckIn}
+          className={({ isActive }) =>
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600 dark:text-gray-300': !isActive
+            })
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-yellow-500'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Điểm danh</span>
+              </div>
+            </>
+          )}
+        </NavLink>
+        {/* Shop đang theo dõi */}
+        <NavLink
+          to={path.followedShops}
+          className={({ isActive }) =>
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600 dark:text-gray-300': !isActive
+            })
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-pink-500'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Shop theo dõi</span>
+              </div>
+            </>
+          )}
+        </NavLink>
+        {/* Địa chỉ giao hàng */}
+        <NavLink
+          to={path.addressBook}
+          className={({ isActive }) =>
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600 dark:text-gray-300': !isActive
+            })
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-green-500'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z'
+                    />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Địa chỉ</span>
+              </div>
+            </>
+          )}
+        </NavLink>
+        {/* Thông báo */}
+        <NavLink
+          to={path.notifications}
+          className={({ isActive }) =>
+            classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              'text-[#ee4d2d]': isActive,
+              'text-gray-600 dark:text-gray-300': !isActive
+            })
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && !reducedMotion && (
+                <motion.div
+                  layoutId='activeNavIndicator'
+                  className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5'
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              {isActive && reducedMotion && (
+                <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />
+              )}
+              <div className='relative z-10 flex items-center'>
+                <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-[#ee4d2d]'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+                    />
+                  </svg>
+                </div>
+                <span className='font-medium capitalize'>Thông báo</span>
+              </div>
+            </>
+          )}
+        </NavLink>
+      </div>
       </div>
     </div>
   )

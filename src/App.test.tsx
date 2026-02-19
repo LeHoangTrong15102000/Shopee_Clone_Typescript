@@ -2,7 +2,7 @@
 import { describe, expect, test } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
 import path from './constant/path'
-import { logScreen, renderWithRouter } from './utils/testUtils'
+import { renderWithRouter } from './utils/testUtils'
 
 describe('App', () => {
   test('App render và chuyển trang', async () => {

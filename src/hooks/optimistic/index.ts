@@ -7,6 +7,12 @@ export { useOptimisticAddToCart, useOptimisticUpdateQuantity, useOptimisticRemov
 // Review-related optimistic hooks
 export { useOptimisticReviewLike } from './review'
 
+// Wishlist-related optimistic hooks
+export { useOptimisticWishlist } from './wishlist'
+
+// Notification-related optimistic hooks
+export { useOptimisticNotification } from './notification'
+
 // Shared utilities and types (optional exports for advanced usage)
 export type {
   AddToCartPayload,
@@ -15,6 +21,9 @@ export type {
   UpdateQuantityContext,
   RemoveFromCartContext,
   ReviewLikeContext,
+  WishlistContext,
+  NotificationContext,
+  MarkAllAsReadContext,
   OptimisticContext,
   ToastConfig
 } from './shared/types'

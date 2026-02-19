@@ -1,8 +1,10 @@
-import axios, { AxiosError, type AxiosRequestConfig, type AxiosInstance } from 'axios'
+import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
+import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
+import config from 'src/constant/config'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
-import { isAxiosExpiredTokenError, isAxiosUnauthorizedError, isAxiosUnprocessableEntityError } from './utils'
 import { AuthResponse, RefreshTokenResponse } from 'src/types/auth.type'
+import { ErrorResponseApi } from 'src/types/utils.type'
 import {
   clearLS,
   getAccessTokenFromLS,
@@ -11,10 +13,7 @@ import {
   setProfileToLS,
   setRefreshTokenToLS
 } from './auth'
-import path from 'src/constant/path'
-import config from 'src/constant/config'
-import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
-import { ErrorResponseApi } from 'src/types/utils.type'
+import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 
 class Http {
   instance: AxiosInstance

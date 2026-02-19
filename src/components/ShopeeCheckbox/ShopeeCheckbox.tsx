@@ -1,25 +1,30 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useTheme } from 'src/hooks/useTheme'
 
 interface ShopeeCheckboxProps {
   checked: boolean
   onChange: (checked: boolean) => void
   size?: 'sm' | 'md' | 'lg'
   className?: string
+  disabled?: boolean
 }
 
-const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size = 'md', className = '' }) => {
+const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size = 'md', className = '', disabled = false }) => {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+
   const sizeClasses = {
     sm: 'w-5 h-5',
     md: 'w-6 h-6',
     lg: 'w-7 h-7'
   }
 
-  // Variants cho background box animation
+  // Variants cho background box animation - theme aware
   const boxVariants = {
     unchecked: {
-      backgroundColor: '#ffffff',
-      borderColor: '#d1d5db',
+      backgroundColor: isDark ? '#1e293b' : '#ffffff',
+      borderColor: isDark ? '#475569' : '#d1d5db',
       scale: 1
     },
     checked: {
@@ -67,33 +72,30 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size
 
   return (
     <motion.div
-      className={`relative cursor-pointer ${className}`}
-      onClick={() => onChange?.(!checked)}
+      className={`relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${className}`}
+      onClick={() => !disabled && onChange?.(!checked)}
       onKeyDown={(e) => {
+        if (disabled) return
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           onChange?.(!checked)
         }
       }}
-      tabIndex={0}
-      role='button'
-      aria-pressed={checked}
-      aria-label={checked ? 'Checkbox checked' : 'Checkbox unchecked'}
+      tabIndex={disabled ? -1 : 0}
+      role='checkbox'
+      aria-checked={checked}
+      aria-label={disabled ? `Checkbox ${checked ? 'checked' : 'unchecked'} (disabled)` : checked ? 'Checkbox checked' : 'Checkbox unchecked'}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.1 }}
     >
       <motion.div
         className={`
-          ${sizeClasses[size]} 
-          border-2 rounded-sm overflow-hidden
+          ${sizeClasses[size]}
+          border-2 rounded-[3px] overflow-hidden
         `}
         variants={boxVariants}
         animate={checked ? 'checked' : 'unchecked'}
-        style={{
-          backgroundColor: checked ? '#ee4d2d' : '#ffffff',
-          borderColor: checked ? '#ee4d2d' : '#d1d5db'
-        }}
         whileHover={!checked ? { borderColor: '#ee4d2d' } : {}}
       >
         <motion.div
@@ -106,7 +108,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size
             className='w-4/5 h-4/5 text-white'
             fill='none'
             viewBox='0 0 24 24'
-            strokeWidth={3.5}
+            strokeWidth={2.5}
             stroke='currentColor'
             initial='hidden'
             animate={checked ? 'visible' : 'hidden'}

@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ShopeeCheckbox from './ShopeeCheckbox'
 
@@ -17,7 +17,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
     test('should render with unchecked state', () => {
       const { container } = render(<ShopeeCheckbox {...defaultProps} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toBeInTheDocument()
       expect(checkbox).toHaveClass('cursor-pointer')
     })
@@ -25,7 +25,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
     test('should render with checked state', () => {
       const { container } = render(<ShopeeCheckbox {...defaultProps} checked={true} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toBeInTheDocument()
 
       // Check for checkmark SVG
@@ -47,7 +47,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
     test('should render with custom className', () => {
       const { container } = render(<ShopeeCheckbox {...defaultProps} className='custom-class' />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toHaveClass('custom-class')
     })
   })
@@ -57,7 +57,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.click(checkbox!)
 
       expect(onChange).toHaveBeenCalledWith(true)
@@ -67,7 +67,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={true} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.click(checkbox!)
 
       expect(onChange).toHaveBeenCalledWith(false)
@@ -77,7 +77,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.keyDown(checkbox!, { key: 'Enter' })
 
       expect(onChange).toHaveBeenCalledWith(true)
@@ -87,7 +87,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.keyDown(checkbox!, { key: ' ' })
 
       expect(onChange).toHaveBeenCalledWith(true)
@@ -97,7 +97,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
 
       // Test Enter key functionality
       fireEvent.keyDown(checkbox!, { key: 'Enter' })
@@ -120,7 +120,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const onChange = vi.fn()
       const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.keyDown(checkbox!, { key: 'Tab' })
 
       expect(onChange).not.toHaveBeenCalled()
@@ -128,39 +128,39 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
   })
 
   describe('Accessibility', () => {
-    test('should have button role', () => {
+    test('should have checkbox role', () => {
       const { container } = render(<ShopeeCheckbox {...defaultProps} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toBeInTheDocument()
     })
 
-    test('should have proper aria-pressed attribute', () => {
+    test('should have proper aria-checked attribute', () => {
       const { container, rerender } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} />)
 
-      let checkbox = container.querySelector('[role="button"]')
-      expect(checkbox).toHaveAttribute('aria-pressed', 'false')
+      let checkbox = container.querySelector('[role="checkbox"]')
+      expect(checkbox).toHaveAttribute('aria-checked', 'false')
 
       rerender(<ShopeeCheckbox checked={true} onChange={vi.fn()} />)
-      checkbox = container.querySelector('[role="button"]')
-      expect(checkbox).toHaveAttribute('aria-pressed', 'true')
+      checkbox = container.querySelector('[role="checkbox"]')
+      expect(checkbox).toHaveAttribute('aria-checked', 'true')
     })
 
     test('should have proper aria-label', () => {
       const { container, rerender } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} />)
 
-      let checkbox = container.querySelector('[role="button"]')
+      let checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toHaveAttribute('aria-label', 'Checkbox unchecked')
 
       rerender(<ShopeeCheckbox checked={true} onChange={vi.fn()} />)
-      checkbox = container.querySelector('[role="button"]')
+      checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toHaveAttribute('aria-label', 'Checkbox checked')
     })
 
     test('should be focusable with tabIndex', () => {
       const { container } = render(<ShopeeCheckbox {...defaultProps} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toHaveAttribute('tabIndex', '0')
     })
 
@@ -168,7 +168,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
       const user = userEvent.setup()
       const { container } = render(<ShopeeCheckbox {...defaultProps} />)
 
-      const checkbox = container.querySelector('[role="button"]') as HTMLElement
+      const checkbox = container.querySelector('[role="checkbox"]') as HTMLElement
 
       // Tab to focus
       await user.tab()
@@ -193,7 +193,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
 
       // In unchecked state, the SVG might still exist but be hidden via animation
       // We focus on the visual state rather than DOM presence
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toBeInTheDocument()
     })
 
@@ -241,7 +241,6 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
     test('should use default size when not specified', () => {
       const { container } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} />)
 
-      const checkbox = container.querySelector('[role="button"]')
       const sizedDiv = container.querySelector('.w-6') // md size default
       expect(sizedDiv).toBeInTheDocument()
     })
@@ -249,7 +248,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
     test('should use default className when not specified', () => {
       const { container } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       expect(checkbox).toHaveClass('cursor-pointer')
     })
 
@@ -271,7 +270,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
 
       rerender(<ShopeeCheckbox checked={false} onChange={vi.fn()} />)
       // State should change accordingly
-      expect(container.querySelector('[role="button"]')).toBeInTheDocument()
+      expect(container.querySelector('[role="checkbox"]')).toBeInTheDocument()
     })
 
     test('should maintain state consistency with props', () => {
@@ -279,7 +278,7 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
 
       const { container } = render(<ShopeeCheckbox checked={false} onChange={mockOnChange} />)
 
-      const checkbox = container.querySelector('[role="button"]')
+      const checkbox = container.querySelector('[role="checkbox"]')
       fireEvent.click(checkbox!)
 
       expect(mockOnChange).toHaveBeenCalledWith(true)
@@ -292,13 +291,43 @@ describe('ShopeeCheckbox Component Unit Tests', () => {
 
       const { rerender, container } = render(<ShopeeCheckbox checked={false} onChange={mockOnChange} />)
 
-      const checkbox = container.querySelector('[role="button"]') as HTMLElement
+      const checkbox = container.querySelector('[role="checkbox"]') as HTMLElement
 
       // Simulate external state change during interaction
       await user.click(checkbox)
       rerender(<ShopeeCheckbox checked={true} onChange={mockOnChange} />)
 
       expect(mockOnChange).toHaveBeenCalledWith(true)
+    })
+  })
+
+  describe('Disabled State', () => {
+    test('should not call onChange when disabled and clicked', () => {
+      const onChange = vi.fn()
+      const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} disabled={true} />)
+      const checkbox = container.querySelector('[role="checkbox"]')
+      fireEvent.click(checkbox!)
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    test('should not call onChange when disabled and key pressed', () => {
+      const onChange = vi.fn()
+      const { container } = render(<ShopeeCheckbox checked={false} onChange={onChange} disabled={true} />)
+      const checkbox = container.querySelector('[role="checkbox"]')
+      fireEvent.keyDown(checkbox!, { key: 'Enter' })
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    test('should have opacity-50 class when disabled', () => {
+      const { container } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} disabled={true} />)
+      const checkbox = container.querySelector('[role="checkbox"]')
+      expect(checkbox).toHaveClass('opacity-50')
+    })
+
+    test('should have tabIndex -1 when disabled', () => {
+      const { container } = render(<ShopeeCheckbox checked={false} onChange={vi.fn()} disabled={true} />)
+      const checkbox = container.querySelector('[role="checkbox"]')
+      expect(checkbox).toHaveAttribute('tabIndex', '-1')
     })
   })
 })

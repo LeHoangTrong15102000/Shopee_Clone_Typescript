@@ -1,12 +1,11 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppContext } from 'src/contexts/app.context'
 import { User } from 'src/types/user.type'
 import NavHeader from './NavHeader'
-import { AppProvider } from 'src/contexts/app.context'
 
 // Mock react-i18next locally for NavHeader tests
 vi.mock('react-i18next', async () => {
@@ -194,7 +193,7 @@ describe('NavHeader Component Unit Tests', () => {
       await waitFor(() => {
         const badge = screen.getByText('3')
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveClass('bg-white', 'text-[#ee4d2d]')
+        expect(badge).toHaveClass('bg-white', 'text-orange')
       })
     })
 

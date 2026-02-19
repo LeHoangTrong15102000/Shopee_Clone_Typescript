@@ -1,13 +1,18 @@
 import { describe, test, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
 import React from 'react'
 import Input from '../../src/components/Input'
 import Button from '../../src/components/Button'
 import Pagination from '../../src/components/Pagination'
 
 // Wrapper component để cung cấp context cần thiết
-const TestWrapper = ({ children }: { children: React.ReactNode }) => <BrowserRouter>{children}</BrowserRouter>
+const TestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter>
+    <NuqsTestingAdapter>{children}</NuqsTestingAdapter>
+  </BrowserRouter>
+)
 
 describe('Component Snapshots', () => {
   test('Input component renders correctly', () => {
@@ -49,7 +54,7 @@ describe('Component Snapshots', () => {
   test('Pagination component renders correctly', () => {
     const { container } = render(
       <TestWrapper>
-        <Pagination pageSize={20} queryConfig={{ page: '1' }} />
+        <Pagination pageSize={20} />
       </TestWrapper>
     )
     expect(container.firstChild).toMatchSnapshot('Pagination-default')

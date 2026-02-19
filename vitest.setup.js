@@ -10,6 +10,8 @@ import { vi } from 'vitest'
 import authRequests from './src/msw/auth.msw'
 import productRequests from './src/msw/product.msw'
 import userRequests from './src/msw/user.msw'
+import cartRequests from './src/msw/cart.msw'
+import checkoutRequests from './src/msw/checkout.msw'
 
 // import { afterAll, afterEach, beforeAll, expect } from 'vitest'
 // import { setupServer } from 'msw/node'
@@ -59,6 +61,21 @@ Object.defineProperty(window, 'sessionStorage', {
   writable: true
 })
 
+// Mock window.matchMedia (required by useReducedMotion hook)
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
+  }))
+})
+
 // Mock window.scrollTo
 Object.defineProperty(window, 'scrollTo', {
   value: vi.fn(),
@@ -100,7 +117,7 @@ vi.mock('react-i18next', async () => {
   }
 })
 
-const server = setupServer(...authRequests, ...productRequests, ...userRequests, ...additionalMocks)
+const server = setupServer(...authRequests, ...productRequests, ...userRequests, ...cartRequests, ...checkoutRequests, ...additionalMocks)
 
 // Start server before all tests với warn thay vì error
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))

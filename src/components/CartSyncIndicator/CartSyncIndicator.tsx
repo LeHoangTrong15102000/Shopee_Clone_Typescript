@@ -1,0 +1,57 @@
+import classNames from 'classnames'
+import { useEffect, useState } from 'react'
+
+interface CartSyncIndicatorProps {
+  isSyncing: boolean
+  lastSyncTimestamp: string | null
+  className?: string
+}
+
+export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, className }: CartSyncIndicatorProps) {
+  const [showSynced, setShowSynced] = useState(false)
+  const [prevTimestamp, setPrevTimestamp] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (lastSyncTimestamp && lastSyncTimestamp !== prevTimestamp && !isSyncing) {
+      setShowSynced(true)
+      setPrevTimestamp(lastSyncTimestamp)
+
+      const timer = setTimeout(() => {
+        setShowSynced(false)
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [lastSyncTimestamp, prevTimestamp, isSyncing])
+
+  if (isSyncing) {
+    return (
+      <div
+        className={classNames(
+          'inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 animate-pulse',
+          className
+        )}
+      >
+        <span>🔄</span>
+        <span>Đang đồng bộ...</span>
+      </div>
+    )
+  }
+
+  if (showSynced) {
+    return (
+      <div
+        className={classNames(
+          'inline-flex items-center gap-1 text-xs text-green-600 animate-fade-in',
+          className
+        )}
+      >
+        <span>✓</span>
+        <span>Đã đồng bộ</span>
+      </div>
+    )
+  }
+
+  return null
+}
+

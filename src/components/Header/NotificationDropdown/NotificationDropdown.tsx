@@ -1,56 +1,45 @@
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Popover from 'src/components/Popover'
 import NotificationItem from './NotificationItem'
 import NotificationBadge from './NotificationBadge'
-
-// Mock data - sau này sẽ thay thế bằng API thực
-const mockNotifications = [
-  {
-    id: '1',
-    title: 'Khuyến mãi đặc biệt',
-    message: 'Giảm giá đến 50% cho tất cả sản phẩm điện tử. Nhanh tay kẻo lỡ!',
-    time: '2 phút trước',
-    isRead: false,
-    type: 'promotion' as const,
-    image: 'https://down-vn.img.susercontent.com/file/7638c2acc113ee59802edd214fc81fbe'
-  },
-  {
-    id: '2',
-    title: 'Đơn hàng đã được xác nhận',
-    message: 'Đơn hàng #SP123456 của bạn đã được xác nhận và đang chuẩn bị giao.',
-    time: '1 giờ trước',
-    isRead: false,
-    type: 'order' as const
-  },
-  {
-    id: '3',
-    title: 'Flash Sale sắp bắt đầu',
-    message: 'Flash Sale 12:00 sắp bắt đầu với hàng ngàn sản phẩm giá shock.',
-    time: '3 giờ trước',
-    isRead: true,
-    type: 'sale' as const
-  }
-]
+import useNotifications from 'src/hooks/useNotifications'
+import path from 'src/constant/path'
 
 const NotificationDropdown = () => {
-  const [notifications] = useState(mockNotifications)
-  const unreadCount = notifications.filter((notification) => !notification.isRead).length
+  const { notifications, unreadCount, markAsRead, clearAll, isConnected } = useNotifications()
+
+  const handleMarkAsRead = (id: string) => {
+    markAsRead(id)
+  }
+
+  const handleClearAll = () => {
+    clearAll()
+  }
 
   const renderNotifications = () => (
-    <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white shadow-lg'>
+    <div className='relative max-w-[min(400px,calc(100vw-2rem))] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg'>
       {/* Header */}
-      <div className='flex items-center justify-between px-4 py-3 border-b border-gray-100'>
-        <h3 className='text-sm font-medium text-gray-900'>Thông báo mới nhận</h3>
-        {unreadCount > 0 && <span className='text-xs text-[#ee4d2d]'>{unreadCount} thông báo mới</span>}
+      <div className='flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-slate-700'>
+        <div className='flex items-center gap-2'>
+          <h3 className='text-sm font-medium text-gray-900 dark:text-gray-100'>Thông báo mới nhận</h3>
+          {/* Real-time connection indicator */}
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-400'}`}
+            title={isConnected ? 'Đang kết nối thời gian thực' : 'Đang kết nối...'}
+          />
+        </div>
+        {unreadCount > 0 && <span className='text-xs text-orange'>{unreadCount} thông báo mới</span>}
       </div>
 
       {/* Notification List */}
       <div className='max-h-[400px] overflow-y-auto'>
         {notifications.length > 0 ? (
-          notifications.map((notification) => <NotificationItem key={notification.id} notification={notification} />)
+          notifications.map((notification) => (
+            <NotificationItem key={notification._id} notification={notification} onMarkAsRead={handleMarkAsRead} />
+          ))
         ) : (
           <div className='flex flex-col items-center justify-center py-8 px-4'>
-            <svg className='w-12 h-12 text-gray-300 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg className='w-12 h-12 text-gray-300 dark:text-gray-600 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -58,16 +47,19 @@ const NotificationDropdown = () => {
                 d='M15 17h5l-5-5 5-5h-5m-6 10h5l-5-5 5-5H9'
               />
             </svg>
-            <p className='text-sm text-gray-500 text-center'>Chưa có thông báo nào</p>
+            <p className='text-sm text-gray-500 dark:text-gray-400 text-center'>Chưa có thông báo nào</p>
           </div>
         )}
       </div>
 
       {/* Footer */}
       {notifications.length > 0 && (
-        <div className='px-4 py-3 border-t border-gray-100'>
-          <button className='text-sm text-[#ee4d2d] hover:text-[#d73527] w-full text-center'>
+        <div className='px-4 py-3 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center'>
+          <Link to={path.notifications} className='text-sm text-orange hover:text-[#d73527]'>
             Xem tất cả thông báo
+          </Link>
+          <button onClick={handleClearAll} className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'>
+            Đánh dấu đã đọc tất cả
           </button>
         </div>
       )}

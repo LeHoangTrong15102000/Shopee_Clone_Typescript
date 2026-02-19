@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import InputNumber, { InputNumberProps } from 'src/components/InputNumber'
 import DeleteModal from '../DeleteModal'
 import { Product } from 'src/types/product.type'
@@ -34,6 +35,7 @@ const QuantityController = ({
   const openConfirm = useMemo(() => idDelete !== null, [idDelete])
 
   const [localValue, setLocalValue] = useState<number>(Number(value || 0))
+  const [isShaking, setIsShaking] = useState(false)
   // Đã check chữ trong InputNumber component rồi nên không cần phải check nữa -> chỉ cần truyền giá trị vào
   // Hàm handleChange này dùng để truyền vào onChange gốc của chúng ta
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +57,10 @@ const QuantityController = ({
     let _value = Number(value || localValue) + 1
     if (max !== undefined && _value > max) {
       _value = max
+    }
+    if (max !== undefined && Number(value || localValue) >= max) {
+      setIsShaking(true)
+      setTimeout(() => setIsShaking(false), 500)
     }
 
     onIncrease && onIncrease(_value)
@@ -83,6 +89,10 @@ const QuantityController = ({
       _value = 1 // reset lại giá trị value
       showConfirm(Number(product?._id))
     }
+    if (Number(value || localValue) <= 1 && !isQuantityInCart) {
+      setIsShaking(true)
+      setTimeout(() => setIsShaking(false), 500)
+    }
 
     onDecrease && onDecrease(_value)
     setLocalValue(_value)
@@ -95,10 +105,19 @@ const QuantityController = ({
   }
 
   return (
-    <div className={'flex items-center ' + classNameWrapper}>
-      <button
-        className='flex h-8 w-8 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] text-black'
+    <motion.div
+      className={'flex items-center ' + classNameWrapper}
+      animate={isShaking ? { x: [0, -4, 4, -4, 4, 0] } : { x: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <motion.button
+        type='button'
+        aria-label='Decrease quantity'
+        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800'
         onClick={decrease}
+        whileTap={{ scale: 0.85 }}
+        whileHover={{ backgroundColor: 'rgba(0,0,0,0.04)' }}
+        transition={{ duration: 0.1 }}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -110,20 +129,30 @@ const QuantityController = ({
         >
           <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
         </svg>
-      </button>
+      </motion.button>
       <InputNumber
         classNameError='hidden'
-        classNameInput='h-8 w-14 p-1 text-center'
+        classNameInput='h-10 w-14 sm:h-8 p-1 text-center border border-[rgba(0,0,0,.09)] dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100'
         className='grow'
         type='text'
+        role='spinbutton'
+        aria-label='Quantity'
+        aria-valuemin={1}
+        aria-valuemax={max}
+        aria-valuenow={Number(value || localValue)}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={value || localValue} // value chính là từ bên ngoài truyền vào
+        value={value || localValue}
         {...rest}
       />
-      <button
-        className='flex h-8 w-8 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] text-black'
+      <motion.button
+        type='button'
+        aria-label='Increase quantity'
+        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800'
         onClick={increase}
+        whileTap={{ scale: 0.85 }}
+        whileHover={{ backgroundColor: 'rgba(0,0,0,0.04)' }}
+        transition={{ duration: 0.1 }}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -135,7 +164,7 @@ const QuantityController = ({
         >
           <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
         </svg>
-      </button>
+      </motion.button>
       {/* Delete Modal */}
       {isQuantityInCart && (
         <DeleteModal
@@ -145,7 +174,7 @@ const QuantityController = ({
           handleIsCancel={hideConfirm}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
 

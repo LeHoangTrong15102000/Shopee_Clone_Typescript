@@ -1,10 +1,33 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { buttonHover } from 'src/styles/animations/variants'
+
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline'
+type ButtonSize = 'sm' | 'md' | 'lg'
+
+const variantClasses: Record<ButtonVariant, string> = {
+  primary: 'bg-orange text-white hover:bg-orange/90',
+  secondary: 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700',
+  danger: 'bg-red-500 text-white hover:bg-red-600',
+  ghost: 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700',
+  outline: 'border border-orange text-orange bg-transparent hover:bg-orange/5'
+}
+
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'px-3 py-1 text-xs',
+  md: 'px-5 py-2 text-sm',
+  lg: 'px-6 py-3 text-base'
+}
 
 interface BaseButtonProps {
   isLoading?: boolean
   children?: React.ReactNode
   className?: string
+  ariaLabel?: string
+  variant?: ButtonVariant
+  size?: ButtonSize
 }
 
 interface ButtonAsButton extends BaseButtonProps, ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,18 +44,30 @@ interface ButtonAsLink extends BaseButtonProps {
 type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
-  const { className, isLoading, children, ...rest } = props
+  const { className, isLoading, children, ariaLabel, variant, size, ...rest } = props
+  const prefersReducedMotion = useReducedMotion()
 
-  // Tính toán className với cursor-not-allowed khi disabled hoặc loading
-  const getClassName = () => {
-    let finalClassName = className || ''
+  const getClassName = (addOpacityTransition = false) => {
+    const classes: string[] = []
+    if (variant) {
+      classes.push(variantClasses[variant])
+    }
+    if (size) {
+      classes.push(sizeClasses[size])
+    }
+    if (className) {
+      classes.push(className)
+    }
     if ('disabled' in rest && rest.disabled) {
-      finalClassName += ' cursor-not-allowed'
+      classes.push('cursor-not-allowed opacity-70')
     }
     if (isLoading) {
-      finalClassName += ' cursor-not-allowed'
+      classes.push('cursor-not-allowed opacity-70')
     }
-    return finalClassName.trim()
+    if (addOpacityTransition) {
+      classes.push('transition-opacity duration-150')
+    }
+    return classes.join(' ').trim()
   }
 
   // Render as Link when as='link'
@@ -41,7 +76,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
     return (
       <Link
         to={to}
-        className={getClassName()}
+        className={getClassName(true)}
         data-testid='link'
         ref={ref as React.Ref<HTMLAnchorElement>}
         {...linkRest}
@@ -64,17 +99,37 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
             />
           </svg>
         )}
-        <span>{children}</span>
+        {children}
       </Link>
     )
   }
 
   // Render as button (default)
-  const { disabled, ...buttonRest } = rest as ButtonAsButton
+  const { disabled, onDrag, onDragStart, onDragEnd, onAnimationStart, ...buttonRest } = rest as ButtonAsButton & {
+    onDrag?: unknown
+    onDragStart?: unknown
+    onDragEnd?: unknown
+    onAnimationStart?: unknown
+  }
   const isDisabled = disabled || isLoading
 
+  // Determine if animations should be applied
+  const canAnimate = !prefersReducedMotion && !isDisabled
+
   return (
-    <button className={getClassName()} disabled={isDisabled} ref={ref as React.Ref<HTMLButtonElement>} {...buttonRest}>
+    <motion.button
+      type='button'
+      className={getClassName(true)}
+      disabled={isDisabled}
+      aria-label={ariaLabel}
+      aria-busy={isLoading}
+      aria-disabled={isDisabled}
+      ref={ref as React.Ref<HTMLButtonElement>}
+      whileHover={canAnimate ? buttonHover.whileHover : undefined}
+      whileTap={canAnimate ? buttonHover.whileTap : undefined}
+      transition={buttonHover.transition}
+      {...buttonRest}
+    >
       {isLoading && (
         <svg
           aria-hidden='true'
@@ -93,8 +148,8 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
           />
         </svg>
       )}
-      <span>{children}</span>
-    </button>
+      {children}
+    </motion.button>
   )
 })
 

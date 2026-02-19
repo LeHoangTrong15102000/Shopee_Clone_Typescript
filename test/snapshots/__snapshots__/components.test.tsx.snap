@@ -2,8 +2,10 @@
 
 exports[`Component Snapshots > Button component disabled state > Button-disabled 1`] = `
 <button
-  class="cursor-not-allowed"
+  aria-disabled="true"
+  class="cursor-not-allowed opacity-70 transition-opacity duration-150"
   disabled=""
+  type="button"
 >
   <span>
     Disabled button
@@ -13,7 +15,9 @@ exports[`Component Snapshots > Button component disabled state > Button-disabled
 
 exports[`Component Snapshots > Button component renders correctly > Button-default 1`] = `
 <button
-  class=""
+  class="transition-opacity duration-150"
+  tabindex="0"
+  type="button"
 >
   <span>
     Click me
@@ -25,7 +29,7 @@ exports[`Component Snapshots > Input component renders correctly > Input-default
 <div>
   <input
     aria-invalid="false"
-    class="w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500"
+    class="w-full rounded-sm border border-gray-300 p-3 shadow-sm outline-none focus:border-gray-500 transition-colors duration-150"
     name="test"
     placeholder="Test input"
   />
@@ -40,13 +44,14 @@ exports[`Component Snapshots > Input component with error state > Input-error 1`
   <input
     aria-describedby="test-error-error"
     aria-invalid="true"
-    class="w-full rounded-sm border border-red-600 p-3 shadow-sm outline-none focus:border-gray-500"
+    class="w-full rounded-sm border border-red-600 p-3 shadow-sm outline-none focus:border-gray-500 transition-colors duration-150"
     name="test-error"
     placeholder="Test input"
   />
   <div
     class="mt-1 min-h-[1.25rem] text-sm text-red-600"
     id="test-error-error"
+    style="opacity: 0; height: 0px; transform: translateY(-10px);"
   >
     This field is required
   </div>
@@ -60,7 +65,9 @@ exports[`Component Snapshots > Pagination component renders correctly > Paginati
   role="navigation"
 >
   <span
-    class="flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-4 py-2 "
+    aria-disabled="true"
+    aria-label="Trang trước"
+    class="flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 md:px-4 md:py-3 opacity-40 transition-opacity duration-150"
   >
     <svg
       class="h-5 w-5 text-[rgba(0,0,0,0.6)]"
@@ -78,44 +85,50 @@ exports[`Component Snapshots > Pagination component renders correctly > Paginati
     </svg>
   </span>
   <a
-    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] bg-[#ee4d2d] text-white hover:bg-[#ee4d2d]"
-    href="/?page=1"
+    aria-current="page"
+    aria-label="Trang 1"
+    class="flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150 bg-orange text-white hover:bg-orange"
+    href="/?page=1&limit=20&sort_by=createdAt"
   >
     1
   </a>
   <a
-    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
-    href="/?page=2"
+    aria-label="Trang 2"
+    class="flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150 border-transparent text-black/50 hover:text-orange hover:scale-110 active:scale-95"
+    href="/?page=2&limit=20&sort_by=createdAt"
   >
     2
   </a>
   <a
-    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
-    href="/?page=3"
+    aria-label="Trang 3"
+    class="flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150 border-transparent text-black/50 hover:text-orange hover:scale-110 active:scale-95"
+    href="/?page=3&limit=20&sort_by=createdAt"
   >
     3
   </a>
   <span
-    class="flex items-center justify-center border bg-white px-3 py-2 shadow-sm"
+    class="flex items-center justify-center border bg-white px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm"
   >
     ...
   </span>
   <a
-    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
-    href="/?page=19"
+    aria-label="Trang 19"
+    class="flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150 border-transparent text-black/50 hover:text-orange hover:scale-110 active:scale-95"
+    href="/?page=19&limit=20&sort_by=createdAt"
   >
     19
   </a>
   <a
-    class="flex cursor-pointer items-center justify-center px-4 py-2 text-[18px] border-transparent text-black/50 hover:text-[#ee4e2d]"
-    href="/?page=20"
+    aria-label="Trang 20"
+    class="flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150 border-transparent text-black/50 hover:text-orange hover:scale-110 active:scale-95"
+    href="/?page=20&limit=20&sort_by=createdAt"
   >
     20
   </a>
   <a
     aria-label="Go to next page"
-    class="flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm border-transparent  px-4 py-2 "
-    href="/?page=2"
+    class="flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 md:px-4 md:py-3 transition-all duration-150 hover:bg-black/5 active:scale-95"
+    href="/?page=2&limit=20&sort_by=createdAt"
   >
     <svg
       class="h-5 w-5 text-[rgba(0,0,0,.6)] "

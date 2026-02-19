@@ -1,7 +1,13 @@
-import { memo, useEffect } from 'react'
+import { memo, useEffect, lazy, Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
+import PageTransition from 'src/components/PageTransition'
+
+// Lazy load các components không cần thiết ngay lập tức
+const CompareFloatingBar = lazy(() => import('src/components/CompareFloatingBar'))
+const ConnectionStatus = lazy(() => import('src/components/ConnectionStatus'))
+const BackToTop = lazy(() => import('src/components/BackToTop'))
 
 interface Props {
   children?: React.ReactNode
@@ -15,11 +21,24 @@ const MainLayoutInner = ({ children }: Props) => {
   }, [])
 
   return (
-    <div>
+    <div className='min-h-screen bg-gray-100 dark:bg-slate-900 transition-colors duration-200'>
       <Header />
-      {children}
-      <Outlet />
+      <Suspense fallback={null}>
+        <ConnectionStatus />
+      </Suspense>
+      <PageTransition>
+        {children}
+        <Outlet />
+      </PageTransition>
       <Footer />
+      {/* Floating bar so sánh sản phẩm */}
+      <Suspense fallback={null}>
+        <CompareFloatingBar comparePath='/compare' />
+      </Suspense>
+      {/* Back to top button */}
+      <Suspense fallback={null}>
+        <BackToTop />
+      </Suspense>
     </div>
   )
 }

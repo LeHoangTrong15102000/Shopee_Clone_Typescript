@@ -1,4 +1,10 @@
 import axios, { AxiosError } from 'axios'
+import { differenceInDays, format, formatDistanceToNow, isValid, parseISO } from 'date-fns'
+import { vi } from 'date-fns/locale'
+import deburr from 'lodash/deburr'
+import escape from 'lodash/escape'
+import kebabCase from 'lodash/kebabCase'
+import trim from 'lodash/trim'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
 import userImage from 'src/assets/images/user.svg'
 import config from 'src/constant/config'
@@ -50,46 +56,103 @@ export const rateSale = (original: number, sale: number) => {
   return Math.round(((original - sale) / original) * 100) + '%'
 }
 
-// func xóa các kí tự đặc biệt trên bàn phím
-const removeSpecialCharacter = (str: string) =>
-  // eslint-disable-next-line no-useless-escape
-  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+/**
+ * Tạo URL-friendly slug từ tên sản phẩm và ID
+ * Sử dụng lodash trim, deburr, kebabCase để normalize string
+ * @param params - Object chứa name và id
+ * @param params.name - Tên sản phẩm
+ * @param params.id - ID sản phẩm
+ * @returns URL slug dạng "ten-san-pham-i-id"
+ * @example generateNameId({ name: 'Điện thoại iPhone 12', id: '123' }) => 'dien-thoai-iphone-12-i-123'
+ */
+export const generateNameId = ({ name, id }: { name: string; id: string }): string => {
+  const cleanName = trim(name)
+  const normalizedName = deburr(cleanName)
+  const kebabName = kebabCase(normalizedName)
 
-// Tạo 1 func nhận vào cái name và cái id cuối cùng nó generate ra cái URL như này -> Điện-thoại-Apple-Iphone-12-64GB--Hàng-chính-hãng-VNA-i-60afb1c56ef5b902180aacb8
-
-// Thằng này là phải truyền vào hàm với params giống với params đã được khai báo ở đây, này là truyền lên 1 cái object
-export const generateNameId = ({ name, id }: { name: string; id: string }) => {
-  return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i-${id}`
+  return `${kebabName}-i-${id}`
 }
 
-// func get cái ID từ cái URL như này -> get cái ID ra để call Api gọi cái sản phẩm
-export const getIdFromNameId = (nameId: string) => {
-  const arr = nameId.split('-i-') // split cái chuỗi theo '-i.' -> được cái arr các phần tử
-  return arr[arr.length - 1] // arr lấy cái item cuối cùng
+/**
+ * Lấy ID sản phẩm từ URL slug
+ * @param nameId - URL slug dạng "ten-san-pham-i-id"
+ * @returns ID sản phẩm
+ * @example getIdFromNameId('dien-thoai-iphone-12-i-123') => '123'
+ */
+export const getIdFromNameId = (nameId: string): string => {
+  const arr = nameId.split('-i-')
+  return arr[arr.length - 1]
+}
+
+/**
+ * Cắt ngắn văn bản với độ dài tối đa và thêm suffix
+ * @param text - Văn bản cần cắt
+ * @param maxLength - Độ dài tối đa
+ * @param suffix - Hậu tố thêm vào cuối (mặc định: '...')
+ * @returns Văn bản đã được cắt ngắn
+ */
+export const truncateText = (text: string, maxLength: number, suffix: string = '...'): string => {
+  if (text.length <= maxLength) return text
+  return trim(text.slice(0, maxLength)) + suffix
+}
+
+/**
+ * Chuẩn hóa chuỗi tìm kiếm: loại bỏ dấu, chuyển thành chữ thường, trim whitespace
+ * @param query - Chuỗi tìm kiếm
+ * @returns Chuỗi đã được chuẩn hóa
+ */
+export const normalizeSearchQuery = (query: string): string => {
+  return trim(deburr(query).toLowerCase())
+}
+
+/**
+ * Escape HTML entities để prevent XSS attacks
+ * @param str - Chuỗi cần escape
+ * @returns Chuỗi đã được escape HTML entities
+ */
+export const escapeHtml = (str: string): string => {
+  return escape(str)
 }
 
 // func lấy ra avatar cho chúng ta
-export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage)
-
-// func format thời gian thành dạng "vừa xong", "5 phút trước", etc.
-export const formatTimeAgo = (dateString: string) => {
-  const now = new Date()
-  const date = new Date(dateString)
-  const diffInMs = now.getTime() - date.getTime()
-  const diffInSeconds = Math.floor(diffInMs / 1000)
-  const diffInMinutes = Math.floor(diffInSeconds / 60)
-  const diffInHours = Math.floor(diffInMinutes / 60)
-  const diffInDays = Math.floor(diffInHours / 24)
-
-  if (diffInSeconds < 60) {
-    return 'Vừa xong'
-  } else if (diffInMinutes < 60) {
-    return `${diffInMinutes} phút trước`
-  } else if (diffInHours < 24) {
-    return `${diffInHours} giờ trước`
-  } else if (diffInDays < 7) {
-    return `${diffInDays} ngày trước`
-  } else {
-    return date.toLocaleDateString('vi-VN')
+export const getAvatarUrl = (avatarName?: string) => {
+  if (!avatarName) return userImage
+  // Nếu avatarName đã là URL đầy đủ (http:// hoặc https://), trả về trực tiếp
+  if (avatarName.startsWith('http://') || avatarName.startsWith('https://')) {
+    return avatarName
   }
+  // Nếu là relative path, prefix với baseUrl
+  return `${config.baseUrl}images/${avatarName}`
+}
+
+// Format relative time using date-fns (vừa xong, 5 phút trước, etc.)
+export const formatTimeAgo = (dateString: string): string => {
+  const date = parseISO(dateString)
+  if (!isValid(date)) return ''
+
+  return formatDistanceToNow(date, {
+    addSuffix: true,
+    locale: vi
+  })
+}
+
+// Format date theo định dạng cụ thể
+export const formatDate = (dateString: string, formatStr: string = 'dd/MM/yyyy'): string => {
+  const date = parseISO(dateString)
+  if (!isValid(date)) return ''
+
+  return format(date, formatStr, { locale: vi })
+}
+
+// Format datetime
+export const formatDateTime = (dateString: string): string => {
+  return formatDate(dateString, 'HH:mm dd/MM/yyyy')
+}
+
+// Check if date is within last N days
+export const isWithinDays = (dateString: string, days: number): boolean => {
+  const date = parseISO(dateString)
+  if (!isValid(date)) return false
+
+  return differenceInDays(new Date(), date) <= days
 }

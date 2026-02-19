@@ -1,3 +1,4 @@
+import type { Query } from '@tanstack/react-query'
 import { ProductListConfig } from 'src/types/product.type'
 import { PurchaseListStatus } from 'src/types/purchases.type'
 
@@ -96,14 +97,14 @@ export const QueryFilters = {
  */
 export const QueryPredicates = {
   // Predicate để match products theo category
-  productsByCategory: (categoryId: string) => (query: any) => {
-    const [entity, type, filters] = query.queryKey
+  productsByCategory: (categoryId: string) => (query: Query) => {
+    const [entity, type, filters] = query.queryKey as [string, string, Record<string, unknown>]
     return entity === 'products' && type === 'list' && filters?.category === categoryId
   },
 
   // Predicate để match products theo price range
-  productsByPriceRange: (minPrice: number, maxPrice: number) => (query: any) => {
-    const [entity, type, filters] = query.queryKey
+  productsByPriceRange: (minPrice: number, maxPrice: number) => (query: Query) => {
+    const [entity, type, filters] = query.queryKey as [string, string, Record<string, unknown>]
     if (entity !== 'products' || type !== 'list') return false
 
     const filterPriceMin = filters?.price_min ? Number(filters.price_min) : 0
@@ -113,7 +114,7 @@ export const QueryPredicates = {
   },
 
   // Predicate để match user-specific data
-  userSpecificData: () => (query: any) => {
+  userSpecificData: () => (query: Query) => {
     const [entity, type] = query.queryKey
     return (
       entity === 'user' ||
@@ -125,7 +126,7 @@ export const QueryPredicates = {
   },
 
   // Predicate để match queries có thể outdated sau product update
-  affectedByProductUpdate: (productId: string) => (query: any) => {
+  affectedByProductUpdate: (productId: string) => (query: Query) => {
     const [entity, type, param] = query.queryKey
 
     // Product detail cụ thể

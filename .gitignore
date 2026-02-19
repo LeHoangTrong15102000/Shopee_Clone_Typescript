@@ -26,3 +26,12 @@ coverage/
 *.sw?
 
 *storybook.log
+
+.claude
+.augment
+.cursor
+.specs
+.agents
+.kiro
+/specs
+/openspec

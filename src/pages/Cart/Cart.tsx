@@ -1,27 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Tooltip } from '@heroui/react'
-import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
-import { motion } from 'framer-motion'
+import { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchases.api'
-import Button from 'src/components/Button'
-import QuantityController from 'src/components/QuantityController'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
 import { AppContext } from 'src/contexts/app.context'
-import { Purchase } from 'src/types/purchases.type'
+
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from '../../assets/images/img-product-incart.png'
-import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart } from 'src/hooks/optimistic'
+import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart, TOAST_MESSAGES } from 'src/hooks/optimistic'
+import useCartSync from 'src/hooks/useCartSync'
+import CartSyncIndicator from 'src/components/CartSyncIndicator'
+import RealTimeStockAlert from 'src/components/RealTimeStockAlert'
+import { useSaveForLater, SavedItem } from 'src/hooks/useSaveForLater'
+import SaveForLaterSection from 'src/components/SaveForLaterSection'
+import useAnimatedNumber from 'src/hooks/useAnimatedNumber'
+import CartItemList from './components/CartItemList'
+import CartSummaryBar from './components/CartSummaryBar'
+import EmptyCartState from './components/EmptyCartState'
+import { ExtendedPurchase, InlineStockAlertState } from './types'
 
-interface ExtendedPurchase extends Purchase {
-  disabled: boolean
-  isChecked: boolean
-}
+export type { ExtendedPurchase, InlineStockAlertState }
 
 // isAuthenticated mới vào được cái page này
 const Cart = () => {
@@ -29,8 +31,14 @@ const Cart = () => {
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const queryClient = useQueryClient()
 
+  // State for inline stock alerts on individual cart items
+  const [inlineAlerts, setInlineAlerts] = useState<Map<string, InlineStockAlertState>>(new Map())
+
+  // WebSocket: Real-time cart sync across devices
+  const { lastSyncTimestamp, isSyncing } = useCartSync()
+
   // useQuery để gọi purchaseList hiển thị Cart product
-  const { data: purchasesInCartData, refetch } = useQuery({
+  const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: async () => await purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
@@ -38,20 +46,23 @@ const Cart = () => {
   // Sử dụng Optimistic Updates cho update quantity
   const updatePurchaseMutation = useOptimisticUpdateQuantity()
 
-  // buyProduct Mutation
-  const buyPurchasesMutation = useMutation({
-    mutationFn: purchaseApi.buyPurchases,
-    onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-      toast.success(data.data.message, { position: 'top-center', autoClose: 1000 })
-    },
-    onError: () => {
-      toast.error('Mua hàng thất bại!', { position: 'top-center', autoClose: 1000 })
-    }
-  })
-
   // deleteProduct Mutation với Optimistic Updates
   const deletePurchasesMutation = useOptimisticRemoveFromCart()
+
+  // Save for Later hook
+  const { savedItems, saveForLater, removeFromSaved, clearSaved } = useSaveForLater()
+
+  // Add to cart mutation for moving saved items back to cart
+  const addToCartMutation = useMutation({
+    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+      toast.success(TOAST_MESSAGES.MOVE_TO_CART_SUCCESS, { position: 'top-center', autoClose: 1500 })
+    },
+    onError: () => {
+      toast.error(TOAST_MESSAGES.ADD_TO_CART_ERROR, { position: 'top-center', autoClose: 1500 })
+    }
+  })
 
   // lấy ra cái state là purchaseId được lưu trên route của sản phẩm
   const location = useLocation()
@@ -97,6 +108,50 @@ const Cart = () => {
       ),
     [checkedPurchases]
   )
+
+  // Animated number counting for total price and savings
+  const animatedTotalPrice = useAnimatedNumber(totalCheckedPurchasePrice)
+  const animatedSavingsPrice = useAnimatedNumber(totalCheckedPurchaseSavingPrice)
+
+  // Extract product IDs from cart items for real-time stock monitoring
+  const cartProductIds = useMemo(
+    () => extendedPurchases.map((purchase) => purchase.product._id),
+    [extendedPurchases]
+  )
+
+  // Handler for real-time stock changes - invalidate queries and show inline alerts
+  const handleStockChange = useCallback(
+    (productId: string, newStock: number) => {
+      // Find the product in cart to get its name
+      const purchase = extendedPurchases.find((p) => p.product._id === productId)
+      if (!purchase) return
+
+      // Add inline alert for this product
+      setInlineAlerts((prev) => {
+        const newMap = new Map(prev)
+        newMap.set(productId, {
+          productId,
+          productName: purchase.product.name,
+          newStock,
+          severity: newStock === 0 ? 'critical' : newStock <= 5 ? 'critical' : 'warning'
+        })
+        return newMap
+      })
+
+      // Invalidate purchases query to refresh stock data
+      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+    },
+    [extendedPurchases, queryClient]
+  )
+
+  // Handler to dismiss inline alert for a specific product
+  const handleDismissInlineAlert = useCallback((productId: string) => {
+    setInlineAlerts((prev) => {
+      const newMap = new Map(prev)
+      newMap.delete(productId)
+      return newMap
+    })
+  }, [])
 
   // Khi mà khởi tạo component thì sẽ thực hiện gán giá trị vào extendedPurchase
   useEffect(() => {
@@ -197,340 +252,118 @@ const Cart = () => {
     deletePurchasesMutation.mutate(purchaseIds)
   }
 
-  // func xử lý buy product
-  const handleBuyPurchases = () => {
-    if (checkedPurchases.length > 0) {
-      // tạo ra Arr các object có 2 thuộc tính là {product_id, buy_count}
-      const purchaseIds = checkedPurchases.map((purchase) => ({
-        product_id: purchase.product._id,
-        buy_count: purchase.buy_count
-      }))
-      // gửi lên sv
-      buyPurchasesMutation.mutate(purchaseIds)
+  // func xử lý lưu sản phẩm để mua sau
+  const handleSaveForLater = (purchaseIndex: number) => () => {
+    const purchase = extendedPurchases[purchaseIndex]
+    const wasAdded = saveForLater(purchase.product, purchase.buy_count)
+
+    if (wasAdded) {
+      // Remove from cart after saving
+      deletePurchasesMutation.mutate([purchase._id])
+      toast.success(TOAST_MESSAGES.SAVE_FOR_LATER_SUCCESS, { position: 'top-center', autoClose: 1500 })
+    } else {
+      toast.info(TOAST_MESSAGES.SAVE_FOR_LATER_ALREADY_SAVED, { position: 'top-center', autoClose: 1500 })
     }
   }
-  // console.log(extendedPurchases)
-  // ;<div className='my-3 rounded-sm bg-white p-5 shadow'></div>
+
+  // func xử lý chuyển sản phẩm đã lưu vào giỏ hàng
+  const handleMoveToCart = (item: SavedItem) => {
+    // Check if product is already in cart
+    const existingInCart = extendedPurchases.find((p) => p.product._id === item.product._id)
+
+    if (existingInCart) {
+      // Product already in cart, just remove from saved
+      removeFromSaved(item.product._id)
+      toast.info('Sản phẩm đã có trong giỏ hàng', { position: 'top-center', autoClose: 1500 })
+    } else {
+      // Add to cart with original quantity
+      addToCartMutation.mutate(
+        { product_id: item.product._id, buy_count: item.originalBuyCount },
+        {
+          onSuccess: () => {
+            removeFromSaved(item.product._id)
+          }
+        }
+      )
+    }
+  }
+
+  // func xử lý xóa tất cả sản phẩm đã lưu
+  const handleClearSaved = () => {
+    clearSaved()
+    toast.success(TOAST_MESSAGES.CLEAR_SAVED_SUCCESS, { position: 'top-center', autoClose: 1500 })
+  }
+
+  // func xử lý buy product - chuyển đến trang checkout
+  const handleBuyPurchases = () => {
+    if (checkedPurchases.length > 0) {
+      // Chuyển đến trang checkout thay vì mua trực tiếp
+      navigate(path.checkout)
+    }
+  }
   return (
-    <div className='border-b- 4 border-b-[#ee4d2d] bg-neutral-100 py-16'>
+    <div className='border-b- 4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-16'>
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <Fragment>
-            {/* Giao diện chính của các sản phẩm trong cart  */}
-            <div className='overflow-auto'>
-              <div className='min-w-[1000px]'>
-                {/* Tiêu đề của các sản phẩm trong cart */}
-                <div className='my-2 grid grid-cols-12 rounded-md bg-white px-9 py-5 text-sm capitalize text-gray-500 shadow'>
-                  {/* Phần sản phẩm và hình ảnh */}
-                  <div className='col-span-6'>
-                    <div className='flex items-center'>
-                      {/* HeroUI Checkbox với phiên bản ổn định 2.6.14 */}
-                      <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                        <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
-                      </div>
-                      {/* Mục sản phẩm */}
-                      <div className='flex flex-grow text-black'>Sản phẩm</div>
-                    </div>
-                  </div>
-                  {/* Phần đơn giá trở về sau */}
-                  <div className='col-span-6'>
-                    <div className='grid grid-cols-5 text-center text-[#888]'>
-                      <div className='col-span-2'>Đơn giá</div>
-                      <div className='col-span-1'>Số lượng</div>
-                      <div className='col-span-1'>Số tiền</div>
-                      <div className='col-span-1'>Thao tác</div>
-                    </div>
-                  </div>
-                </div>
-                {/* Giao diện các sản phẩm trong cart - body các sản phẩm */}
-                {extendedPurchases.length > 0 && (
-                  <>
-                    {extendedPurchases?.map((purchase, index) => (
-                      <motion.div
-                        key={purchase._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] bg-white py-5 px-9 text-sm text-gray-500 first:mt-0 hover:shadow-md transition-shadow'
-                      >
-                        <div className='col-span-6'>
-                          <div className='flex items-center'>
-                            {/* HeroUI Checkbox với phiên bản ổn định 2.6.14 */}
-                            <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                              <ShopeeCheckbox
-                                checked={purchase.isChecked}
-                                onChange={(checked) => {
-                                  handleChecked(index)({ target: { checked } } as any)
-                                }}
-                                size='md'
-                              />
-                            </div>
-                            {/* Avatar sản phẩm và title */}
-                            <div className='flex-grow'>
-                              <div className='flex items-center'>
-                                {/* ảnh là một cái thẻ link */}
-                                <Link
-                                  to={`${path.home}${generateNameId({
-                                    name: purchase.product.name,
-                                    id: purchase.product._id
-                                  })}`}
-                                  className='h-20 w-20 flex-shrink-0'
-                                >
-                                  <img
-                                    src={purchase.product.image}
-                                    className='h-full w-full object-cover rounded'
-                                    alt={purchase.product.name}
-                                  />
-                                </Link>
-                                {/* title */}
-                                <div className='flex-grow px-2 pb-2 pt-1'>
-                                  <Link
-                                    to={`${path.home}${generateNameId({
-                                      name: purchase.product.name,
-                                      id: purchase.product._id
-                                    })}`}
-                                    className='line-clamp-2 hover:text-[#ee4d2d] transition-colors'
-                                  >
-                                    {purchase.product.name}
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Giá tiền của body sản phẩm, số lượng, số tiền tổng, thao tác */}
-                        <div className='col-span-6'>
-                          <div className='grid grid-cols-5 items-center'>
-                            {/* Giá tiền */}
-                            <div className='col-span-2'>
-                              <div className='flex items-center justify-center text-[15px]'>
-                                <span className='mr-2 text-gray-500 line-through'>
-                                  ₫{formatCurrency(purchase.product.price_before_discount)}
-                                </span>
-                                <span className='text-black/90'>₫{formatCurrency(purchase.product.price)}</span>
-                              </div>
-                            </div>
-                            {/* Quantity Controller */}
-                            <div className='col-span-1'>
-                              <QuantityController
-                                handleDelete={handleDelete(index)}
-                                product={purchase.product}
-                                max={purchase.product.quantity}
-                                value={purchase.buy_count}
-                                classNameWrapper='flex items-center'
-                                onIncrease={(value) =>
-                                  handleQuantity(index, value, purchase.buy_count < purchase.product.quantity)
-                                }
-                                onDecrease={(value) => handleQuantity(index, value, purchase.buy_count > 1)}
-                                onType={handleTypeQuantity(index)}
-                                onFocusOut={(value) =>
-                                  handleQuantity(
-                                    index,
-                                    value,
-                                    purchase.buy_count >= 1 &&
-                                      purchase.buy_count <= purchase.product.quantity &&
-                                      value !== (purchasesInCart as Purchase[])[index].buy_count
-                                  )
-                                }
-                                disabled={false} // Với Optimistic Updates, không disable UI
-                                isQuantityInCart={true}
-                              />
-                            </div>
-                            {/* Tổng tiền */}
-                            <div className='col-span-1'>
-                              <span className='flex items-center justify-center text-[15px] text-[#ee4d2d] font-medium'>
-                                ₫{formatCurrency(purchase.price * purchase.buy_count)}
-                              </span>
-                            </div>
-                            {/* Button  */}
-                            <div className='col-span-1 flex items-center justify-center'>
-                              <button
-                                onClick={handleDelete(index)}
-                                className='bg-none text-black/90 transition-colors hover:text-[#ee4d2d] hover:font-medium'
-                              >
-                                Xóa
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                      // div thể hiện các mục giảm giá cho sản phẩm và tiền giao hàng
-                    ))}
-                  </>
-                )}
-              </div>
+            {/* Real-time stock alerts for products in cart */}
+            <RealTimeStockAlert productIds={cartProductIds} onStockChange={handleStockChange} />
+
+            {/* Cart sync indicator - real-time sync status */}
+            <div className='mb-2 flex items-center justify-end'>
+              <CartSyncIndicator isSyncing={isSyncing} lastSyncTimestamp={lastSyncTimestamp} />
             </div>
-            {/* Thanh hiện giá tiền, tổng giá tiền và nút Mua Ngay với animation */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] bg-white px-9 py-5 shadow sm:flex-row sm:items-center'
-            >
-              <div className='flex items-center'>
-                <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                  <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
-                </div>
-                <button
-                  onClick={handleCheckedAll}
-                  className='mx-3 border-none bg-none capitalize hover:text-[#ee4d2d] transition-colors'
-                >
-                  Chọn tất cả ({extendedPurchases.length})
-                </button>
-                <button
-                  onClick={handleDeleteManyPurchases}
-                  className='mx-3 border-none bg-none capitalize hover:text-red-500 transition-colors'
-                >
-                  Xóa
-                </button>
-              </div>
 
-              {/* Giá tiền thanh toán và button mua ngay sẽ nằm ở đây */}
-              <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
-                {/* Thẻ div này chứa 2 ông tổng thanh toán và giá tiền */}
-                <div className='flex flex-col justify-end'>
-                  <div className='flex items-center sm:justify-end'>
-                    <div>
-                      Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
-                    </div>
-                    <motion.div
-                      className='ml-2 text-2xl text-[#ee4d2d] font-medium'
-                      key={totalCheckedPurchasePrice}
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    >
-                      ₫{formatCurrency(totalCheckedPurchasePrice)}
-                    </motion.div>
+            {/* Cart items list - desktop table + mobile cards */}
+            <CartItemList
+              extendedPurchases={extendedPurchases}
+              purchasesInCart={purchasesInCart}
+              isAllChecked={isAllChecked}
+              inlineAlerts={inlineAlerts}
+              handleChecked={handleChecked}
+              handleCheckedAll={handleCheckedAll}
+              handleQuantity={handleQuantity}
+              handleTypeQuantity={handleTypeQuantity}
+              handleDelete={handleDelete}
+              handleSaveForLater={handleSaveForLater}
+              handleDismissInlineAlert={handleDismissInlineAlert}
+              path={path}
+              formatCurrency={formatCurrency}
+              generateNameId={generateNameId}
+            />
 
-                    {/* Chỉ hiển thị mũi tên khi có sản phẩm được chọn */}
-                    {checkedPurchaseCount > 0 && (
-                      <Tooltip
-                        content={
-                          <div className='bg-white p-4 w-96 border border-gray-200 rounded-lg shadow-lg'>
-                            <div className='text-sm font-medium text-gray-700 mb-3 border-b border-gray-200 pb-2'>
-                              Chi tiết khuyến mãi
-                            </div>
-                            <div className='space-y-2'>
-                              <div className='flex justify-between text-sm'>
-                                <span className='text-gray-600'>Tổng tiền hàng</span>
-                                <span className='text-gray-900'>
-                                  ₫{formatCurrency(totalCheckedPurchasePrice + totalCheckedPurchaseSavingPrice)}
-                                </span>
-                              </div>
-                              <div className='flex justify-between text-sm'>
-                                <span className='text-gray-600'>Voucher giảm giá</span>
-                                <span className='text-red-500'>
-                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                                </span>
-                              </div>
-                              <div className='flex justify-between text-sm'>
-                                <span className='text-gray-600'>Giảm giá sản phẩm</span>
-                                <span className='text-red-500'>
-                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                                </span>
-                              </div>
-                              <div className='flex justify-between text-sm'>
-                                <span className='text-gray-600'>Tiết kiệm</span>
-                                <span className='text-red-500'>
-                                  -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                                </span>
-                              </div>
-                              <hr className='border-gray-200 my-2' />
-                              <div className='flex justify-between text-sm'>
-                                <span className='text-gray-600'>Tổng số tiền</span>
-                                <span className='text-gray-900 font-medium'>
-                                  ₫{formatCurrency(totalCheckedPurchasePrice)}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        }
-                        placement='top-end'
-                        showArrow={false}
-                        offset={5}
-                        delay={0}
-                        closeDelay={100}
-                        classNames={{
-                          base: 'p-0 bg-transparent',
-                          content: 'p-0 bg-transparent'
-                        }}
-                      >
-                        <motion.button
-                          className='ml-2 text-gray-600 hover:text-[#ee4d2d] transition-colors group'
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          transition={{ duration: 0.1 }}
-                        >
-                          <motion.svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='h-4 w-4 transition-transform duration-75'
-                            initial={{ rotate: 180 }}
-                            whileHover={{ rotate: 0 }}
-                            transition={{ duration: 0.15, ease: 'easeOut' }}
-                          >
-                            <path strokeLinecap='round' strokeLinejoin='round' d='M4.5 15.75l7.5-7.5 7.5 7.5' />
-                          </motion.svg>
-                        </motion.button>
-                      </Tooltip>
-                    )}
-                  </div>
-                  {/* tiền tiết kiệm */}
-                  <div className='flex items-center text-sm sm:justify-end'>
-                    <div className='text-gray-500'>Tiết kiệm</div>
-                    <div className='ml-7 text-[#ee4d2d]'>₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</div>
-                  </div>
-                </div>
-                {/* div chứa button 'Mua Ngay' */}
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.1 }}>
-                  <Button
-                    onClick={handleBuyPurchases}
-                    disabled={buyPurchasesMutation.isPending || checkedPurchaseCount === 0}
-                    type='submit'
-                    className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0 transition-all'
-                  >
-                    {buyPurchasesMutation.isPending ? 'Đang xử lý...' : 'mua hàng'}
-                  </Button>
-                </motion.div>
-              </div>
-            </motion.div>
+            {/* Save for Later Section */}
+            <SaveForLaterSection
+              savedItems={savedItems}
+              onMoveToCart={handleMoveToCart}
+              onRemove={removeFromSaved}
+              onClear={handleClearSaved}
+            />
+
+            {/* Sticky bottom summary bar */}
+            <CartSummaryBar
+              extendedPurchases={extendedPurchases}
+              isAllChecked={isAllChecked}
+              checkedPurchaseCount={checkedPurchaseCount}
+              animatedTotalPrice={animatedTotalPrice}
+              animatedSavingsPrice={animatedSavingsPrice}
+              totalCheckedPurchasePrice={totalCheckedPurchasePrice}
+              totalCheckedPurchaseSavingPrice={totalCheckedPurchaseSavingPrice}
+              handleCheckedAll={handleCheckedAll}
+              handleDeleteManyPurchases={handleDeleteManyPurchases}
+              handleBuyPurchases={handleBuyPurchases}
+              formatCurrency={formatCurrency}
+            />
           </Fragment>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className='flex flex-col items-center justify-center py-20'
-          >
-            <div className='text-center'>
-              <motion.img
-                src={noproduct}
-                alt='noproduct'
-                className='h-[120px] w-[120px] mx-auto opacity-60'
-                animate={{
-                  y: [0, -10, 0],
-                  rotate: [0, -5, 5, 0]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: 'easeInOut'
-                }}
-              />
-            </div>
-            <span className='mt-5 text-[0.875rem] font-bold text-black/40'>Giỏ hàng của bạn còn trống</span>
-            <Link to={path.home} className='mt-5 text-left'>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.1 }}>
-                <Button className='flex h-10 w-[168px] items-center justify-center rounded bg-red-500 text-center text-sm uppercase text-white transition-all hover:bg-red-600 sm:mt-0'>
-                  Mua ngay
-                </Button>
-              </motion.div>
-            </Link>
-          </motion.div>
+          <EmptyCartState
+            savedItems={savedItems}
+            handleMoveToCart={handleMoveToCart}
+            removeFromSaved={removeFromSaved}
+            handleClearSaved={handleClearSaved}
+            noproduct={noproduct}
+            path={path}
+          />
         )}
       </div>
     </div>
@@ -538,3 +371,4 @@ const Cart = () => {
 }
 
 export default Cart
+

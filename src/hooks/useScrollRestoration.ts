@@ -75,7 +75,6 @@ export const useScrollRestoration = (key?: string, enabled: boolean = true) => {
 
     // Lưu vị trí của trang trước khi navigate
     if (!isInitialMount.current && prevLocation.current !== location) {
-      const prevKey = `${prevLocation.current.pathname}${prevLocation.current.search}`
       scrollManager.savePosition(prevLocation.current.pathname, prevLocation.current.search, window.scrollY)
     }
 

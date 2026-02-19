@@ -11,9 +11,12 @@ import { purchasesStatus } from 'src/constant/purchase'
 
 import { getAvatarUrl } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
-import { locales } from 'src/i18n/i18n'
+import { locales, loadLanguage } from 'src/i18n/i18n'
 import NotificationList from '../NotificationList'
 import notificationApi from 'src/apis/notification.api'
+import useInventoryAlerts from 'src/hooks/useInventoryAlerts'
+import InventoryAlertBadge from 'src/components/InventoryAlertBadge'
+import ThemeToggle from 'src/components/ThemeToggle'
 
 const NavHeader = () => {
   const { i18n } = useTranslation() // import hook useTranslation
@@ -24,7 +27,7 @@ const NavHeader = () => {
   // Query để lấy thông báo (chỉ khi đã đăng nhập)
   const { data: notificationsData } = useQuery({
     queryKey: ['notifications'],
-    queryFn: notificationApi.getNotifications,
+    queryFn: () => notificationApi.getNotifications(),
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000 // 5 phút
   })
@@ -46,16 +49,22 @@ const NavHeader = () => {
     logoutMutation.mutate()
   }
 
-  // Khai báo function để translate ngôn ngữ\
-  const handleTranslateLanguage = (lng: 'en' | 'vi') => {
-    i18n.changeLanguage(lng) // hàm changeLanguage của i18next
-    // location.reload()
-    // khi mà change thì sẽ cho reload
-    // lng chính là cái key 'vi' hoặc là 'vi'
+  // Khai báo function để translate ngôn ngữ - lazy load translations
+  const handleTranslateLanguage = async (lng: 'en' | 'vi') => {
+    try {
+      await loadLanguage(lng) // lazy load ngôn ngữ rồi mới changeLanguage
+    } catch (error) {
+      console.error('Failed to load language:', error)
+    }
   }
 
   // Lấy số thông báo chưa đọc
   const unreadCount = notificationsData?.data.data.unreadCount || 0
+
+  // WebSocket: Inventory alerts for admin users
+  const isAdmin = profile?.roles?.includes('Admin') ?? false
+  const { alerts: inventoryAlerts, unreadCount: inventoryUnreadCount, clearAlerts: clearInventoryAlerts } = useInventoryAlerts()
+
   return (
     <div className='flex items-center justify-between'>
       {/* Tải ứng dụng, Social kết nối, kênh người bán */}
@@ -75,7 +84,7 @@ const NavHeader = () => {
             placement='bottom-start'
             className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70 hidden lg:flex'
             renderPopover={
-              <div className='relative cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+              <div className='relative cursor-pointer rounded-lg border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 <div
                   className={classNames(
                     'after:absolute after:top-0 after:left-0 after:h-[13px] after:w-full after:translate-y-[-100%] after:bg-transparent after:content-[""]'
@@ -172,7 +181,7 @@ const NavHeader = () => {
             placement='bottom-start'
             className='mx-2 flex cursor-pointer items-center py-1 hover:text-white/70 hidden lg:flex'
             renderPopover={
-              <div className='relative cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+              <div className='relative cursor-pointer rounded-lg border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 <div
                   className={classNames(
                     'after:absolute after:top-0 after:left-0 after:h-[13px] after:w-full after:translate-y-[-100%] after:bg-transparent after:content-[""]'
@@ -249,6 +258,17 @@ const NavHeader = () => {
       )}
       {/* Thông báo, hỗ trợ, thông tin tài khoản */}
       <div className='flex items-center justify-center'>
+        {/* Theme Toggle */}
+        <ThemeToggle className='mr-3' />
+        {/* Inventory Alert Badge - Admin only */}
+        {isAdmin && isAuthenticated && (
+          <InventoryAlertBadge
+            alerts={inventoryAlerts}
+            unreadCount={inventoryUnreadCount}
+            onClear={clearInventoryAlerts}
+            className='mr-3 cursor-pointer'
+          />
+        )}
         {/* Phiên Âm tiếng Việt, Hỗ trợ, Thông báo, Avatar */}
         <Popover
           as='span'
@@ -259,7 +279,7 @@ const NavHeader = () => {
                 <NotificationList />
               </div>
             ) : (
-              <div className='relative h-[21.875rem] w-[300px] md:w-[400px] cursor-pointer rounded-sm border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+              <div className='relative h-[21.875rem] w-[300px] md:w-[400px] cursor-pointer rounded-lg border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
                 {/* flex cha, không nên để items-center ở thằng cha vì nó sẽ làm căng giữa ở thằng cha */}
                 <div
                   className={classNames(
@@ -281,13 +301,13 @@ const NavHeader = () => {
                   <div className='flex w-full items-center border-0'>
                     <Link
                       to={path.register}
-                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-[#ee4d2d]'
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-orange'
                     >
                       Đăng ký
                     </Link>
                     <Link
                       to={path.login}
-                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-[#ee4d2d] '
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs md:text-sm hover:bg-[#e8e8e8] hover:text-orange '
                     >
                       Đăng nhập
                     </Link>
@@ -316,7 +336,7 @@ const NavHeader = () => {
             </svg>
             {/* Badge hiển thị số thông báo chưa đọc */}
             {isAuthenticated && unreadCount > 0 && (
-              <span className='absolute -top-1 -right-1 flex h-3 w-3 md:h-4 md:w-4 items-center justify-center rounded-full bg-white text-[10px] md:text-xs text-[#ee4d2d] font-medium border border-[#ee4d2d]'>
+              <span className='absolute -top-1 -right-1 flex h-3 w-3 md:h-4 md:w-4 items-center justify-center rounded-full bg-white text-[10px] md:text-xs text-orange font-medium border border-orange'>
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -349,7 +369,7 @@ const NavHeader = () => {
           as='span'
           className={classNames('flex cursor-pointer items-center py-1 hover:text-white/70')}
           renderPopover={
-            <div className='relative rounded-sm border border-gray-200 bg-white shadow-md transition-all'>
+            <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all'>
               <div
                 className={classNames(
                   'flex flex-col py-2 pr-20 md:pr-28 pl-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
@@ -403,7 +423,7 @@ const NavHeader = () => {
             as='span'
             placement='bottom-start'
             renderPopover={
-              <div className='relative rounded-sm border border-gray-200 shadow-md transition-all'>
+              <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
                 <div
                   className={classNames(
                     'before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
@@ -411,19 +431,19 @@ const NavHeader = () => {
                 >
                   <Link
                     to={path.profile}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                   >
                     Tài Khoản Của Tôi
                   </Link>
                   <Link
                     to={path.historyPurchases}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                   >
                     Đơn Mua
                   </Link>
                   <button
                     onClick={() => handleLogout()}
-                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                   >
                     Đăng Xuất
                   </button>
