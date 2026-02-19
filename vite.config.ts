@@ -54,14 +54,12 @@ export default defineConfig(({ mode }) => {
       minify: 'esbuild' as const,
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
-        treeshake: {
-          moduleSideEffects: false
-        },
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-dom'],
-            'ui-vendor': ['@heroui/react', '@floating-ui/react', '@tippyjs/react', 'tippy.js'],
-            'animation-vendor': ['framer-motion'],
+            // framer-motion phải ở cùng chunk với @heroui/react vì @heroui/react
+            // phụ thuộc vào framer-motion — tách riêng gây circular dependency giữa chunks
+            'ui-vendor': ['@heroui/react', '@floating-ui/react', '@tippyjs/react', 'tippy.js', 'framer-motion'],
             'http-vendor': ['axios', '@tanstack/react-query'],
             'devtools-vendor': ['@tanstack/react-query-devtools'],
             'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
