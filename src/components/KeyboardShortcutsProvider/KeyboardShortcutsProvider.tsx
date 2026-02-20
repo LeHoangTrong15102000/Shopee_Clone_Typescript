@@ -179,15 +179,6 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
     <KeyboardShortcutsContext.Provider value={contextValue}>
       {children}
       <KeyboardShortcutsModal isOpen={isHelpModalOpen} onClose={closeHelpModal} shortcuts={displayShortcuts} />
-      {/* Help button in bottom-right corner - desktop only */}
-      <button
-        onClick={openHelpModal}
-        className='fixed bottom-4 right-4 z-50 hidden h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 shadow-sm transition-all hover:bg-gray-200 hover:text-gray-700 hover:shadow-md md:flex'
-        title='Phím tắt (?)'
-        aria-label='Hiện phím tắt'
-      >
-        <span className='text-sm font-medium'>?</span>
-      </button>
     </KeyboardShortcutsContext.Provider>
   )
 }

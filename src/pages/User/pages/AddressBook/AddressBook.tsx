@@ -688,7 +688,7 @@ const AddressCard = ({
             {!isDefault && (
               <button
                 onClick={() => onSetDefault(address._id)}
-                className='inline-flex items-center gap-1 rounded-lg border border-orange/30 dark:border-orange-400/30 bg-orange/5 dark:bg-orange-400/10 px-2.5 py-1.5 text-xs font-medium text-orange dark:text-orange-400 transition-all hover:border-orange dark:hover:border-orange-400 hover:bg-orange dark:hover:bg-orange-400 hover:text-white sm:gap-1.5 sm:px-3 sm:text-sm'
+                className='inline-flex items-center gap-1 rounded-lg border border-orange/30 dark:border-orange-400/30 bg-orange/5 dark:bg-orange-400/10 px-2.5 py-1.5 text-xs font-medium text-orange dark:text-orange-400 transition-all hover:border-orange dark:hover:border-orange-400 hover:bg-orange dark:hover:bg-orange-400 hover:!text-white dark:hover:!text-white sm:gap-1.5 sm:px-3 sm:text-sm'
               >
                 <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />

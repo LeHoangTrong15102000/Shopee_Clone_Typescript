@@ -95,8 +95,8 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             <ViewToggle viewMode={viewMode} onViewChange={onViewChange} />
           )}
 
-          <div className='text-sm'>
-            <span className='text-orange'>{page}</span>
+          <div className='text-sm dark:text-gray-300'>
+            <span className='text-orange dark:text-orange-400'>{page}</span>
             <span>/{pageSize}</span>
           </div>
           <div className='ml-6 flex items-center'>

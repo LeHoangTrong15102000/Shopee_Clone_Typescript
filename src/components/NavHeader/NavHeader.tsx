@@ -369,21 +369,21 @@ const NavHeader = () => {
           as='span'
           className={classNames('flex cursor-pointer items-center py-1 hover:text-white/70')}
           renderPopover={
-            <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all'>
+            <div className='relative rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md transition-all'>
               <div
                 className={classNames(
-                  'flex flex-col py-2 pr-20 md:pr-28 pl-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
+                  'flex flex-col py-2 px-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
                 )}
               >
                 <button
                   onClick={() => handleTranslateLanguage('vi')}
-                  className='py-2 px-1 hover:text-orange text-xs md:text-sm'
+                  className='block w-full py-2 px-3 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   Tiếng Việt
                 </button>
                 <button
                   onClick={() => handleTranslateLanguage('en')}
-                  className='py-2 px-1 text-left hover:text-orange text-xs md:text-sm'
+                  className='block w-full py-2 px-3 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   English
                 </button>

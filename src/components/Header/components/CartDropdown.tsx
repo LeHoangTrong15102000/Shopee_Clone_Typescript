@@ -16,7 +16,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
   return (
     <div className='col-span-2 md:col-span-1 flex items-center justify-end gap-2 md:gap-3'>
       {/* Wishlist Icon */}
-      <Link to={path.home} className='text-white hover:text-white/80'>
+      <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label='Danh sách yêu thích'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'

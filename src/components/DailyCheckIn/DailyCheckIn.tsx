@@ -148,7 +148,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             animate={{ opacity: 1, scale: 1 }}
             className='relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-[2px]'
           >
-            <div className='relative rounded-[10px] bg-gradient-to-r from-emerald-50 to-cyan-50 px-4 py-3'>
+            <div className='relative rounded-[10px] bg-gradient-to-r from-emerald-50 to-cyan-50 dark:from-emerald-900/40 dark:to-cyan-900/40 px-4 py-3'>
               <div className='flex items-center justify-center gap-3'>
                 {/* Animated Checkmark Icon */}
                 <motion.div
@@ -157,7 +157,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                   transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
                   className='relative'
                 >
-                  <div className='w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200'>
+                  <div className='w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200 dark:shadow-emerald-900/50'>
                     <svg className='w-5 h-5 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                       <motion.path
                         initial={{ pathLength: 0 }}
@@ -185,7 +185,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className='font-bold text-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent'
+                    className='font-bold text-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 bg-clip-text text-transparent'
                   >
                     Đã điểm danh hôm nay
                   </motion.span>
@@ -193,7 +193,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
-                    className='text-xs text-emerald-600/70 mt-0.5'
+                    className='text-xs text-emerald-600/70 dark:text-emerald-400/70 mt-0.5'
                   >
                     Quay lại vào ngày mai nhé! 🎉
                   </motion.p>
@@ -201,8 +201,8 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
               </div>
 
               {/* Decorative elements */}
-              <div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cyan-200/30 to-transparent rounded-bl-full' />
-              <div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-emerald-200/30 to-transparent rounded-tr-full' />
+              <div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cyan-200/30 dark:from-cyan-400/10 to-transparent rounded-bl-full' />
+              <div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-emerald-200/30 dark:from-emerald-400/10 to-transparent rounded-tr-full' />
             </div>
           </motion.div>
         )}
