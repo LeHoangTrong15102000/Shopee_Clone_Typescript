@@ -76,24 +76,24 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
       <div className='flex-1 p-3 sm:p-4 flex flex-col justify-between min-w-0'>
         {/* Product Name */}
         <div>
-          <h3 className='text-sm sm:text-base font-medium line-clamp-2 text-gray-800 mb-2'>
+          <h3 className='text-sm sm:text-base font-medium line-clamp-2 text-gray-800 dark:text-gray-200 mb-2'>
             {product.name}
           </h3>
 
           {/* Price Section */}
           <div className='flex items-center gap-2 mb-2'>
             {product.price_before_discount > product.price && (
-              <span className='text-gray-400 line-through text-xs sm:text-sm'>
+              <span className='text-gray-400 dark:text-gray-500 line-through text-xs sm:text-sm'>
                 <span>₫</span>
                 {formatCurrency(product.price_before_discount)}
               </span>
             )}
-            <span className='text-[#ee4d2d] font-semibold text-sm sm:text-lg'>
+            <span className='text-[#ee4d2d] dark:text-orange-400 font-semibold text-sm sm:text-lg'>
               <span className='text-xs sm:text-sm'>₫</span>
               {formatCurrency(product.price)}
             </span>
             {product.price_before_discount > product.price && (
-              <span className='bg-[#ee4d2d] text-white text-xs px-1 py-0.5 rounded'>
+              <span className='bg-[#ee4d2d] dark:bg-orange-500 text-white text-xs px-1 py-0.5 rounded'>
                 -{Math.round(((product.price_before_discount - product.price) / product.price_before_discount) * 100)}%
               </span>
             )}
@@ -104,16 +104,16 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
         <div className='flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4'>
           <div className='flex items-center gap-1'>
             <ProductRating rating={product.rating} />
-            <span className='text-xs text-gray-500'>({product.rating.toFixed(1)})</span>
+            <span className='text-xs text-gray-500 dark:text-gray-400'>({product.rating.toFixed(1)})</span>
           </div>
-          <div className='text-xs sm:text-sm text-gray-500'>
+          <div className='text-xs sm:text-sm text-gray-500 dark:text-gray-400'>
             <span>Đã bán </span>
             <span className='font-medium'>{formatNumberToSocialStyle(product.sold)}</span>
           </div>
         </div>
 
         {/* Location */}
-        <div className='mt-2 flex items-center text-xs sm:text-sm text-gray-500'>
+        <div className='mt-2 flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400'>
           <svg
             className='w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0'
             fill='none'

@@ -24,22 +24,22 @@ export default function DailyCheckInPage() {
             <div className='bg-gray-50 dark:bg-slate-700 rounded-lg p-4 text-center'>
               <div className='text-2xl mb-2'>🎁</div>
               <div className='font-medium text-gray-900 dark:text-gray-100'>3 ngày</div>
-              <div className='text-sm text-[#ee4d2d]'>x1.5 xu</div>
+              <div className='text-sm text-[#ee4d2d] dark:text-orange-400'>x1.5 xu</div>
             </div>
             <div className='bg-gray-50 dark:bg-slate-700 rounded-lg p-4 text-center'>
               <div className='text-2xl mb-2'>🎉</div>
               <div className='font-medium text-gray-900 dark:text-gray-100'>7 ngày</div>
-              <div className='text-sm text-[#ee4d2d]'>x2 xu</div>
+              <div className='text-sm text-[#ee4d2d] dark:text-orange-400'>x2 xu</div>
             </div>
             <div className='bg-gray-50 dark:bg-slate-700 rounded-lg p-4 text-center'>
               <div className='text-2xl mb-2'>🏆</div>
               <div className='font-medium text-gray-900 dark:text-gray-100'>14 ngày</div>
-              <div className='text-sm text-[#ee4d2d]'>x2.5 xu</div>
+              <div className='text-sm text-[#ee4d2d] dark:text-orange-400'>x2.5 xu</div>
             </div>
             <div className='bg-gray-50 dark:bg-slate-700 rounded-lg p-4 text-center'>
               <div className='text-2xl mb-2'>👑</div>
               <div className='font-medium text-gray-900 dark:text-gray-100'>30 ngày</div>
-              <div className='text-sm text-[#ee4d2d]'>x3 xu</div>
+              <div className='text-sm text-[#ee4d2d] dark:text-orange-400'>x3 xu</div>
             </div>
           </div>
         </div>

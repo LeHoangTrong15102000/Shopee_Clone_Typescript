@@ -141,11 +141,11 @@ const useRouteElements = () => {
           path: path.wishlist,
           element: (
             <Suspense fallback={<Loader />}>
-              <MainLayout>
+              <CartLayout headerTitle='sản phẩm yêu thích'>
                 <Suspense fallback={<Loader />}>
                   <Wishlist />
                 </Suspense>
-              </MainLayout>
+              </CartLayout>
             </Suspense>
           )
         },

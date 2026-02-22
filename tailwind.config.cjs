@@ -37,22 +37,22 @@ module.exports = {
       colors: {
         orange: {
           DEFAULT: '#ee4d2d',
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#ee4d2d',
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
+          50: '#FFF5F2',
+          100: '#FFE8E2',
+          200: '#FFCFC4',
+          300: '#FFB09D',
+          400: '#FF8A6B',
+          500: '#FF6B47',
+          600: '#EE4D2D',
+          700: '#D73211',
+          800: '#B02A0E',
+          900: '#8A210B',
           950: '#431407'
         },
         white: '#ffffff',
         // Dark mode colors
-        'dark-bg': '#1a1a2e',
-        'dark-surface': '#16213e',
+        'dark-bg': '#0f172a',
+        'dark-surface': '#1e293b',
         'dark-text': '#e4e4e7',
         'dark-text-secondary': '#a1a1aa',
         // Semantic tokens from CSS variables
@@ -201,7 +201,22 @@ module.exports = {
       })
     }),
     // @tailwindcss/line-clamp đã được tích hợp mặc định từ Tailwind CSS v3.3+
-    heroui()
+    heroui({
+      themes: {
+        light: {
+          colors: {
+            background: '#f5f5f5',
+            foreground: '#11181C'
+          }
+        },
+        dark: {
+          colors: {
+            background: '#0f172a',
+            foreground: '#ECEDEE'
+          }
+        }
+      }
+    })
   ],
   variants: {
     extends: {}

@@ -63,9 +63,21 @@ export default function OptimizedImage({
   const hasTriedFallback = useRef(false)
 
   useEffect(() => {
-    setImageState('loading')
-    setCurrentSrc(src)
     hasTriedFallback.current = false
+    setCurrentSrc(src)
+
+    // Check if image is already cached/loaded in browser
+    if (src) {
+      const img = new Image()
+      img.src = src
+      if (img.complete && img.naturalWidth > 0) {
+        // Image is already cached, skip loading state
+        setImageState('loaded')
+        return
+      }
+    }
+
+    setImageState('loading')
   }, [src])
 
   const handleLoad = useCallback(() => {
@@ -92,7 +104,7 @@ export default function OptimizedImage({
   })
 
   const renderSkeleton = () =>
-    showSkeleton && isLoading ? <div className='absolute inset-0 animate-pulse rounded bg-gray-200' aria-hidden='true' /> : null
+    showSkeleton && isLoading ? <div className='absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-slate-700' aria-hidden='true' /> : null
 
   const renderImage = (additionalClasses = '') => (
     <img

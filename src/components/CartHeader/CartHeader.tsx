@@ -4,7 +4,11 @@ import path from 'src/constant/path'
 import useSearchProducts from 'src/hooks/useSearchProducts'
 import { motion } from 'framer-motion'
 
-const CartHeader = () => {
+interface CartHeaderProps {
+  title?: string
+}
+
+const CartHeader = ({ title = 'giỏ hàng' }: CartHeaderProps) => {
   const { onSubmitSearch, register } = useSearchProducts()
   return (
     <motion.div
@@ -37,7 +41,7 @@ const CartHeader = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
-                giỏ hàng
+                {title}
               </motion.div>
             </Link>
             {/* Bên dưới là form để search product */}

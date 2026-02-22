@@ -38,7 +38,7 @@ const applyTheme = (resolvedTheme: ResolvedTheme) => {
   // Update meta theme-color for mobile browsers
   const metaThemeColor = document.querySelector('meta[name="theme-color"]')
   if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#1a1a2e' : '#ee4d2d')
+    metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#0f172a' : '#ee4d2d')
   }
 }
 

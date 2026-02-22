@@ -201,7 +201,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           className='grow'
                           classNameError='hidden'
                           placeholder='₫ TỪ'
-                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 focus:border-gray-500 focus:shadow-sm'
+                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
                           {...field}
                           onChange={(event) => {
                             field.onChange(event)
@@ -210,7 +210,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                         />
                       )}
                     />
-                    <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd]'>--</div>
+                    <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
                     <Controller
                       control={control}
                       name='price_max'
@@ -220,7 +220,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           className='grow'
                           classNameError='hidden'
                           placeholder='₫ ĐẾN'
-                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 focus:border-gray-500 focus:shadow-sm'
+                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
                           maxValue='50000000'
                           {...field}
                           onChange={(event) => {
@@ -231,13 +231,13 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                       )}
                     />
                   </div>
-                  <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>
+                  <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>
                     {errors.price_min?.message}
                   </div>
-                  <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
+                  <Button className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'>
                     áp dụng
                   </Button>
-                  <div className='my-4 h-[1px] bg-gray-300' />
+                  <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
                 </form>
                 <div className='my-4'>
                   <div className='capitalize dark:text-gray-200'>đánh giá</div>
@@ -247,7 +247,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
               <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
               <Button
                 onClick={handleRemoveAsideFilter}
-                className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'
+                className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
               >
                 xóa tất cả
               </Button>

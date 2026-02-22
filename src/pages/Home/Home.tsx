@@ -96,8 +96,8 @@ const Home = () => {
       >
         <div className='container py-6'>
           <div className='mb-6'>
-            <h2 className='text-lg sm:text-xl font-semibold text-gray-800 mb-2'>Danh Mục</h2>
-            <p className='text-gray-600'>Khám phá các danh mục sản phẩm hàng đầu</p>
+            <h2 className='text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2'>Danh Mục</h2>
+            <p className='text-gray-600 dark:text-gray-300'>Khám phá các danh mục sản phẩm hàng đầu</p>
           </div>
           <motion.div
             className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4'
@@ -109,17 +109,17 @@ const Home = () => {
               <motion.div key={category._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
                 <Link
                   to={`${path.products}?category=${category._id}`}
-                  className='flex flex-col items-center p-4 rounded-lg border border-gray-200
-                    hover:border-orange hover:shadow-md transition-all duration-300 group'
+                  className='flex flex-col items-center p-4 rounded-lg border border-gray-200 dark:border-slate-700
+                    hover:border-orange dark:hover:border-orange-500 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group bg-white dark:bg-slate-800'
                 >
                   <div
-                    className='w-12 h-12 mb-3 bg-gradient-to-br from-[#ee4d2d] to-[#f53d2d]
+                    className='w-12 h-12 mb-3 bg-gradient-to-br from-orange-400 to-red-500 dark:from-orange-500 dark:to-red-500
                     rounded-full flex items-center justify-center text-white font-bold text-lg
-                    group-hover:scale-110 transition-transform duration-300'
+                    group-hover:scale-110 transition-transform duration-300 shadow-sm shadow-orange-500/20'
                   >
                     {category.name.charAt(0)}
                   </div>
-                  <span className='text-sm text-gray-700 text-center font-medium group-hover:text-orange'>
+                  <span className='text-sm text-gray-700 dark:text-gray-300 text-center font-medium group-hover:text-orange dark:group-hover:text-orange-400'>
                     {category.name}
                   </span>
                 </Link>
@@ -165,8 +165,8 @@ const Home = () => {
               <motion.div key={product._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='bg-white border border-gray-200 rounded-lg overflow-hidden
-                    hover:shadow-lg transition-all duration-300 group block'
+                  className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
+                    hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
                 >
                   <div className='relative overflow-hidden'>
                     <img
@@ -183,12 +183,12 @@ const Home = () => {
                     </div>
                   </div>
                   <div className='p-3'>
-                    <h3 className='text-sm font-medium text-gray-800 line-clamp-2 mb-2 group-hover:text-orange'>
+                    <h3 className='text-sm font-medium text-gray-800 dark:text-gray-100 line-clamp-2 mb-2 group-hover:text-orange dark:group-hover:text-orange-400'>
                       {product.name}
                     </h3>
                     <div className='flex items-center justify-between'>
                       <span className='text-orange font-bold'>₫{product.price.toLocaleString()}</span>
-                      <span className='text-xs text-gray-500'>Đã bán {product.sold}</span>
+                      <span className='text-xs text-gray-500 dark:text-gray-400'>Đã bán {product.sold}</span>
                     </div>
                   </div>
                 </Link>
@@ -209,12 +209,12 @@ const Home = () => {
         <div className='container py-6'>
           <div className='flex items-center justify-between mb-6'>
             <div>
-              <h2 className='text-lg sm:text-xl font-semibold text-gray-800 mb-2'>Sản Phẩm Mới</h2>
-              <p className='text-gray-600'>Những sản phẩm mới nhất được cập nhật</p>
+              <h2 className='text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2'>Sản Phẩm Mới</h2>
+              <p className='text-gray-600 dark:text-gray-300'>Những sản phẩm mới nhất được cập nhật</p>
             </div>
             <Link
               to={`${path.products}?sort_by=createdAt&order=desc`}
-              className='text-orange hover:text-[#d73527] font-medium'
+              className='text-orange hover:text-[#d73527] dark:hover:text-orange-400 font-medium'
             >
               Xem tất cả →
             </Link>
@@ -229,8 +229,8 @@ const Home = () => {
               <motion.div key={product._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='bg-white border border-gray-200 rounded-lg overflow-hidden
-                    hover:shadow-lg transition-all duration-300 group block'
+                  className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
+                    hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
                 >
                   <div className='relative overflow-hidden'>
                     <img
@@ -241,7 +241,7 @@ const Home = () => {
                     <div className='absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded'>Mới</div>
                   </div>
                   <div className='p-3'>
-                    <h3 className='text-sm font-medium text-gray-800 line-clamp-2 mb-2 group-hover:text-orange'>
+                    <h3 className='text-sm font-medium text-gray-800 dark:text-gray-100 line-clamp-2 mb-2 group-hover:text-orange dark:group-hover:text-orange-400'>
                       {product.name}
                     </h3>
                     <div className='flex items-center justify-between'>
@@ -250,7 +250,7 @@ const Home = () => {
                         <svg className='w-3 h-3 text-yellow-400 mr-1' fill='currentColor' viewBox='0 0 20 20'>
                           <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
                         </svg>
-                        <span className='text-xs text-gray-500'>{product.rating}</span>
+                        <span className='text-xs text-gray-500 dark:text-gray-400'>{product.rating}</span>
                       </div>
                     </div>
                   </div>

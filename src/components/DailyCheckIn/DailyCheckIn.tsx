@@ -61,7 +61,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
   const milestones = Object.keys(DEFAULT_CHECKIN_CONFIG.streakBonuses).map(Number).sort((a, b) => a - b)
 
   return (
-    <div className={classNames('bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden', className)}>
+    <div className={classNames('bg-white dark:bg-slate-800 dark:border dark:border-slate-700 rounded-lg shadow-lg overflow-hidden', className)}>
       {/* Header */}
       <div className='bg-gradient-to-r from-orange to-[#ff6633] p-4 text-white'>
         <div className='flex items-center justify-between'>
@@ -88,12 +88,12 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             <span className='text-2xl'>🔥</span>
             <div>
               <p className='font-medium text-gray-900 dark:text-gray-100'>Chuỗi {streak.current} ngày</p>
-              <p className='text-xs text-gray-500 dark:text-gray-400'>Kỷ lục: {streak.longest} ngày</p>
+              <p className='text-xs text-gray-500 dark:text-gray-300'>Kỷ lục: {streak.longest} ngày</p>
             </div>
           </div>
           <div className='text-right'>
-            <p className='text-sm text-gray-600 dark:text-gray-400'>Phần thưởng tiếp theo</p>
-            <p className='font-bold text-orange'>+{nextReward.value} xu</p>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>Phần thưởng tiếp theo</p>
+            <p className='font-bold text-orange dark:text-orange-400'>+{nextReward.value} xu</p>
           </div>
         </div>
 
@@ -148,7 +148,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             animate={{ opacity: 1, scale: 1 }}
             className='relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-[2px]'
           >
-            <div className='relative rounded-[10px] bg-gradient-to-r from-emerald-50 to-cyan-50 dark:from-emerald-900/40 dark:to-cyan-900/40 px-4 py-3'>
+            <div className='relative rounded-[10px] bg-gradient-to-r from-emerald-50 to-cyan-50 dark:from-emerald-900/30 dark:to-cyan-900/30 px-4 py-3'>
               <div className='flex items-center justify-center gap-3'>
                 {/* Animated Checkmark Icon */}
                 <motion.div
@@ -210,7 +210,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
         {/* Toggle Calendar */}
         <button
           onClick={() => setShowCalendar(!showCalendar)}
-          className='w-full mt-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-orange transition-colors flex items-center justify-center gap-1'
+          className='w-full mt-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-orange transition-colors flex items-center justify-center gap-1'
         >
           <svg className={classNames('w-4 h-4 transition-transform', showCalendar && 'rotate-180')} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
@@ -273,7 +273,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                         'aspect-square flex items-center justify-center rounded-full text-xs md:text-sm relative',
                         day.checked && 'bg-orange text-white',
                         isToday && !day.checked && 'ring-2 ring-orange',
-                        !day.checked && !isToday && 'text-gray-600 dark:text-gray-400'
+                        !day.checked && !isToday && 'text-gray-600 dark:text-gray-300'
                       )}
                     >
                       {dayNum}

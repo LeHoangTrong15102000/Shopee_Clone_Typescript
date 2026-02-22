@@ -61,7 +61,7 @@ const AsideFilter = ({ categories }: Props) => {
   }
 
   return (
-    <div className='py-4 text-black/80 dark:text-gray-200' role="navigation" aria-label="Bộ lọc sản phẩm">
+    <div className='py-4 px-3 text-black/80 dark:text-gray-200 bg-white dark:bg-slate-800 rounded-sm shadow-sm dark:shadow-slate-900/20' role="navigation" aria-label="Bộ lọc sản phẩm">
       {/* Tất cả danh mục */}
       <Link
         to={path.products}
@@ -142,7 +142,7 @@ const AsideFilter = ({ categories }: Props) => {
       <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
       {/* Filter theo khoảng giá */}
       <div className='my-4'>
-        <div className='capitalize'>Khoảng giá</div>
+        <div className='capitalize dark:text-gray-200'>Khoảng giá</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
             <Controller
@@ -216,7 +216,7 @@ const AsideFilter = ({ categories }: Props) => {
         </form>
         {/* Đánh giá */}
         <div className='my-4'>
-          <div className=' capitalize'>đánh giá</div>
+          <div className=' capitalize dark:text-gray-200'>đánh giá</div>
         </div>
       </div>
       {/* Sao đánh giá sản phẩm */}

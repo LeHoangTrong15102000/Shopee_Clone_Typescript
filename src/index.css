@@ -46,10 +46,10 @@
   }
 
   .dark {
-    /* Dark Theme */
-    --color-bg-primary: 26 26 46;
-    --color-bg-secondary: 22 33 62;
-    --color-bg-tertiary: 15 23 42;
+    /* Dark Theme - aligned with MASTER.md design system */
+    --color-bg-primary: 15 23 42;
+    --color-bg-secondary: 30 41 59;
+    --color-bg-tertiary: 51 65 85;
 
     --color-text-primary: 248 250 252;
     --color-text-secondary: 161 161 170;
@@ -90,12 +90,38 @@ html {
   line-height: 1.2;
 }
 
+html.dark {
+  background-color: rgb(var(--color-bg-primary));
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   background-color: rgb(var(--color-bg-primary));
   color: rgb(var(--color-text-primary));
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+  background-color: inherit;
+}
+
+/* Prevent HeroUI OverlayProvider wrapper from having its own background */
+[data-overlay-container] {
+  background-color: inherit !important;
+}
+
+/* Override HeroUI's :root background-color injection in dark mode.
+   HeroUI plugin adds background-color: hsl(var(--heroui-background)) on :root via addBase().
+   In dark mode, we need our CSS variable --color-bg-primary to take precedence. */
+:root.dark {
+  background-color: rgb(var(--color-bg-primary)) !important;
+}
+
+.dark [data-heroui-provider],
+.dark .heroui-provider {
+  background-color: transparent !important;
 }
 
 @layer utilities {
@@ -209,6 +235,20 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+/* Dark mode scrollbar styles */
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 2px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 /* Responsive text truncation */

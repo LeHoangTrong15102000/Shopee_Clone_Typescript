@@ -101,14 +101,14 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           </div>
           <div className='ml-6 flex items-center'>
             {page === 1 ? (
-              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700'>
+              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700 opacity-50'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='h-4 w-4'
+                  className='h-4 w-4 dark:text-gray-400'
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
                 </svg>
@@ -130,21 +130,21 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='h-4 w-4'
+                  className='h-4 w-4 dark:text-gray-300'
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
                 </svg>
               </Link>
             )}
             {page === pageSize ? (
-              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700'>
+              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700 opacity-50'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='h-4 w-4'
+                  className='h-4 w-4 dark:text-gray-400'
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
                 </svg>
@@ -166,7 +166,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='h-4 w-4'
+                  className='h-4 w-4 dark:text-gray-300'
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
                 </svg>

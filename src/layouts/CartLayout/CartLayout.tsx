@@ -8,12 +8,13 @@ const BackToTop = lazy(() => import('src/components/BackToTop'))
 
 interface Props {
   children: React.ReactNode
+  headerTitle?: string
 }
 
-const CartLayout = ({ children }: Props) => {
+const CartLayout = ({ children, headerTitle }: Props) => {
   return (
     <div className='min-h-screen bg-gray-100 dark:bg-slate-900 transition-colors duration-200'>
-      <CartHeader />
+      <CartHeader title={headerTitle} />
       <PageTransition>
         {children}
       </PageTransition>

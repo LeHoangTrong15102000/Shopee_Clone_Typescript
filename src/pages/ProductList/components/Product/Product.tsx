@@ -71,7 +71,7 @@ const Product = ({ product }: Props) => {
                 alt={product.name}
                 aspectRatio='1:1'
                 loading='lazy'
-                className='rounded-tl-sm rounded-tr-sm bg-white transition-transform duration-300 hover:scale-110'
+                className='rounded-tl-sm rounded-tr-sm bg-white dark:bg-slate-700 transition-transform duration-300 hover:scale-110'
                 showSkeleton={true}
                 blurPlaceholder={true}
               />

@@ -74,7 +74,7 @@ const RatingStars = () => {
                     </svg>
                   )
                 })}
-              {index !== 0 && <span className='ml-1'>trở lên</span>}
+              {index !== 0 && <span className='ml-1 dark:text-gray-300'>trở lên</span>}
             </div>
           </li>
         ))}

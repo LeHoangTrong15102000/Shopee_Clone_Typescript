@@ -128,7 +128,7 @@ const ProductList = () => {
   // Loading state - hiển thị loader khi lần đầu load
   if (isLoading && !productsData) {
     return (
-      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
         <div className='container'>
           <Loader />
         </div>
@@ -139,7 +139,7 @@ const ProductList = () => {
   // Error state
   if (error && !productsData) {
     return (
-      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
         <div className='container'>
           <div className='text-center py-12'>
             <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>Có lỗi xảy ra khi tải danh sách sản phẩm</h2>
@@ -165,7 +165,7 @@ const ProductList = () => {
   const currentCategory = filters.category ? categories.find((cat) => cat._id === filters.category) : null
 
   return (
-    <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+    <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
       <Helmet>
         <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : 'Tất cả sản phẩm | Shopee Clone'}</title>
         <meta name='description' content='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng' />
@@ -248,7 +248,7 @@ const ProductList = () => {
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (
-                      <div className='col-span-1 transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md' key={product._id}>
+                      <div className='col-span-1 transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50' key={product._id}>
                         <Product product={product} />
                       </div>
                     ))}
@@ -265,14 +265,14 @@ const ProductList = () => {
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (
-                      <div className='transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md' key={product._id}>
+                      <div className='transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50' key={product._id}>
                         <ProductListItem product={product} />
                       </div>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
-              {pagination && <Pagination pageSize={pagination.page_size} />}
+              {pagination && <Pagination pageSize={pagination.page_size} basePath={path.products} />}
             </div>
           </div>
         )}
