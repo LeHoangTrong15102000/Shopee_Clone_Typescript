@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { FollowedSeller } from 'src/types/seller.type'
 import useSellerFollowing from 'src/hooks/useSellerFollowing'
 import SellerFollowButton from 'src/components/SellerFollowButton'
+import { FALLBACK_IMAGES } from 'src/utils/imageUtils'
 
 interface FollowedSellersProps {
   className?: string
@@ -73,8 +74,6 @@ const FollowedSellers = memo(function FollowedSellers({
 
 // Seller Card Component
 const SellerCard = memo(function SellerCard({ seller }: { seller: FollowedSeller }) {
-  const defaultAvatar = 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn'
-
   return (
     <motion.div
       layout
@@ -86,11 +85,14 @@ const SellerCard = memo(function SellerCard({ seller }: { seller: FollowedSeller
       {/* Avatar */}
       <div className='flex-shrink-0'>
         <img
-          src={seller.avatar || defaultAvatar}
+          src={seller.avatar || FALLBACK_IMAGES.avatar}
           alt={seller.name}
-          className='w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-gray-200 dark:border-slate-600'
+          className='w-10 h-10 sm:w-12 sm:h-12 rounded-full object-contain border border-gray-200 dark:border-slate-600 bg-gray-100 dark:bg-slate-700'
           onError={(e) => {
-            ;(e.target as HTMLImageElement).src = defaultAvatar
+            const img = e.target as HTMLImageElement
+            if (img.src !== FALLBACK_IMAGES.avatar) {
+              img.src = FALLBACK_IMAGES.avatar
+            }
           }}
         />
       </div>

@@ -372,18 +372,18 @@ const NavHeader = () => {
             <div className='relative rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md transition-all'>
               <div
                 className={classNames(
-                  'flex flex-col py-2 px-2 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
+                  'flex flex-col py-1 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'
                 )}
               >
                 <button
                   onClick={() => handleTranslateLanguage('vi')}
-                  className='block w-full py-2 px-3 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+                  className='block w-full py-3 px-8 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   Tiếng Việt
                 </button>
                 <button
                   onClick={() => handleTranslateLanguage('en')}
-                  className='block w-full py-2 px-3 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+                  className='block w-full py-3 px-8 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs md:text-sm text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   English
                 </button>

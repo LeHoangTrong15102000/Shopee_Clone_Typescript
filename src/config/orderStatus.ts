@@ -45,7 +45,7 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
     color: { light: 'text-blue-700', dark: 'text-blue-300' },
     bgColor: { light: 'bg-blue-50', dark: 'bg-blue-900/30' },
     borderColor: { light: 'border-blue-200', dark: 'border-blue-700/50' },
-    icon: '⚙️',
+    icon: '⟳',
     animate: true
   },
   shipped: {
@@ -53,22 +53,22 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
     color: { light: 'text-orange-700', dark: 'text-orange-300' },
     bgColor: { light: 'bg-orange-50', dark: 'bg-orange-900/30' },
     borderColor: { light: 'border-orange-200', dark: 'border-orange-700/50' },
-    icon: '📦'
+    icon: '↗'
   },
   in_transit: {
     label: 'Đang vận chuyển',
-    color: { light: 'text-indigo-700', dark: 'text-indigo-300' },
-    bgColor: { light: 'bg-indigo-50', dark: 'bg-indigo-900/30' },
-    borderColor: { light: 'border-indigo-200', dark: 'border-indigo-700/50' },
-    icon: '🚚',
+    color: { light: 'text-blue-600', dark: 'text-blue-400' },
+    bgColor: { light: 'bg-blue-50', dark: 'bg-blue-900/30' },
+    borderColor: { light: 'border-blue-200', dark: 'border-blue-700/50' },
+    icon: '➤',
     animate: true
   },
   out_for_delivery: {
     label: 'Đang giao hàng',
-    color: { light: 'text-purple-700', dark: 'text-purple-300' },
-    bgColor: { light: 'bg-purple-50', dark: 'bg-purple-900/30' },
-    borderColor: { light: 'border-purple-200', dark: 'border-purple-700/50' },
-    icon: '🛵',
+    color: { light: 'text-orange-600', dark: 'text-orange-400' },
+    bgColor: { light: 'bg-orange-50', dark: 'bg-orange-900/30' },
+    borderColor: { light: 'border-orange-200', dark: 'border-orange-700/50' },
+    icon: '⚡',
     animate: true
   },
   delivered: {
@@ -76,7 +76,7 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
     color: { light: 'text-green-700', dark: 'text-green-300' },
     bgColor: { light: 'bg-green-50', dark: 'bg-green-900/30' },
     borderColor: { light: 'border-green-200', dark: 'border-green-700/50' },
-    icon: '✅'
+    icon: '✓'
   },
   cancelled: {
     label: 'Đã hủy',
@@ -90,7 +90,7 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
     color: { light: 'text-gray-700', dark: 'text-gray-300' },
     bgColor: { light: 'bg-gray-50', dark: 'bg-gray-900/30' },
     borderColor: { light: 'border-gray-200', dark: 'border-gray-700/50' },
-    icon: '↩️'
+    icon: '↩'
   }
 }
 

@@ -73,13 +73,16 @@ export default function OrderStatusTracker({
   }, [currentStatus, isSpecialStatus])
 
   return (
-    <div className={classNames('rounded-2xl bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900/50 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700', className)}>
+    <div className={classNames('relative rounded-2xl bg-gradient-to-br from-slate-50 via-white to-orange-50/30 dark:from-slate-800 dark:via-slate-800 dark:to-orange-950/10 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700 overflow-hidden', className)}>
+      {/* Decorative gradient accent line */}
+      <div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-rose-500 to-amber-500' />
       {/* Live tracking indicator - Enhanced */}
       {isSubscribed && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className='mb-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 px-4 py-2.5 ring-1 ring-green-200/50 dark:ring-green-700/50'
+          aria-label='Đang theo dõi trạng thái đơn hàng trực tiếp'
         >
           <span className='relative flex h-2.5 w-2.5'>
             <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75'></span>
@@ -136,12 +139,13 @@ export default function OrderStatusTracker({
           <div className='absolute left-[10%] right-[10%] top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'>
             {/* Animated progress fill */}
             <motion.div
+              role='progressbar'
               initial={{ width: 0 }}
               animate={{
                 width: currentStepIndex >= 0 ? `${(currentStepIndex / (ORDER_STEPS.length - 1)) * 100}%` : '0%'
               }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className='h-full rounded-full bg-gradient-to-r from-orange to-[#ee4d2d]'
+              className='h-full rounded-full bg-gradient-to-r from-orange via-orange-500 to-rose-500'
               style={{
                 boxShadow: '0 0 10px rgba(238, 77, 45, 0.4)'
               }}
@@ -165,9 +169,9 @@ export default function OrderStatusTracker({
                     className={classNames(
                       'relative z-10 flex h-11 w-11 md:h-14 md:w-14 items-center justify-center rounded-full border-2 bg-white dark:bg-slate-800',
                       {
-                        'border-green-500 text-green-500': isCompleted,
-                        'border-[#ee4d2d] text-[#ee4d2d]': isCurrent,
-                        'border-gray-200 dark:border-slate-600 text-gray-300 dark:text-gray-500': isFuture
+                        'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 text-green-600 dark:text-green-400 shadow-sm shadow-green-200/50 dark:shadow-green-800/30': isCompleted,
+                        'border-orange bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 text-orange dark:text-orange-400 shadow-md shadow-orange-200/60 dark:shadow-orange-800/40 ring-2 ring-orange-100 dark:ring-orange-900/30': isCurrent,
+                        'border-gray-200 dark:border-slate-600 text-gray-300 dark:text-slate-400': isFuture
                       }
                     )}
                   >
@@ -188,10 +192,10 @@ export default function OrderStatusTracker({
 
                   {/* Step label */}
                   <span
-                    className={classNames('mt-2 md:mt-3 text-center text-[10px] md:text-xs font-medium whitespace-nowrap', {
-                      'text-green-600 dark:text-green-400': isCompleted,
-                      'text-[#ee4d2d]': isCurrent,
-                      'text-gray-400 dark:text-gray-500': isFuture
+                    className={classNames('mt-2 md:mt-3 text-center text-[10px] md:text-xs whitespace-nowrap', {
+                      'text-green-600 dark:text-green-400 font-medium': isCompleted,
+                      'text-orange dark:text-orange-400 font-semibold': isCurrent,
+                      'text-gray-400 dark:text-slate-400 font-medium': isFuture
                     })}
                   >
                     {step.label}
@@ -209,7 +213,7 @@ export default function OrderStatusTracker({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className='mt-5 flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400'
+          className='mt-5 flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-300'
         >
           <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />

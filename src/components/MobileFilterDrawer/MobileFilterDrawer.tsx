@@ -119,7 +119,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                 to={path.products}
                 onClick={handleCategoryClick}
                 className={classNames('flex items-center font-bold', {
-                  'text-orange': !category
+                  'text-orange dark:text-orange-400': !category
                 })}
               >
                 <svg viewBox='0 0 12 10' className='mr-2 h-4 w-3 fill-current'>
@@ -153,11 +153,11 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                         }}
                         onClick={handleCategoryClick}
                         className={classNames('relative px-2', {
-                          'font-semibold text-orange': isActive
+                          'font-semibold text-orange dark:text-orange-400': isActive
                         })}
                       >
                         {isActive && (
-                          <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange'>
+                          <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'>
                             <polygon points='4 3.5 0 0 0 7' />
                           </svg>
                         )}

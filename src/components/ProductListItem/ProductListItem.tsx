@@ -30,7 +30,7 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
     ? {}
     : {
         y: -2,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
         transition: { duration: 0.2 }
       }
 

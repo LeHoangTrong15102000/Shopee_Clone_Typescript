@@ -85,10 +85,18 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
       <div className='p-4 border-b border-gray-100 dark:border-slate-700'>
         <div className='flex items-center justify-between mb-3'>
           <div className='flex items-center gap-2'>
-            <span className='text-2xl'>🔥</span>
+            <svg viewBox='0 0 24 24' className='w-7 h-7 flex-shrink-0'>
+              <defs>
+                <linearGradient id='fireGrad' x1='12' y1='2' x2='12' y2='23' gradientUnits='userSpaceOnUse'>
+                  <stop stopColor='#FBBF24' />
+                  <stop offset='1' stopColor='#EE4D2D' />
+                </linearGradient>
+              </defs>
+              <path d='M12 23c-4.97 0-9-3.58-9-8 0-3.19 2.13-6.17 3.5-7.56.37-.37.98-.1.98.42 0 1.63.81 2.96 2.02 3.64C9.82 7.98 11 4.5 12 2c1 2.5 2.18 5.98 2.5 9.5 1.21-.68 2.02-2.01 2.02-3.64 0-.52.61-.79.98-.42C18.87 8.83 21 11.81 21 15c0 4.42-4.03 8-9 8z' fill='url(#fireGrad)' />
+            </svg>
             <div>
               <p className='font-medium text-gray-900 dark:text-gray-100'>Chuỗi {streak.current} ngày</p>
-              <p className='text-xs text-gray-500 dark:text-gray-300'>Kỷ lục: {streak.longest} ngày</p>
+              <p className='text-xs text-gray-600 dark:text-gray-300'>Kỷ lục: {streak.longest} ngày</p>
             </div>
           </div>
           <div className='text-right'>
@@ -111,7 +119,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
           <div className='flex justify-between mt-1'>
             {milestones.map((milestone) => (
               <div key={milestone} className='text-center' style={{ width: `${100 / milestones.length}%` }}>
-                <div className={classNames('text-xs', streak.current >= milestone ? 'text-orange' : 'text-gray-400 dark:text-gray-500')}>
+                <div className={classNames('text-xs font-medium', streak.current >= milestone ? 'text-orange dark:text-orange-400' : 'text-gray-500 dark:text-gray-300')}>
                   {milestone} ngày
                 </div>
               </div>
@@ -127,7 +135,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             onClick={handleCheckIn}
             disabled={isChecking}
             whileTap={{ scale: 0.95 }}
-            className='w-full py-3 rounded-lg font-bold text-lg transition-all bg-gradient-to-r from-orange to-[#ff6633] text-white hover:shadow-lg'
+            className='w-full py-3 rounded-lg font-bold text-lg transition-all bg-gradient-to-r from-orange to-[#ff6633] text-white hover:shadow-lg cursor-pointer'
           >
             {isChecking ? (
               <span className='flex items-center justify-center gap-2'>
@@ -195,7 +203,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     transition={{ delay: 0.4 }}
                     className='text-xs text-emerald-600/70 dark:text-emerald-400/70 mt-0.5'
                   >
-                    Quay lại vào ngày mai nhé! 🎉
+                    Quay lại vào ngày mai nhé!
                   </motion.p>
                 </div>
               </div>
@@ -210,7 +218,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
         {/* Toggle Calendar */}
         <button
           onClick={() => setShowCalendar(!showCalendar)}
-          className='w-full mt-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-orange transition-colors flex items-center justify-center gap-1'
+          className='w-full mt-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-orange dark:hover:text-orange-400 transition-colors flex items-center justify-center gap-1 cursor-pointer'
         >
           <svg className={classNames('w-4 h-4 transition-transform', showCalendar && 'rotate-180')} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
@@ -232,7 +240,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             <div className='p-4'>
               {/* Month Navigation */}
               <div className='flex items-center justify-between mb-4'>
-                <button onClick={goToPrevMonth} className='p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded'>
+                <button onClick={goToPrevMonth} className='p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded cursor-pointer' aria-label='Tháng trước'>
                   <svg className='w-5 h-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
                   </svg>
@@ -240,7 +248,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                 <span className='font-medium dark:text-gray-200'>
                   {monthNames[currentMonth.month]} {currentMonth.year}
                 </span>
-                <button onClick={goToNextMonth} className='p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded'>
+                <button onClick={goToNextMonth} className='p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded cursor-pointer' aria-label='Tháng sau'>
                   <svg className='w-5 h-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
                   </svg>
@@ -250,7 +258,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
               {/* Day Names */}
               <div className='grid grid-cols-7 gap-1 mb-2'>
                 {dayNames.map((day) => (
-                  <div key={day} className='text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-1'>
+                  <div key={day} className='text-center text-xs font-medium text-gray-500 dark:text-slate-400 py-1'>
                     {day}
                   </div>
                 ))}
@@ -278,7 +286,9 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     >
                       {dayNum}
                       {day.checked && (
-                        <span className='absolute -top-1 -right-1 text-xs'>✓</span>
+                        <svg className='absolute -top-0.5 -right-0.5 w-3 h-3 text-white bg-emerald-500 rounded-full p-0.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M5 13l4 4L19 7' />
+                        </svg>
                       )}
                     </div>
                   )

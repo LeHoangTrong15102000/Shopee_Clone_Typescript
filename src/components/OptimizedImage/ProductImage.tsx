@@ -25,7 +25,7 @@ export default function ProductImage({ src, alt, size = 'xl', className = '', co
       aspectRatio='1:1'
       objectFit='cover'
       fallbackSrc={fallbackSrc}
-      className={classNames('bg-white', className)}
+      className={classNames('bg-white dark:bg-slate-700', className)}
       containerClassName={classNames(sizeClass, containerClassName)}
       {...props}
     />

@@ -1,14 +1,17 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Seller, FollowedSeller } from 'src/types/seller.type'
 
-const FOLLOWED_SELLERS_KEY = 'shopee_followed_sellers'
+// Versioned key to invalidate stale localStorage data (e.g. broken avatar URLs from previous fixes)
+const FOLLOWED_SELLERS_KEY = 'shopee_followed_sellers_v2'
+const LEGACY_FOLLOWED_SELLERS_KEY = 'shopee_followed_sellers'
 const MAX_FOLLOWED_SELLERS = 100
 
 const MOCK_FOLLOWED_SELLERS: FollowedSeller[] = [
   {
     _id: 'seller_001',
     name: 'Thời Trang Việt',
-    avatar: 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn',
+    avatar:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiNFRTREMkQiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+VFQ8L3RleHQ+PC9zdmc+',
     is_official: true,
     location: 'TP. Hồ Chí Minh',
     products_count: 1250,
@@ -18,7 +21,8 @@ const MOCK_FOLLOWED_SELLERS: FollowedSeller[] = [
   {
     _id: 'seller_002',
     name: 'Điện Tử Số',
-    avatar: 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn',
+    avatar:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiMxRTkwRkYiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+xJBUPC90ZXh0Pjwvc3ZnPg==',
     is_official: true,
     location: 'Hà Nội',
     products_count: 890,
@@ -28,7 +32,8 @@ const MOCK_FOLLOWED_SELLERS: FollowedSeller[] = [
   {
     _id: 'seller_003',
     name: 'Mỹ Phẩm Hàn Quốc',
-    avatar: 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn',
+    avatar:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiMxMEI5ODEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+TVA8L3RleHQ+PC9zdmc+',
     is_official: false,
     location: 'Đà Nẵng',
     products_count: 456,
@@ -38,7 +43,8 @@ const MOCK_FOLLOWED_SELLERS: FollowedSeller[] = [
   {
     _id: 'seller_004',
     name: 'Phụ Kiện Gaming',
-    avatar: 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn',
+    avatar:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiM4QjVDRjYiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+UEs8L3RleHQ+PC9zdmc+',
     is_official: false,
     location: 'TP. Hồ Chí Minh',
     products_count: 320,
@@ -48,7 +54,8 @@ const MOCK_FOLLOWED_SELLERS: FollowedSeller[] = [
   {
     _id: 'seller_005',
     name: 'Đồ Gia Dụng Cao Cấp',
-    avatar: 'https://down-vn.img.susercontent.com/file/sg-11134004-7qvfc-lhj3c9qnp7ov4a_tn',
+    avatar:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiNFQzQ4OTkiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+xJBHPC90ZXh0Pjwvc3ZnPg==',
     is_official: true,
     location: 'Hà Nội',
     products_count: 678,
@@ -62,11 +69,23 @@ export const useSellerFollowing = () => {
 
   // Load from localStorage on mount
   useEffect(() => {
+    // Clean up legacy key from previous versions
+    localStorage.removeItem(LEGACY_FOLLOWED_SELLERS_KEY)
+
     const stored = localStorage.getItem(FOLLOWED_SELLERS_KEY)
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as FollowedSeller[]
-        setFollowedSellers(parsed)
+        // Merge avatars from mock data to ensure they're always up-to-date
+        const mockAvatarMap = new Map(MOCK_FOLLOWED_SELLERS.map((s) => [s._id, s.avatar]))
+        const merged = parsed.map((seller) => {
+          const mockAvatar = mockAvatarMap.get(seller._id)
+          if (mockAvatar && seller.avatar !== mockAvatar) {
+            return { ...seller, avatar: mockAvatar }
+          }
+          return seller
+        })
+        setFollowedSellers(merged)
       } catch (e) {
         console.error('Failed to parse followed sellers:', e)
         localStorage.removeItem(FOLLOWED_SELLERS_KEY)

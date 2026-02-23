@@ -45,7 +45,7 @@ const mockPaymentMethods: PaymentMethod[] = [
     type: 'cod',
     name: 'Thanh toán khi nhận hàng (COD)',
     description: 'Thanh toán bằng tiền mặt khi nhận hàng',
-    icon: '💵',
+    icon: 'cod',
     isAvailable: true
   },
   {
@@ -53,7 +53,7 @@ const mockPaymentMethods: PaymentMethod[] = [
     type: 'bank_transfer',
     name: 'Chuyển khoản ngân hàng',
     description: 'Chuyển khoản qua tài khoản ngân hàng',
-    icon: '🏦',
+    icon: 'bank_transfer',
     isAvailable: true
   },
   {
@@ -61,7 +61,7 @@ const mockPaymentMethods: PaymentMethod[] = [
     type: 'e_wallet',
     name: 'Ví điện tử',
     description: 'Thanh toán qua MoMo, ZaloPay, VNPay',
-    icon: '📱',
+    icon: 'e_wallet',
     isAvailable: true
   },
   {
@@ -69,7 +69,7 @@ const mockPaymentMethods: PaymentMethod[] = [
     type: 'credit_card',
     name: 'Thẻ tín dụng/Ghi nợ',
     description: 'Visa, Mastercard, JCB',
-    icon: '💳',
+    icon: 'credit_card',
     isAvailable: true
   }
 ]

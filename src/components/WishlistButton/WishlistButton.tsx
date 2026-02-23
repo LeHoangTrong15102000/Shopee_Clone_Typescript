@@ -81,9 +81,12 @@ export default function WishlistButton({ productId, productName, className, size
         </svg>
       ) : (
         <svg
-          className={classNames('transition-colors duration-200', iconSizeClasses[size])}
-          fill={isInWishlist ? '#ee4d2d' : 'none'}
-          stroke={isInWishlist ? '#ee4d2d' : '#666'}
+          className={classNames('transition-colors duration-200', iconSizeClasses[size], {
+            'text-[#ee4d2d]': isInWishlist,
+            'text-gray-500 dark:text-gray-400': !isInWishlist
+          })}
+          fill={isInWishlist ? 'currentColor' : 'none'}
+          stroke='currentColor'
           strokeWidth='2'
           viewBox='0 0 24 24'
           aria-hidden='true'
