@@ -44,9 +44,11 @@ export default function OrderList() {
   const statusToNumber: Record<string, number> = {
     pending: 1,
     confirmed: 2,
-    shipping: 3,
-    delivered: 4,
-    cancelled: 5
+    processing: 3,
+    shipping: 4,
+    delivered: 5,
+    cancelled: 6,
+    returned: 7
   }
 
   const { data: ordersData, isLoading } = useQuery({

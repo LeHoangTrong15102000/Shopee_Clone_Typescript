@@ -432,15 +432,13 @@ export default function Wishlist() {
               >
                 <div className='flex flex-wrap items-center gap-4 text-sm'>
                   <span className='inline-flex items-center gap-1.5 font-medium text-purple-700 dark:text-purple-300'><IconTrendingUp className='h-4 w-4' /> Insights:</span>
-                  <span className='text-gray-600 dark:text-gray-300'>
+                  <span className='inline-flex items-center gap-1 text-gray-600 dark:text-gray-300'>
                     Danh mục yêu thích nhất: <span className='inline-flex items-center gap-1 font-semibold text-purple-600 dark:text-purple-400'>{(() => { const CatIcon = categoryIconComponents[insights.topCategory] || IconCube; return <CatIcon className='h-3.5 w-3.5' /> })()} {insights.topCategory}</span> ({insights.topCategoryCount} SP)
                   </span>
                   <span className='hidden sm:inline text-gray-300 dark:text-gray-600'>|</span>
-                  <span className='text-gray-600 dark:text-gray-300'>
-                    {insights.priceDropCount > 0 && (
-                      <span className='inline-flex items-center gap-1 text-green-600 dark:text-green-400 font-semibold'><IconFire className='h-3.5 w-3.5' /> {insights.priceDropCount} sản phẩm giảm &gt;30%</span>
-                    )}
-                  </span>
+                  {insights.priceDropCount > 0 && (
+                    <span className='inline-flex items-center gap-1 text-green-600 dark:text-green-400 font-semibold'><IconFire className='h-3.5 w-3.5' /> {insights.priceDropCount} sản phẩm giảm &gt;30%</span>
+                  )}
                 </div>
               </motion.div>
             )}

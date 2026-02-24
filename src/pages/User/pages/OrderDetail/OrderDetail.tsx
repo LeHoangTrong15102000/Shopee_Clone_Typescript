@@ -110,26 +110,6 @@ function getStatusDisplay(status: OrderStatus) {
   }
 }
 
-const StatusIcon = ({ type, className }: { type: string; className?: string }) => {
-  const defaultClass = className || 'h-4 w-4'
-  switch (type) {
-    case 'pending':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-    case 'confirmed':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-    case 'shipping':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21M3.375 14.25h3.375m0 0V11.25m0 3H12M5.625 11.25H3.375m2.25 0V8.625c0-.621.504-1.125 1.125-1.125h5.25M12 11.25V8.625' /></svg>
-    case 'delivered':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-    case 'cancelled':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-    case 'returned':
-      return <svg className={defaultClass} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3' /></svg>
-    default:
-      return null
-  }
-}
-
 const paymentMethodLabels: Record<string, string> = {
   cod: 'Thanh toán khi nhận hàng (COD)',
   bank_transfer: 'Chuyển khoản ngân hàng',
@@ -258,7 +238,6 @@ export default function OrderDetail() {
             {...(isActiveStatus && !shouldReduceMotion ? pulseVariants : {})}
             className={`flex items-center gap-2 rounded-full px-4 py-2 ${status.bgColor} ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-800 ring-current/20 shadow-sm`}
           >
-            <StatusIcon type={status.icon} />
             <span className={`font-semibold ${status.color}`}>{status.label}</span>
           </motion.div>
         </div>

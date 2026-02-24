@@ -38,6 +38,7 @@ const StepIcon = ({ type, className, isActive }: { type: string; className?: str
 const ORDER_STEPS = [
   { key: 'pending', label: 'Chờ xác nhận' },
   { key: 'confirmed', label: 'Đã xác nhận' },
+  { key: 'processing', label: 'Đang xử lý' },
   { key: 'shipping', label: 'Đang giao' },
   { key: 'delivered', label: 'Đã giao' }
 ]
@@ -74,8 +75,7 @@ export default function OrderStatusTracker({
 
   return (
     <div className={classNames('relative rounded-2xl bg-gradient-to-br from-slate-50 via-white to-orange-50/30 dark:from-slate-800 dark:via-slate-800 dark:to-orange-950/10 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700 overflow-hidden', className)}>
-      {/* Decorative gradient accent line */}
-      <div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-rose-500 to-amber-500' />
+
       {/* Live tracking indicator - Enhanced */}
       {isSubscribed && (
         <motion.div

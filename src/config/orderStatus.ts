@@ -48,27 +48,12 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
     icon: '⟳',
     animate: true
   },
-  shipped: {
-    label: 'Đã giao cho ĐVVC',
-    color: { light: 'text-orange-700', dark: 'text-orange-300' },
-    bgColor: { light: 'bg-orange-50', dark: 'bg-orange-900/30' },
-    borderColor: { light: 'border-orange-200', dark: 'border-orange-700/50' },
-    icon: '↗'
-  },
-  in_transit: {
-    label: 'Đang vận chuyển',
-    color: { light: 'text-blue-600', dark: 'text-blue-400' },
-    bgColor: { light: 'bg-blue-50', dark: 'bg-blue-900/30' },
-    borderColor: { light: 'border-blue-200', dark: 'border-blue-700/50' },
+  shipping: {
+    label: 'Đang giao',
+    color: { light: 'text-teal-600', dark: 'text-teal-400' },
+    bgColor: { light: 'bg-teal-50', dark: 'bg-teal-900/30' },
+    borderColor: { light: 'border-teal-200', dark: 'border-teal-700/50' },
     icon: '➤',
-    animate: true
-  },
-  out_for_delivery: {
-    label: 'Đang giao hàng',
-    color: { light: 'text-orange-600', dark: 'text-orange-400' },
-    bgColor: { light: 'bg-orange-50', dark: 'bg-orange-900/30' },
-    borderColor: { light: 'border-orange-200', dark: 'border-orange-700/50' },
-    icon: '⚡',
     animate: true
   },
   delivered: {
@@ -102,4 +87,16 @@ export const getStatusClasses = (status: OrderStatus): string => {
   if (!config) return ''
   return `${config.color.light} dark:${config.color.dark} ${config.bgColor.light} dark:${config.bgColor.dark} ${config.borderColor.light} dark:${config.borderColor.dark}`
 }
+
+// Carrier code to display name mapping (backend uses codes, UI shows names)
+export const CARRIER_DISPLAY_NAMES: Record<string, string> = {
+  'ghn': 'Giao Hàng Nhanh',
+  'ghtk': 'Giao Hàng Tiết Kiệm',
+  'viettel_post': 'Viettel Post',
+  'j&t': 'J&T Express',
+  'other': 'Khác'
+}
+
+export const getCarrierDisplayName = (carrierCode: string): string =>
+  CARRIER_DISPLAY_NAMES[carrierCode] ?? carrierCode
 

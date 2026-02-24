@@ -19,6 +19,7 @@ interface UseOrderTrackingReturn {
 const STATUS_MESSAGES: Record<string, string> = {
   pending: 'Đơn hàng đang chờ xử lý',
   confirmed: 'Đơn hàng đã được xác nhận',
+  processing: 'Đơn hàng đang được xử lý',
   shipping: 'Đơn hàng đang được giao',
   delivered: 'Đơn hàng đã giao thành công',
   cancelled: 'Đơn hàng đã bị hủy',

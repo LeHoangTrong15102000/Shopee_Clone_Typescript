@@ -130,10 +130,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
           <div className='flex items-center'>
             {/* Hoàn thành - Delivered */}
             {purchase.status === purchasesStatus.delivered && (
-              <span className='inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-3 py-1.5 text-sm font-medium text-green-600 shadow-sm ring-1 ring-green-200/50'>
-                <svg className='h-4 w-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2.5}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
-                </svg>
+              <span className='inline-flex items-center rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-3 py-1.5 text-sm font-medium text-green-600 shadow-sm ring-1 ring-green-200/50'>
                 Hoàn thành
               </span>
             )}
@@ -141,13 +138,10 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.waitForConfirmation && (
               <span
                 className={classNames(
-                  'inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
+                  'inline-flex items-center rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
                   { 'animate-[status-pulse_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
-                <svg className='h-4 w-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' />
-                </svg>
                 Chờ xác nhận
               </span>
             )}
@@ -155,13 +149,10 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.waitForGetting && (
               <span
                 className={classNames(
-                  'inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-50 to-sky-50 px-3 py-1.5 text-sm font-medium text-blue-600 shadow-sm ring-1 ring-blue-200/50',
+                  'inline-flex items-center rounded-full bg-gradient-to-r from-blue-50 to-sky-50 px-3 py-1.5 text-sm font-medium text-blue-600 shadow-sm ring-1 ring-blue-200/50',
                   { 'animate-[status-pulse-blue_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
-                <svg className='h-4 w-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' />
-                </svg>
                 Chờ lấy hàng
               </span>
             )}
@@ -169,22 +160,16 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.inProgress && (
               <span
                 className={classNames(
-                  'inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
+                  'inline-flex items-center rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
                   { 'animate-[status-pulse_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
-                <svg className='h-4 w-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
-                </svg>
                 Đang giao
               </span>
             )}
             {/* Đã hủy - Cancelled */}
             {purchase.status === purchasesStatus.cancelled && (
-              <span className='inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-red-50 to-rose-50 px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm ring-1 ring-red-200/50'>
-                <svg className='h-4 w-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2.5}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
-                </svg>
+              <span className='inline-flex items-center rounded-full bg-gradient-to-r from-red-50 to-rose-50 px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm ring-1 ring-red-200/50'>
                 Đã hủy
               </span>
             )}

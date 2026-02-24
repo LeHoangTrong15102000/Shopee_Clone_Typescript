@@ -5,51 +5,50 @@ import http from 'src/utils/http'
 // Mock data for fallback when API is not available
 const mockTrackingEvents: TrackingEvent[] = [
   {
-    _id: 'mock-event-1',
     status: 'pending',
     description: 'Đơn hàng đã được tạo',
     location: 'Hệ thống',
     timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    _id: 'mock-event-2',
     status: 'confirmed',
     description: 'Đơn hàng đã được xác nhận',
     location: 'Kho hàng TP.HCM',
     timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    _id: 'mock-event-3',
     status: 'processing',
     description: 'Đang chuẩn bị hàng',
     location: 'Kho hàng TP.HCM',
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    _id: 'mock-event-4',
-    status: 'shipped',
-    description: 'Đã giao cho đơn vị vận chuyển',
-    location: 'Bưu cục Quận 1, TP.HCM',
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: 'mock-event-5',
-    status: 'in_transit',
-    description: 'Đang vận chuyển đến kho phân loại',
+    status: 'shipping',
+    description: 'Đang vận chuyển đến bạn',
     location: 'Trung tâm phân loại Hà Nội',
     timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
   }
 ]
 
 const mockOrderTracking: OrderTracking = {
+  _id: 'mock-tracking-id-001',
   order_id: 'mock-order-tracking-1',
+  user_id: 'mock-user-id-001',
   tracking_number: 'VN2024MOCK001',
-  carrier: 'Giao Hàng Nhanh',
-  carrier_logo: 'https://picsum.photos/seed/ghn/100',
-  current_status: 'in_transit',
+  carrier: 'ghn',
+  status: 'shipping',
   estimated_delivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-  events: mockTrackingEvents,
-  last_updated: new Date().toISOString()
+  timeline: mockTrackingEvents,
+  shipping_address: {
+    name: 'Nguyễn Văn A',
+    phone: '0901234567',
+    address: '123 Đường ABC',
+    province: 'Hà Nội',
+    district: 'Cầu Giấy',
+    ward: 'Dịch Vọng'
+  },
+  createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  updatedAt: new Date().toISOString()
 }
 
 const orderTrackingApi = {

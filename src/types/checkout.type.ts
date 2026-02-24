@@ -60,7 +60,7 @@ export interface PaymentMethod {
 }
 
 // Order types
-export type OrderStatus = 'pending' | 'confirmed' | 'shipping' | 'delivered' | 'cancelled' | 'returned'
+export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipping' | 'delivered' | 'cancelled' | 'returned'
 
 export interface OrderItem {
   product: Product

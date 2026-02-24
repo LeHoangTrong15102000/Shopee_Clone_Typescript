@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
-import { OrderTracking } from 'src/types/orderTracking.type'
+import { OrderTracking, getCarrierDisplayName } from 'src/types/orderTracking.type'
 
 interface OrderTrackingTimelineProps {
   tracking: OrderTracking
@@ -11,9 +11,7 @@ const STATUS_ORDER: OrderStatus[] = [
   'pending',
   'confirmed',
   'processing',
-  'shipped',
-  'in_transit',
-  'out_for_delivery',
+  'shipping',
   'delivered'
 ]
 
@@ -33,20 +31,17 @@ function getStatusIndex(status: OrderStatus): number {
 }
 
 export default function OrderTrackingTimeline({ tracking, className }: OrderTrackingTimelineProps) {
-  const currentStatusIndex = getStatusIndex(tracking.current_status)
-  const isCancelled = tracking.current_status === 'cancelled'
-  const isReturned = tracking.current_status === 'returned'
+  const currentStatusIndex = getStatusIndex(tracking.status)
+  const isCancelled = tracking.status === 'cancelled'
+  const isReturned = tracking.status === 'returned'
 
   return (
     <div className={classNames('bg-white dark:bg-slate-800 dark:border dark:border-slate-700 rounded-xl shadow-sm overflow-hidden', className)}>
       {/* Carrier Info Card */}
       <div className='p-4 md:p-5 border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-orange-50/50 via-white to-amber-50/30 dark:from-orange-950/20 dark:via-slate-800 dark:to-amber-950/10'>
         <div className='flex items-center gap-3'>
-          {tracking.carrier_logo && (
-            <img src={tracking.carrier_logo} alt={tracking.carrier} className='w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg border border-gray-100 dark:border-slate-600 bg-white dark:bg-slate-700 p-1' />
-          )}
           <div className='flex-1'>
-            <h3 className='font-medium text-gray-900 dark:text-gray-100'>{tracking.carrier}</h3>
+            <h3 className='font-medium text-gray-900 dark:text-gray-100'>{getCarrierDisplayName(tracking.carrier)}</h3>
             <p className='text-sm text-gray-500 dark:text-gray-300'>
               Mã vận đơn: <span className='font-semibold text-orange dark:text-orange-400 bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-md text-xs'>{tracking.tracking_number}</span>
             </p>
@@ -54,16 +49,21 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
         </div>
 
         {/* Estimated Delivery */}
-        {!isCancelled && !isReturned && tracking.current_status !== 'delivered' && (
+        {!isCancelled && !isReturned && tracking.status !== 'delivered' && (
           <div className='mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800/30 rounded-lg'>
-            <p className='text-sm text-gray-600 dark:text-gray-300'>
-              Dự kiến giao hàng:{' '}
-              <span className='font-semibold text-orange dark:text-orange-400'>{formatDateTime(tracking.estimated_delivery)}</span>
-            </p>
+            <div className='flex items-center gap-2'>
+              <svg className='h-4 w-4 text-orange dark:text-orange-400 flex-shrink-0' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
+              </svg>
+              <p className='text-sm text-gray-600 dark:text-gray-300'>
+                Dự kiến giao hàng:{' '}
+                <span className='font-semibold text-orange dark:text-orange-400'>{formatDateTime(tracking.estimated_delivery)}</span>
+              </p>
+            </div>
           </div>
         )}
 
-        {tracking.current_status === 'delivered' && (
+        {tracking.status === 'delivered' && (
           <div className='mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg'>
             <p className='text-sm text-green-700 dark:text-green-400 font-medium'>✓ Đơn hàng đã được giao thành công</p>
           </div>
@@ -87,15 +87,15 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
         <h4 className='font-medium text-gray-900 dark:text-gray-100 mb-4'>Trạng thái đơn hàng</h4>
 
         <div className='relative'>
-          {tracking.events.map((event, index) => {
-            const isLast = index === tracking.events.length - 1
-            const isCurrent = event.status === tracking.current_status
-            const eventStatusIndex = getStatusIndex(event.status)
+          {tracking.timeline.map((event, index) => {
+            const isLast = index === tracking.timeline.length - 1
+            const isCurrent = event.status === tracking.status
+            const eventStatusIndex = getStatusIndex(event.status as OrderStatus)
             const isPassed = eventStatusIndex < currentStatusIndex
             const isError = event.status === 'cancelled' || event.status === 'returned'
 
             return (
-              <div key={event._id} className='relative flex gap-3 md:gap-4'>
+              <div key={`${event.timestamp}-${index}`} className='relative flex gap-3 md:gap-4'>
                 {/* Timeline Line */}
                 {!isLast && (
                   <div
@@ -150,7 +150,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                       'text-red-600 dark:text-red-400': isError
                     })}
                   >
-                    {ORDER_STATUS_CONFIG[event.status]?.label ?? event.status}
+                    {ORDER_STATUS_CONFIG[event.status as OrderStatus]?.label ?? event.status}
                   </div>
                   <p className='text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1'>{event.description}</p>
                   {event.location && (
@@ -173,7 +173,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
 
       {/* Last Updated */}
       <div className='px-3 pb-3 md:px-4 md:pb-4'>
-        <p className='text-xs text-gray-500 dark:text-slate-400 text-right'>Cập nhật lần cuối: {formatDateTime(tracking.last_updated)}</p>
+        <p className='text-xs text-gray-500 dark:text-slate-400 text-right'>Cập nhật lần cuối: {formatDateTime(tracking.updatedAt)}</p>
       </div>
     </div>
   )

@@ -57,9 +57,11 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-dom'],
-            // framer-motion phải ở cùng chunk với @heroui/react vì @heroui/react
-            // phụ thuộc vào framer-motion — tách riêng gây circular dependency giữa chunks
-            'ui-vendor': ['@heroui/react', '@floating-ui/react', '@tippyjs/react', 'tippy.js', 'framer-motion'],
+            // HeroUI phụ thuộc framer-motion — giữ chung chunk để tránh circular dependency
+            // floating-ui và tippy tách riêng vì chỉ dùng cho Popover/Tooltip
+            // HeroUI phụ thuộc framer-motion — giữ chung chunk để tránh circular dependency
+            'heroui-vendor': ['@heroui/react', 'framer-motion'],
+            'floating-vendor': ['@floating-ui/react', '@tippyjs/react', 'tippy.js'],
             'http-vendor': ['axios', '@tanstack/react-query'],
             'devtools-vendor': ['@tanstack/react-query-devtools'],
             'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
@@ -68,7 +70,8 @@ export default defineConfig(({ mode }) => {
             'router-vendor': ['react-router-dom', 'nuqs'],
             'utils-vendor': ['classnames', 'immer', 'date-fns'],
             'i18n-vendor': ['i18next', 'react-i18next'],
-            'misc-vendor': ['dompurify', 'html-to-text', 'react-helmet-async', 'react-toastify']
+            'sanitize-vendor': ['dompurify', 'html-to-text'],
+            'misc-vendor': ['react-helmet-async', 'react-toastify']
           }
         }
       }
