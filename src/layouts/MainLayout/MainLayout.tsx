@@ -17,7 +17,9 @@ const MainLayoutInner = ({ children }: Props) => {
   // useEffect khi mà load đến trang nào đó thì nó sẽ scroll lên đầu trang đó cho mình
   // console.log('MainLayout')
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+    if (window.scrollY > 0) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    }
   }, [])
 
   return (

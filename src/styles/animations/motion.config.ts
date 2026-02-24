@@ -20,7 +20,7 @@ export const ANIMATION_SPRING = {
 
 export const STAGGER_DELAY = {
   fast: 0.03,
-  normal: 0.05,
+  normal: 0.02,
   slow: 0.1
 } as const
 

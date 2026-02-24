@@ -78,7 +78,7 @@ export const staggerItem: Variants = {
 // Page transition variants
 export const pageTransition: Variants = {
   initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.normal, ease: ANIMATION_EASING.easeOut } },
+  animate: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.fast, ease: ANIMATION_EASING.easeOut } },
   exit: { opacity: 0, y: -10, transition: { duration: ANIMATION_DURATION.fast, ease: ANIMATION_EASING.easeIn } }
 }
 

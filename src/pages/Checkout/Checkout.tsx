@@ -80,7 +80,7 @@ const SectionHeader = ({ number, title }: { number: number; title: string }) => 
 )
 
 const SecurityBadge = () => (
-  <div className='mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-3 ring-1 ring-green-100 dark:ring-green-800'>
+  <div className='mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-100 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/30 p-3 ring-2 ring-green-200 dark:ring-green-700 shadow-md dark:shadow-slate-900/50 transition-all hover:shadow-lg hover:ring-green-300 dark:hover:ring-green-600'>
     <div className='flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm shadow-green-500/30 dark:shadow-slate-900/50'>
       <svg className='h-3.5 w-3.5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
         <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z' />

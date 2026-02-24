@@ -21,7 +21,9 @@ const Header = () => {
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
-    enabled: isAuthenticated
+    enabled: isAuthenticated,
+    staleTime: 2 * 60 * 1000,
+    gcTime: 5 * 60 * 1000
   })
 
   const purchasesInCart = purchasesInCartData?.data.data

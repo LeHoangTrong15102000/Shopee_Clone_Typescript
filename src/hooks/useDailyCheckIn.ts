@@ -148,7 +148,7 @@ export const useDailyCheckIn = () => {
   const streakProgress = useMemo(() => {
     const milestones = Object.keys(DEFAULT_CHECKIN_CONFIG.streakBonuses).map(Number).sort((a, b) => a - b)
     const nextMilestone = milestones.find((m) => m > state.streak.current) || milestones[milestones.length - 1]
-    const prevMilestone = milestones.filter((m) => m <= state.streak.current).pop() || 0
+    const prevMilestone = milestones.filter((m) => m < state.streak.current).pop() || 0
 
     return {
       current: state.streak.current,

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 
 import HeroBanner from 'src/components/HeroBanner'
 import { FlashSaleTimer } from 'src/components/FlashSale'
+import OptimizedImage from 'src/components/OptimizedImage'
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
@@ -16,7 +17,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05
+      staggerChildren: 0.02
     }
   }
 }
@@ -103,10 +104,11 @@ const Home = () => {
             className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4'
             variants={containerVariants}
             initial='hidden'
-            animate='visible'
+            whileInView='visible'
+            viewport={{ once: true }}
           >
             {categories.slice(0, 16).map((category) => (
-              <motion.div key={category._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
+              <motion.div key={category._id} variants={itemVariants} className='hover:scale-105 transition-transform duration-300'>
                 <Link
                   to={`${path.products}?category=${category._id}`}
                   className='flex flex-col items-center p-4 rounded-lg border border-gray-200 dark:border-slate-700
@@ -162,17 +164,19 @@ const Home = () => {
             animate='visible'
           >
             {featuredProducts.slice(0, 6).map((product) => (
-              <motion.div key={product._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
+              <motion.div key={product._id} variants={itemVariants} className='hover:-translate-y-[5px] transition-transform duration-300'>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                   className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
                     hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
                 >
                   <div className='relative overflow-hidden'>
-                    <img
+                    <OptimizedImage
                       src={product.image}
                       alt={product.name}
-                      className='w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300'
+                      className='w-full h-40 group-hover:scale-105 transition-transform duration-300'
+                      loading='lazy'
+                      showSkeleton={true}
                     />
                     <div className='absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded'>
                       -
@@ -226,17 +230,19 @@ const Home = () => {
             animate='visible'
           >
             {newProducts.slice(0, 12).map((product) => (
-              <motion.div key={product._id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
+              <motion.div key={product._id} variants={itemVariants} className='hover:-translate-y-[5px] transition-transform duration-300'>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                   className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
                     hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
                 >
                   <div className='relative overflow-hidden'>
-                    <img
+                    <OptimizedImage
                       src={product.image}
                       alt={product.name}
-                      className='w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300'
+                      className='w-full h-40 group-hover:scale-105 transition-transform duration-300'
+                      loading='lazy'
+                      showSkeleton={true}
                     />
                     <div className='absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded'>Mới</div>
                   </div>

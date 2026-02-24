@@ -18,11 +18,11 @@ const Footer = () => {
       {/* Decorative gradient orbs - Subtle and harmonious */}
       <div className='pointer-events-none absolute inset-0 overflow-hidden'>
         {/* Top-left warm glow - connects with CTA section above */}
-        <div className='absolute -left-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-orange/15 via-orange-300/10 to-transparent blur-3xl dark:from-orange-500/10 dark:via-orange-400/5' />
+        <div className='absolute -left-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-orange/15 via-orange-300/10 to-transparent blur-2xl will-change-transform dark:from-orange-500/10 dark:via-orange-400/5' />
         {/* Right-side subtle glow */}
-        <div className='absolute -right-16 top-1/3 h-56 w-56 rounded-full bg-gradient-to-bl from-orange-200/15 via-amber-100/10 to-transparent blur-3xl dark:from-slate-600/20 dark:via-slate-700/10' />
+        <div className='absolute -right-16 top-1/3 h-56 w-56 rounded-full bg-gradient-to-bl from-orange-200/15 via-amber-100/10 to-transparent blur-2xl will-change-transform dark:from-slate-600/20 dark:via-slate-700/10' />
         {/* Bottom center glow */}
-        <div className='absolute -bottom-16 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-gradient-to-t from-gray-200/30 via-orange-100/15 to-transparent blur-3xl dark:from-slate-800/30 dark:via-slate-700/20' />
+        <div className='absolute -bottom-16 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-gradient-to-t from-gray-200/30 via-orange-100/15 to-transparent blur-2xl will-change-transform dark:from-slate-800/30 dark:via-slate-700/20' />
       </div>
 
       {/* Container */}
