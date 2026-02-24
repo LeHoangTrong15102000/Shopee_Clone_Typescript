@@ -100,10 +100,10 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 {!isLast && (
                   <div
                     className={classNames('absolute left-[11px] top-6 w-0.5 h-full -translate-x-1/2', {
-                      'bg-green-500': isPassed && !isError,
-                      'bg-orange': isCurrent && !isError,
+                      'bg-green-500 dark:bg-green-400': isPassed && !isError,
+                      'bg-orange dark:bg-orange-400': isCurrent && !isError,
                       'bg-gray-200 dark:bg-slate-600': !isPassed && !isCurrent,
-                      'bg-red-500': isError
+                      'bg-red-500 dark:bg-red-400': isError
                     })}
                   />
                 )}
@@ -112,10 +112,10 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 <div className='relative z-10 flex-shrink-0'>
                   <div
                     className={classNames('w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center', {
-                      'bg-green-500 shadow-sm shadow-green-300/50 dark:shadow-green-500/20': isPassed && !isError,
-                      'bg-orange shadow-md shadow-orange-300/50 dark:shadow-orange-500/30': isCurrent && !isError,
+                      'bg-green-500 dark:bg-green-500 shadow-sm shadow-green-300/50 dark:shadow-green-500/20': isPassed && !isError,
+                      'bg-orange dark:bg-orange-500 shadow-md shadow-orange-300/50 dark:shadow-orange-500/30': isCurrent && !isError,
                       'bg-gray-200 dark:bg-slate-600': !isPassed && !isCurrent && !isError,
-                      'bg-red-500': isError
+                      'bg-red-500 dark:bg-red-500': isError
                     })}
                   >
                     {isPassed && !isError && (

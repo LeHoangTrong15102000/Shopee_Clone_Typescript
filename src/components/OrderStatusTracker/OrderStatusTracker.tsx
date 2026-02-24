@@ -141,8 +141,8 @@ export default function OrderStatusTracker({
       {/* Step progress bar - Enhanced */}
       {!isSpecialStatus && (
         <div className='relative pt-2'>
-          {/* Progress line background */}
-          <div className='absolute left-[10%] right-[10%] top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'>
+          {/* Progress line background - connects center of first circle to center of last circle */}
+          <div className='absolute left-[22px] right-[22px] md:left-[28px] md:right-[28px] top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'>
             {/* Animated progress fill */}
             <motion.div
               role='progressbar'

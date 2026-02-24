@@ -14,7 +14,7 @@ interface CartDropdownProps {
 
 const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) => {
   return (
-    <div className='col-span-2 md:col-span-1 flex items-center justify-end gap-2 md:gap-3'>
+    <div className='col-span-1 flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3'>
       {/* Wishlist Icon */}
       <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label='Danh sách yêu thích'>
         <svg
@@ -23,7 +23,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='h-5 w-5 md:h-6 md:w-6'
+          className='h-[22px] w-[22px] md:h-6 md:w-6'
         >
           <path
             strokeLinecap='round'
@@ -95,7 +95,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='h-6 w-6 md:h-8 md:w-8'
+              className='h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8'
             >
               <path
                 strokeLinecap='round'

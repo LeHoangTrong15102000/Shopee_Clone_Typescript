@@ -48,7 +48,7 @@ const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
           }
         >
           <div className='flex items-center cursor-pointer'>
-            <div className='h-6 w-6 flex-shrink-0'>
+            <div className='h-7 w-7 flex-shrink-0'>
               <img
                 src={getAvatarUrl(profile?.avatar)}
                 alt='avatar'

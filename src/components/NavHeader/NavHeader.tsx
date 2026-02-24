@@ -18,7 +18,11 @@ import useInventoryAlerts from 'src/hooks/useInventoryAlerts'
 import InventoryAlertBadge from 'src/components/InventoryAlertBadge'
 import ThemeToggle from 'src/components/ThemeToggle'
 
-const NavHeader = () => {
+interface NavHeaderProps {
+  compact?: boolean
+}
+
+const NavHeader = ({ compact = false }: NavHeaderProps) => {
   const { i18n } = useTranslation() // import hook useTranslation
   const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { setIsAuthenticated, isAuthenticated, profile, setProfile } = useContext(AppContext)
@@ -64,6 +68,101 @@ const NavHeader = () => {
   // WebSocket: Inventory alerts for admin users
   const isAdmin = profile?.roles?.includes('Admin') ?? false
   const { alerts: inventoryAlerts, unreadCount: inventoryUnreadCount, clearAlerts: clearInventoryAlerts } = useInventoryAlerts()
+
+  // Compact mode: render only essential icons for mobile header bar
+  if (compact) {
+    return (
+      <div className='flex items-center gap-3'>
+        <ThemeToggle className='' />
+        {isAdmin && isAuthenticated && (
+          <InventoryAlertBadge
+            alerts={inventoryAlerts}
+            unreadCount={inventoryUnreadCount}
+            onClear={clearInventoryAlerts}
+            className='cursor-pointer'
+          />
+        )}
+        {/* Notification bell */}
+        <Popover
+          as='span'
+          className='flex cursor-pointer items-center py-1 hover:text-white/70 relative'
+          renderPopover={
+            isAuthenticated ? (
+              <div className='before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
+                <NotificationList />
+              </div>
+            ) : (
+              <div className='relative h-[21.875rem] w-[280px] cursor-pointer rounded-lg border border-gray-200 bg-white text-sm text-[rgba(0,0,0,.7)] shadow-md transition-all'>
+                <div className='flex h-full flex-col before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
+                  <div className='flex flex-grow flex-col items-center justify-center'>
+                    <img
+                      className='h-[5rem] w-[5rem] object-cover'
+                      src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/99e561e3944805a023e87a81d4869600.png'
+                      alt='notification'
+                    />
+                    <span className='mt-5 text-xs'>Đăng nhập để xem Thông báo</span>
+                  </div>
+                  <div className='flex w-full items-center border-0'>
+                    <Link to={path.register} className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'>
+                      Đăng ký
+                    </Link>
+                    <Link to={path.login} className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'>
+                      Đăng nhập
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+        >
+          <div className='relative'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className={`h-5 w-5 transition-transform duration-200 ${
+                isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
+              }`}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+              />
+            </svg>
+            {isAuthenticated && unreadCount > 0 && (
+              <span className='absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] text-orange font-medium border border-orange'>
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </div>
+        </Popover>
+        {/* Language switcher - icon only */}
+        <Popover
+          as='span'
+          className='flex cursor-pointer items-center py-1 hover:text-white/70'
+          renderPopover={
+            <div className='relative rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md transition-all'>
+              <div className='flex flex-col py-1 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
+                <button onClick={() => handleTranslateLanguage('vi')} className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'>
+                  Tiếng Việt
+                </button>
+                <button onClick={() => handleTranslateLanguage('en')} className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'>
+                  English
+                </button>
+              </div>
+            </div>
+          }
+        >
+          <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5'>
+            <path strokeLinecap='round' strokeLinejoin='round' d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418' />
+          </svg>
+        </Popover>
+      </div>
+    )
+  }
 
   return (
     <div className='flex items-center justify-between'>
@@ -259,14 +358,14 @@ const NavHeader = () => {
       {/* Thông báo, hỗ trợ, thông tin tài khoản */}
       <div className='flex items-center justify-center'>
         {/* Theme Toggle */}
-        <ThemeToggle className='mr-3' />
+        <ThemeToggle className='mr-2 md:mr-3' />
         {/* Inventory Alert Badge - Admin only */}
         {isAdmin && isAuthenticated && (
           <InventoryAlertBadge
             alerts={inventoryAlerts}
             unreadCount={inventoryUnreadCount}
             onClear={clearInventoryAlerts}
-            className='mr-3 cursor-pointer'
+            className='mr-2 md:mr-3 cursor-pointer'
           />
         )}
         {/* Phiên Âm tiếng Việt, Hỗ trợ, Thông báo, Avatar */}
@@ -324,7 +423,7 @@ const NavHeader = () => {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className={`h-[18px] w-[18px] md:h-[22px] md:w-[22px] transition-transform duration-200 ${
+              className={`h-5 w-5 md:h-[22px] md:w-[22px] transition-transform duration-200 ${
                 isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
               }`}
             >
@@ -336,7 +435,7 @@ const NavHeader = () => {
             </svg>
             {/* Badge hiển thị số thông báo chưa đọc */}
             {isAuthenticated && unreadCount > 0 && (
-              <span className='absolute -top-1 -right-1 flex h-3 w-3 md:h-4 md:w-4 items-center justify-center rounded-full bg-white text-[10px] md:text-xs text-orange font-medium border border-orange'>
+              <span className='absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] md:text-xs text-orange font-medium border border-orange'>
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -353,7 +452,7 @@ const NavHeader = () => {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='h-[18px] w-[18px] md:h-[22px] md:w-[22px]'
+              className='h-5 w-5 md:h-[22px] md:w-[22px]'
             >
               <path
                 strokeLinecap='round'
@@ -397,7 +496,7 @@ const NavHeader = () => {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-4 w-4 md:h-5 md:w-5'
+            className='h-5 w-5'
           >
             <path
               strokeLinecap='round'
@@ -412,7 +511,7 @@ const NavHeader = () => {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-3 w-3 md:h-5 md:w-5'
+            className='h-3.5 w-3.5 md:h-5 md:w-5'
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
           </svg>
@@ -452,18 +551,18 @@ const NavHeader = () => {
             }
             className={classNames('ml-2 md:ml-5 flex cursor-pointer items-center py-1 hover:text-white/70')}
           >
-            <div className='mr-1 md:mr-2 h-6 w-6 md:h-6 md:w-6 flex-shrink-0'>
+            <div className='mr-1 md:mr-2 h-7 w-7 flex-shrink-0'>
               <img
                 src={getAvatarUrl(profile?.avatar)}
                 alt='avatar'
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <span className='text-sm'>{profile?.email}</span>
+            <span className='text-xs md:text-sm truncate max-w-[80px] sm:max-w-[120px] md:max-w-none'>{profile?.email}</span>
           </Popover>
         )}
         {!isAuthenticated && (
-          <div className='mt-[1.5px] flex items-center text-sm'>
+          <div className='mt-[1.5px] flex items-center text-xs md:text-sm'>
             <Link to={path.register} className='mx-2 md:mx-3 capitalize hover:text-white/70'>
               Đăng ký
             </Link>
