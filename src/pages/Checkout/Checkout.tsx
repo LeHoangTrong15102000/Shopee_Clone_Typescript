@@ -13,6 +13,7 @@ import PaymentMethodSelector from 'src/components/PaymentMethodSelector'
 import OrderSummary from 'src/components/OrderSummary'
 import OrderPreview from 'src/components/OrderPreview'
 import Button from 'src/components/Button'
+import MobileAccountNav from 'src/components/MobileAccountNav'
 
 const CHECKOUT_STEPS = [
   { id: 1, name: 'Địa chỉ', icon: 'location' },
@@ -327,20 +328,23 @@ const Checkout = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className='mb-4 md:mb-6 rounded-xl bg-gradient-to-r from-orange via-orange/90 to-orange-400 p-4 md:p-6 shadow-lg'
+          className='mb-4 md:mb-6 rounded-xl bg-gradient-to-r from-orange via-orange/90 to-orange-400 p-3 sm:p-4 md:p-6 shadow-lg'
         >
-          <div className='flex items-center gap-3'>
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm'>
-              <svg className='h-6 w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <div className='flex items-center gap-2 sm:gap-3'>
+            <div className='flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0'>
+              <svg className='h-5 w-5 sm:h-6 sm:w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' />
               </svg>
             </div>
-            <div>
-              <h1 className='text-xl md:text-2xl font-bold text-white'>Thanh toán</h1>
-              <p className='mt-0.5 text-sm md:text-base text-white/80'>Hoàn tất đơn hàng của bạn</p>
+            <div className='min-w-0'>
+              <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-white truncate'>Thanh toán</h1>
+              <p className='mt-0.5 text-xs sm:text-sm md:text-base text-white/80'>Hoàn tất đơn hàng của bạn</p>
             </div>
           </div>
         </motion.div>
+
+        {/* Mobile account navigation */}
+        <MobileAccountNav className='mb-4 rounded-xl overflow-hidden' />
 
         {/* Progress Stepper */}
         <motion.div

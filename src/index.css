@@ -99,7 +99,15 @@ body {
   font-weight: 400;
   background-color: rgb(var(--color-bg-primary));
   color: rgb(var(--color-text-primary));
-  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth theme transition - applied globally to prevent flickering */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  transition-delay: 0s !important;
 }
 
 #root {
@@ -353,7 +361,17 @@ body {
   outline-offset: 2px;
 }
 
-/* Remove default focus outline for mouse users */
+/* Remove default focus outline and ring for mouse users */
 *:focus:not(:focus-visible) {
   outline: none;
+  box-shadow: none;
+}
+
+/* Ensure buttons never show focus border on mouse click */
+button:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit;
 }

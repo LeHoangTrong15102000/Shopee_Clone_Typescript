@@ -241,7 +241,7 @@ const Profile = () => {
       <FormProvider {...methods}>
         <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
           {/* Form */}
-          <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
+          <div className='mt-6 flex-grow md:mt-0 md:pr-4 lg:pr-12'>
             {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
@@ -308,7 +308,7 @@ const Profile = () => {
           </div>
           {/* Avatar */}
           <motion.div
-            className='flex items-center justify-center md:w-72 md:border-l md:border-l-gray-100 dark:md:border-l-slate-600'
+            className='flex items-center justify-center md:w-56 lg:w-72 md:border-l md:border-l-gray-100 dark:md:border-l-slate-600'
             initial={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
             animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}

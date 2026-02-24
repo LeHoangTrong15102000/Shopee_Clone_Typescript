@@ -97,15 +97,15 @@ function getStatusDisplay(status: OrderStatus) {
   if (!config) {
     return {
       label: status,
-      color: 'text-gray-700',
-      bgColor: 'bg-gray-100',
+      color: 'text-gray-700 dark:text-gray-300',
+      bgColor: 'bg-gray-100 dark:bg-gray-800',
       icon: status
     }
   }
   return {
     label: config.label,
-    color: config.color.light,
-    bgColor: config.bgColor.light,
+    color: `${config.color.light} dark:${config.color.dark}`,
+    bgColor: `${config.bgColor.light} dark:${config.bgColor.dark}`,
     icon: config.icon
   }
 }

@@ -48,7 +48,9 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
   const prefersReducedMotion = useReducedMotion()
 
   const getClassName = (addOpacityTransition = false) => {
-    const classes: string[] = []
+    const classes: string[] = [
+      'outline-none focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
+    ]
     if (variant) {
       classes.push(variantClasses[variant])
     }

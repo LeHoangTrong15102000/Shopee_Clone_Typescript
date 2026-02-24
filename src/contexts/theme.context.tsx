@@ -29,9 +29,13 @@ const resolveTheme = (theme: Theme): ResolvedTheme => {
   return theme
 }
 
-// Helper: Apply theme to DOM
+// Helper: Apply theme to DOM with smooth transition
 const applyTheme = (resolvedTheme: ResolvedTheme) => {
   const root = document.documentElement
+
+  // Add transition class before changing theme
+  root.classList.add('theme-transition')
+
   root.classList.remove('light', 'dark')
   root.classList.add(resolvedTheme)
 
@@ -40,6 +44,11 @@ const applyTheme = (resolvedTheme: ResolvedTheme) => {
   if (metaThemeColor) {
     metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#0f172a' : '#ee4d2d')
   }
+
+  // Remove transition class after animation completes to avoid interfering with other transitions
+  setTimeout(() => {
+    root.classList.remove('theme-transition')
+  }, 350)
 }
 
 // Context

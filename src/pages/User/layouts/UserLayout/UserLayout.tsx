@@ -11,7 +11,7 @@ const UserLayout = () => {
             <UserSideNav />
           </div>
           {/* Profile, password, history */}
-          <div className='ml-0 md:ml-[1.6875rem] md:col-span-9 lg:col-span-10'>
+          <div className='ml-0 md:ml-4 lg:ml-[1.6875rem] md:col-span-9 lg:col-span-10'>
             <Outlet />
           </div>
         </div>

@@ -204,10 +204,11 @@ describe('WebSocket UI Components', () => {
   })
 
   describe('OrderStatusTracker', () => {
-    test('renders all 4 order steps', () => {
+    test('renders all 5 order steps', () => {
       render(<OrderStatusTracker currentStatus='pending' lastUpdate={null} isSubscribed={false} />)
       expect(screen.getByText('Chờ xác nhận')).toBeInTheDocument()
       expect(screen.getByText('Đã xác nhận')).toBeInTheDocument()
+      expect(screen.getByText('Đang xử lý')).toBeInTheDocument()
       expect(screen.getByText('Đang giao')).toBeInTheDocument()
       expect(screen.getByText('Đã giao')).toBeInTheDocument()
     })

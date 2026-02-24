@@ -93,13 +93,13 @@ export default function OrderList() {
     <div className='space-y-4'>
       {/* Tabs */}
       <div className='sticky top-0 z-20 rounded-xl bg-gradient-to-r from-white via-orange-50/30 to-white shadow-md border border-orange-100/50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 dark:border-slate-600'>
-        <div className='flex overflow-x-auto scrollbar-hide border-b dark:border-slate-600'>
-          {orderTabs.map((tab) => (
+        <div className='flex overflow-x-auto scrollbar-hide border-b dark:border-slate-600 overflow-hidden'>
+          {orderTabs.map((tab, index) => (
             <button
               key={tab.status}
               onClick={() => handleTabChange(tab.status)}
               className={classNames(
-                'relative flex-1 whitespace-nowrap px-3 py-3 text-xs sm:px-6 sm:py-4 sm:text-sm font-medium transition-colors outline-none focus:outline-none focus-visible:outline-none text-center',
+                'relative flex-1 whitespace-nowrap px-3 py-3 text-xs sm:px-6 sm:py-4 sm:text-sm font-medium transition-colors text-center',
                 {
                   'text-orange dark:text-orange-400': activeTab === tab.status,
                   'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300': activeTab !== tab.status
@@ -110,7 +110,14 @@ export default function OrderList() {
               {activeTab === tab.status && (
                 <motion.div
                   layoutId='activeOrderTab'
-                  className='absolute bottom-0 left-0 right-0 h-0.5 bg-orange dark:bg-orange-400'
+                  className={classNames(
+                    'absolute bottom-0 h-0.5 bg-orange dark:bg-orange-400',
+                    {
+                      'left-2 right-0': index === 0,
+                      'left-0 right-2': index === orderTabs.length - 1,
+                      'left-0 right-0': index > 0 && index < orderTabs.length - 1
+                    }
+                  )}
                 />
               )}
             </button>
