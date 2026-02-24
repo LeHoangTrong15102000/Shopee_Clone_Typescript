@@ -156,3 +156,14 @@ export const isWithinDays = (dateString: string, days: number): boolean => {
 
   return differenceInDays(new Date(), date) <= days
 }
+
+/**
+ * Scroll to top of the page
+ * @param prefersReducedMotion - If true, uses instant scroll instead of smooth
+ */
+export const scrollToTop = (prefersReducedMotion: boolean = false) => {
+  window.scrollTo({
+    top: 0,
+    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+  })
+}

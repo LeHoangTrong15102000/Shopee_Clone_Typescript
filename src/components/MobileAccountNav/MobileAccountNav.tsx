@@ -1,9 +1,16 @@
 import classNames from 'classnames'
-import { motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+
+// ChevronDown icon
+const ChevronDownIcon = ({ className }: { className?: string }) => (
+  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className={className}>
+    <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
+  </svg>
+)
 
 // Mobile tab navigation items with icons
 const mobileNavItems = [
@@ -88,91 +95,117 @@ interface MobileAccountNavProps {
 
 const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
   const reducedMotion = useReducedMotion()
-  const mobileNavRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll active item into view on mount
+  // Find current active item based on location
+  const activeItem = mobileNavItems.find((item) => location.pathname === item.to) || mobileNavItems[0]
+
+  // Close dropdown when clicking outside
   useEffect(() => {
-    const container = mobileNavRef.current
-    if (!container) return
-    const activeEl = container.querySelector('.text-\\[\\#ee4d2d\\]') as HTMLElement | null
-    if (activeEl) {
-      const containerRect = container.getBoundingClientRect()
-      const activeRect = activeEl.getBoundingClientRect()
-      const scrollLeft = activeRect.left - containerRect.left - containerRect.width / 2 + activeRect.width / 2
-      container.scrollTo({ left: container.scrollLeft + scrollLeft, behavior: reducedMotion ? 'auto' : 'smooth' })
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
     }
-  }, [reducedMotion])
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
-  // Handle scroll to show/hide fade gradients
-  const handleMobileNavScroll = useCallback(() => {
-    const container = mobileNavRef.current
-    if (!container) return
-    const leftFade = container.parentElement?.querySelector('[data-fade="left"]') as HTMLElement | null
-    const rightFade = container.parentElement?.querySelector('[data-fade="right"]') as HTMLElement | null
-    if (leftFade) leftFade.style.opacity = container.scrollLeft > 10 ? '1' : '0'
-    if (rightFade) rightFade.style.opacity = container.scrollLeft < container.scrollWidth - container.clientWidth - 10 ? '1' : '0'
+  // Close dropdown on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+    }
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen])
+
+  const handleSelect = useCallback(
+    (to: string) => {
+      setIsOpen(false)
+      navigate(to)
+    },
+    [navigate]
+  )
+
+  const toggleDropdown = useCallback(() => {
+    setIsOpen((prev) => !prev)
   }, [])
 
-  // Initialize fade gradients on mount
-  useEffect(() => {
-    handleMobileNavScroll()
-  }, [handleMobileNavScroll])
-
   return (
-    <div className={classNames('md:hidden border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 relative', className)}>
-      {/* Left fade gradient */}
-      <div
-        className='pointer-events-none absolute left-0 top-0 bottom-0 w-6 z-10 bg-gradient-to-r from-white dark:from-slate-900 to-transparent transition-opacity duration-200'
-        style={{ opacity: 0 }}
-        data-fade='left'
-      />
-      {/* Scroll container */}
-      <div
-        ref={mobileNavRef}
-        role='tablist'
+    <div
+      ref={dropdownRef}
+      className={classNames('md:hidden border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 relative', className)}
+    >
+      {/* Dropdown trigger button */}
+      <button
+        type='button'
+        onClick={toggleDropdown}
+        aria-expanded={isOpen}
+        aria-haspopup='listbox'
         aria-label='Menu tài khoản'
-        className='flex overflow-x-auto scrollbar-hide py-1 px-2'
-        onScroll={handleMobileNavScroll}
+        className='w-full flex items-center justify-between px-4 py-3 text-left'
       >
-        {mobileNavItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            role='tab'
-            className={({ isActive }) =>
-              classNames(
-                'flex-shrink-0 flex flex-col items-center justify-center w-16 min-h-[56px] py-2 px-1 relative transition-colors duration-200',
-                {
-                  'text-[#ee4d2d] dark:text-orange-400': isActive,
-                  'text-gray-500 dark:text-gray-400': !isActive
-                }
-              )
-            }
+        <div className='flex items-center gap-2'>
+          <span className='text-[#ee4d2d] dark:text-orange-400'>{activeItem.icon}</span>
+          <span className='text-sm font-medium text-gray-900 dark:text-gray-100'>{activeItem.label}</span>
+        </div>
+        <ChevronDownIcon
+          className={classNames('w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform', {
+            'rotate-180': isOpen,
+            'duration-200': !reducedMotion
+          })}
+        />
+      </button>
+
+      {/* Dropdown menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.15 }}
+            role='listbox'
+            aria-label='Chọn trang tài khoản'
+            className='absolute left-0 right-0 top-full z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 shadow-lg rounded-b-lg overflow-hidden'
           >
-            {({ isActive }) => (
-              <>
-                <span aria-hidden='true'>{item.icon}</span>
-                <span className='text-[11px] leading-tight mt-1 whitespace-nowrap font-medium'>{item.label}</span>
-                {isActive && !reducedMotion && (
-                  <motion.div
-                    layoutId='mobileActiveTab'
-                    className='absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-[#ee4d2d] dark:bg-orange-400'
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
-                )}
-                {isActive && reducedMotion && (
-                  <div className='absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-[#ee4d2d] dark:bg-orange-400' />
-                )}
-              </>
-            )}
-          </NavLink>
-        ))}
-      </div>
-      {/* Right fade gradient */}
-      <div
-        className='pointer-events-none absolute right-0 top-0 bottom-0 w-6 z-10 bg-gradient-to-l from-white dark:from-slate-900 to-transparent transition-opacity duration-200'
-        data-fade='right'
-      />
+            {mobileNavItems.map((item) => {
+              const isActive = location.pathname === item.to
+              return (
+                <button
+                  key={item.to}
+                  type='button'
+                  role='option'
+                  aria-selected={isActive}
+                  onClick={() => handleSelect(item.to)}
+                  className={classNames(
+                    'w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                    {
+                      'bg-orange-50 dark:bg-orange-900/20 text-[#ee4d2d] dark:text-orange-400': isActive,
+                      'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700': !isActive
+                    }
+                  )}
+                >
+                  <span className={isActive ? 'text-[#ee4d2d] dark:text-orange-400' : 'text-gray-500 dark:text-gray-400'}>
+                    {item.icon}
+                  </span>
+                  <span className='font-medium'>{item.label}</span>
+                </button>
+              )
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

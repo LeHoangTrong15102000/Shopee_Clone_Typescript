@@ -14,6 +14,8 @@ import OrderSummary from 'src/components/OrderSummary'
 import OrderPreview from 'src/components/OrderPreview'
 import Button from 'src/components/Button'
 import MobileAccountNav from 'src/components/MobileAccountNav'
+import { scrollToTop } from 'src/utils/utils'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 const CHECKOUT_STEPS = [
   { id: 1, name: 'Địa chỉ', icon: 'location' },
@@ -150,6 +152,7 @@ const Checkout = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
+  const prefersReducedMotion = useReducedMotion()
 
   // Restore checkout items từ sessionStorage khi F5
   useEffect(() => {
@@ -254,6 +257,7 @@ const Checkout = () => {
   const handleBackToStep3 = () => {
     // Go back from review to form
     setShowReview(false)
+    scrollToTop(prefersReducedMotion)
   }
 
   const handleGoToReview = () => {
@@ -270,6 +274,7 @@ const Checkout = () => {
       return
     }
     setShowReview(true)
+    scrollToTop(prefersReducedMotion)
   }
 
   const handlePlaceOrder = () => {

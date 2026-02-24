@@ -27,54 +27,54 @@ export interface OrderStatusConfig {
 export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
   pending: {
     label: 'Chờ xác nhận',
-    color: { light: 'text-amber-700', dark: 'text-amber-300' },
-    bgColor: { light: 'bg-amber-50', dark: 'bg-amber-900/30' },
-    borderColor: { light: 'border-amber-200', dark: 'border-amber-700/50' },
+    color: { light: 'text-amber-600', dark: 'text-amber-400' },
+    bgColor: { light: 'bg-amber-50/80', dark: 'bg-amber-900/20' },
+    borderColor: { light: 'border-amber-200/60', dark: 'border-amber-700/30' },
     icon: '⏳',
-    animate: true
+    animate: false
   },
   confirmed: {
     label: 'Đã xác nhận',
-    color: { light: 'text-blue-700', dark: 'text-blue-300' },
-    bgColor: { light: 'bg-blue-50', dark: 'bg-blue-900/30' },
-    borderColor: { light: 'border-blue-200', dark: 'border-blue-700/50' },
+    color: { light: 'text-blue-600', dark: 'text-blue-400' },
+    bgColor: { light: 'bg-blue-50/80', dark: 'bg-blue-900/20' },
+    borderColor: { light: 'border-blue-200/60', dark: 'border-blue-700/30' },
     icon: '✓'
   },
   processing: {
     label: 'Đang xử lý',
-    color: { light: 'text-blue-700', dark: 'text-blue-300' },
-    bgColor: { light: 'bg-blue-50', dark: 'bg-blue-900/30' },
-    borderColor: { light: 'border-blue-200', dark: 'border-blue-700/50' },
+    color: { light: 'text-indigo-600', dark: 'text-indigo-400' },
+    bgColor: { light: 'bg-indigo-50/80', dark: 'bg-indigo-900/20' },
+    borderColor: { light: 'border-indigo-200/60', dark: 'border-indigo-700/30' },
     icon: '⟳',
-    animate: true
+    animate: false
   },
   shipping: {
     label: 'Đang giao',
     color: { light: 'text-teal-600', dark: 'text-teal-400' },
-    bgColor: { light: 'bg-teal-50', dark: 'bg-teal-900/30' },
-    borderColor: { light: 'border-teal-200', dark: 'border-teal-700/50' },
+    bgColor: { light: 'bg-teal-50/80', dark: 'bg-teal-900/20' },
+    borderColor: { light: 'border-teal-200/60', dark: 'border-teal-700/30' },
     icon: '➤',
-    animate: true
+    animate: false
   },
   delivered: {
     label: 'Đã giao',
-    color: { light: 'text-green-700', dark: 'text-green-300' },
-    bgColor: { light: 'bg-green-50', dark: 'bg-green-900/30' },
-    borderColor: { light: 'border-green-200', dark: 'border-green-700/50' },
+    color: { light: 'text-emerald-600', dark: 'text-emerald-400' },
+    bgColor: { light: 'bg-emerald-50/80', dark: 'bg-emerald-900/20' },
+    borderColor: { light: 'border-emerald-200/60', dark: 'border-emerald-700/30' },
     icon: '✓'
   },
   cancelled: {
     label: 'Đã hủy',
-    color: { light: 'text-red-700', dark: 'text-red-300' },
-    bgColor: { light: 'bg-red-50', dark: 'bg-red-900/30' },
-    borderColor: { light: 'border-red-200', dark: 'border-red-700/50' },
+    color: { light: 'text-rose-600', dark: 'text-rose-400' },
+    bgColor: { light: 'bg-rose-50/80', dark: 'bg-rose-900/20' },
+    borderColor: { light: 'border-rose-200/60', dark: 'border-rose-700/30' },
     icon: '✕'
   },
   returned: {
     label: 'Đã trả hàng',
-    color: { light: 'text-gray-700', dark: 'text-gray-300' },
-    bgColor: { light: 'bg-gray-50', dark: 'bg-gray-900/30' },
-    borderColor: { light: 'border-gray-200', dark: 'border-gray-700/50' },
+    color: { light: 'text-slate-600', dark: 'text-slate-400' },
+    bgColor: { light: 'bg-slate-50/80', dark: 'bg-slate-800/20' },
+    borderColor: { light: 'border-slate-200/60', dark: 'border-slate-600/30' },
     icon: '↩'
   }
 }

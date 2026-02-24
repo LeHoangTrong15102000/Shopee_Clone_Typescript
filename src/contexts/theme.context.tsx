@@ -32,12 +32,20 @@ const resolveTheme = (theme: Theme): ResolvedTheme => {
 // Helper: Apply theme to DOM with smooth transition
 const applyTheme = (resolvedTheme: ResolvedTheme) => {
   const root = document.documentElement
+  const currentTheme = root.classList.contains('dark') ? 'dark' : 'light'
 
   // Add transition class before changing theme
   root.classList.add('theme-transition')
 
-  root.classList.remove('light', 'dark')
-  root.classList.add(resolvedTheme)
+  // Atomic swap - no gap between remove and add to prevent flicker
+  if (currentTheme !== resolvedTheme) {
+    // classList.replace returns false if the class to replace doesn't exist
+    if (!root.classList.replace(currentTheme, resolvedTheme)) {
+      // Fallback if replace fails (class not found on first load)
+      root.classList.remove('light', 'dark')
+      root.classList.add(resolvedTheme)
+    }
+  }
 
   // Update meta theme-color for mobile browsers
   const metaThemeColor = document.querySelector('meta[name="theme-color"]')

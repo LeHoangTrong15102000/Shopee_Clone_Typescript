@@ -45,21 +45,13 @@ const orderItemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] } }
 }
 
-// Status badge animation with scale-in and pulse for active
+// Status badge animation with scale-in
 const statusBadgeVariants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
     scale: 1,
     transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] }
-  }
-}
-
-// Pulse animation for active status
-const pulseVariants = {
-  pulse: {
-    scale: [1, 1.02, 1],
-    transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
   }
 }
 
@@ -193,7 +185,6 @@ export default function OrderDetail() {
 
   const status = getStatusDisplay(order.status as OrderStatus)
   const canCancel = ['pending', 'confirmed'].includes(order.status)
-  const isActiveStatus = ['pending', 'confirmed', 'shipping'].includes(order.status)
 
   // Select variants based on reduced motion preference
   const containerVariants = shouldReduceMotion ? reducedMotionVariants : pageContainerVariants
@@ -231,12 +222,10 @@ export default function OrderDetail() {
               Mã đơn hàng: <span className='font-medium'>{order._id.slice(-8).toUpperCase()}</span>
             </p>
           </div>
-          {/* Status badge with scale-in and pulse animation */}
+          {/* Status badge with subtle styling */}
           <motion.div
             variants={shouldReduceMotion ? reducedMotionVariants : statusBadgeVariants}
-            animate={isActiveStatus && !shouldReduceMotion ? 'pulse' : 'visible'}
-            {...(isActiveStatus && !shouldReduceMotion ? pulseVariants : {})}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 ${status.bgColor} ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-800 ring-current/20 shadow-sm`}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 ${status.bgColor} border border-current/10`}
           >
             <span className={`font-semibold ${status.color}`}>{status.label}</span>
           </motion.div>
