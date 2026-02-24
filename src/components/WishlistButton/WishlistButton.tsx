@@ -33,15 +33,15 @@ export default function WishlistButton({ productId, productName, className, size
   }
 
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-10 h-10'
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
+    lg: 'w-12 h-12'
   }
 
   const iconSizeClasses = {
     sm: 'w-4 h-4',
-    md: 'w-5 h-5',
-    lg: 'w-6 h-6'
+    md: 'w-6 h-6',
+    lg: 'w-7 h-7'
   }
 
   const ariaLabel = isLoading

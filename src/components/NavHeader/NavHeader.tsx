@@ -452,7 +452,7 @@ const NavHeader = () => {
             }
             className={classNames('ml-2 md:ml-5 flex cursor-pointer items-center py-1 hover:text-white/70')}
           >
-            <div className='mr-1 md:mr-2 h-5 w-5 md:h-6 md:w-6 flex-shrink-0'>
+            <div className='mr-1 md:mr-2 h-6 w-6 md:h-6 md:w-6 flex-shrink-0'>
               <img
                 src={getAvatarUrl(profile?.avatar)}
                 alt='avatar'
@@ -463,7 +463,7 @@ const NavHeader = () => {
           </Popover>
         )}
         {!isAuthenticated && (
-          <div className='mt-[1.5px] flex items-center text-[12px] md:text-[14px]'>
+          <div className='mt-[1.5px] flex items-center text-sm'>
             <Link to={path.register} className='mx-2 md:mx-3 capitalize hover:text-white/70'>
               Đăng ký
             </Link>

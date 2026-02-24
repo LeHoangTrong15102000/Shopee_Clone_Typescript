@@ -145,7 +145,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
             id='main-search-input'
             value={searchValue}
             type='text'
-            className='flex-grow border-none bg-transparent px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm text-[rgba(0,0,0,.95)] dark:text-gray-100 outline-none dark:placeholder-gray-500'
+            className='flex-grow border-none bg-transparent px-3 py-2 md:py-2 text-sm text-[rgba(0,0,0,.95)] dark:text-gray-100 outline-none dark:placeholder-gray-500'
             placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
             onChange={handleChangeInput}
             onFocus={handleFocusInput}
@@ -153,7 +153,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
           />
           <button
             type='submit'
-            className='flex-shrink-0 rounded-sm bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-1 md:py-2 px-3 md:px-6 hover:opacity-90'
+            className='flex-shrink-0 rounded-sm bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-2 px-4 md:px-6 hover:opacity-90'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'

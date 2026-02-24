@@ -36,7 +36,7 @@ const CartSummaryBar = ({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] dark:border-slate-700 bg-white dark:bg-slate-800 px-9 py-5 shadow dark:shadow-slate-900/50 sm:flex-row sm:items-center'
+      className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 sm:px-9 py-5 shadow dark:shadow-slate-900/50 sm:flex-row sm:items-center'
     >
       <div className='flex items-center'>
         <div className='flex flex-shrink-0 items-center justify-center pr-3'>
