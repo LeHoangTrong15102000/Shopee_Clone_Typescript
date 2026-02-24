@@ -31,7 +31,6 @@ export default defineConfig(({ mode }) => {
     },
     // Tối ưu cho Windows - sử dụng temp directory
     optimizeDeps: {
-      force: true,
       esbuildOptions: {
         // Tăng buffer size cho Windows
         target: 'es2020'
