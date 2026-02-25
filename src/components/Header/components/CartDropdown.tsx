@@ -14,7 +14,7 @@ interface CartDropdownProps {
 
 const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) => {
   return (
-    <div className='col-span-1 flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3'>
+    <div className='flex-shrink-0 md:col-span-1 flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3'>
       {/* Wishlist Icon */}
       <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label='Danh sách yêu thích'>
         <svg

@@ -12,7 +12,7 @@ interface UserMenuProps {
 
 const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
   return (
-    <div className='col-span-1 flex items-center justify-end space-x-2 md:space-x-3'>
+    <div className='flex-shrink-0 md:col-span-1 flex items-center justify-end space-x-2 md:space-x-3'>
       {/* User Menu - Hiện trên mobile */}
       {isAuthenticated && (
         <Popover

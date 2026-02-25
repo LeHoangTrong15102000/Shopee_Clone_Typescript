@@ -23,7 +23,7 @@ const MainLayoutInner = ({ children }: Props) => {
   }, [])
 
   return (
-    <div className='min-h-screen bg-gray-100 dark:bg-slate-900 transition-colors duration-200'>
+    <div className='min-h-screen bg-gray-100 dark:bg-slate-900'>
       <Header />
       <Suspense fallback={null}>
         <ConnectionStatus />

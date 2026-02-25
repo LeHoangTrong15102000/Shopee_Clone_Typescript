@@ -13,7 +13,7 @@ interface Props {
 
 const CartLayout = ({ children, headerTitle }: Props) => {
   return (
-    <div className='min-h-screen bg-gray-100 dark:bg-slate-900 transition-colors duration-200'>
+    <div className='min-h-screen bg-gray-100 dark:bg-slate-900'>
       <CartHeader title={headerTitle} />
       <PageTransition>
         {children}

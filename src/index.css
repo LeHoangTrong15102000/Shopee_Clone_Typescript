@@ -7,6 +7,7 @@
 /* ===== THEME CSS VARIABLES ===== */
 @layer base {
   :root {
+    color-scheme: light;
     /* Light Theme (Default) */
     --color-bg-primary: 255 255 255;
     --color-bg-secondary: 245 245 245;
@@ -46,6 +47,7 @@
   }
 
   .dark {
+    color-scheme: dark;
     /* Dark Theme - aligned with MASTER.md design system */
     --color-bg-primary: 15 23 42;
     --color-bg-secondary: 30 41 59;
@@ -99,15 +101,6 @@ body {
   font-weight: 400;
   background-color: rgb(var(--color-bg-primary));
   color: rgb(var(--color-text-primary));
-}
-
-/* Smooth theme transition - applied globally to prevent flickering */
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
-  transition-delay: 0s !important;
 }
 
 #root {
