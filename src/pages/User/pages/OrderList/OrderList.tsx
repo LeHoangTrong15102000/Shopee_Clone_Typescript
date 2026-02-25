@@ -22,6 +22,9 @@ export default function OrderList() {
   const [activeTab, setActiveTab] = useState<OrderStatus | 'all'>('all')
   const [page, setPage] = useState(1)
   const [expandedOrderIds, setExpandedOrderIds] = useState<Set<string>>(new Set())
+  const [cancelOrderId, setCancelOrderId] = useState<string | null>(null)
+  const [cancelReason, setCancelReason] = useState('')
+  const [showCancelModal, setShowCancelModal] = useState(false)
 
   const toggleOrderTracking = (orderId: string) => {
     setExpandedOrderIds((prev) => {
@@ -61,10 +64,11 @@ export default function OrderList() {
   })
 
   const cancelMutation = useMutation({
-    mutationFn: (orderId: string) => orderApi.cancelOrder(orderId),
+    mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) => orderApi.cancelOrder(orderId, reason),
     onSuccess: () => {
       toast.success('Hủy đơn hàng thành công')
       queryClient.invalidateQueries({ queryKey: ['orders'] })
+      handleCloseModal()
     },
     onError: () => {
       toast.error('Hủy đơn hàng thất bại')
@@ -75,9 +79,20 @@ export default function OrderList() {
   const pagination = ordersData?.data.data.pagination
 
   const handleCancelOrder = (orderId: string) => {
-    if (window.confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
-      cancelMutation.mutate(orderId)
+    setCancelOrderId(orderId)
+    setShowCancelModal(true)
+  }
+
+  const handleConfirmCancel = () => {
+    if (cancelOrderId) {
+      cancelMutation.mutate({ orderId: cancelOrderId, reason: cancelReason })
     }
+  }
+
+  const handleCloseModal = () => {
+    setShowCancelModal(false)
+    setCancelOrderId(null)
+    setCancelReason('')
   }
 
   const handleReorder = (_order: Order) => {
@@ -98,10 +113,10 @@ export default function OrderList() {
             key={tab.status}
             onClick={() => handleTabChange(tab.status)}
             className={classNames(
-              'flex flex-1 items-center justify-center border-b-2 bg-white dark:bg-slate-800 py-4 text-center transition-all hover:text-orange dark:hover:text-orange-400',
+              'flex flex-1 items-center justify-center bg-white dark:bg-slate-800 py-4 text-center transition-all hover:text-orange dark:hover:text-orange-400',
               {
-                'border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400': activeTab === tab.status,
-                'border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': activeTab !== tab.status
+                'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400': activeTab === tab.status,
+                'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': activeTab !== tab.status
               }
             )}
           >
@@ -185,6 +200,57 @@ export default function OrderList() {
           </button>
         </div>
       )}
+
+      {/* Cancel Order Confirmation Modal */}
+      <AnimatePresence>
+        {showCancelModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/60'
+            onClick={handleCloseModal}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className='mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
+              <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
+                Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.
+              </p>
+
+              <textarea
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder='Lý do hủy đơn (không bắt buộc)'
+                className='mt-4 w-full rounded-lg border border-gray-300 p-3 text-sm text-gray-700 outline-none transition-colors focus:border-orange dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:border-orange-400'
+                rows={3}
+              />
+
+              <div className='mt-5 flex justify-end gap-3'>
+                <button
+                  onClick={handleCloseModal}
+                  className='rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
+                >
+                  Quay lại
+                </button>
+                <button
+                  onClick={handleConfirmCancel}
+                  disabled={cancelMutation.isPending}
+                  className='rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600 disabled:opacity-60 disabled:cursor-not-allowed'
+                >
+                  {cancelMutation.isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

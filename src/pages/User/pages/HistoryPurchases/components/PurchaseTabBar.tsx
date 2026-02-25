@@ -23,10 +23,10 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
           key={tab.status}
           onClick={() => onStatusChange(tab.status)}
           className={classNames(
-            'flex flex-1 items-center justify-center border-b-2 bg-white dark:bg-slate-800 py-4 text-center transition-all hover:text-orange dark:hover:text-orange-400',
+            'flex flex-1 items-center justify-center bg-white dark:bg-slate-800 py-4 text-center transition-all hover:text-orange dark:hover:text-orange-400',
             {
-              'border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400': status === tab.status,
-              'border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': status !== tab.status
+              'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400': status === tab.status,
+              'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': status !== tab.status
             }
           )}
         >

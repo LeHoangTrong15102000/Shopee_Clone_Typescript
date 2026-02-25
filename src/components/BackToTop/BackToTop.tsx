@@ -76,7 +76,7 @@ const BackToTopInner = () => {
         <motion.button
           type='button'
           onClick={scrollToTop}
-          className='fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-orange text-white shadow-lg transition-colors hover:bg-[#d73211] focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2'
+          className='fixed bottom-[6.5rem] right-3 sm:right-6 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-orange text-white shadow-lg transition-colors hover:bg-[#d73211] focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2'
           variants={variants}
           initial='hidden'
           animate='visible'

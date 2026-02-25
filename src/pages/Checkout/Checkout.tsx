@@ -13,7 +13,6 @@ import PaymentMethodSelector from 'src/components/PaymentMethodSelector'
 import OrderSummary from 'src/components/OrderSummary'
 import OrderPreview from 'src/components/OrderPreview'
 import Button from 'src/components/Button'
-import MobileAccountNav from 'src/components/MobileAccountNav'
 import { scrollToTop } from 'src/utils/utils'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
@@ -347,9 +346,6 @@ const Checkout = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* Mobile account navigation */}
-        <MobileAccountNav className='mb-4 rounded-xl overflow-hidden' />
 
         {/* Progress Stepper */}
         <motion.div

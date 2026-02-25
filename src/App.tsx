@@ -6,6 +6,7 @@ import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
 import SEO from './components/SEO'
 import { KeyboardShortcutsProvider } from './components/KeyboardShortcutsProvider'
+import ScrollToTopOnNavigate from './components/ScrollToTopOnNavigate'
 
 // Lazy load heavy components - giảm main chunk size
 const ChatbotWidget = lazy(() => import('./components/ChatbotWidget'))
@@ -40,6 +41,7 @@ function App() {
       {/* Default SEO cho toàn bộ app */}
       <SEO />
       <ToastContainer autoClose={1500} role='alert' />
+      <ScrollToTopOnNavigate />
       {routeElements}
       {/* Chatbot Widget - hiển thị trên tất cả các trang */}
       <Suspense fallback={null}>
