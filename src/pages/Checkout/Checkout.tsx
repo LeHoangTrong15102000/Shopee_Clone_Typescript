@@ -82,13 +82,13 @@ const SectionHeader = ({ number, title }: { number: number; title: string }) => 
 )
 
 const SecurityBadge = () => (
-  <div className='mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-100 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/30 p-3 ring-2 ring-green-200 dark:ring-green-700 shadow-md dark:shadow-slate-900/50 transition-all hover:shadow-lg hover:ring-green-300 dark:hover:ring-green-600'>
+  <div className='mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-200 to-emerald-100 dark:from-green-800/60 dark:to-emerald-800/50 p-3 ring-2 ring-green-300 dark:ring-green-600 shadow-md dark:shadow-slate-900/50 transition-all hover:shadow-lg hover:ring-green-400 dark:hover:ring-green-500'>
     <div className='flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm shadow-green-500/30 dark:shadow-slate-900/50'>
       <svg className='h-3.5 w-3.5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
         <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z' />
       </svg>
     </div>
-    <span className='text-sm font-medium text-green-700 dark:text-green-300'>Thanh toán an toàn & bảo mật</span>
+    <span className='text-sm font-semibold text-green-800 dark:text-green-200'>Thanh toán an toàn & bảo mật</span>
   </div>
 )
 
@@ -332,17 +332,17 @@ const Checkout = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className='mb-4 md:mb-6 rounded-xl bg-gradient-to-r from-orange via-orange/90 to-orange-400 p-3 sm:p-4 md:p-6 shadow-lg'
+          className='mb-4 md:mb-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-orange via-orange/90 to-orange-400 p-3 sm:p-4 md:p-6 shadow-lg overflow-hidden'
         >
-          <div className='flex items-center gap-2 sm:gap-3'>
-            <div className='flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0'>
-              <svg className='h-5 w-5 sm:h-6 sm:w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <div className='flex items-center gap-2.5 sm:gap-3'>
+            <div className='flex h-9 w-9 sm:h-11 sm:w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0'>
+              <svg className='h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' />
               </svg>
             </div>
-            <div className='min-w-0'>
-              <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-white truncate'>Thanh toán</h1>
-              <p className='mt-0.5 text-xs sm:text-sm md:text-base text-white/80'>Hoàn tất đơn hàng của bạn</p>
+            <div className='min-w-0 flex-1'>
+              <h1 className='text-base sm:text-lg md:text-2xl font-bold text-white leading-tight truncate'>Thanh toán</h1>
+              <p className='mt-0.5 text-[11px] sm:text-xs md:text-sm text-white/80 leading-snug truncate'>Hoàn tất đơn hàng của bạn</p>
             </div>
           </div>
         </motion.div>

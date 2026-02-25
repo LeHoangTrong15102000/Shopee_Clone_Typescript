@@ -144,7 +144,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
   return (
     <div
       ref={dropdownRef}
-      className={classNames('md:hidden border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 relative', className)}
+      className={classNames('md:hidden bg-white dark:bg-slate-800 relative rounded-lg shadow-sm border border-gray-100 dark:border-slate-700', className)}
     >
       {/* Dropdown trigger button */}
       <button
@@ -153,14 +153,14 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
         aria-expanded={isOpen}
         aria-haspopup='listbox'
         aria-label='Menu tài khoản'
-        className='w-full flex items-center justify-between px-4 py-3 text-left'
+        className='w-full flex items-center justify-between px-3 py-2.5 text-left'
       >
         <div className='flex items-center gap-2'>
           <span className='text-[#ee4d2d] dark:text-orange-400'>{activeItem.icon}</span>
           <span className='text-sm font-medium text-gray-900 dark:text-gray-100'>{activeItem.label}</span>
         </div>
         <ChevronDownIcon
-          className={classNames('w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform', {
+          className={classNames('w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform', {
             'rotate-180': isOpen,
             'duration-200': !reducedMotion
           })}
@@ -171,13 +171,13 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
-            transition={reducedMotion ? { duration: 0 } : { duration: 0.15 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.12 }}
             role='listbox'
             aria-label='Chọn trang tài khoản'
-            className='absolute left-0 right-0 top-full z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 shadow-lg rounded-b-lg overflow-hidden'
+            className='absolute left-0 right-0 top-full z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 shadow-lg rounded-b-lg overflow-hidden mt-px'
           >
             {mobileNavItems.map((item) => {
               const isActive = location.pathname === item.to
@@ -189,14 +189,14 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
                   aria-selected={isActive}
                   onClick={() => handleSelect(item.to)}
                   className={classNames(
-                    'w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                    'w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors',
                     {
                       'bg-orange-50 dark:bg-orange-900/20 text-[#ee4d2d] dark:text-orange-400': isActive,
                       'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700': !isActive
                     }
                   )}
                 >
-                  <span className={isActive ? 'text-[#ee4d2d] dark:text-orange-400' : 'text-gray-500 dark:text-gray-400'}>
+                  <span className={classNames('flex-shrink-0', isActive ? 'text-[#ee4d2d] dark:text-orange-400' : 'text-gray-400 dark:text-gray-500')}>
                     {item.icon}
                   </span>
                   <span className='font-medium'>{item.label}</span>

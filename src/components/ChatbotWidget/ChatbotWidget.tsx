@@ -82,7 +82,7 @@ export default function ChatbotWidget() {
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className={classNames(
-          'fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-colors hover:bg-[#d73211]',
+          'fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 hidden md:flex h-14 w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-colors hover:bg-[#d73211]',
           !isOpen && 'animate-[message-shake_2s_ease-in-out_infinite]'
         )}
         whileHover={{ scale: 1.05 }}
@@ -115,7 +115,7 @@ export default function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className='fixed bottom-24 right-3 sm:right-6 z-50 flex h-[calc(100vh-8rem)] sm:h-[500px] w-[calc(100vw-1.5rem)] sm:w-[360px] max-h-[calc(100vh-8rem)] flex-col overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-2xl'
+            className='fixed bottom-24 right-3 sm:right-6 z-50 hidden md:flex h-[calc(100vh-8rem)] sm:h-[500px] w-[calc(100vw-1.5rem)] sm:w-[360px] max-h-[calc(100vh-8rem)] flex-col overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-2xl'
           >
             <div className='flex items-center justify-between bg-orange px-4 py-3 text-white'>
               <div className='flex items-center gap-2'>
