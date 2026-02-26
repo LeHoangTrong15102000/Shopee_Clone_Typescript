@@ -2,8 +2,8 @@ import { OrderTracking, OrderTrackingConfig, TrackingEvent } from 'src/types/ord
 import { SuccessResponseApi } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
-// Mock data for fallback when API is not available
-const mockTrackingEvents: TrackingEvent[] = [
+// All possible tracking events in chronological order
+const allTrackingEvents: TrackingEvent[] = [
   {
     status: 'pending',
     description: 'Đơn hàng đã được tạo',
@@ -27,28 +27,54 @@ const mockTrackingEvents: TrackingEvent[] = [
     description: 'Đang vận chuyển đến bạn',
     location: 'Trung tâm phân loại Hà Nội',
     timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    status: 'delivered',
+    description: 'Giao hàng thành công',
+    location: 'Hà Nội - Cầu Giấy - Dịch Vọng',
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
   }
 ]
 
-const mockOrderTracking: OrderTracking = {
-  _id: 'mock-tracking-id-001',
-  order_id: 'mock-order-tracking-1',
-  user_id: 'mock-user-id-001',
-  tracking_number: 'VN2024MOCK001',
-  carrier: 'ghn',
-  status: 'shipping',
-  estimated_delivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-  timeline: mockTrackingEvents,
-  shipping_address: {
-    name: 'Nguyễn Văn A',
-    phone: '0901234567',
-    address: '123 Đường ABC',
-    province: 'Hà Nội',
-    district: 'Cầu Giấy',
-    ward: 'Dịch Vọng'
-  },
-  createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-  updatedAt: new Date().toISOString()
+// Status progression order for filtering timeline events
+const STATUS_ORDER = ['pending', 'confirmed', 'processing', 'shipping', 'delivered']
+
+// Build timeline events up to and including the given status
+function buildTimelineForStatus(status: string): TrackingEvent[] {
+  const statusIndex = STATUS_ORDER.indexOf(status)
+  if (statusIndex === -1) {
+    // For cancelled/returned, show events up to pending only
+    return allTrackingEvents.slice(0, 1)
+  }
+  return allTrackingEvents.slice(0, statusIndex + 1)
+}
+
+// Build a mock OrderTracking object based on the provided status
+function buildMockTracking(orderId: string, status: string = 'pending'): OrderTracking {
+  const timeline = buildTimelineForStatus(status)
+  const isDelivered = status === 'delivered'
+
+  return {
+    _id: `mock-tracking-${orderId}`,
+    order_id: orderId,
+    user_id: 'mock-user-id-001',
+    tracking_number: `VN2024${orderId.slice(-4).toUpperCase()}`,
+    carrier: 'ghn',
+    status: status as OrderTracking['status'],
+    estimated_delivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+    actual_delivery: isDelivered ? new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() : undefined,
+    timeline,
+    shipping_address: {
+      name: 'Nguyễn Văn A',
+      phone: '0901234567',
+      address: '123 Đường ABC',
+      province: 'Hà Nội',
+      district: 'Cầu Giấy',
+      ward: 'Dịch Vọng'
+    },
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString()
+  }
 }
 
 const orderTrackingApi = {
@@ -59,13 +85,14 @@ const orderTrackingApi = {
       return response
     } catch (error) {
       console.warn('⚠️ [getTracking] API not available, using mock data')
+      const orderId = params.order_id || 'unknown'
+      const status = params.status || 'pending'
       return {
         data: {
           message: 'Lấy thông tin tracking thành công',
           data: {
-            ...mockOrderTracking,
-            order_id: params.order_id || mockOrderTracking.order_id,
-            tracking_number: params.tracking_number || mockOrderTracking.tracking_number
+            ...buildMockTracking(orderId, status),
+            tracking_number: params.tracking_number || `VN2024${orderId.slice(-4).toUpperCase()}`
           }
         }
       }
@@ -83,7 +110,7 @@ const orderTrackingApi = {
         data: {
           message: 'Lấy thông tin tracking thành công',
           data: {
-            ...mockOrderTracking,
+            ...buildMockTracking('unknown', 'pending'),
             tracking_number: trackingNumber
           }
         }

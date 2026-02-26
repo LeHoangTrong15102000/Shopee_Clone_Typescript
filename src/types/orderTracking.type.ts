@@ -48,6 +48,7 @@ export interface OrderTracking {
 export interface OrderTrackingConfig {
   order_id?: string
   tracking_number?: string
+  status?: string
 }
 
 // Carrier display names mapping

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useState, useMemo } from 'react'
 import { toast } from 'react-toastify'
@@ -8,6 +8,7 @@ import orderTrackingApi from 'src/apis/orderTracking.api'
 import { Order } from 'src/types/checkout.type'
 import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
 import { formatCurrency } from 'src/utils/utils'
+import { orderStatusFromNumber } from 'src/constant/order'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import Button from 'src/components/Button'
 import OrderTrackingTimeline from 'src/components/OrderTrackingTimeline'
@@ -111,6 +112,9 @@ const paymentMethodLabels: Record<string, string> = {
 
 export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>()
+  const [searchParams] = useSearchParams()
+  const statusParam = searchParams.get('status')
+  const statusString = statusParam ? orderStatusFromNumber(Number(statusParam)) : undefined
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [showCancelModal, setShowCancelModal] = useState(false)
@@ -127,8 +131,8 @@ export default function OrderDetail() {
   })
 
   const { data: trackingData } = useQuery({
-    queryKey: ['orderTracking', orderId],
-    queryFn: () => orderTrackingApi.getTracking({ order_id: orderId }),
+    queryKey: ['orderTracking', orderId, statusString],
+    queryFn: () => orderTrackingApi.getTracking({ order_id: orderId, status: statusString || orderData?.data.data.status }),
     enabled: !!orderId
   })
 

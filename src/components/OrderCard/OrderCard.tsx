@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Order } from 'src/types/checkout.type'
 import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
 import { formatCurrency } from 'src/utils/utils'
+import { orderStatusToNumber } from 'src/constant/order'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import Button from 'src/components/Button'
 
@@ -169,7 +170,7 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
           </div>
           <div className='flex items-center gap-2'>
             <Link
-              to={`/user/order/${order._id}`}
+              to={`/user/order/${order._id}?status=${orderStatusToNumber(order.status)}`}
               className='text-xs font-medium text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors'
             >
               Chi tiết →

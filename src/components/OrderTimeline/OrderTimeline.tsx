@@ -123,17 +123,21 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
     )
   }
 
+  // Filter steps: only show statuses up to and including the current status
+  const visibleSteps = ORDER_STEPS.filter((step) => step.status <= currentStatus)
+
   return (
     <div className={classNames('relative', className)}>
       {/* Progress bar background */}
-      <div className='absolute left-[23px] top-6 h-[calc(100%-48px)] w-1 rounded-full bg-gray-100 dark:bg-slate-700 md:left-[27px]' />
+      {visibleSteps.length > 0 && (
+        <div className='absolute left-[23px] top-6 h-[calc(100%-48px)] w-1 rounded-full bg-gray-100 dark:bg-slate-700 md:left-[27px]' />
+      )}
 
       <AnimatePresence>
-        {ORDER_STEPS.map((step, index) => {
-          const isCompleted = currentStatus > step.status || currentStatus === purchasesStatus.delivered
+        {visibleSteps.map((step, index) => {
+          const isCompleted = currentStatus > step.status
           const isCurrent = currentStatus === step.status
-          const isFuture = currentStatus < step.status
-          const isLast = index === ORDER_STEPS.length - 1
+          const isLast = index === visibleSteps.length - 1
           const timestamp = timestamps?.[step.status]
 
           return (
@@ -152,8 +156,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
                     'absolute left-[23px] top-12 h-[calc(100%-24px)] w-1 origin-top rounded-full md:left-[27px]',
                     {
                       'bg-gradient-to-b from-green-500 to-green-400': isCompleted,
-                      'bg-gradient-to-b from-[#ee4d2d] to-orange-300': isCurrent,
-                      'bg-transparent': isFuture
+                      'bg-gradient-to-b from-[#ee4d2d] to-orange-300': isCurrent
                     }
                   )}
                   variants={reducedMotion ? undefined : lineVariants}
@@ -168,8 +171,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
                   'relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 bg-white dark:bg-slate-800 md:h-14 md:w-14',
                   {
                     'border-green-500 text-green-500': isCompleted,
-                    'border-[#ee4d2d] text-[#ee4d2d]': isCurrent,
-                    'border-gray-200 dark:border-slate-600 text-gray-300 dark:text-gray-500': isFuture
+                    'border-[#ee4d2d] text-[#ee4d2d]': isCurrent
                   }
                 )}
               >
@@ -186,10 +188,9 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
               <div className='flex-1 pt-1'>
                 <div className='flex items-center gap-2'>
                   <span
-                    className={classNames('text-base font-semibold md:text-lg', {
+                    className={classNames('text-base md:text-lg', {
                       'text-green-600 dark:text-green-400': isCompleted,
-                      'text-[#ee4d2d]': isCurrent,
-                      'text-gray-400 dark:text-gray-500': isFuture
+                      'text-[#ee4d2d]': isCurrent
                     })}
                   >
                     {step.label}
@@ -200,10 +201,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
                     </span>
                   )}
                 </div>
-                <p className={classNames('mt-1 text-sm', {
-                  'text-gray-600 dark:text-gray-300': isCompleted || isCurrent,
-                  'text-gray-400 dark:text-gray-500': isFuture
-                })}>
+                <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
                   {step.description}
                 </p>
                 {timestamp && (

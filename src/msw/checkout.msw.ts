@@ -249,7 +249,7 @@ export const calculateCheckoutRequest = http.post(`${config.baseUrl}checkout/cal
 // Order Handlers
 export const createOrderRequest = http.post(`${config.baseUrl}orders`, async ({ request }) => {
   const body = (await request.json()) as CreateOrderBody
-  const order = createMockOrder(body, `order_${Date.now()}`)
+  const order = createMockOrder(body, `${Date.now().toString(16)}${Math.random().toString(16).slice(2, 10)}`)
   return HttpResponse.json(
     { message: 'Đặt hàng thành công', data: order },
     { status: HTTP_STATUS_CODE.Created }

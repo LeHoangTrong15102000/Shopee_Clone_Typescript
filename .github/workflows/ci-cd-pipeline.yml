@@ -2,7 +2,6 @@ name: 🚀 Shopee Clone CI/CD Pipeline
 
 env:
   NODE_VERSION: '22'
-  PNPM_VERSION: '9'
 
 on:
   push:
@@ -63,8 +62,6 @@ jobs:
 
       - name: 📦 Setup PNPM
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -75,8 +72,8 @@ jobs:
       - name: 📦 Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🔒 TypeScript Type Check
-        run: pnpm run build # tsc check included
+      - name: 🔒 TypeScript Type Check (noEmit)
+        run: pnpm tsc --noEmit
 
       - name: 🧹 ESLint Check
         run: pnpm run lint
@@ -99,7 +96,7 @@ jobs:
     name: 🛡️ Security Scanning
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: changes
+    needs: [changes, code-quality]
     if: needs.changes.outputs.src == 'true'
 
     steps:
@@ -108,8 +105,6 @@ jobs:
 
       - name: 📦 Setup PNPM
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
 
       - name: 🔍 Dependency Audit
         run: pnpm audit --audit-level high
@@ -135,7 +130,7 @@ jobs:
     name: 🧪 Testing Suite
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: changes
+    needs: [changes, code-quality]
     if: needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true'
 
     strategy:
@@ -148,8 +143,6 @@ jobs:
 
       - name: 📦 Setup PNPM
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
 
       - name: 🟢 Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -195,7 +188,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [changes, code-quality, security, test]
-    if: always() && !cancelled() && needs.changes.outputs.src == 'true'
+    if: |
+      needs.changes.outputs.src == 'true' &&
+      needs.code-quality.result == 'success' &&
+      (needs.security.result == 'success' || needs.security.result == 'skipped') &&
+      (needs.test.result == 'success' || needs.test.result == 'skipped')
 
     steps:
       - name: 📥 Checkout Code
@@ -203,8 +200,6 @@ jobs:
 
       - name: 📦 Setup PNPM
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -228,18 +223,11 @@ jobs:
       - name: 🏗️ Build Production
         run: pnpm run build:production
 
-      - name: 📊 Bundle Analysis
-        run: |
-          # Analyze bundle size
-          pnpm exec vite-bundle-analyzer --analyzer-mode=json --report-filename=bundle-analysis.json
-
       - name: 💾 Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-assets
-          path: |
-            dist/
-            bundle-analysis.json
+          path: dist/
           retention-days: 3
 
       - name: 📊 Report Bundle Size
@@ -247,9 +235,6 @@ jobs:
         run: |
           echo "📦 Bundle size report:"
           du -sh dist/ || echo "No dist folder found"
-          if [ -f bundle-analysis.json ]; then
-            echo "Bundle analysis saved to artifacts"
-          fi
 
   # ==================== DEPLOYMENT STAGING ====================
   deploy-staging:

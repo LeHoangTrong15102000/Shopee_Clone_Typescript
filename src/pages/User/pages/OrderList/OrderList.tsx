@@ -7,19 +7,21 @@ import orderApi from 'src/apis/order.api'
 import { OrderStatus, Order } from 'src/types/checkout.type'
 import OrderCard from 'src/components/OrderCard'
 import LiveOrderTracker from 'src/components/LiveOrderTracker'
+import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
+import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
 
-const orderTabs: { status: OrderStatus | 'all'; label: string }[] = [
-  { status: 'all', label: 'Tất cả' },
-  { status: 'pending', label: 'Chờ xác nhận' },
-  { status: 'confirmed', label: 'Đã xác nhận' },
-  { status: 'shipping', label: 'Đang giao' },
-  { status: 'delivered', label: 'Đã giao' },
-  { status: 'cancelled', label: 'Đã hủy' }
+const orderTabs: { status: number; label: string }[] = [
+  { status: ordersStatus.all, label: 'Tất cả' },
+  { status: ordersStatus.pending, label: 'Chờ xác nhận' },
+  { status: ordersStatus.confirmed, label: 'Đã xác nhận' },
+  { status: ordersStatus.shipping, label: 'Đang giao' },
+  { status: ordersStatus.delivered, label: 'Đã giao' },
+  { status: ordersStatus.cancelled, label: 'Đã hủy' }
 ]
 
 export default function OrderList() {
   const queryClient = useQueryClient()
-  const [activeTab, setActiveTab] = useState<OrderStatus | 'all'>('all')
+  const [activeTab, setActiveTab] = useOrderStatus() // nuqs: syncs numeric status with URL query param ?status=0,1,2,...
   const [page, setPage] = useState(1)
   const [expandedOrderIds, setExpandedOrderIds] = useState<Set<string>>(new Set())
   const [cancelOrderId, setCancelOrderId] = useState<string | null>(null)
@@ -43,21 +45,13 @@ export default function OrderList() {
     return ['pending', 'confirmed', 'shipping'].includes(status)
   }
 
-  // Map OrderStatus string to numeric status for LiveOrderTracker
-  const statusToNumber: Record<string, number> = {
-    pending: 1,
-    confirmed: 2,
-    processing: 3,
-    shipping: 4,
-    delivered: 5,
-    cancelled: 6,
-    returned: 7
-  }
+  // Convert numeric tab to string status for API call
+  const activeStatusString = orderStatusFromNumber(activeTab)
 
   const { data: ordersData, isLoading } = useQuery({
     queryKey: ['orders', { status: activeTab, page }],
     queryFn: () => orderApi.getOrders({
-      status: activeTab === 'all' ? undefined : activeTab,
+      status: activeTab === ordersStatus.all ? undefined : activeStatusString,
       page,
       limit: 10
     })
@@ -99,7 +93,7 @@ export default function OrderList() {
     toast.info('Tính năng mua lại đang được phát triển')
   }
 
-  const handleTabChange = (status: OrderStatus | 'all') => {
+  const handleTabChange = (status: number) => {
     setActiveTab(status)
     setPage(1)
   }
@@ -168,7 +162,7 @@ export default function OrderList() {
                 trackingContent={
                   <LiveOrderTracker
                     orderId={order._id}
-                    initialStatus={statusToNumber[order.status] || 1}
+                    initialStatus={orderStatusToNumber(order.status) || 1}
                     className='bg-gray-50 dark:bg-slate-900'
                   />
                 }

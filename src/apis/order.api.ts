@@ -58,7 +58,7 @@ const mockShippingExpress = {
 const mockOrders: Order[] = [
   // PENDING - Chờ xác nhận (2 đơn)
   {
-    _id: 'order_pending_1',
+    _id: '65a1b2c3d4e5f6a7b8c9d0e1',
     userId: 'user1',
     items: [
       { product: createMockProduct('p1', 'Áo thun nam basic', 199000, 250000), buyCount: 2, price: 199000, priceBeforeDiscount: 250000 },
@@ -78,7 +78,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-02-10T08:30:00.000Z'
   },
   {
-    _id: 'order_pending_2',
+    _id: '65a1b2c3d4e5f6a7b8c9d0e2',
     userId: 'user1',
     items: [
       { product: createMockProduct('p3', 'Giày sneaker trắng', 890000, 1200000), buyCount: 1, price: 890000, priceBeforeDiscount: 1200000 }
@@ -99,7 +99,7 @@ const mockOrders: Order[] = [
 
   // CONFIRMED - Chờ lấy hàng (2 đơn)
   {
-    _id: 'order_confirmed_1',
+    _id: '65b2c3d4e5f6a7b8c9d0e1f2',
     userId: 'user1',
     items: [
       { product: createMockProduct('p4', 'Túi xách nữ thời trang', 350000, 450000), buyCount: 1, price: 350000, priceBeforeDiscount: 450000 },
@@ -119,7 +119,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-02-08T12:00:00.000Z'
   },
   {
-    _id: 'order_confirmed_2',
+    _id: '65b2c3d4e5f6a7b8c9d0e1f3',
     userId: 'user1',
     items: [
       { product: createMockProduct('p6', 'Đồng hồ thông minh', 1500000, 2000000), buyCount: 1, price: 1500000, priceBeforeDiscount: 2000000 }
@@ -140,7 +140,7 @@ const mockOrders: Order[] = [
 
   // SHIPPING - Đang giao (2 đơn)
   {
-    _id: 'order_shipping_1',
+    _id: '65c3d4e5f6a7b8c9d0e1f2a3',
     userId: 'user1',
     items: [
       { product: createMockProduct('p7', 'Áo khoác dù unisex', 320000, 400000), buyCount: 2, price: 320000, priceBeforeDiscount: 400000 }
@@ -159,7 +159,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-02-06T14:00:00.000Z'
   },
   {
-    _id: 'order_shipping_2',
+    _id: '65c3d4e5f6a7b8c9d0e1f2a4',
     userId: 'user1',
     items: [
       { product: createMockProduct('p8', 'Balo laptop chống nước', 550000, 700000), buyCount: 1, price: 550000, priceBeforeDiscount: 700000 },
@@ -181,7 +181,7 @@ const mockOrders: Order[] = [
 
   // DELIVERED - Hoàn thành (3 đơn)
   {
-    _id: 'order_delivered_1',
+    _id: '65d4e5f6a7b8c9d0e1f2a3b4',
     userId: 'user1',
     items: [
       { product: createMockProduct('p10', 'Tai nghe bluetooth', 450000, 600000), buyCount: 1, price: 450000, priceBeforeDiscount: 600000 }
@@ -200,7 +200,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-02-01T10:30:00.000Z'
   },
   {
-    _id: 'order_delivered_2',
+    _id: '65d4e5f6a7b8c9d0e1f2a3b5',
     userId: 'user1',
     items: [
       { product: createMockProduct('p11', 'Áo sơ mi công sở', 380000, 450000), buyCount: 3, price: 380000, priceBeforeDiscount: 450000 },
@@ -220,7 +220,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-01-23T16:00:00.000Z'
   },
   {
-    _id: 'order_delivered_3',
+    _id: '65d4e5f6a7b8c9d0e1f2a3b6',
     userId: 'user1',
     items: [
       { product: createMockProduct('p13', 'Kính mát thời trang', 290000, 350000), buyCount: 1, price: 290000, priceBeforeDiscount: 350000 }
@@ -241,7 +241,7 @@ const mockOrders: Order[] = [
 
   // CANCELLED - Đã hủy (2 đơn)
   {
-    _id: 'order_cancelled_1',
+    _id: '65e5f6a7b8c9d0e1f2a3b4c5',
     userId: 'user1',
     items: [
       { product: createMockProduct('p14', 'Váy đầm dự tiệc', 650000, 800000), buyCount: 1, price: 650000, priceBeforeDiscount: 800000 }
@@ -261,7 +261,7 @@ const mockOrders: Order[] = [
     updatedAt: '2024-02-01T12:30:00.000Z'
   },
   {
-    _id: 'order_cancelled_2',
+    _id: '65e5f6a7b8c9d0e1f2a3b4c6',
     userId: 'user1',
     items: [
       { product: createMockProduct('p15', 'Giày cao gót', 420000, 500000), buyCount: 1, price: 420000, priceBeforeDiscount: 500000 },

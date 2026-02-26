@@ -63,7 +63,7 @@ const FollowedSellers = memo(function FollowedSellers({
       {/* Show more link */}
       {followedCount > maxDisplay && (
         <div className='p-3 sm:p-4 border-t border-gray-100 dark:border-slate-700 text-center'>
-          <Link to='/user/followed-shops' className='text-sm text-orange hover:underline'>
+          <Link to='/user/followed-shop' className='text-sm text-orange hover:underline'>
             Xem tất cả {followedCount} shop →
           </Link>
         </div>

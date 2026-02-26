@@ -6,8 +6,8 @@ const path = {
   profile: '/user/profile',
   changePassword: '/user/password',
   historyPurchases: '/user/purchase',
-  orderList: '/user/orders',
-  myVouchers: '/user/vouchers',
+  orderList: '/user/order',
+  myVouchers: '/user/voucher',
   addressBook: '/user/address', // Trang quản lý địa chỉ giao hàng
   login: '/login',
   register: '/register',
@@ -21,8 +21,8 @@ const path = {
   orderDetail: '/user/order/:orderId', // Chi tiết đơn hàng
   voucherCollection: '/vouchers', // Trang thu thập voucher
   dailyCheckIn: '/user/daily-checkin', // Trang điểm danh hàng ngày
-  followedShops: '/user/followed-shops', // Trang shop đang theo dõi
-  notifications: '/user/notifications' // Trang thông báo
+  followedShops: '/user/followed-shop', // Trang shop đang theo dõi
+  notifications: '/user/notification' // Trang thông báo
 } as const
 
 export default path
