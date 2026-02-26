@@ -208,7 +208,7 @@ export default function OrderList() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/60'
+            className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm'
             onClick={handleCloseModal}
           >
             <motion.div
@@ -216,11 +216,24 @@ export default function OrderList() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className='mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800'
+              className='relative mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
-              <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
+              {/* Close button */}
+              <button
+                onClick={handleCloseModal}
+                className='absolute top-4 right-4 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-slate-700 transition-colors duration-200 cursor-pointer'
+                aria-label='Đóng modal'
+              >
+                <svg className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                  <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+                </svg>
+              </button>
+              <div className='mb-4'>
+                <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
+                <p className='text-sm text-gray-500 dark:text-gray-400 mt-1'>Hành động này không thể hoàn tác</p>
+              </div>
+              <p className='text-sm text-gray-600 dark:text-gray-300 mb-4'>
                 Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.
               </p>
 
@@ -228,21 +241,21 @@ export default function OrderList() {
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 placeholder='Lý do hủy đơn (không bắt buộc)'
-                className='mt-4 w-full rounded-lg border border-gray-300 p-3 text-sm text-gray-700 outline-none transition-colors focus:border-orange dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:border-orange-400'
+                className='w-full rounded-xl border border-gray-200 p-3 text-sm transition-all duration-200 focus:border-orange focus:outline-none focus:ring-2 focus:ring-orange/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-orange-400 resize-none'
                 rows={3}
               />
 
               <div className='mt-5 flex justify-end gap-3'>
                 <button
                   onClick={handleCloseModal}
-                  className='rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
+                  className='rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 cursor-pointer'
                 >
                   Quay lại
                 </button>
                 <button
                   onClick={handleConfirmCancel}
                   disabled={cancelMutation.isPending}
-                  className='rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600 disabled:opacity-60 disabled:cursor-not-allowed'
+                  className='rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
                 >
                   {cancelMutation.isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
                 </button>

@@ -225,11 +225,11 @@ const Profile = () => {
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       {/* Profile Completion Progress */}
-      <ProfileCompletion user={profile || null} className='mb-3 mt-3 sm:mb-6 sm:mt-6' />
+      <ProfileCompletion user={profile || null} className='mb-2 mt-2 sm:mb-6 sm:mt-6' />
 
       {/* Tiêu đề */}
       <motion.div
-        className='border-b border-b-gray-100 dark:border-b-slate-600 py-3 sm:py-6 text-center sm:text-left'
+        className='border-b border-b-gray-100 dark:border-b-slate-600 py-2 sm:py-6 text-center sm:text-left'
         initial={reducedMotion ? undefined : { opacity: 0, x: -10 }}
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
@@ -239,9 +239,9 @@ const Profile = () => {
       </motion.div>
       {/* Form và Avatar */}
       <FormProvider {...methods}>
-        <form className='mt-4 sm:mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
+        <form className='mt-2 sm:mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
           {/* Form */}
-          <div className='mt-3 sm:mt-6 flex-grow md:mt-0 md:pr-4 lg:pr-12'>
+          <div className='mt-2 sm:mt-6 flex-grow md:mt-0 md:pr-4 lg:pr-12'>
             {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
@@ -251,7 +251,7 @@ const Profile = () => {
               </div>
             </div>
             {/* Tên đăng nhập */}
-            <div className='mt-2 sm:mt-4 flex flex-col flex-wrap sm:flex-row'>
+            <div className='mt-1 sm:mt-4 flex flex-col flex-wrap sm:flex-row'>
               <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
                 Tên đăng nhập
               </div>
@@ -294,7 +294,7 @@ const Profile = () => {
             />
 
             {/* button lưu thay đổi */}
-            <div className='mt-2 sm:mt-3 flex flex-col flex-wrap sm:flex-row'>
+            <div className='mt-1 sm:mt-3 flex flex-col flex-wrap sm:flex-row'>
               <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right' />
               <div className='w-[100%] sm:w-[70%] sm:pl-5'>
                 <Button
@@ -316,7 +316,7 @@ const Profile = () => {
             {/* flex-col cho nó dàn hàng ngang */}
             <div className='flex flex-col items-center'>
               {/* Avatar */}
-              <div className='my-3 sm:my-5 h-16 w-16 sm:h-24 sm:w-24 md:h-[115px] md:w-[115px] flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
+              <div className='my-2 sm:my-5 h-20 w-20 sm:h-24 sm:w-24 md:h-[115px] md:w-[115px] flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
                 <img
                   src={previewImage || getAvatarUrl(profileFromContext?.avatar)}
                   alt='Avatar'
@@ -325,7 +325,7 @@ const Profile = () => {
               </div>
               {/* Input file */}
               <InputFile onChange={(value) => handleChangeFile(value)} />
-              <div className='mt-1 sm:mt-2'>
+              <div className='mt-1'>
                 <div className='text-xs sm:text-[0.875rem] text-gray-400'>Dung lượng file tối đa 1 MB</div>
                 <div className='text-xs sm:text-[0.875rem] text-gray-400'>Định dạng:.JPEG,.PNG</div>
                 <div></div>

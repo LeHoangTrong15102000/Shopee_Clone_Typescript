@@ -144,7 +144,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
   return (
     <div
       ref={dropdownRef}
-      className={classNames('md:hidden bg-white dark:bg-slate-800 relative rounded-lg shadow-sm border border-gray-100 dark:border-slate-700', className)}
+      className={classNames('md:hidden bg-white dark:bg-slate-800 relative', className)}
     >
       {/* Dropdown trigger button */}
       <button

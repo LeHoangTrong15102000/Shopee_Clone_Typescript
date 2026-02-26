@@ -137,7 +137,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
   )
 
   return (
-    <div className='flex-1 min-w-0 md:col-span-8 relative' ref={searchContainerRef}>
+    <div className='flex-1 min-w-0 relative' ref={searchContainerRef}>
       <form onSubmit={handleFormSubmit}>
         <div className='flex rounded-sm bg-white dark:bg-slate-800 p-1'>
           <input

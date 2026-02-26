@@ -72,7 +72,7 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
   // Compact mode: render only essential icons for mobile header bar
   if (compact) {
     return (
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center gap-1 sm:gap-3'>
         <ThemeToggle className='' />
         {isAdmin && isAuthenticated && (
           <InventoryAlertBadge
@@ -356,16 +356,16 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
         </div>
       )}
       {/* Thông báo, hỗ trợ, thông tin tài khoản */}
-      <div className='flex items-center justify-center'>
+      <div className='flex items-center justify-end gap-2 sm:gap-1 md:gap-0'>
         {/* Theme Toggle */}
-        <ThemeToggle className='mr-2 md:mr-3' />
+        <ThemeToggle className='md:mr-3' />
         {/* Inventory Alert Badge - Admin only */}
         {isAdmin && isAuthenticated && (
           <InventoryAlertBadge
             alerts={inventoryAlerts}
             unreadCount={inventoryUnreadCount}
             onClear={clearInventoryAlerts}
-            className='mr-2 md:mr-3 cursor-pointer'
+            className='md:mr-3 cursor-pointer'
           />
         )}
         {/* Phiên Âm tiếng Việt, Hỗ trợ, Thông báo, Avatar */}
@@ -511,7 +511,7 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-3.5 w-3.5 md:h-5 md:w-5'
+            className='hidden md:block h-5 w-5'
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
           </svg>
@@ -551,14 +551,14 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
             }
             className={classNames('ml-2 md:ml-5 flex cursor-pointer items-center py-1 hover:text-white/70')}
           >
-            <div className='mr-1 md:mr-2 h-7 w-7 flex-shrink-0'>
+            <div className='md:mr-2 h-6 w-6 md:h-7 md:w-7 flex-shrink-0'>
               <img
                 src={getAvatarUrl(profile?.avatar)}
                 alt='avatar'
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <span className='text-xs md:text-sm truncate max-w-[80px] sm:max-w-[120px] md:max-w-none'>{profile?.email}</span>
+            <span className='hidden md:inline text-sm truncate max-w-none'>{profile?.email}</span>
           </Popover>
         )}
         {!isAuthenticated && (

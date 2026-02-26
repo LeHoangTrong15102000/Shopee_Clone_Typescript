@@ -82,13 +82,13 @@ const SectionHeader = ({ number, title }: { number: number; title: string }) => 
 )
 
 const SecurityBadge = () => (
-  <div className='mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-200 to-emerald-100 dark:from-green-800/60 dark:to-emerald-800/50 p-3 ring-2 ring-green-300 dark:ring-green-600 shadow-md dark:shadow-slate-900/50 transition-all hover:shadow-lg hover:ring-green-400 dark:hover:ring-green-500'>
-    <div className='flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm shadow-green-500/30 dark:shadow-slate-900/50'>
-      <svg className='h-3.5 w-3.5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
+  <div className='mt-4 flex items-center justify-center gap-2 rounded-lg bg-gray-50 dark:bg-slate-700/50 p-2.5 border border-gray-200 dark:border-slate-600 transition-all'>
+    <div className='flex h-5 w-5 items-center justify-center rounded-full bg-green-500 flex-shrink-0'>
+      <svg className='h-3 w-3 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
         <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z' />
       </svg>
     </div>
-    <span className='text-sm font-semibold text-green-800 dark:text-green-200'>Thanh toán an toàn & bảo mật</span>
+    <span className='text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300'>Thanh toán an toàn & bảo mật</span>
   </div>
 )
 
@@ -516,7 +516,7 @@ const Checkout = () => {
                 </div>
 
                 {/* Secure Checkout Badge */}
-                <div className='mb-4 flex items-center justify-center gap-2 rounded-lg bg-gray-50 dark:bg-slate-700 py-2'>
+                <div className='mb-4 flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 py-2'>
                   <svg className='h-4 w-4 text-green-600 dark:text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path
                       strokeLinecap='round'
@@ -525,7 +525,7 @@ const Checkout = () => {
                       d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
                     />
                   </svg>
-                  <span className='text-xs md:text-sm text-gray-600 dark:text-gray-300'>Thanh toán an toàn</span>
+                  <span className='text-xs md:text-sm font-medium text-green-700 dark:text-green-300'>Thanh toán an toàn</span>
                 </div>
 
                 <Button

@@ -556,7 +556,7 @@ function CancelOrderModal({ cancelReason, setCancelReason, onClose, onConfirm, i
       initial='hidden'
       animate='visible'
       exit='exit'
-      className='fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm'
+      className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm'
       onClick={onClose}
     >
       <motion.div
@@ -567,7 +567,6 @@ function CancelOrderModal({ cancelReason, setCancelReason, onClose, onConfirm, i
         onClick={(e) => e.stopPropagation()}
         className='relative mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
       >
-        <div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 via-rose-500 to-pink-500' />
         {/* Close button */}
         <button
           onClick={onClose}
@@ -578,17 +577,9 @@ function CancelOrderModal({ cancelReason, setCancelReason, onClose, onConfirm, i
             <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>
-        {/* Warning icon */}
-        <div className='flex items-center gap-3 mb-4'>
-          <span className='inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 shadow-lg shadow-red-200/50 dark:shadow-red-900/30'>
-            <svg className='w-5 h-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z' />
-            </svg>
-          </span>
-          <div>
-            <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
-            <p className='text-sm text-gray-500 dark:text-gray-400'>Hành động này không thể hoàn tác</p>
-          </div>
+        <div className='mb-4'>
+          <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
+          <p className='text-sm text-gray-500 dark:text-gray-400 mt-1'>Hành động này không thể hoàn tác</p>
         </div>
         <p className='text-sm text-gray-600 dark:text-gray-300 mb-4'>Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.</p>
         <textarea
@@ -619,24 +610,9 @@ function CancelOrderModal({ cancelReason, setCancelReason, onClose, onConfirm, i
             <Button
               onClick={onConfirm}
               disabled={isPending}
-              className='flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-5 py-2.5 text-white font-medium transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
+              className='rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-5 py-2.5 text-white font-medium transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
             >
-              {isPending ? (
-                <>
-                  <svg className='w-4 h-4 animate-spin' fill='none' viewBox='0 0 24 24'>
-                    <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-                    <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' />
-                  </svg>
-                  Đang xử lý...
-                </>
-              ) : (
-                <>
-                  <svg className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
-                  </svg>
-                  Xác nhận hủy
-                </>
-              )}
+              {isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
             </Button>
           </motion.div>
         </div>

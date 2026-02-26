@@ -15,7 +15,7 @@ const UserSideNav = () => {
   return (
     <div>
       {/* Mobile horizontal icon+label tab bar */}
-      <MobileAccountNav className='mb-3' />
+      <MobileAccountNav className='mb-0' />
 
       {/* Desktop sidebar - hidden on mobile */}
       <div className='hidden md:block'>
