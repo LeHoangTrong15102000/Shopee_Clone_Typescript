@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 interface PasswordStrengthMeterProps {
@@ -27,11 +27,11 @@ const calculateStrength = (password: string): number => {
 
   // Exactly 5 requirements matching the UI checklist
   let met = 0
-  if (password.length >= 6) met++                                              // 1. Ít nhất 6 ký tự
-  if (/[A-Z]/.test(password)) met++                                            // 2. Chứa ít nhất 1 chữ hoa
-  if (/[a-z]/.test(password)) met++                                            // 3. Chứa ít nhất 1 chữ thường
-  if (/\d/.test(password)) met++                                               // 4. Chứa ít nhất 1 số
-  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(password)) met++         // 5. Chứa ký tự đặc biệt
+  if (password.length >= 6) met++ // 1. Ít nhất 6 ký tự
+  if (/[A-Z]/.test(password)) met++ // 2. Chứa ít nhất 1 chữ hoa
+  if (/[a-z]/.test(password)) met++ // 3. Chứa ít nhất 1 chữ thường
+  if (/\d/.test(password)) met++ // 4. Chứa ít nhất 1 số
+  if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/.test(password)) met++ // 5. Chứa ký tự đặc biệt
 
   // Map: 0→0, 1→1(Yếu), 2→2(Trung bình), 3-4→3(Khá), 5→4(Mạnh)
   if (met === 5) return 4
@@ -54,7 +54,14 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
   const currentLevel = strengthLevels[strength]
 
   return (
-    <div className={className} role='meter' aria-label='Độ mạnh mật khẩu' aria-valuenow={strength} aria-valuemin={0} aria-valuemax={4}>
+    <div
+      className={className}
+      role='meter'
+      aria-label='Độ mạnh mật khẩu'
+      aria-valuenow={strength}
+      aria-valuemin={0}
+      aria-valuemax={4}
+    >
       {/* Single continuous progress bar */}
       <div className='mt-2 h-2 w-full rounded-full bg-gray-200 dark:bg-slate-600 overflow-hidden' aria-hidden='true'>
         {reducedMotion ? (
@@ -121,4 +128,3 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
 }
 
 export default PasswordStrengthMeter
-

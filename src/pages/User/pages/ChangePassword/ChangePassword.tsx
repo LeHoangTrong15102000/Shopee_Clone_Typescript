@@ -93,7 +93,7 @@ const ChangePassword = () => {
     { label: 'Chứa ít nhất 1 số', check: /\d/.test(watchedNewPassword ?? '') },
     {
       label: 'Chứa ký tự đặc biệt (!@#$...)',
-      check: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(watchedNewPassword ?? '')
+      check: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/.test(watchedNewPassword ?? '')
     }
   ]
 
