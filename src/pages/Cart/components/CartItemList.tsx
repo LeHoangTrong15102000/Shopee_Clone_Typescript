@@ -43,8 +43,8 @@ const CartItemList = ({
 }: CartItemListProps) => {
   return (
     <div className='overflow-auto'>
-      {/* Desktop Layout - Table view (md and above) */}
-      <div className='hidden md:block'>
+      {/* Desktop Layout - Table view (lg and above) */}
+      <div className='hidden lg:block'>
         {/* Tiêu đề của các sản phẩm trong cart */}
         <div className='my-2 grid grid-cols-12 rounded-md bg-white dark:bg-slate-800 px-9 py-5 text-sm capitalize text-gray-500 dark:text-gray-300 shadow dark:shadow-slate-900/50'>
           <div className='col-span-6'>
@@ -210,8 +210,8 @@ const CartItemList = ({
         )}
       </div>
 
-      {/* Mobile Layout - Card view (below md) */}
-      <div className='block md:hidden'>
+      {/* Mobile Layout - Card view (below lg) */}
+      <div className='block lg:hidden'>
         <div className='my-2 flex items-center rounded-md bg-white dark:bg-slate-800 px-4 py-4 text-sm shadow dark:shadow-slate-900/50'>
           <div className='flex flex-shrink-0 items-center justify-center pr-3'>
             <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />

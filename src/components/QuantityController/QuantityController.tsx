@@ -113,11 +113,9 @@ const QuantityController = ({
       <motion.button
         type='button'
         aria-label='Decrease quantity'
-        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800'
+        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors duration-100'
         onClick={decrease}
         whileTap={{ scale: 0.85 }}
-        whileHover={{ backgroundColor: 'rgba(0,0,0,0.04)' }}
-        transition={{ duration: 0.1 }}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -148,11 +146,9 @@ const QuantityController = ({
       <motion.button
         type='button'
         aria-label='Increase quantity'
-        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800'
+        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors duration-100'
         onClick={increase}
         whileTap={{ scale: 0.85 }}
-        whileHover={{ backgroundColor: 'rgba(0,0,0,0.04)' }}
-        transition={{ duration: 0.1 }}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

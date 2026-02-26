@@ -165,10 +165,10 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
   }
 
   return (
-    <div className='flex items-center justify-between'>
-      {/* Tải ứng dụng, Social kết nối, kênh người bán */}
+    <div className='flex items-center justify-end md:justify-between'>
+      {/* Tải ứng dụng, Social kết nối, kênh người bán - Ẩn trên mobile */}
       {isAuthenticated ? (
-        <div className='flex items-center justify-center'>
+        <div className='hidden md:flex items-center justify-center'>
           {/* Kênh người bán - Ẩn trên mobile */}
           <Link to='https://banhang.shopee.vn/' className='ml-2 hidden lg:block'>
             <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
@@ -258,8 +258,7 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
           </div>
         </div>
       ) : (
-        <div className='flex items-center justify-center'>
-          {/* Kênh người bán - Ẩn trên mobile */}
+        <div className='hidden md:flex items-center justify-center'>
           <Link to='https://banhang.shopee.vn/' className='ml-2 mr-2 hidden lg:block'>
             <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
               <span className='mx-1 text-sm capitalize'>Kênh người bán</span>

@@ -63,12 +63,12 @@ const Header = () => {
           </Link>
 
           {/* Search */}
-          <div className='col-span-8 lg:col-span-9'>
+          <div className='col-span-8'>
             <SearchBar filters={filters} setFilters={setFilters} />
           </div>
 
           {/* Cart */}
-          <div className='col-span-2 lg:col-span-1 flex items-center justify-center'>
+          <div className='col-span-2 flex items-center justify-center'>
             <CartDropdown purchasesInCart={purchasesInCart} isAuthenticated={isAuthenticated} />
           </div>
         </div>
