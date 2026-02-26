@@ -58,9 +58,9 @@ const CartSummaryBar = ({
         </Button>
       </div>
 
-      <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
+      <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center md:flex-row md:items-center gap-4'>
         <div className='flex flex-col justify-end'>
-          <div className='flex items-center sm:justify-end'>
+          <div className='flex items-center flex-wrap sm:justify-end md:justify-end'>
             <div className='text-gray-700 dark:text-gray-200'>
               Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
             </div>
@@ -149,7 +149,7 @@ const CartSummaryBar = ({
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center text-sm sm:justify-end'>
+          <div className='flex items-center text-sm sm:justify-end md:justify-end'>
             <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
             <motion.div
               className='ml-7 text-[#ee4d2d] relative overflow-hidden'
@@ -186,7 +186,7 @@ const CartSummaryBar = ({
             onClick={handleBuyPurchases}
             disabled={checkedPurchaseCount === 0}
             type='button'
-            className='mt-5 flex h-10 w-full sm:w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+            className='mt-5 flex h-10 w-full sm:w-52 md:w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-0 sm:mt-0 md:ml-0 md:mt-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
           >
             Thanh toán ({checkedPurchaseCount})
           </Button>

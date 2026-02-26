@@ -1,40 +1,47 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { formatCurrency } from 'src/utils/utils'
 
 interface OrderStatusTrackerProps {
   currentStatus: string | null
-  lastUpdate: string | null
   isSubscribed: boolean
   className?: string
+  orderTotal?: number
+  stepTimestamps?: Record<string, string>
 }
 
 const StepIcon = ({ type, className, isActive }: { type: string; className?: string; isActive?: boolean }) => {
+  const sw = isActive ? 2 : 1.5
   const icons: Record<string, React.ReactNode> = {
     pending: (
-      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={isActive ? 2 : 1.5}>
-        <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' />
+      // Clipboard/order icon - Đơn Hàng Đã Đặt
+      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
+        <path strokeLinecap='round' strokeLinejoin='round' d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z' />
       </svg>
     ),
     confirmed: (
-      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={isActive ? 2 : 1.5}>
-        <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+      // Wallet/payment icon - Đã Xác Nhận Thông Tin Thanh Toán
+      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
+        <path strokeLinecap='round' strokeLinejoin='round' d='M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z' />
       </svg>
     ),
     processing: (
-      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={isActive ? 2 : 1.5}>
-        <path strokeLinecap='round' strokeLinejoin='round' d='M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z' />
-        <path strokeLinecap='round' strokeLinejoin='round' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
-      </svg>
-    ),
-    shipping: (
-      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={isActive ? 2 : 1.5}>
+      // Truck icon - Vận Chuyển
+      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
         <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
       </svg>
     ),
+    shipping: (
+      // Package/box icon - Chờ Giao Hàng
+      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
+        <path strokeLinecap='round' strokeLinejoin='round' d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' />
+      </svg>
+    ),
     delivered: (
-      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={isActive ? 2 : 1.5}>
-        <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z' />
+      // Star icon - Đánh Giá
+      <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
+        <path strokeLinecap='round' strokeLinejoin='round' d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z' />
       </svg>
     )
   }
@@ -42,33 +49,30 @@ const StepIcon = ({ type, className, isActive }: { type: string; className?: str
 }
 
 const ORDER_STEPS = [
-  { key: 'pending', label: 'Chờ xác nhận' },
-  { key: 'confirmed', label: 'Đã xác nhận' },
-  { key: 'processing', label: 'Đang xử lý' },
-  { key: 'shipping', label: 'Đang giao' },
-  { key: 'delivered', label: 'Đã giao' }
+  { key: 'pending', label: 'Đơn Hàng Đã Đặt' },
+  { key: 'confirmed', label: 'Đã Xác Nhận Thông Tin Thanh Toán' },
+  { key: 'processing', label: 'Vận Chuyển' },
+  { key: 'shipping', label: 'Chờ Giao Hàng' },
+  { key: 'delivered', label: 'Đánh Giá' }
 ]
 
 const formatLastUpdate = (lastUpdate: string | null): string => {
   if (!lastUpdate) return ''
   const date = new Date(lastUpdate)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / 60000)
-
-  if (diffMinutes < 1) return 'Vừa cập nhật'
-  if (diffMinutes < 60) return `${diffMinutes} phút trước`
-  const diffHours = Math.floor(diffMinutes / 60)
-  if (diffHours < 24) return `${diffHours} giờ trước`
-  const diffDays = Math.floor(diffHours / 24)
-  return `${diffDays} ngày trước`
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${hours}:${minutes} ${day}-${month}-${year}`
 }
 
 export default function OrderStatusTracker({
   currentStatus,
-  lastUpdate,
   isSubscribed,
-  className
+  className,
+  orderTotal,
+  stepTimestamps
 }: OrderStatusTrackerProps) {
   const isCancelled = currentStatus === 'cancelled'
   const isReturned = currentStatus === 'returned'
@@ -80,7 +84,7 @@ export default function OrderStatusTracker({
   }, [currentStatus, isSpecialStatus])
 
   return (
-    <div className={classNames('relative rounded-2xl bg-gradient-to-br from-slate-50 via-white to-orange-50/30 dark:from-slate-800 dark:via-slate-800 dark:to-orange-950/10 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700 overflow-hidden', className)}>
+    <div className={classNames('relative rounded-2xl bg-white dark:bg-slate-800 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700 overflow-hidden', className)}>
 
       {/* Live tracking indicator - Enhanced */}
       {isSubscribed && (
@@ -141,8 +145,11 @@ export default function OrderStatusTracker({
       {/* Step progress bar - Enhanced */}
       {!isSpecialStatus && (
         <div className='relative pt-2'>
-          {/* Progress line background - connects center of first circle to center of last circle */}
-          <div className='absolute left-[22px] right-[22px] md:left-[28px] md:right-[28px] top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'>
+          {/* Progress line background - inset to align with circle centers using calc */}
+          <div
+            className='absolute top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'
+            style={{ left: `calc(100% / ${ORDER_STEPS.length} / 2)`, right: `calc(100% / ${ORDER_STEPS.length} / 2)` }}
+          >
             {/* Animated progress fill */}
             <motion.div
               role='progressbar'
@@ -151,9 +158,9 @@ export default function OrderStatusTracker({
                 width: currentStepIndex >= 0 ? `${(currentStepIndex / (ORDER_STEPS.length - 1)) * 100}%` : '0%'
               }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className='h-full rounded-full bg-gradient-to-r from-orange via-orange-500 to-rose-500'
+              className='h-full rounded-full bg-[#2dc258]'
               style={{
-                boxShadow: '0 0 10px rgba(238, 77, 45, 0.4)'
+                boxShadow: '0 0 8px rgba(45, 194, 88, 0.3)'
               }}
             />
           </div>
@@ -168,44 +175,40 @@ export default function OrderStatusTracker({
               return (
                 <div
                   key={step.key}
-                  className='flex flex-col items-center'
+                  className='flex flex-1 flex-col items-center'
                 >
-                  {/* Step circle - border only style without animation */}
+                  {/* Step circle */}
                   <div
                     className={classNames(
                       'relative z-10 flex h-11 w-11 md:h-14 md:w-14 items-center justify-center rounded-full border-2 bg-white dark:bg-slate-800',
                       {
-                        'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 text-green-600 dark:text-green-400 shadow-sm shadow-green-200/50 dark:shadow-green-800/30': isCompleted,
-                        'border-orange bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 text-orange dark:text-orange-400 shadow-md shadow-orange-200/60 dark:shadow-orange-800/40 ring-2 ring-orange-100 dark:ring-orange-900/30': isCurrent,
+                        'border-[#2dc258] text-[#2dc258]': isCompleted || isCurrent,
                         'border-gray-200 dark:border-slate-600 text-gray-300 dark:text-slate-400': isFuture
                       }
                     )}
                   >
-                    {isCompleted ? (
-                      <svg
-                        className='h-5 w-5 md:h-6 md:w-6'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                        strokeWidth={2}
-                      >
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
-                      </svg>
-                    ) : (
-                      <StepIcon type={step.key} className='h-5 w-5 md:h-6 md:w-6' isActive={isCurrent} />
-                    )}
+                    <StepIcon type={step.key} className='h-5 w-5 md:h-6 md:w-6' isActive={isCompleted || isCurrent} />
                   </div>
 
                   {/* Step label */}
                   <span
-                    className={classNames('mt-2 md:mt-3 text-center text-[10px] md:text-xs whitespace-nowrap', {
-                      'text-green-600 dark:text-green-400 font-medium': isCompleted,
-                      'text-orange dark:text-orange-400 font-semibold': isCurrent,
+                    className={classNames('mt-2 md:mt-3 max-w-[72px] md:max-w-[110px] text-center text-[10px] md:text-xs leading-tight', {
+                      'text-gray-900 dark:text-gray-100 font-medium': isCompleted,
+                      'text-gray-900 dark:text-gray-100 font-semibold': isCurrent,
                       'text-gray-400 dark:text-slate-400 font-medium': isFuture
                     })}
                   >
-                    {step.label}
+                    {step.key === 'confirmed' && orderTotal !== undefined
+                      ? `${step.label} (₫${formatCurrency(orderTotal)})`
+                      : step.label}
                   </span>
+
+                  {/* Step timestamp */}
+                  {(isCompleted || isCurrent) && stepTimestamps?.[step.key] && (
+                    <span className='mt-0.5 text-[10px] md:text-xs text-gray-400 dark:text-slate-500 text-center'>
+                      {formatLastUpdate(stepTimestamps[step.key])}
+                    </span>
+                  )}
                 </div>
               )
             })}
@@ -213,20 +216,7 @@ export default function OrderStatusTracker({
         </div>
       )}
 
-      {/* Last update timestamp - Enhanced */}
-      {lastUpdate && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className='mt-5 flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-300'
-        >
-          <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
-          </svg>
-          <span>Cập nhật: {formatLastUpdate(lastUpdate)}</span>
-        </motion.div>
-      )}
+
     </div>
   )
 }

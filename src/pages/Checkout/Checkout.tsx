@@ -380,7 +380,7 @@ const Checkout = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+              className='rounded-xl bg-gradient-to-br from-cyan-50/60 via-white to-teal-50/40 dark:from-slate-800 dark:via-slate-800/95 dark:to-teal-950/20 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-teal-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
             >
               <SectionHeader number={1} title='Địa chỉ giao hàng' />
               <AddressSelector selectedAddressId={selectedAddress?._id || null} onSelect={handleAddressSelect} />

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import orderApi from 'src/apis/order.api'
 import orderTrackingApi from 'src/apis/orderTracking.api'
@@ -118,7 +118,7 @@ export default function OrderDetail() {
   const shouldReduceMotion = useReducedMotion()
 
   // WebSocket: Real-time order status tracking
-  const { currentStatus, lastUpdate, isSubscribed } = useOrderTracking(orderId)
+  const { currentStatus, isSubscribed, statusHistory } = useOrderTracking(orderId)
 
   const { data: orderData, isLoading } = useQuery({
     queryKey: ['order', orderId],
@@ -147,6 +147,22 @@ export default function OrderDetail() {
 
   const order = orderData?.data.data
   const tracking = trackingData?.data.data
+
+  // Build stepTimestamps from tracking timeline + websocket statusHistory
+  const stepTimestamps = useMemo(() => {
+    const timestamps: Record<string, string> = {}
+    // From tracking API timeline
+    if (tracking?.timeline) {
+      for (const event of tracking.timeline) {
+        timestamps[event.status] = event.timestamp
+      }
+    }
+    // Override/add from real-time websocket statusHistory
+    for (const entry of statusHistory) {
+      timestamps[entry.status] = entry.updated_at
+    }
+    return timestamps
+  }, [tracking?.timeline, statusHistory])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {
@@ -246,8 +262,9 @@ export default function OrderDetail() {
       <motion.div variants={sectionItemVariants}>
         <OrderStatusTracker
           currentStatus={currentStatus || order.status}
-          lastUpdate={lastUpdate}
           isSubscribed={isSubscribed}
+          orderTotal={order.total}
+          stepTimestamps={stepTimestamps}
           className='mt-4'
         />
       </motion.div>
@@ -257,9 +274,8 @@ export default function OrderDetail() {
         variants={sectionItemVariants}
         whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
         transition={{ duration: ANIMATION_DURATION.fast }}
-        className='relative rounded-xl bg-gradient-to-br from-white via-orange-50/5 to-white dark:from-slate-800 dark:via-orange-950/10 dark:to-amber-950/5 p-5 shadow-sm transition-all duration-200 border border-gray-100 dark:border-slate-700 overflow-hidden'
+        className='relative rounded-xl bg-white dark:bg-slate-800 p-5 shadow-sm transition-all duration-200 border border-gray-100 dark:border-slate-700 overflow-hidden'
       >
-        <div className='absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-orange via-rose-500 to-amber-500 rounded-r' />
         <h2 className='mb-4 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-3'>
           <span className='inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-orange to-rose-500 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
             <svg className='w-3.5 h-3.5 text-white' fill='currentColor' viewBox='0 0 20 20'>

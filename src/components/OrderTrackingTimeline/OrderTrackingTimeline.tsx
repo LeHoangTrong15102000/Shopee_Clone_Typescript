@@ -15,6 +15,60 @@ const STATUS_ORDER: OrderStatus[] = [
   'delivered'
 ]
 
+// Unique SVG icon per status
+function StatusIcon({ status, className }: { status: string; className?: string }) {
+  switch (status) {
+    case 'pending':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' />
+        </svg>
+      )
+    case 'confirmed':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+        </svg>
+      )
+    case 'processing':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' />
+        </svg>
+      )
+    case 'shipping':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
+        </svg>
+      )
+    case 'delivered':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z' />
+        </svg>
+      )
+    case 'cancelled':
+      return (
+        <svg className={className} fill='currentColor' viewBox='0 0 20 20'>
+          <path fillRule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clipRule='evenodd' />
+        </svg>
+      )
+    case 'returned':
+      return (
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <path strokeLinecap='round' strokeLinejoin='round' d='M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3' />
+        </svg>
+      )
+    default:
+      return (
+        <svg className={className} fill='currentColor' viewBox='0 0 20 20'>
+          <path fillRule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clipRule='evenodd' />
+        </svg>
+      )
+  }
+}
+
 function formatDateTime(timestamp: string): string {
   const date = new Date(timestamp)
   return date.toLocaleString('vi-VN', {
@@ -38,26 +92,26 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
   return (
     <div className={classNames('bg-white dark:bg-slate-800 dark:border dark:border-slate-700 rounded-xl shadow-sm overflow-hidden', className)}>
       {/* Carrier Info Card */}
-      <div className='p-4 md:p-5 border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-orange-50/50 via-white to-amber-50/30 dark:from-orange-950/20 dark:via-slate-800 dark:to-amber-950/10'>
+      <div className='p-4 md:p-5 border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-gray-50 via-white to-gray-50/50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800'>
         <div className='flex items-center gap-3'>
           <div className='flex-1'>
             <h3 className='font-medium text-gray-900 dark:text-gray-100'>{getCarrierDisplayName(tracking.carrier)}</h3>
             <p className='text-sm text-gray-500 dark:text-gray-300'>
-              Mã vận đơn: <span className='font-semibold text-orange dark:text-orange-400 bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-md text-xs'>{tracking.tracking_number}</span>
+              Mã vận đơn: <span className='font-semibold text-[#26aa99] dark:text-[#26aa99] bg-teal-50 dark:bg-teal-950/30 px-2 py-0.5 rounded-md text-xs'>{tracking.tracking_number}</span>
             </p>
           </div>
         </div>
 
         {/* Estimated Delivery */}
         {!isCancelled && !isReturned && tracking.status !== 'delivered' && (
-          <div className='mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800/30 rounded-lg'>
+          <div className='mt-3 p-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/30 rounded-lg'>
             <div className='flex items-center gap-2'>
-              <svg className='h-4 w-4 text-orange dark:text-orange-400 flex-shrink-0' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+              <svg className='h-4 w-4 text-[#26aa99] dark:text-[#26aa99] flex-shrink-0' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
               </svg>
               <p className='text-sm text-gray-600 dark:text-gray-300'>
                 Dự kiến giao hàng:{' '}
-                <span className='font-semibold text-orange dark:text-orange-400'>{formatDateTime(tracking.estimated_delivery)}</span>
+                <span className='font-semibold text-[#26aa99] dark:text-[#26aa99]'>{formatDateTime(tracking.estimated_delivery)}</span>
               </p>
             </div>
           </div>
@@ -100,9 +154,8 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 {!isLast && (
                   <div
                     className={classNames('absolute left-[11px] top-6 w-0.5 h-full -translate-x-1/2', {
-                      'bg-green-500 dark:bg-green-400': isPassed && !isError,
-                      'bg-orange dark:bg-orange-400': isCurrent && !isError,
-                      'bg-gray-200 dark:bg-slate-600': !isPassed && !isCurrent,
+                      'bg-[#26aa99] dark:bg-[#26aa99]': isCurrent && !isError,
+                      'bg-gray-200 dark:bg-slate-600': !isCurrent && !isError,
                       'bg-red-500 dark:bg-red-400': isError
                     })}
                   />
@@ -112,30 +165,18 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 <div className='relative z-10 flex-shrink-0'>
                   <div
                     className={classNames('w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center', {
-                      'bg-green-500 dark:bg-green-500 shadow-sm shadow-green-300/50 dark:shadow-green-500/20': isPassed && !isError,
-                      'bg-orange dark:bg-orange-500 shadow-md shadow-orange-300/50 dark:shadow-orange-500/30': isCurrent && !isError,
+                      'bg-gray-300 dark:bg-slate-500': isPassed && !isError,
+                      'bg-[#26aa99] dark:bg-[#26aa99] shadow-md shadow-[#26aa99]/30': isCurrent && !isError,
                       'bg-gray-200 dark:bg-slate-600': !isPassed && !isCurrent && !isError,
                       'bg-red-500 dark:bg-red-500': isError
                     })}
                   >
                     {isPassed && !isError && (
-                      <svg className='w-3 h-3 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                        <path
-                          fillRule='evenodd'
-                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
+                      <StatusIcon status={event.status} className='w-3 h-3 text-white' />
                     )}
-                    {isCurrent && !isError && <div className='w-2 h-2 bg-white rounded-full' />}
+                    {isCurrent && !isError && <StatusIcon status={event.status} className='w-3 h-3 text-white' />}
                     {isError && (
-                      <svg className='w-3 h-3 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                        <path
-                          fillRule='evenodd'
-                          d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
+                      <StatusIcon status={event.status} className='w-3 h-3 text-white' />
                     )}
                   </div>
                 </div>
@@ -144,8 +185,8 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 <div className={classNames('flex-1 pb-6', { 'pb-0': isLast })}>
                   <div
                     className={classNames('font-medium', {
-                      'text-green-600 dark:text-green-400': isPassed && !isError,
-                      'text-orange dark:text-orange-400': isCurrent && !isError,
+                      'text-gray-700 dark:text-gray-300': isPassed && !isError,
+                      'text-[#26aa99] dark:text-[#26aa99]': isCurrent && !isError,
                       'text-gray-400 dark:text-slate-400': !isPassed && !isCurrent && !isError,
                       'text-red-600 dark:text-red-400': isError
                     })}
@@ -155,7 +196,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                   <p className='text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1'>{event.description}</p>
                   {event.location && (
                     <p className='text-xs text-gray-600 dark:text-gray-300 mt-1.5 flex items-center gap-1.5'>
-                      <span className='inline-flex items-center justify-center w-4 h-4 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 flex-shrink-0'>
+                      <span className='inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-400 dark:bg-slate-500 flex-shrink-0'>
                         <svg className='w-2.5 h-2.5 text-white' fill='currentColor' viewBox='0 0 20 20'>
                           <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
                         </svg>

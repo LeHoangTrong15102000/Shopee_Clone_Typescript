@@ -91,8 +91,7 @@ const Home = () => {
       <motion.div
         className='bg-white dark:bg-slate-800 mt-4'
         initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, margin: '-100px' }}
+        animate='visible'
         variants={sectionVariants}
       >
         <div className='container py-6'>
@@ -104,8 +103,7 @@ const Home = () => {
             className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4'
             variants={containerVariants}
             initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true }}
+            animate='visible'
           >
             {categories.slice(0, 16).map((category) => (
               <motion.div key={category._id} variants={itemVariants} className='hover:scale-105 transition-transform duration-300'>
