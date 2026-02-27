@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [changes, code-quality]
-    if: needs.changes.outputs.src == 'true'
+    if: needs.changes.outputs.src == 'true' && github.event_name != 'pull_request'
 
     steps:
       - name: 📥 Checkout Code
@@ -134,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [changes, code-quality]
-    if: needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true'
+    if: (needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true') && github.event_name != 'pull_request'
 
     strategy:
       matrix:
