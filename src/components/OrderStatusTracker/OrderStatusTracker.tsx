@@ -240,8 +240,7 @@ export default function OrderStatusTracker({
                     className={classNames(
                       'mt-2 md:mt-3 max-w-[72px] md:max-w-[110px] text-center text-[10px] md:text-xs leading-tight',
                       {
-                        'text-gray-900 dark:text-gray-100 font-medium': isCompleted,
-                        'text-gray-900 dark:text-gray-100 font-semibold': isCurrent,
+                        'text-gray-900 dark:text-gray-100 font-medium': isCompleted || isCurrent,
                         'text-gray-400 dark:text-slate-400 font-medium': isFuture
                       }
                     )}
