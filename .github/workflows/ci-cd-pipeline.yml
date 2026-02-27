@@ -194,6 +194,7 @@ jobs:
     timeout-minutes: 20
     needs: [changes, code-quality, security, test]
     if: |
+      always() &&
       needs.changes.outputs.src == 'true' &&
       needs.code-quality.result == 'success' &&
       (needs.security.result == 'success' || needs.security.result == 'skipped') &&
