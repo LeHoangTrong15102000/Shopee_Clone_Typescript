@@ -2,7 +2,12 @@ import SkeletonBase from './SkeletonBase'
 
 export default function ProductDetailSkeleton() {
   return (
-    <div className='bg-gray-200 dark:bg-slate-900 py-6 min-h-[800px]' role='status' aria-busy='true' aria-label='Đang tải chi tiết sản phẩm'>
+    <div
+      className='bg-gray-200 dark:bg-slate-900 py-6 min-h-[800px]'
+      role='status'
+      aria-busy='true'
+      aria-label='Đang tải chi tiết sản phẩm'
+    >
       <div className='container'>
         <div className='bg-white dark:bg-slate-800 p-4 shadow dark:shadow-slate-900/50'>
           <div className='grid grid-cols-12 gap-2 lg:gap-9'>
@@ -104,4 +109,3 @@ export default function ProductDetailSkeleton() {
     </div>
   )
 }
-

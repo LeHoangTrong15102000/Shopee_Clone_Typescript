@@ -111,4 +111,3 @@ export interface StreamErrorEvent {
 }
 
 export type StreamEvent = StreamStartEvent | StreamChunkEvent | StreamCompleteEvent | StreamErrorEvent
-

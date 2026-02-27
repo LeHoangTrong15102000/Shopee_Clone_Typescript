@@ -93,4 +93,3 @@ export default function ActivityFeedWidget({ latestActivity, className }: Activi
     </div>
   )
 }
-

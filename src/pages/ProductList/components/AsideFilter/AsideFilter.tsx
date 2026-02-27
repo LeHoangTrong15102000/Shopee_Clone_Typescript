@@ -25,7 +25,9 @@ const AsideFilter = ({ categories }: Props) => {
   const { category } = filters
 
   const filtersAsStrings = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v != null).map(([k, v]) => [k, String(v)])
+    Object.entries(filters)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
   ) as Record<string, string>
 
   const {
@@ -61,7 +63,11 @@ const AsideFilter = ({ categories }: Props) => {
   }
 
   return (
-    <div className='py-4 px-3 text-black/80 dark:text-gray-200 bg-white dark:bg-slate-800 rounded-sm shadow-sm dark:shadow-slate-900/20' role="navigation" aria-label="Bộ lọc sản phẩm">
+    <div
+      className='py-4 px-3 text-black/80 dark:text-gray-200 bg-white dark:bg-slate-800 rounded-sm shadow-sm dark:shadow-slate-900/20'
+      role='navigation'
+      aria-label='Bộ lọc sản phẩm'
+    >
       {/* Tất cả danh mục */}
       <Link
         to={path.products}
@@ -103,7 +109,10 @@ const AsideFilter = ({ categories }: Props) => {
                 })}
               >
                 {isActive && (
-                  <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'>
+                  <svg
+                    viewBox='0 0 4 7'
+                    className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'
+                  >
                     <polygon points='4 3.5 0 0 0 7' />
                   </svg>
                 )}
@@ -208,8 +217,13 @@ const AsideFilter = ({ categories }: Props) => {
               }}
             />
           </div>
-          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>{errors.price_min?.message}</div>
-          <Button aria-label="Áp dụng bộ lọc giá" className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>
+            {errors.price_min?.message}
+          </div>
+          <Button
+            aria-label='Áp dụng bộ lọc giá'
+            className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
+          >
             áp dụng
           </Button>
           <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
@@ -225,7 +239,7 @@ const AsideFilter = ({ categories }: Props) => {
       <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
       <Button
         onClick={handleRemoveAsideFilter}
-        aria-label="Xóa tất cả bộ lọc"
+        aria-label='Xóa tất cả bộ lọc'
         className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
       >
         xóa tất cả

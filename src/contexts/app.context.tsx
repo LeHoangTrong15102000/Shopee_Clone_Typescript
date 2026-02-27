@@ -31,12 +31,7 @@ const initialAppContext = getInitialAppContext()
 export const AppContext = createContext<AppContextInterface>(initialAppContext) // cho nó 1 giá trị khởi tạo
 
 // Khi mà không truyền vào provider cái value thì giá trị khởi tạo sẽ được dùng
-export const AppProvider = ({
-  children
-}: {
-  children: React.ReactNode
-  defaultValue?: AppContextInterface
-}) => {
+export const AppProvider = ({ children }: { children: React.ReactNode; defaultValue?: AppContextInterface }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases)
   const [profile, setProfile] = useState<AppContextInterface['profile']>(initialAppContext.profile)
@@ -64,8 +59,6 @@ export const AppProvider = ({
 
   return (
     // Trong đây truyền những giá trị được khai báo trong AppProvider
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={value}>{children}</AppContext.Provider>
   )
 }

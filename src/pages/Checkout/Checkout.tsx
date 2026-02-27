@@ -85,10 +85,16 @@ const SecurityBadge = () => (
   <div className='mt-4 flex items-center justify-center gap-2 rounded-lg bg-gray-50 dark:bg-slate-700/50 p-2.5 border border-gray-200 dark:border-slate-600 transition-all'>
     <div className='flex h-5 w-5 items-center justify-center rounded-full bg-green-500 flex-shrink-0'>
       <svg className='h-3 w-3 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
-        <path strokeLinecap='round' strokeLinejoin='round' d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z' />
+        <path
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z'
+        />
       </svg>
     </div>
-    <span className='text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300'>Thanh toán an toàn & bảo mật</span>
+    <span className='text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300'>
+      Thanh toán an toàn & bảo mật
+    </span>
   </div>
 )
 
@@ -120,18 +126,30 @@ const TrustIndicators = () => (
     <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/30 dark:to-slate-800 p-2'>
       <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30 dark:shadow-slate-900/50'>
         <svg className='h-5 w-5 text-white' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
-          <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z' clipRule='evenodd' />
+          <path
+            fillRule='evenodd'
+            d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z'
+            clipRule='evenodd'
+          />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>Chính hãng</span>
+      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+        Chính hãng
+      </span>
     </div>
     <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-green-50 to-white dark:from-green-900/30 dark:to-slate-800 p-2'>
       <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm shadow-green-500/30 dark:shadow-slate-900/50'>
         <svg className='h-5 w-5 text-white' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
-          <path fillRule='evenodd' d='M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0v2.43l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z' clipRule='evenodd' />
+          <path
+            fillRule='evenodd'
+            d='M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0v2.43l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z'
+            clipRule='evenodd'
+          />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>Đổi trả 7 ngày</span>
+      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+        Đổi trả 7 ngày
+      </span>
     </div>
     <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-orange-50 to-white dark:from-orange-900/30 dark:to-slate-800 p-2'>
       <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 shadow-sm shadow-orange-500/30 dark:shadow-slate-900/50'>
@@ -140,7 +158,9 @@ const TrustIndicators = () => (
           <path d='M11.983 1.907a.75.75 0 00-1.292-.657l-8.5 9.5A.75.75 0 002.75 12h6.572l-1.305 6.093a.75.75 0 001.292.657l8.5-9.5A.75.75 0 0017.25 8h-6.572l1.305-6.093z' />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>Giao nhanh</span>
+      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+        Giao nhanh
+      </span>
     </div>
   </div>
 )
@@ -336,13 +356,27 @@ const Checkout = () => {
         >
           <div className='flex items-center gap-2.5 sm:gap-3'>
             <div className='flex h-9 w-9 sm:h-11 sm:w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0'>
-              <svg className='h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                <path strokeLinecap='round' strokeLinejoin='round' d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' />
+              <svg
+                className='h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6 text-white'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                />
               </svg>
             </div>
             <div className='min-w-0 flex-1'>
-              <h1 className='text-base sm:text-lg md:text-2xl font-bold text-white leading-tight truncate'>Thanh toán</h1>
-              <p className='mt-0.5 text-[11px] sm:text-xs md:text-sm text-white/80 leading-snug truncate'>Hoàn tất đơn hàng của bạn</p>
+              <h1 className='text-base sm:text-lg md:text-2xl font-bold text-white leading-tight truncate'>
+                Thanh toán
+              </h1>
+              <p className='mt-0.5 text-[11px] sm:text-xs md:text-sm text-white/80 leading-snug truncate'>
+                Hoàn tất đơn hàng của bạn
+              </p>
             </div>
           </div>
         </motion.div>
@@ -373,185 +407,200 @@ const Checkout = () => {
             isPlacingOrder={createOrderMutation.isPending}
           />
         ) : (
-        <div className='grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3'>
-          <div className='space-y-4 md:space-y-6 lg:col-span-2'>
-            {/* Address Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
-            >
-              <SectionHeader number={1} title='Địa chỉ giao hàng' />
-              <AddressSelector selectedAddressId={selectedAddress?._id || null} onSelect={handleAddressSelect} />
-            </motion.div>
+          <div className='grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3'>
+            <div className='space-y-4 md:space-y-6 lg:col-span-2'>
+              {/* Address Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className='rounded-xl bg-gradient-to-br from-cyan-50/60 via-white to-teal-50/40 dark:from-slate-800 dark:via-slate-800/95 dark:to-teal-950/20 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-teal-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+              >
+                <SectionHeader number={1} title='Địa chỉ giao hàng' />
+                <AddressSelector selectedAddressId={selectedAddress?._id || null} onSelect={handleAddressSelect} />
+              </motion.div>
 
-            {/* Shipping Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
-            >
-              <SectionHeader number={2} title='Phương thức vận chuyển' />
-              <ShippingMethodSelector
-                selectedMethodId={selectedShippingMethod?._id || null}
-                onSelect={handleShippingSelect}
-              />
-            </motion.div>
-
-            {/* Payment Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
-            >
-              <SectionHeader number={3} title='Phương thức thanh toán' />
-              <PaymentMethodSelector selectedMethodType={selectedPaymentMethod} onSelect={handlePaymentSelect} />
-              <SecurityBadge />
-            </motion.div>
-
-            {/* Voucher & Coins Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
-            >
-              <SectionHeader number={4} title='Mã giảm giá & Shopee Xu' />
-
-              <div className='mb-4'>
-                <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Mã voucher</label>
-                <div className='flex flex-col sm:flex-row gap-2'>
-                  <input
-                    type='text'
-                    value={voucherCode}
-                    onChange={(e) => setVoucherCode(e.target.value)}
-                    placeholder='Nhập mã voucher'
-                    className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
-                  />
-                  <Button
-                    onClick={handleApplyVoucher}
-                    className='rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'
-                  >
-                    Áp dụng
-                  </Button>
-                </div>
-                <AnimatePresence>
-                  {voucherDiscount > 0 && (
-                    <motion.p
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className='mt-2 text-sm text-green-600 dark:text-green-400'
-                    >
-                      ✓ Đã áp dụng giảm ₫{voucherDiscount.toLocaleString()}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <div>
-                <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Sử dụng Shopee Xu</label>
-                <div className='flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4'>
-                  <input
-                    type='number'
-                    value={coinsUsed}
-                    onChange={(e) => setCoinsUsed(Math.max(0, parseInt(e.target.value) || 0))}
-                    min={0}
-                    max={10000}
-                    className='w-full sm:w-32 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
-                  />
-                  <span className='text-sm text-gray-500 dark:text-gray-400'>Bạn có 10,000 xu (tối đa 10,000 xu)</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Note Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
-            >
-              <SectionHeader number={5} title='Ghi chú đơn hàng' />
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder='Ghi chú cho người bán (không bắt buộc)'
-                rows={3}
-                className='w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
-              />
-            </motion.div>
-          </div>
-
-          {/* Order Summary Sidebar */}
-          <div className='lg:col-span-1'>
-            <div className='sticky top-4 space-y-4'>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                <OrderSummary
-                  items={checkedItems}
-                  shippingMethod={selectedShippingMethod}
-                  voucherDiscount={voucherDiscount}
-                  voucherCode={voucherCode}
-                  onRemoveVoucher={handleRemoveVoucher}
-                  coinsUsed={coinsUsed}
+              {/* Shipping Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+              >
+                <SectionHeader number={2} title='Phương thức vận chuyển' />
+                <ShippingMethodSelector
+                  selectedMethodId={selectedShippingMethod?._id || null}
+                  onSelect={handleShippingSelect}
                 />
               </motion.div>
 
-              {/* Enhanced Order Button Area */}
+              {/* Payment Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+              >
+                <SectionHeader number={3} title='Phương thức thanh toán' />
+                <PaymentMethodSelector selectedMethodType={selectedPaymentMethod} onSelect={handlePaymentSelect} />
+                <SecurityBadge />
+              </motion.div>
+
+              {/* Voucher & Coins Section */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className='rounded-xl bg-gradient-to-br from-white via-orange-50/10 to-amber-50/10 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-lg dark:shadow-slate-900/50 border border-orange-100/30 dark:border-slate-700'
+                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
               >
-                {/* Total Amount Display */}
-                <div className='mb-4 flex items-center justify-between border-b border-gray-100 dark:border-slate-700 pb-4'>
-                  <span className='text-base md:text-lg font-medium text-gray-700 dark:text-gray-200'>Tổng thanh toán:</span>
-                  <span className='text-xl md:text-2xl font-bold text-orange'>
-                    ₫{totalAmount.toLocaleString('vi-VN')}
-                  </span>
-                </div>
+                <SectionHeader number={4} title='Mã giảm giá & Shopee Xu' />
 
-                {/* Secure Checkout Badge */}
-                <div className='mb-4 flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 py-2'>
-                  <svg className='h-4 w-4 text-green-600 dark:text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                <div className='mb-4'>
+                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Mã voucher</label>
+                  <div className='flex flex-col sm:flex-row gap-2'>
+                    <input
+                      type='text'
+                      value={voucherCode}
+                      onChange={(e) => setVoucherCode(e.target.value)}
+                      placeholder='Nhập mã voucher'
+                      className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
                     />
-                  </svg>
-                  <span className='text-xs md:text-sm font-medium text-green-700 dark:text-green-300'>Thanh toán an toàn</span>
+                    <Button
+                      onClick={handleApplyVoucher}
+                      className='rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'
+                    >
+                      Áp dụng
+                    </Button>
+                  </div>
+                  <AnimatePresence>
+                    {voucherDiscount > 0 && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className='mt-2 text-sm text-green-600 dark:text-green-400'
+                      >
+                        ✓ Đã áp dụng giảm ₫{voucherDiscount.toLocaleString()}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                <Button
-                  onClick={handleGoToReview}
-                  disabled={!isFormValid}
-                  className='w-full rounded-xl bg-gradient-to-r from-orange via-orange to-amber-500 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg shadow-orange/30 dark:shadow-slate-900/50 hover:shadow-xl hover:shadow-orange/40 hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 transition-all disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
-                >
-                  Đặt hàng ngay
-                </Button>
-
-                <p className='mt-3 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>
-                  Nhấn "Đặt hàng ngay" để xem lại và xác nhận đơn hàng
-                </p>
-
-                {/* Payment Icons */}
-                <div className='mt-4 border-t border-gray-100 dark:border-slate-700 pt-4'>
-                  <p className='mb-2 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>Chấp nhận thanh toán</p>
-                  <PaymentIcons />
+                <div>
+                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+                    Sử dụng Shopee Xu
+                  </label>
+                  <div className='flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4'>
+                    <input
+                      type='number'
+                      value={coinsUsed}
+                      onChange={(e) => setCoinsUsed(Math.max(0, parseInt(e.target.value) || 0))}
+                      min={0}
+                      max={10000}
+                      className='w-full sm:w-32 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
+                    />
+                    <span className='text-sm text-gray-500 dark:text-gray-400'>
+                      Bạn có 10,000 xu (tối đa 10,000 xu)
+                    </span>
+                  </div>
                 </div>
+              </motion.div>
 
-                {/* Trust Indicators */}
-                <TrustIndicators />
+              {/* Note Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+              >
+                <SectionHeader number={5} title='Ghi chú đơn hàng' />
+                <textarea
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder='Ghi chú cho người bán (không bắt buộc)'
+                  rows={3}
+                  className='w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
+                />
               </motion.div>
             </div>
+
+            {/* Order Summary Sidebar */}
+            <div className='lg:col-span-1'>
+              <div className='sticky top-4 space-y-4'>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                  <OrderSummary
+                    items={checkedItems}
+                    shippingMethod={selectedShippingMethod}
+                    voucherDiscount={voucherDiscount}
+                    voucherCode={voucherCode}
+                    onRemoveVoucher={handleRemoveVoucher}
+                    coinsUsed={coinsUsed}
+                  />
+                </motion.div>
+
+                {/* Enhanced Order Button Area */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className='rounded-xl bg-gradient-to-br from-white via-orange-50/10 to-amber-50/10 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-lg dark:shadow-slate-900/50 border border-orange-100/30 dark:border-slate-700'
+                >
+                  {/* Total Amount Display */}
+                  <div className='mb-4 flex items-center justify-between border-b border-gray-100 dark:border-slate-700 pb-4'>
+                    <span className='text-base md:text-lg font-medium text-gray-700 dark:text-gray-200'>
+                      Tổng thanh toán:
+                    </span>
+                    <span className='text-xl md:text-2xl font-bold text-orange'>
+                      ₫{totalAmount.toLocaleString('vi-VN')}
+                    </span>
+                  </div>
+
+                  {/* Secure Checkout Badge */}
+                  <div className='mb-4 flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 py-2'>
+                    <svg
+                      className='h-4 w-4 text-green-600 dark:text-green-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                      />
+                    </svg>
+                    <span className='text-xs md:text-sm font-medium text-green-700 dark:text-green-300'>
+                      Thanh toán an toàn
+                    </span>
+                  </div>
+
+                  <Button
+                    onClick={handleGoToReview}
+                    disabled={!isFormValid}
+                    className='w-full rounded-xl bg-gradient-to-r from-orange via-orange to-amber-500 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg shadow-orange/30 dark:shadow-slate-900/50 hover:shadow-xl hover:shadow-orange/40 hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 transition-all disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+                  >
+                    Đặt hàng ngay
+                  </Button>
+
+                  <p className='mt-3 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>
+                    Nhấn "Đặt hàng ngay" để xem lại và xác nhận đơn hàng
+                  </p>
+
+                  {/* Payment Icons */}
+                  <div className='mt-4 border-t border-gray-100 dark:border-slate-700 pt-4'>
+                    <p className='mb-2 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>
+                      Chấp nhận thanh toán
+                    </p>
+                    <PaymentIcons />
+                  </div>
+
+                  {/* Trust Indicators */}
+                  <TrustIndicators />
+                </motion.div>
+              </div>
+            </div>
           </div>
-        </div>
         )}
       </div>
     </div>
@@ -559,4 +608,3 @@ const Checkout = () => {
 }
 
 export default Checkout
-

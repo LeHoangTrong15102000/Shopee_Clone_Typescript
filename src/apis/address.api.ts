@@ -182,4 +182,3 @@ const addressApi = {
 }
 
 export default addressApi
-

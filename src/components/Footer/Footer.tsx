@@ -123,9 +123,7 @@ const Footer = () => {
             <motion.div className='mt-12' variants={!reducedMotion ? staggerItem : undefined}>
               <div className='mx-auto max-w-4xl space-y-3 px-4 md:px-8 py-6 border-t border-orange-200/30 dark:border-slate-700/40'>
                 {/* Company Name */}
-                <div className='text-base font-bold text-orange dark:text-orange-400'>
-                  Công ty TNHH Shopee
-                </div>
+                <div className='text-base font-bold text-orange dark:text-orange-400'>Công ty TNHH Shopee</div>
                 <div className='text-sm leading-relaxed text-gray-600 dark:text-gray-400'>
                   Địa chỉ: Tầng 4-5-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình,
                   Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 19001221 - Email: cskh@hotro.shopee.vn

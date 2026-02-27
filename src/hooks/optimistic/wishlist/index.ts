@@ -1,2 +1,1 @@
 export { useOptimisticWishlist } from './useOptimisticWishlist'
-

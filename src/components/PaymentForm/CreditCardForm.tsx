@@ -135,9 +135,15 @@ const JcbSvgIcon = memo(function JcbSvgIcon() {
       <rect x='6' y='6' width='10' height='20' rx='2' fill='#0E4C96' />
       <rect x='19' y='6' width='10' height='20' rx='2' fill='#E21836' />
       <rect x='32' y='6' width='10' height='20' rx='2' fill='#007940' />
-      <text x='11' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>J</text>
-      <text x='24' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>C</text>
-      <text x='37' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>B</text>
+      <text x='11' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>
+        J
+      </text>
+      <text x='24' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>
+        C
+      </text>
+      <text x='37' y='18' fontSize='6' fill='#fff' textAnchor='middle' fontWeight='bold'>
+        B
+      </text>
     </svg>
   )
 })
@@ -182,7 +188,11 @@ const CheckmarkIcon = memo(function CheckmarkIcon() {
 
 const InfoIcon = memo(function InfoIcon() {
   return (
-    <svg className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400' viewBox='0 0 20 20' fill='currentColor'>
+    <svg
+      className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400'
+      viewBox='0 0 20 20'
+      fill='currentColor'
+    >
       <path
         fillRule='evenodd'
         d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
@@ -243,7 +253,11 @@ const CVVTooltip = memo(function CVVTooltip({
             aria-label='Đóng tooltip'
           >
             <svg className='h-4 w-4' viewBox='0 0 20 20' fill='currentColor'>
-              <path fillRule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clipRule='evenodd' />
+              <path
+                fillRule='evenodd'
+                d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                clipRule='evenodd'
+              />
             </svg>
           </button>
           <p className='mb-3 text-sm font-medium text-gray-800 dark:text-gray-200'>CVV là gì?</p>
@@ -253,18 +267,14 @@ const CVVTooltip = memo(function CVVTooltip({
           <div className='relative h-20 w-full rounded-lg bg-gradient-to-br from-gray-600 to-gray-800'>
             {cardType === 'amex' ? (
               <div className='absolute right-4 top-4'>
-                <div className='rounded bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>
-                  {cvvLength} số
-                </div>
+                <div className='rounded bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>{cvvLength} số</div>
               </div>
             ) : (
               <>
                 <div className='absolute left-0 right-0 top-4 h-6 bg-gray-900' />
                 <div className='absolute bottom-4 left-4 right-4 flex items-center justify-end'>
                   <div className='mr-2 h-4 w-24 rounded bg-white' />
-                  <div className='rounded bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>
-                    {cvvLength} số
-                  </div>
+                  <div className='rounded bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>{cvvLength} số</div>
                 </div>
               </>
             )}
@@ -456,13 +466,13 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
     setIsCardFlipped(false)
     const cvvLength = cardType === 'amex' ? 4 : 3
     const isValid = cvv.length === cvvLength
-    setValidationState(prev => ({
+    setValidationState((prev) => ({
       ...prev,
       cvv: { touched: true, isValid }
     }))
     if (!isValid && cvv.length > 0) {
-      setShakeFields(prev => ({ ...prev, cvv: true }))
-      setTimeout(() => setShakeFields(prev => ({ ...prev, cvv: false })), 400)
+      setShakeFields((prev) => ({ ...prev, cvv: true }))
+      setTimeout(() => setShakeFields((prev) => ({ ...prev, cvv: false })), 400)
     }
   }, [cardType, cvv])
 
@@ -470,30 +480,30 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
     const cleanNumber = cardNumber.replace(/\s/g, '')
     const minLength = cardType === 'amex' ? 15 : 16
     const isValid = cleanNumber.length >= minLength && luhnValidate(cleanNumber)
-    setValidationState(prev => ({
+    setValidationState((prev) => ({
       ...prev,
       cardNumber: { touched: true, isValid }
     }))
     if (!isValid && cleanNumber.length > 0) {
-      setShakeFields(prev => ({ ...prev, cardNumber: true }))
-      setTimeout(() => setShakeFields(prev => ({ ...prev, cardNumber: false })), 400)
+      setShakeFields((prev) => ({ ...prev, cardNumber: true }))
+      setTimeout(() => setShakeFields((prev) => ({ ...prev, cardNumber: false })), 400)
     }
   }, [cardNumber, cardType])
 
   const handleExpiryBlur = useCallback(() => {
     const isValid = isExpiryValid(expiryDate)
-    setValidationState(prev => ({
+    setValidationState((prev) => ({
       ...prev,
       expiryDate: { touched: true, isValid }
     }))
     if (!isValid && expiryDate.length > 0) {
-      setShakeFields(prev => ({ ...prev, expiryDate: true }))
-      setTimeout(() => setShakeFields(prev => ({ ...prev, expiryDate: false })), 400)
+      setShakeFields((prev) => ({ ...prev, expiryDate: true }))
+      setTimeout(() => setShakeFields((prev) => ({ ...prev, expiryDate: false })), 400)
     }
   }, [expiryDate])
 
   const toggleCvvTooltip = useCallback(() => {
-    setShowCvvTooltip(prev => !prev)
+    setShowCvvTooltip((prev) => !prev)
   }, [])
 
   const closeCvvTooltip = useCallback(() => {
@@ -516,11 +526,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
       <div className='space-y-3 md:space-y-4'>
         <div>
           <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>Số thẻ</label>
-          <motion.div
-            className='relative'
-            animate={shakeFields.cardNumber ? 'shake' : ''}
-            variants={shakeAnimation}
-          >
+          <motion.div className='relative' animate={shakeFields.cardNumber ? 'shake' : ''} variants={shakeAnimation}>
             <Input
               type='text'
               placeholder='1234 5678 9012 3456'
@@ -539,9 +545,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
               onBlur={handleCardNumberBlur}
             />
             <div className='absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-2'>
-              {validationState.cardNumber.touched && validationState.cardNumber.isValid && (
-                <CheckmarkIcon />
-              )}
+              {validationState.cardNumber.touched && validationState.cardNumber.isValid && <CheckmarkIcon />}
               <CardTypeIcon type={cardType} />
             </div>
           </motion.div>
@@ -563,11 +567,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4'>
           <div>
             <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>Ngày hết hạn</label>
-            <motion.div
-              className='relative'
-              animate={shakeFields.expiryDate ? 'shake' : ''}
-              variants={shakeAnimation}
-            >
+            <motion.div className='relative' animate={shakeFields.expiryDate ? 'shake' : ''} variants={shakeAnimation}>
               <Input
                 type='text'
                 placeholder='MM/YY'
@@ -596,26 +596,13 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
             <div className='mb-1 flex items-center gap-1'>
               <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>CVV</label>
               <div className='relative'>
-                <button
-                  type='button'
-                  onClick={toggleCvvTooltip}
-                  className='flex items-center'
-                  aria-label='CVV là gì?'
-                >
+                <button type='button' onClick={toggleCvvTooltip} className='flex items-center' aria-label='CVV là gì?'>
                   <InfoIcon />
                 </button>
-                <CVVTooltip
-                  isVisible={showCvvTooltip}
-                  onClose={closeCvvTooltip}
-                  cardType={cardType}
-                />
+                <CVVTooltip isVisible={showCvvTooltip} onClose={closeCvvTooltip} cardType={cardType} />
               </div>
             </div>
-            <motion.div
-              className='relative'
-              animate={shakeFields.cvv ? 'shake' : ''}
-              variants={shakeAnimation}
-            >
+            <motion.div className='relative' animate={shakeFields.cvv ? 'shake' : ''} variants={shakeAnimation}>
               <Input
                 type='password'
                 placeholder={cardType === 'amex' ? '••••' : '•••'}
@@ -650,4 +637,3 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
 })
 
 export default CreditCardForm
-

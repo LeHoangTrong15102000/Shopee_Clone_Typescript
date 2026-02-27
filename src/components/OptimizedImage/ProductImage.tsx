@@ -15,7 +15,15 @@ const SIZE_CLASSES = {
   xl: 'w-full'
 }
 
-export default function ProductImage({ src, alt, size = 'xl', className = '', containerClassName = '', fallbackSrc = PRODUCT_FALLBACK, ...props }: ProductImageProps) {
+export default function ProductImage({
+  src,
+  alt,
+  size = 'xl',
+  className = '',
+  containerClassName = '',
+  fallbackSrc = PRODUCT_FALLBACK,
+  ...props
+}: ProductImageProps) {
   const sizeClass = size !== 'xl' ? SIZE_CLASSES[size] : ''
 
   return (
@@ -31,4 +39,3 @@ export default function ProductImage({ src, alt, size = 'xl', className = '', co
     />
   )
 }
-

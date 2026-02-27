@@ -286,4 +286,3 @@ const checkoutApi = {
 }
 
 export default checkoutApi
-

@@ -79,8 +79,7 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
   }
 }
 
-export const getStatusLabel = (status: OrderStatus): string =>
-  ORDER_STATUS_CONFIG[status]?.label ?? status
+export const getStatusLabel = (status: OrderStatus): string => ORDER_STATUS_CONFIG[status]?.label ?? status
 
 export const getStatusClasses = (status: OrderStatus): string => {
   const config = ORDER_STATUS_CONFIG[status]
@@ -90,13 +89,11 @@ export const getStatusClasses = (status: OrderStatus): string => {
 
 // Carrier code to display name mapping (backend uses codes, UI shows names)
 export const CARRIER_DISPLAY_NAMES: Record<string, string> = {
-  'ghn': 'Giao Hàng Nhanh',
-  'ghtk': 'Giao Hàng Tiết Kiệm',
-  'viettel_post': 'Viettel Post',
+  ghn: 'Giao Hàng Nhanh',
+  ghtk: 'Giao Hàng Tiết Kiệm',
+  viettel_post: 'Viettel Post',
   'j&t': 'J&T Express',
-  'other': 'Khác'
+  other: 'Khác'
 }
 
-export const getCarrierDisplayName = (carrierCode: string): string =>
-  CARRIER_DISPLAY_NAMES[carrierCode] ?? carrierCode
-
+export const getCarrierDisplayName = (carrierCode: string): string => CARRIER_DISPLAY_NAMES[carrierCode] ?? carrierCode

@@ -94,4 +94,3 @@ const priceHistoryApi = {
 }
 
 export default priceHistoryApi
-

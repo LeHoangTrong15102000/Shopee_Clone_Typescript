@@ -19,7 +19,9 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
   const { sort_by, order } = filters
 
   const filtersAsStrings = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v != null).map(([k, v]) => [k, String(v)])
+    Object.entries(filters)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
   ) as Record<string, string>
 
   const isActiveSortBy = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
@@ -43,7 +45,8 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           <button
             className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.view),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700': !isActiveSortBy(sortBy.view)
+              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+                !isActiveSortBy(sortBy.view)
             })}
             onClick={() => handleSortNavigate(sortBy.view)}
           >
@@ -52,7 +55,8 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           <button
             className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.createdAt),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700': !isActiveSortBy(sortBy.createdAt)
+              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+                !isActiveSortBy(sortBy.createdAt)
             })}
             onClick={() => handleSortNavigate(sortBy.createdAt)}
           >
@@ -61,7 +65,8 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           <button
             className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.sold),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700': !isActiveSortBy(sortBy.sold)
+              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+                !isActiveSortBy(sortBy.sold)
             })}
             onClick={() => handleSortNavigate(sortBy.sold)}
           >
@@ -69,10 +74,13 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           </button>
           {/* sort productList */}
           <select
-            aria-label="Sắp xếp theo giá"
+            aria-label='Sắp xếp theo giá'
             className={classNames('h-10 md:h-8  px-4 text-left text-sm capitalize outline-none ', {
-              'bg-white/70 dark:bg-slate-700/70 text-orange hover:bg-slate-100 dark:hover:bg-slate-700': isActiveSortBy(sortBy.price),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700': !isActiveSortBy(sortBy.price)
+              'bg-white/70 dark:bg-slate-700/70 text-orange hover:bg-slate-100 dark:hover:bg-slate-700': isActiveSortBy(
+                sortBy.price
+              ),
+              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+                !isActiveSortBy(sortBy.price)
             })}
             value={order || ''}
             onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
@@ -91,9 +99,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
         {/* tăng giảm số trang hiện tại */}
         <div className='flex items-center gap-4'>
           {/* View Toggle */}
-          {viewMode && onViewChange && (
-            <ViewToggle viewMode={viewMode} onViewChange={onViewChange} />
-          )}
+          {viewMode && onViewChange && <ViewToggle viewMode={viewMode} onViewChange={onViewChange} />}
 
           <div className='text-sm dark:text-gray-300'>
             <span className='text-orange dark:text-orange-400'>{page}</span>

@@ -17,8 +17,19 @@ interface SaveForLaterSectionProps {
 
 // Bookmark icon component
 const BookmarkIcon = ({ className = 'w-5 h-5' }: { className?: string }) => (
-  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className={className}>
-    <path strokeLinecap='round' strokeLinejoin='round' d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z' />
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    fill='none'
+    viewBox='0 0 24 24'
+    strokeWidth={1.5}
+    stroke='currentColor'
+    className={className}
+  >
+    <path
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+    />
   </svg>
 )
 
@@ -35,41 +46,47 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
   const [isExpanded, setIsExpanded] = useState(savedItems.length > 0)
 
   // Animation variants
-  const containerVariants = useMemo(() => ({
-    hidden: { opacity: 0, height: 0 },
-    visible: {
-      opacity: 1,
-      height: 'auto',
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.3,
-        staggerChildren: prefersReducedMotion ? 0 : 0.1
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, height: 0 },
+      visible: {
+        opacity: 1,
+        height: 'auto',
+        transition: {
+          duration: prefersReducedMotion ? 0 : 0.3,
+          staggerChildren: prefersReducedMotion ? 0 : 0.1
+        }
+      },
+      exit: {
+        opacity: 0,
+        height: 0,
+        transition: { duration: prefersReducedMotion ? 0 : 0.2 }
       }
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: { duration: prefersReducedMotion ? 0 : 0.2 }
-    }
-  }), [prefersReducedMotion])
+    }),
+    [prefersReducedMotion]
+  )
 
-  const itemVariants = useMemo(() => ({
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.3,
-        ease: 'easeOut'
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 20, scale: 0.95 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+          duration: prefersReducedMotion ? 0 : 0.3,
+          ease: 'easeOut'
+        }
+      },
+      exit: {
+        opacity: 0,
+        scale: 0.95,
+        x: -20,
+        transition: { duration: prefersReducedMotion ? 0 : 0.2 }
       }
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      x: -20,
-      transition: { duration: prefersReducedMotion ? 0 : 0.2 }
-    }
-  }), [prefersReducedMotion])
+    }),
+    [prefersReducedMotion]
+  )
 
   if (savedItems.length === 0) {
     return (
@@ -167,9 +184,7 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
                       <span className='text-gray-400 dark:text-gray-500 line-through'>
                         ₫{formatCurrency(item.product.price_before_discount)}
                       </span>
-                      <span className='text-[#ee4d2d] font-medium'>
-                        ₫{formatCurrency(item.product.price)}
-                      </span>
+                      <span className='text-[#ee4d2d] font-medium'>₫{formatCurrency(item.product.price)}</span>
                     </div>
 
                     {/* Saved time */}
@@ -208,4 +223,3 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
 SaveForLaterSection.displayName = 'SaveForLaterSection'
 
 export default SaveForLaterSection
-

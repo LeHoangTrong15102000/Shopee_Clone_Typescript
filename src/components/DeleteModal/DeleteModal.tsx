@@ -61,7 +61,9 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
         >
           Bạn chắc chắn muốn bỏ sản phẩm này?
         </motion.div>
-        <div id='delete-modal-description' className='mt-10 text-base text-black/80 dark:text-gray-300'>{product?.name}</div>
+        <div id='delete-modal-description' className='mt-10 text-base text-black/80 dark:text-gray-300'>
+          {product?.name}
+        </div>
         <div className='mt-[80px] flex items-center justify-between'>
           <Button
             variant='primary'

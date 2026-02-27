@@ -94,7 +94,9 @@ const WalletLogo = memo(function WalletLogo({ wallet }: { wallet: WalletType }) 
   const config = logoConfig[wallet]
 
   return (
-    <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${config.gradient} shadow-lg`}>
+    <div
+      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${config.gradient} shadow-lg`}
+    >
       <span className='text-xl font-bold text-white'>{config.text}</span>
     </div>
   )
@@ -102,9 +104,13 @@ const WalletLogo = memo(function WalletLogo({ wallet }: { wallet: WalletType }) 
 
 const LinkedBadge = memo(function LinkedBadge({ isLinked }: { isLinked: boolean }) {
   return (
-    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-      isLinked ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-gray-400'
-    }`}>
+    <span
+      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+        isLinked
+          ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+          : 'bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-gray-400'
+      }`}
+    >
       {isLinked ? 'Đã liên kết' : 'Chưa liên kết'}
     </span>
   )
@@ -126,7 +132,9 @@ const WalletCard = memo(function WalletCard({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={`relative w-full rounded-xl border-2 p-4 text-left transition-all ${
-        isSelected ? `${wallet.borderColor} ${wallet.bgColor}` : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
+        isSelected
+          ? `${wallet.borderColor} ${wallet.bgColor}`
+          : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
       }`}
     >
       {isSelected && (
@@ -213,13 +221,7 @@ const QRCodePlaceholder = memo(function QRCodePlaceholder({ walletName }: { wall
   )
 })
 
-const CountdownTimer = memo(function CountdownTimer({
-  seconds,
-  isExpired
-}: {
-  seconds: number
-  isExpired: boolean
-}) {
+const CountdownTimer = memo(function CountdownTimer({ seconds, isExpired }: { seconds: number; isExpired: boolean }) {
   const progressPercent = (seconds / QR_EXPIRATION_SECONDS) * 100
   const isWarning = seconds <= 60
 
@@ -233,13 +235,14 @@ const CountdownTimer = memo(function CountdownTimer({
           transition={{ duration: 0.5 }}
         />
       </div>
-      <span className={`text-sm font-medium ${isExpired ? 'text-red-600 dark:text-red-400' : isWarning ? 'text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-400'}`}>
+      <span
+        className={`text-sm font-medium ${isExpired ? 'text-red-600 dark:text-red-400' : isWarning ? 'text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-400'}`}
+      >
         {isExpired ? 'Đã hết hạn' : `Còn lại: ${formatTime(seconds)}`}
       </span>
     </div>
   )
 })
-
 
 const LoadingSpinner = memo(function LoadingSpinner() {
   return (
@@ -268,12 +271,7 @@ const SuccessAnimation = memo(function SuccessAnimation() {
         stroke='currentColor'
         viewBox='0 0 24 24'
       >
-        <motion.path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          strokeWidth={3}
-          d='M5 13l4 4L19 7'
-        />
+        <motion.path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M5 13l4 4L19 7' />
       </motion.svg>
     </motion.div>
   )
@@ -326,11 +324,7 @@ const WalletSelectionView = memo(function WalletSelectionView({
       <LinkNewWalletButton onClick={onLinkNewWallet} />
 
       {selectedWallet && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className='pt-4'
-        >
+        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className='pt-4'>
           <Button
             type='button'
             onClick={onProceed}
@@ -343,7 +337,6 @@ const WalletSelectionView = memo(function WalletSelectionView({
     </motion.div>
   )
 })
-
 
 const QRDisplayView = memo(function QRDisplayView({
   wallet,
@@ -394,11 +387,15 @@ const QRDisplayView = memo(function QRDisplayView({
             onClick={onOpenApp}
             disabled={isExpired}
             className={`flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-white ${
-              isExpired ? 'cursor-not-allowed bg-gray-400' : `bg-gradient-to-r ${
-                wallet.id === 'momo' ? 'from-pink-500 to-pink-600' :
-                wallet.id === 'zalopay' ? 'from-blue-500 to-blue-600' :
-                'from-red-500 to-blue-600'
-              } hover:opacity-90`
+              isExpired
+                ? 'cursor-not-allowed bg-gray-400'
+                : `bg-gradient-to-r ${
+                    wallet.id === 'momo'
+                      ? 'from-pink-500 to-pink-600'
+                      : wallet.id === 'zalopay'
+                        ? 'from-blue-500 to-blue-600'
+                        : 'from-red-500 to-blue-600'
+                  } hover:opacity-90`
             }`}
           >
             <WalletLogo wallet={wallet.id} />
@@ -418,8 +415,7 @@ const QRDisplayView = memo(function QRDisplayView({
       <p className='text-center text-xs text-gray-400 dark:text-gray-500'>
         {isMobile
           ? `Nhấn nút "Mở ứng dụng ${wallet.name}" hoặc quét mã QR bằng ứng dụng ${wallet.name}`
-          : `Quét mã QR bằng ứng dụng ${wallet.name} trên điện thoại của bạn`
-        }
+          : `Quét mã QR bằng ứng dụng ${wallet.name} trên điện thoại của bạn`}
       </p>
     </motion.div>
   )
@@ -536,7 +532,12 @@ const TimeoutView = memo(function TimeoutView({
     >
       <div className='flex h-20 w-20 items-center justify-center rounded-full bg-orange/10'>
         <svg className='h-10 w-10 text-orange' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       </div>
       <div className='text-center'>
@@ -576,10 +577,7 @@ const EWalletPayment = memo(function EWalletPayment({
   const [errorMessage, setErrorMessage] = useState('')
   const isMobile = useIsMobile()
 
-  const selectedWalletInfo = useMemo(
-    () => WALLETS.find((w) => w.id === selectedWallet) || null,
-    [selectedWallet]
-  )
+  const selectedWalletInfo = useMemo(() => WALLETS.find((w) => w.id === selectedWallet) || null, [selectedWallet])
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null
@@ -692,25 +690,14 @@ const EWalletPayment = memo(function EWalletPayment({
           <WaitingView key='waiting' walletName={selectedWalletInfo.name} />
         )}
 
-        {flowState === 'success' && (
-          <SuccessView key='success' amount={amount} />
-        )}
+        {flowState === 'success' && <SuccessView key='success' amount={amount} />}
 
         {flowState === 'failed' && (
-          <FailedView
-            key='failed'
-            message={errorMessage}
-            onRetry={handleRetry}
-            onCancel={handleCancel}
-          />
+          <FailedView key='failed' message={errorMessage} onRetry={handleRetry} onCancel={handleCancel} />
         )}
 
         {flowState === 'timeout' && (
-          <TimeoutView
-            key='timeout'
-            onRegenerateQR={handleRegenerateQR}
-            onCancel={handleCancel}
-          />
+          <TimeoutView key='timeout' onRegenerateQR={handleRegenerateQR} onCancel={handleCancel} />
         )}
       </AnimatePresence>
     </motion.div>

@@ -132,4 +132,3 @@ export const useOptimisticWishlist = (productId: string) => {
     toggleWishlist
   }
 }
-

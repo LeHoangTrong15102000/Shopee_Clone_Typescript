@@ -7,19 +7,21 @@ import orderApi from 'src/apis/order.api'
 import { OrderStatus, Order } from 'src/types/checkout.type'
 import OrderCard from 'src/components/OrderCard'
 import LiveOrderTracker from 'src/components/LiveOrderTracker'
+import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
+import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
 
-const orderTabs: { status: OrderStatus | 'all'; label: string }[] = [
-  { status: 'all', label: 'Tất cả' },
-  { status: 'pending', label: 'Chờ xác nhận' },
-  { status: 'confirmed', label: 'Đã xác nhận' },
-  { status: 'shipping', label: 'Đang giao' },
-  { status: 'delivered', label: 'Đã giao' },
-  { status: 'cancelled', label: 'Đã hủy' }
+const orderTabs: { status: number; label: string }[] = [
+  { status: ordersStatus.all, label: 'Tất cả' },
+  { status: ordersStatus.pending, label: 'Chờ xác nhận' },
+  { status: ordersStatus.confirmed, label: 'Đã xác nhận' },
+  { status: ordersStatus.shipping, label: 'Đang giao' },
+  { status: ordersStatus.delivered, label: 'Đã giao' },
+  { status: ordersStatus.cancelled, label: 'Đã hủy' }
 ]
 
 export default function OrderList() {
   const queryClient = useQueryClient()
-  const [activeTab, setActiveTab] = useState<OrderStatus | 'all'>('all')
+  const [activeTab, setActiveTab] = useOrderStatus() // nuqs: syncs numeric status with URL query param ?status=0,1,2,...
   const [page, setPage] = useState(1)
   const [expandedOrderIds, setExpandedOrderIds] = useState<Set<string>>(new Set())
   const [cancelOrderId, setCancelOrderId] = useState<string | null>(null)
@@ -43,24 +45,17 @@ export default function OrderList() {
     return ['pending', 'confirmed', 'shipping'].includes(status)
   }
 
-  // Map OrderStatus string to numeric status for LiveOrderTracker
-  const statusToNumber: Record<string, number> = {
-    pending: 1,
-    confirmed: 2,
-    processing: 3,
-    shipping: 4,
-    delivered: 5,
-    cancelled: 6,
-    returned: 7
-  }
+  // Convert numeric tab to string status for API call
+  const activeStatusString = orderStatusFromNumber(activeTab)
 
   const { data: ordersData, isLoading } = useQuery({
     queryKey: ['orders', { status: activeTab, page }],
-    queryFn: () => orderApi.getOrders({
-      status: activeTab === 'all' ? undefined : activeTab,
-      page,
-      limit: 10
-    })
+    queryFn: () =>
+      orderApi.getOrders({
+        status: activeTab === ordersStatus.all ? undefined : activeStatusString,
+        page,
+        limit: 10
+      })
   })
 
   const cancelMutation = useMutation({
@@ -99,7 +94,7 @@ export default function OrderList() {
     toast.info('Tính năng mua lại đang được phát triển')
   }
 
-  const handleTabChange = (status: OrderStatus | 'all') => {
+  const handleTabChange = (status: number) => {
     setActiveTab(status)
     setPage(1)
   }
@@ -115,8 +110,10 @@ export default function OrderList() {
             className={classNames(
               'flex flex-1 items-center justify-center whitespace-nowrap bg-white dark:bg-slate-800 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm text-center transition-all hover:text-orange dark:hover:text-orange-400 min-w-[4.5rem] sm:min-w-0',
               {
-                'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium': activeTab === tab.status,
-                'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': activeTab !== tab.status
+                'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium':
+                  activeTab === tab.status,
+                'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100':
+                  activeTab !== tab.status
               }
             )}
           >
@@ -130,7 +127,10 @@ export default function OrderList() {
         {isLoading ? (
           <div className='space-y-4'>
             {[1, 2, 3].map((i) => (
-              <div key={i} className='animate-pulse rounded-xl bg-gradient-to-br from-white to-gray-50 p-4 shadow-md border border-gray-100 dark:from-slate-800 dark:to-slate-900 dark:border-slate-600'>
+              <div
+                key={i}
+                className='animate-pulse rounded-xl bg-gradient-to-br from-white to-gray-50 p-4 shadow-md border border-gray-100 dark:from-slate-800 dark:to-slate-900 dark:border-slate-600'
+              >
                 <div className='flex items-center justify-between border-b pb-3 dark:border-slate-600'>
                   <div className='h-4 w-32 rounded bg-gray-200 dark:bg-slate-600' />
                   <div className='h-6 w-24 rounded-full bg-gray-200 dark:bg-slate-600' />
@@ -168,7 +168,7 @@ export default function OrderList() {
                 trackingContent={
                   <LiveOrderTracker
                     orderId={order._id}
-                    initialStatus={statusToNumber[order.status] || 1}
+                    initialStatus={orderStatusToNumber(order.status) || 1}
                     className='bg-gray-50 dark:bg-slate-900'
                   />
                 }
@@ -267,4 +267,3 @@ export default function OrderList() {
     </div>
   )
 }
-

@@ -74,4 +74,3 @@ const useLivePriceUpdate = (productId: string | undefined): UseLivePriceUpdateRe
 }
 
 export default useLivePriceUpdate
-

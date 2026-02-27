@@ -90,4 +90,3 @@ export function usePWAInstall(): UsePWAInstallReturn {
 }
 
 export default usePWAInstall
-

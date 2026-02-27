@@ -49,4 +49,3 @@ export function normalizeProductQueryKey(filters: ProductQueryConfig): Record<st
     category: filters.category ?? undefined
   }
 }
-

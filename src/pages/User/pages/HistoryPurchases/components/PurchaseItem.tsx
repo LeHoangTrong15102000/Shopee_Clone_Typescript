@@ -122,7 +122,9 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             <span className='truncate text-black/25 dark:text-gray-500 line-through'>
               ₫{formatCurrency(purchase.product.price_before_discount)}
             </span>
-            <span className='ml-1 truncate text-orange dark:text-orange-400'>₫{formatCurrency(purchase.product.price)}</span>
+            <span className='ml-1 truncate text-orange dark:text-orange-400'>
+              ₫{formatCurrency(purchase.product.price)}
+            </span>
           </div>
         </Link>
         {/* Status và Review Actions */}
@@ -184,12 +186,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
                 className='flex items-center gap-1.5 rounded-lg bg-white dark:bg-slate-700 px-4 py-2 text-sm font-medium text-orange dark:text-orange-400 shadow-md border border-gray-200 dark:border-slate-600 hover:border-orange/30 dark:hover:border-orange-400/30 transition-colors'
               >
                 {/* Truck icon - filled with primary color */}
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 24 24'
-                  fill='currentColor'
-                  className='h-4 w-4'
-                >
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='h-4 w-4'>
                   <path d='M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z' />
                   <path d='M8.25 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM15.75 6.75a.75.75 0 00-.75.75v7.5h7.5v-1.5a3 3 0 00-3-3h-.375V7.5a.75.75 0 00-.75-.75h-2.625z' />
                   <path d='M21.75 18h.75a.75.75 0 00.75-.75v-1.5a.75.75 0 00-.75-.75h-.75v3zM19.5 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z' />
@@ -252,13 +249,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
       <div className='flex items-center justify-end rounded bg-neutral-50 dark:bg-slate-900 p-6'>
         <div className='flex items-center'>
           <span className='mr-1'>
-            <svg
-              width={16}
-              height={17}
-              viewBox='0 0 253 263'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
+            <svg width={16} height={17} viewBox='0 0 253 263' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
                 fillRule='evenodd'
                 clipRule='evenodd'
@@ -284,4 +275,3 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
 }
 
 export default PurchaseItem
-

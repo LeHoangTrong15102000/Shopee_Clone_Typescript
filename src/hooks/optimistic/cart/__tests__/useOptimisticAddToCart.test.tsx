@@ -182,10 +182,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(toast.success).toHaveBeenCalledWith(
-        TOAST_MESSAGES.ADD_TO_CART_SUCCESS,
-        expect.any(Object)
-      )
+      expect(toast.success).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_SUCCESS, expect.any(Object))
     })
 
     test('should replace temporary purchase with real data on success', async () => {
@@ -249,10 +246,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        TOAST_MESSAGES.ADD_TO_CART_ERROR,
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_ERROR, expect.any(Object))
     })
 
     test('should show error toast on rollback', async () => {
@@ -276,10 +270,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        TOAST_MESSAGES.ADD_TO_CART_ERROR,
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_ERROR, expect.any(Object))
     })
 
     test('should handle error gracefully and set isError state', async () => {
@@ -678,4 +669,3 @@ describe('useOptimisticAddToCart', () => {
     })
   })
 })
-

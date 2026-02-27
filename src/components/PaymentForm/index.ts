@@ -4,4 +4,3 @@ export { default as BankTransferPayment } from './BankTransferPayment'
 export { default as EWalletPayment } from './EWalletPayment'
 export type { PaymentFormData } from './CreditCardForm'
 export type { EWalletPaymentProps, WalletType, PaymentFlowState } from './EWalletPayment'
-

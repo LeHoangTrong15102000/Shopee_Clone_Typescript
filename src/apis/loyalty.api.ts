@@ -110,7 +110,12 @@ const loyaltyApi = {
   // Lấy lịch sử giao dịch điểm
   getTransactions: async (params?: { page?: number; limit?: number; type?: string }) => {
     try {
-      const response = await http.get<SuccessResponseApi<{ transactions: PointsTransaction[]; pagination: { page: number; limit: number; total: number; total_pages: number } }>>('/loyalty/transactions', { params })
+      const response = await http.get<
+        SuccessResponseApi<{
+          transactions: PointsTransaction[]
+          pagination: { page: number; limit: number; total: number; total_pages: number }
+        }>
+      >('/loyalty/transactions', { params })
       return response
     } catch (error) {
       console.warn('⚠️ [getTransactions] API not available, using mock data')
@@ -170,4 +175,3 @@ const loyaltyApi = {
 }
 
 export default loyaltyApi
-

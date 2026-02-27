@@ -67,7 +67,11 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
 
   // WebSocket: Inventory alerts for admin users
   const isAdmin = profile?.roles?.includes('Admin') ?? false
-  const { alerts: inventoryAlerts, unreadCount: inventoryUnreadCount, clearAlerts: clearInventoryAlerts } = useInventoryAlerts()
+  const {
+    alerts: inventoryAlerts,
+    unreadCount: inventoryUnreadCount,
+    clearAlerts: clearInventoryAlerts
+  } = useInventoryAlerts()
 
   // Compact mode: render only essential icons for mobile header bar
   if (compact) {
@@ -103,10 +107,16 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                     <span className='mt-5 text-xs'>Đăng nhập để xem Thông báo</span>
                   </div>
                   <div className='flex w-full items-center border-0'>
-                    <Link to={path.register} className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'>
+                    <Link
+                      to={path.register}
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'
+                    >
                       Đăng ký
                     </Link>
-                    <Link to={path.login} className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'>
+                    <Link
+                      to={path.login}
+                      className='h-[2.5rem] w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'
+                    >
                       Đăng nhập
                     </Link>
                   </div>
@@ -146,18 +156,35 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
           renderPopover={
             <div className='relative rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md transition-all'>
               <div className='flex flex-col py-1 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""]'>
-                <button onClick={() => handleTranslateLanguage('vi')} className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'>
+                <button
+                  onClick={() => handleTranslateLanguage('vi')}
+                  className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+                >
                   Tiếng Việt
                 </button>
-                <button onClick={() => handleTranslateLanguage('en')} className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'>
+                <button
+                  onClick={() => handleTranslateLanguage('en')}
+                  className='block w-full py-3 px-6 text-left hover:bg-slate-100 hover:text-cyan-500 text-xs text-gray-900 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+                >
                   English
                 </button>
               </div>
             </div>
           }
         >
-          <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5'>
-            <path strokeLinecap='round' strokeLinejoin='round' d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418' />
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-5 w-5'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
+            />
           </svg>
         </Popover>
       </div>

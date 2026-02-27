@@ -62,4 +62,3 @@ const useLiveQA = (productId: string | undefined): UseLiveQAReturn => {
 }
 
 export default useLiveQA
-

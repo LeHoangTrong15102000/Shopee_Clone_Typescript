@@ -141,7 +141,12 @@ const ErrorFeedback = memo(function ErrorFeedback({ message, onRetry }: { messag
   )
 })
 
-const PaymentForm = memo(function PaymentForm({ onSubmit, onCancel, isProcessing = false, amount = 150000 }: PaymentFormProps) {
+const PaymentForm = memo(function PaymentForm({
+  onSubmit,
+  onCancel,
+  isProcessing = false,
+  amount = 150000
+}: PaymentFormProps) {
   const [activeTab, setActiveTab] = useState<PaymentMethodTab>('credit_card')
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -305,4 +310,3 @@ const PaymentForm = memo(function PaymentForm({ onSubmit, onCancel, isProcessing
 })
 
 export default PaymentForm
-

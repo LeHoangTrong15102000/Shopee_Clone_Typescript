@@ -29,13 +29,7 @@ export default function PriceDropBadge({ originalPrice, currentPrice, className 
       )}
       aria-label={`Giá đã giảm ${discountPercentage} phần trăm`}
     >
-      <svg
-        className='h-3 w-3'
-        fill='none'
-        stroke='currentColor'
-        viewBox='0 0 24 24'
-        aria-hidden='true'
-      >
+      <svg className='h-3 w-3' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
         <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7m7 7V3' />
       </svg>
       <span>Giảm {discountPercentage}%</span>
@@ -61,4 +55,3 @@ export default function PriceDropBadge({ originalPrice, currentPrice, className 
     </motion.div>
   )
 }
-

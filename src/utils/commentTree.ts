@@ -33,4 +33,3 @@ export function buildCommentTree(flatComments: ReviewComment[]): ReviewComment[]
 
   return roots
 }
-

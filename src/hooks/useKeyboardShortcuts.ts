@@ -157,7 +157,9 @@ export function useKeyboardShortcuts({
         // If buffer doesn't match any sequence prefix, reset and continue
         const isAnyPrefix = sequenceShortcutsRef.current.some((seqShortcut) => {
           const sequence = seqShortcut.sequence.map((k) => k.toLowerCase())
-          return sequence.slice(0, sequenceBufferRef.current.length).every((key, index) => key === sequenceBufferRef.current[index])
+          return sequence
+            .slice(0, sequenceBufferRef.current.length)
+            .every((key, index) => key === sequenceBufferRef.current[index])
         })
 
         if (!isAnyPrefix) {
@@ -201,4 +203,3 @@ export function useKeyboardShortcuts({
 }
 
 export default useKeyboardShortcuts
-

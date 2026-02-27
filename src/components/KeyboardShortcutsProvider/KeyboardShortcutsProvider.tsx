@@ -172,7 +172,16 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
       registerShortcut,
       unregisterShortcut
     }),
-    [allShortcuts, displayShortcuts, isHelpModalOpen, toggleHelpModal, openHelpModal, closeHelpModal, registerShortcut, unregisterShortcut]
+    [
+      allShortcuts,
+      displayShortcuts,
+      isHelpModalOpen,
+      toggleHelpModal,
+      openHelpModal,
+      closeHelpModal,
+      registerShortcut,
+      unregisterShortcut
+    ]
   )
 
   return (
@@ -184,4 +193,3 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
 }
 
 export default KeyboardShortcutsProvider
-

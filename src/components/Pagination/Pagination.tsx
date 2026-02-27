@@ -15,7 +15,9 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
   const [filters] = useProductQueryStates()
 
   const filtersAsStrings = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v != null).map(([k, v]) => [k, String(v)])
+    Object.entries(filters)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
   ) as Record<string, string>
 
   const page = filters.page
@@ -30,7 +32,10 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
       if (!dotBefore) {
         dotBefore = true
         return (
-          <span className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300' key={index}>
+          <span
+            className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300'
+            key={index}
+          >
             ...
           </span>
         )
@@ -41,7 +46,10 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
       if (!dotAfter) {
         dotAfter = true
         return (
-          <span className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300' key={index}>
+          <span
+            className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300'
+            key={index}
+          >
             ...
           </span>
         )
@@ -76,10 +84,14 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
             }}
             aria-label={`Trang ${pageNumber}`}
             aria-current={pageNumber === safePage ? 'page' : undefined}
-            className={classNames('flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150', {
-              'bg-orange dark:bg-orange-500 text-white hover:bg-orange': pageNumber === safePage,
-              'border-transparent text-black/50 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 hover:scale-110 active:scale-95': pageNumber !== safePage
-            })}
+            className={classNames(
+              'flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150',
+              {
+                'bg-orange dark:bg-orange-500 text-white hover:bg-orange': pageNumber === safePage,
+                'border-transparent text-black/50 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 hover:scale-110 active:scale-95':
+                  pageNumber !== safePage
+              }
+            )}
             key={index}
           >
             {pageNumber}
@@ -95,8 +107,8 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
     >
       {safePage === 1 ? (
         <span
-          aria-label="Trang trước"
-          aria-disabled="true"
+          aria-label='Trang trước'
+          aria-disabled='true'
           className='flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 md:px-4 md:py-3 opacity-40 transition-opacity duration-150'
         >
           <svg
@@ -138,8 +150,8 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
       {renderPagination()}
       {safePage === safePageSize ? (
         <span
-          aria-label="Trang sau"
-          aria-disabled="true"
+          aria-label='Trang sau'
+          aria-disabled='true'
           className='flex cursor-not-allowed items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 md:px-4 md:py-3 opacity-40 transition-opacity duration-150'
         >
           <svg

@@ -10,7 +10,13 @@ interface ShopeeCheckboxProps {
   disabled?: boolean
 }
 
-const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size = 'md', className = '', disabled = false }) => {
+const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
+  checked,
+  onChange,
+  size = 'md',
+  className = '',
+  disabled = false
+}) => {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
 
@@ -84,7 +90,13 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({ checked, onChange, size
       tabIndex={disabled ? -1 : 0}
       role='checkbox'
       aria-checked={checked}
-      aria-label={disabled ? `Checkbox ${checked ? 'checked' : 'unchecked'} (disabled)` : checked ? 'Checkbox checked' : 'Checkbox unchecked'}
+      aria-label={
+        disabled
+          ? `Checkbox ${checked ? 'checked' : 'unchecked'} (disabled)`
+          : checked
+            ? 'Checkbox checked'
+            : 'Checkbox unchecked'
+      }
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.1 }}

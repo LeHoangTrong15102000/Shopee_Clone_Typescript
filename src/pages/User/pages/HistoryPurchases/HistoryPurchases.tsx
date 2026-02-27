@@ -16,15 +16,8 @@ const HistoryPurchases = () => {
   const reducedMotion = useReducedMotion()
 
   // Order filter hook - manages all filter state
-  const {
-    filters,
-    setSearchQuery,
-    setDateRange,
-    setPriceRange,
-    clearAllFilters,
-    activeFilterCount,
-    filterPurchases
-  } = useOrderFilter()
+  const { filters, setSearchQuery, setDateRange, setPriceRange, clearAllFilters, activeFilterCount, filterPurchases } =
+    useOrderFilter()
 
   // Review modal state
   const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null)
@@ -141,7 +134,9 @@ const HistoryPurchases = () => {
                       />
                     </svg>
                     <span className='text-sm font-medium dark:text-gray-300'>Không tìm thấy đơn hàng phù hợp</span>
-                    <span className='mt-1 text-xs text-gray-400'>Thử điều chỉnh bộ lọc hoặc tìm kiếm với từ khóa khác</span>
+                    <span className='mt-1 text-xs text-gray-400'>
+                      Thử điều chỉnh bộ lọc hoặc tìm kiếm với từ khóa khác
+                    </span>
                     <button
                       type='button'
                       onClick={clearAllFilters}

@@ -205,9 +205,16 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       vi.mocked(purchaseApi.updatePurchase).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({
-          data: { data: { ...existingPurchase, buy_count: 10 }, message: 'Success' }
-        } as any), 500))
+        () =>
+          new Promise((resolve) =>
+            setTimeout(
+              () =>
+                resolve({
+                  data: { data: { ...existingPurchase, buy_count: 10 }, message: 'Success' }
+                } as any),
+              500
+            )
+          )
       )
 
       const { result } = renderHook(() => useOptimisticUpdateQuantity(), {
@@ -280,10 +287,7 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        TOAST_MESSAGES.UPDATE_QUANTITY_ERROR,
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.UPDATE_QUANTITY_ERROR, expect.any(Object))
     })
 
     test('should restore original buy_count in context on rollback', async () => {
@@ -573,10 +577,7 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        TOAST_MESSAGES.UPDATE_QUANTITY_ERROR,
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.UPDATE_QUANTITY_ERROR, expect.any(Object))
     })
 
     test('should not show success toast on quantity update (silent success)', async () => {
@@ -655,9 +656,7 @@ describe('useOptimisticUpdateQuantity', () => {
         data: { data: [existingPurchase] }
       })
 
-      vi.mocked(purchaseApi.updatePurchase).mockRejectedValue(
-        new Error('Quantity exceeds available stock')
-      )
+      vi.mocked(purchaseApi.updatePurchase).mockRejectedValue(new Error('Quantity exceeds available stock'))
 
       const { result } = renderHook(() => useOptimisticUpdateQuantity(), {
         wrapper: createWrapper()
@@ -815,4 +814,3 @@ describe('useOptimisticUpdateQuantity', () => {
     })
   })
 })
-

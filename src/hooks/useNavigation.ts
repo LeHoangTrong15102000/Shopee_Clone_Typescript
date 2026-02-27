@@ -18,4 +18,3 @@ export const useNavigation = () => {
 
 export { PATHS }
 export default useNavigation
-

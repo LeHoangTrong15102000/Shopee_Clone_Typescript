@@ -25,14 +25,86 @@ interface BankTransferPaymentProps {
 }
 
 const BANKS: BankInfo[] = [
-  { id: 'vcb', name: 'Vietcombank', shortName: 'VCB', color: 'text-green-700', bgColor: 'bg-green-50', accountNumber: '1234567890123', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Hà Nội' },
-  { id: 'tcb', name: 'Techcombank', shortName: 'TCB', color: 'text-red-600', bgColor: 'bg-red-50', accountNumber: '19035678901234', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh HCM' },
-  { id: 'bidv', name: 'BIDV', shortName: 'BIDV', color: 'text-blue-700', bgColor: 'bg-blue-50', accountNumber: '31410001234567', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Đống Đa' },
-  { id: 'vtb', name: 'VietinBank', shortName: 'CTG', color: 'text-blue-800', bgColor: 'bg-blue-50', accountNumber: '108001234567', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Cầu Giấy' },
-  { id: 'mb', name: 'MB Bank', shortName: 'MB', color: 'text-purple-700', bgColor: 'bg-purple-50', accountNumber: '0801234567890', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Thanh Xuân' },
-  { id: 'acb', name: 'ACB', shortName: 'ACB', color: 'text-blue-600', bgColor: 'bg-blue-50', accountNumber: '12345678901', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Tân Bình' },
-  { id: 'stb', name: 'Sacombank', shortName: 'STB', color: 'text-blue-500', bgColor: 'bg-cyan-50', accountNumber: '060123456789', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Quận 1' },
-  { id: 'tpb', name: 'TPBank', shortName: 'TPB', color: 'text-purple-600', bgColor: 'bg-purple-50', accountNumber: '01234567890', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Hoàn Kiếm' }
+  {
+    id: 'vcb',
+    name: 'Vietcombank',
+    shortName: 'VCB',
+    color: 'text-green-700',
+    bgColor: 'bg-green-50',
+    accountNumber: '1234567890123',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Hà Nội'
+  },
+  {
+    id: 'tcb',
+    name: 'Techcombank',
+    shortName: 'TCB',
+    color: 'text-red-600',
+    bgColor: 'bg-red-50',
+    accountNumber: '19035678901234',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh HCM'
+  },
+  {
+    id: 'bidv',
+    name: 'BIDV',
+    shortName: 'BIDV',
+    color: 'text-blue-700',
+    bgColor: 'bg-blue-50',
+    accountNumber: '31410001234567',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Đống Đa'
+  },
+  {
+    id: 'vtb',
+    name: 'VietinBank',
+    shortName: 'CTG',
+    color: 'text-blue-800',
+    bgColor: 'bg-blue-50',
+    accountNumber: '108001234567',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Cầu Giấy'
+  },
+  {
+    id: 'mb',
+    name: 'MB Bank',
+    shortName: 'MB',
+    color: 'text-purple-700',
+    bgColor: 'bg-purple-50',
+    accountNumber: '0801234567890',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Thanh Xuân'
+  },
+  {
+    id: 'acb',
+    name: 'ACB',
+    shortName: 'ACB',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    accountNumber: '12345678901',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Tân Bình'
+  },
+  {
+    id: 'stb',
+    name: 'Sacombank',
+    shortName: 'STB',
+    color: 'text-blue-500',
+    bgColor: 'bg-cyan-50',
+    accountNumber: '060123456789',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Quận 1'
+  },
+  {
+    id: 'tpb',
+    name: 'TPBank',
+    shortName: 'TPB',
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    accountNumber: '01234567890',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Hoàn Kiếm'
+  }
 ]
 
 const PAYMENT_DEADLINE_HOURS = 24
@@ -75,7 +147,9 @@ const BankLogo = memo(function BankLogo({ bank, size = 'md' }: { bank: BankInfo;
   }
 
   return (
-    <div className={`flex items-center justify-center rounded-xl bg-gradient-to-br ${gradientMap[bank.id]} ${sizeClasses[size]} font-bold text-white shadow-md`}>
+    <div
+      className={`flex items-center justify-center rounded-xl bg-gradient-to-br ${gradientMap[bank.id]} ${sizeClasses[size]} font-bold text-white shadow-md`}
+    >
       {bank.shortName}
     </div>
   )
@@ -100,9 +174,7 @@ const BankDropdown = memo(function BankDropdown({
     if (!searchQuery.trim()) return BANKS
     const query = searchQuery.toLowerCase()
     return BANKS.filter(
-      (bank) =>
-        bank.name.toLowerCase().includes(query) ||
-        bank.shortName.toLowerCase().includes(query)
+      (bank) => bank.name.toLowerCase().includes(query) || bank.shortName.toLowerCase().includes(query)
     )
   }, [searchQuery])
 
@@ -116,11 +188,14 @@ const BankDropdown = memo(function BankDropdown({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen, onToggle])
 
-  const handleSelectBank = useCallback((bank: BankInfo) => {
-    onSelectBank(bank)
-    setSearchQuery('')
-    onToggle()
-  }, [onSelectBank, onToggle])
+  const handleSelectBank = useCallback(
+    (bank: BankInfo) => {
+      onSelectBank(bank)
+      setSearchQuery('')
+      onToggle()
+    },
+    [onSelectBank, onToggle]
+  )
 
   return (
     <div ref={dropdownRef} className='relative'>
@@ -162,8 +237,18 @@ const BankDropdown = memo(function BankDropdown({
           >
             <div className='border-b border-gray-100 p-3 dark:border-slate-700'>
               <div className='relative'>
-                <svg className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+                <svg
+                  className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                  />
                 </svg>
                 <input
                   type='text'
@@ -193,7 +278,11 @@ const BankDropdown = memo(function BankDropdown({
                     </div>
                     {selectedBank?.id === bank.id && (
                       <svg className='h-5 w-5 text-green-500' fill='currentColor' viewBox='0 0 20 20'>
-                        <path fillRule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clipRule='evenodd' />
+                        <path
+                          fillRule='evenodd'
+                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                          clipRule='evenodd'
+                        />
                       </svg>
                     )}
                   </motion.button>
@@ -210,7 +299,15 @@ const BankDropdown = memo(function BankDropdown({
 })
 
 // VietQR Code Component
-const VietQRCode = memo(function VietQRCode({ bank, amount, transferContent: _transferContent }: { bank: BankInfo; amount: number; transferContent: string }) {
+const VietQRCode = memo(function VietQRCode({
+  bank,
+  amount,
+  transferContent: _transferContent
+}: {
+  bank: BankInfo
+  amount: number
+  transferContent: string
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -248,7 +345,12 @@ const VietQRCode = memo(function VietQRCode({ bank, amount, transferContent: _tr
       </div>
       <div className='mt-4 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400'>
         <svg className='h-5 w-5 text-blue-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z' />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z'
+          />
         </svg>
         <span>Quét mã VietQR để thanh toán</span>
       </div>
@@ -278,14 +380,27 @@ const CopyButton = memo(function CopyButton({ text, label }: { text: string; lab
       title={`Sao chép ${label}`}
     >
       <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' />
+        <path
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          strokeWidth={2}
+          d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'
+        />
       </svg>
     </motion.button>
   )
 })
 
 // Account Info Card Component
-const AccountInfoCard = memo(function AccountInfoCard({ bank, amount, transferContent }: { bank: BankInfo; amount: number; transferContent: string }) {
+const AccountInfoCard = memo(function AccountInfoCard({
+  bank,
+  amount,
+  transferContent
+}: {
+  bank: BankInfo
+  amount: number
+  transferContent: string
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -331,7 +446,8 @@ const AccountInfoCard = memo(function AccountInfoCard({ bank, amount, transferCo
         </div>
       </div>
       <p className='mt-4 text-xs text-gray-500'>
-        <span className='text-red-500'>*</span> Vui lòng nhập chính xác nội dung chuyển khoản để đơn hàng được xử lý tự động
+        <span className='text-red-500'>*</span> Vui lòng nhập chính xác nội dung chuyển khoản để đơn hàng được xử lý tự
+        động
       </p>
     </motion.div>
   )
@@ -365,24 +481,42 @@ const CountdownTimer = memo(function CountdownTimer({
     >
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
-          <svg className={`h-5 w-5 ${isExpired ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-blue-500'}`} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+          <svg
+            className={`h-5 w-5 ${isExpired ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-blue-500'}`}
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+            />
           </svg>
-          <span className={`text-sm font-medium ${isExpired ? 'text-red-700' : isWarning ? 'text-orange-700' : 'text-blue-700'}`}>
+          <span
+            className={`text-sm font-medium ${isExpired ? 'text-red-700' : isWarning ? 'text-orange-700' : 'text-blue-700'}`}
+          >
             {isExpired ? 'Đã hết hạn thanh toán' : 'Thời hạn thanh toán'}
           </span>
         </div>
         {!isExpired && (
           <div className='flex items-center gap-1 font-mono text-lg font-bold'>
-            <span className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}>
+            <span
+              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+            >
               {hours.toString().padStart(2, '0')}
             </span>
             <span className={isWarning ? 'text-orange-600' : 'text-blue-600'}>:</span>
-            <span className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}>
+            <span
+              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+            >
               {minutes.toString().padStart(2, '0')}
             </span>
             <span className={isWarning ? 'text-orange-600' : 'text-blue-600'}>:</span>
-            <span className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}>
+            <span
+              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+            >
               {secs.toString().padStart(2, '0')}
             </span>
           </div>
@@ -409,18 +543,18 @@ const CountdownTimer = memo(function CountdownTimer({
           className='mt-2 flex items-center gap-1 text-xs text-orange-600'
         >
           <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
-            <path fillRule='evenodd' d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
+            <path
+              fillRule='evenodd'
+              d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
+              clipRule='evenodd'
+            />
           </svg>
           Sắp hết hạn! Vui lòng hoàn tất chuyển khoản ngay.
         </motion.p>
       )}
 
       {isExpired && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className='mt-2 text-sm text-red-600'
-        >
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='mt-2 text-sm text-red-600'>
           Đơn hàng đã bị hủy do quá thời hạn thanh toán. Vui lòng đặt hàng lại.
         </motion.p>
       )}
@@ -429,27 +563,26 @@ const CountdownTimer = memo(function CountdownTimer({
 })
 
 // Upload Receipt Component (UI Only)
-const UploadReceipt = memo(function UploadReceipt({
-  onFileSelect
-}: {
-  onFileSelect: (file: File | null) => void
-}) {
+const UploadReceipt = memo(function UploadReceipt({ onFileSelect }: { onFileSelect: (file: File | null) => void }) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setSelectedFile(file)
-    onFileSelect(file)
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0] || null
+      setSelectedFile(file)
+      onFileSelect(file)
 
-    if (file) {
-      const url = URL.createObjectURL(file)
-      setPreviewUrl(url)
-    } else {
-      setPreviewUrl(null)
-    }
-  }, [onFileSelect])
+      if (file) {
+        const url = URL.createObjectURL(file)
+        setPreviewUrl(url)
+      } else {
+        setPreviewUrl(null)
+      }
+    },
+    [onFileSelect]
+  )
 
   const handleRemoveFile = useCallback(() => {
     setSelectedFile(null)
@@ -462,7 +595,9 @@ const UploadReceipt = memo(function UploadReceipt({
 
   return (
     <div className='space-y-3'>
-      <p className='text-sm font-medium text-gray-700 dark:text-gray-300'>Tải lên biên lai chuyển khoản (không bắt buộc)</p>
+      <p className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+        Tải lên biên lai chuyển khoản (không bắt buộc)
+      </p>
 
       {!selectedFile ? (
         <motion.label
@@ -470,18 +605,22 @@ const UploadReceipt = memo(function UploadReceipt({
           whileTap={{ scale: 0.99 }}
           className='flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 p-6 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-500 dark:hover:bg-blue-900/30'
         >
-          <svg className='mb-2 h-10 w-10 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' />
+          <svg
+            className='mb-2 h-10 w-10 text-gray-400 dark:text-gray-500'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
+            />
           </svg>
           <span className='text-sm text-gray-600 dark:text-gray-400'>Nhấn để tải ảnh biên lai</span>
           <span className='mt-1 text-xs text-gray-400 dark:text-gray-500'>PNG, JPG tối đa 5MB</span>
-          <input
-            ref={fileInputRef}
-            type='file'
-            accept='image/*'
-            onChange={handleFileChange}
-            className='hidden'
-          />
+          <input ref={fileInputRef} type='file' accept='image/*' onChange={handleFileChange} className='hidden' />
         </motion.label>
       ) : (
         <motion.div
@@ -490,9 +629,7 @@ const UploadReceipt = memo(function UploadReceipt({
           className='relative rounded-xl border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-800'
         >
           <div className='flex items-center gap-3'>
-            {previewUrl && (
-              <img src={previewUrl} alt='Receipt preview' className='h-16 w-16 rounded-lg object-cover' />
-            )}
+            {previewUrl && <img src={previewUrl} alt='Receipt preview' className='h-16 w-16 rounded-lg object-cover' />}
             <div className='flex-1'>
               <p className='text-sm font-medium text-gray-800 dark:text-gray-200'>{selectedFile.name}</p>
               <p className='text-xs text-gray-500 dark:text-gray-400'>{(selectedFile.size / 1024).toFixed(1)} KB</p>
@@ -527,7 +664,12 @@ const VerificationPendingView = memo(function VerificationPendingView() {
         className='flex h-16 w-16 items-center justify-center rounded-full bg-blue-100'
       >
         <svg className='h-8 w-8 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       </motion.div>
       <div className='text-center'>
@@ -651,11 +793,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
         </div>
 
         {selectedBank && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className='pt-2'
-          >
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className='pt-2'>
             <Button
               type='button'
               onClick={handleProceedToPayment}
@@ -684,7 +822,12 @@ const BankTransferPayment = memo(function BankTransferPayment({
       >
         <div className='flex h-16 w-16 items-center justify-center rounded-full bg-red-100'>
           <svg className='h-8 w-8 text-red-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+            />
           </svg>
         </div>
         <div className='text-center'>
@@ -744,4 +887,3 @@ const BankTransferPayment = memo(function BankTransferPayment({
 })
 
 export default BankTransferPayment
-

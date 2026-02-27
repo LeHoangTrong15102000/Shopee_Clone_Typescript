@@ -17,7 +17,12 @@ const RatingStars = () => {
             <div
               className='flex cursor-pointer items-center rounded-md px-2 py-1 text-sm transition-colors duration-150 hover:bg-orange-50 dark:hover:bg-slate-700 dark:text-gray-300'
               onClick={() => handleFilterStar(5 - index)}
-              onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleFilterStar(5 - index); } }}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  handleFilterStar(5 - index)
+                }
+              }}
               tabIndex={0}
               role='button'
               aria-label={`${5 - index} sao trở lên`}

@@ -41,7 +41,11 @@ const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.Reac
     color: 'purple',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
-        <path fillRule='evenodd' d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z' clipRule='evenodd' />
+        <path
+          fillRule='evenodd'
+          d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z'
+          clipRule='evenodd'
+        />
       </svg>
     )
   },
@@ -50,7 +54,11 @@ const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.Reac
     color: 'gray',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
-        <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
+        <path
+          fillRule='evenodd'
+          d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
+          clipRule='evenodd'
+        />
       </svg>
     )
   }
@@ -93,10 +101,10 @@ const AddressBook = () => {
     if (rawAddresses.length > 0 && orderedAddresses.length === 0) {
       setOrderedAddresses(rawAddresses)
     } else if (rawAddresses.length !== orderedAddresses.length) {
-      const newIds = new Set(rawAddresses.map(a => a._id))
-      const existingIds = new Set(orderedAddresses.map(a => a._id))
-      const addedAddresses = rawAddresses.filter(a => !existingIds.has(a._id))
-      const remainingAddresses = orderedAddresses.filter(a => newIds.has(a._id))
+      const newIds = new Set(rawAddresses.map((a) => a._id))
+      const existingIds = new Set(orderedAddresses.map((a) => a._id))
+      const addedAddresses = rawAddresses.filter((a) => !existingIds.has(a._id))
+      const remainingAddresses = orderedAddresses.filter((a) => newIds.has(a._id))
       setOrderedAddresses([...addedAddresses, ...remainingAddresses])
     }
   }, [rawAddresses])
@@ -306,7 +314,12 @@ const AddressBook = () => {
               }`}
             >
               <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
+                />
               </svg>
               <span>{isSelectionMode ? 'Hủy chọn' : 'Chọn nhiều'}</span>
             </button>
@@ -316,7 +329,12 @@ const AddressBook = () => {
             className='group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 via-orange-500 to-orange-600 px-3 text-xs font-medium text-white shadow-lg shadow-orange/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange/40 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm'
           >
             <span className='absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-600 to-orange-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-            <svg className='relative z-10 h-4 w-4 transition-transform duration-300 group-hover:rotate-90' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='relative z-10 h-4 w-4 transition-transform duration-300 group-hover:rotate-90'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
             </svg>
             <span className='relative z-10'>Thêm địa chỉ mới</span>
@@ -335,7 +353,12 @@ const AddressBook = () => {
               stroke='currentColor'
               viewBox='0 0 24 24'
             >
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+              />
             </svg>
             <input
               type='text'
@@ -374,7 +397,9 @@ const AddressBook = () => {
                 >
                   {config && <span className={isActive ? 'text-white' : ''}>{config.icon}</span>}
                   {type === 'all' ? 'Tất cả' : config?.label}
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${isActive ? 'bg-white/20' : 'bg-gray-200 dark:bg-slate-600'}`}>
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs ${isActive ? 'bg-white/20' : 'bg-gray-200 dark:bg-slate-600'}`}
+                  >
                     {count}
                   </span>
                 </button>
@@ -394,20 +419,32 @@ const AddressBook = () => {
                 <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
                   <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300'>
                     <ShopeeCheckbox
-                      checked={selectedIds.size === filteredAddresses.filter(a => !a.isDefault).length}
+                      checked={selectedIds.size === filteredAddresses.filter((a) => !a.isDefault).length}
                       onChange={handleSelectAll}
                       size='sm'
                     />
-                    <span className='cursor-pointer hover:text-orange dark:hover:text-orange-400' onClick={handleSelectAll}>Chọn tất cả</span>
+                    <span
+                      className='cursor-pointer hover:text-orange dark:hover:text-orange-400'
+                      onClick={handleSelectAll}
+                    >
+                      Chọn tất cả
+                    </span>
                   </div>
-                  <span className='text-xs text-gray-500 dark:text-gray-400 sm:text-sm'>Đã chọn {selectedIds.size} địa chỉ</span>
+                  <span className='text-xs text-gray-500 dark:text-gray-400 sm:text-sm'>
+                    Đã chọn {selectedIds.size} địa chỉ
+                  </span>
                 </div>
                 <Button
                   onClick={handleBulkDelete}
                   className='flex w-full items-center justify-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600 sm:w-auto'
                 >
                   <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+                    />
                   </svg>
                   Xóa đã chọn
                 </Button>
@@ -422,7 +459,14 @@ const AddressBook = () => {
         {rawAddresses.length === 0 ? (
           <EmptyState onAddNew={handleAddNew} />
         ) : filteredAddresses.length === 0 ? (
-          <NoResultsState searchQuery={searchQuery} filterType={filterType} onClear={() => { setSearchQuery(''); setFilterType('all'); }} />
+          <NoResultsState
+            searchQuery={searchQuery}
+            filterType={filterType}
+            onClear={() => {
+              setSearchQuery('')
+              setFilterType('all')
+            }}
+          />
         ) : (
           <div className='space-y-6'>
             {/* Default Address - Always on top */}
@@ -430,7 +474,11 @@ const AddressBook = () => {
               <div>
                 <h3 className='mb-3 flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400'>
                   <svg className='h-4 w-4 text-orange dark:text-orange-400' fill='currentColor' viewBox='0 0 20 20'>
-                    <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clipRule='evenodd' />
+                    <path
+                      fillRule='evenodd'
+                      d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                      clipRule='evenodd'
+                    />
                   </svg>
                   Địa chỉ mặc định
                 </h3>
@@ -454,13 +502,21 @@ const AddressBook = () => {
               <div>
                 <h3 className='mb-3 flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400'>
                   <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                    />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
+                    />
                   </svg>
                   Địa chỉ khác ({otherAddresses.length})
-                  {!isSelectionMode && (
-                    <span className='ml-auto text-xs text-gray-400'>Kéo thả để sắp xếp</span>
-                  )}
+                  {!isSelectionMode && <span className='ml-auto text-xs text-gray-400'>Kéo thả để sắp xếp</span>}
                 </h3>
                 <DndContext
                   sensors={isSelectionMode ? [] : sensors}
@@ -582,9 +638,21 @@ const AddressCard = ({
   const displayLabel = address.addressType === 'other' && address.label ? address.label : typeInfo.label
 
   const colorClasses: Record<string, { bg: string; text: string; border: string }> = {
-    blue: { bg: 'bg-blue-50 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-200 dark:border-blue-700' },
-    purple: { bg: 'bg-purple-50 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-200 dark:border-purple-700' },
-    gray: { bg: 'bg-gray-100 dark:bg-slate-700', text: 'text-gray-700 dark:text-gray-300', border: 'border-gray-200 dark:border-slate-600' }
+    blue: {
+      bg: 'bg-blue-50 dark:bg-blue-900/30',
+      text: 'text-blue-700 dark:text-blue-300',
+      border: 'border-blue-200 dark:border-blue-700'
+    },
+    purple: {
+      bg: 'bg-purple-50 dark:bg-purple-900/30',
+      text: 'text-purple-700 dark:text-purple-300',
+      border: 'border-purple-200 dark:border-purple-700'
+    },
+    gray: {
+      bg: 'bg-gray-100 dark:bg-slate-700',
+      text: 'text-gray-700 dark:text-gray-300',
+      border: 'border-gray-200 dark:border-slate-600'
+    }
   }
   const typeColors = colorClasses[typeInfo.color] || colorClasses.gray
 
@@ -605,11 +673,7 @@ const AddressCard = ({
       {/* Selection Checkbox */}
       {isSelectionMode && !isDefault && (
         <div className='absolute left-3 top-3 z-10' onClick={(e) => e.stopPropagation()}>
-          <ShopeeCheckbox
-            checked={!!isSelected}
-            onChange={() => onToggleSelect?.(address._id)}
-            size='sm'
-          />
+          <ShopeeCheckbox checked={!!isSelected} onChange={() => onToggleSelect?.(address._id)} size='sm' />
         </div>
       )}
 
@@ -645,7 +709,9 @@ const AddressCard = ({
         <div className='min-w-0 flex-1'>
           {/* Name and Phone */}
           <div className='flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2'>
-            <h3 className='min-w-0 truncate text-sm font-semibold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-base'>{address.fullName}</h3>
+            <h3 className='min-w-0 truncate text-sm font-semibold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-base'>
+              {address.fullName}
+            </h3>
             <span className='hidden flex-shrink-0 text-gray-300 dark:text-gray-500 sm:inline'>|</span>
             <span className='flex flex-shrink-0 items-center gap-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm'>
               <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -661,18 +727,28 @@ const AddressCard = ({
           </div>
 
           {/* Address */}
-          <p className='mt-1.5 line-clamp-2 text-xs leading-relaxed text-gray-700 dark:text-gray-300 sm:mt-2 sm:text-sm'>{formatAddress(address)}</p>
+          <p className='mt-1.5 line-clamp-2 text-xs leading-relaxed text-gray-700 dark:text-gray-300 sm:mt-2 sm:text-sm'>
+            {formatAddress(address)}
+          </p>
 
           {/* Tags */}
           <div className='mt-2 flex flex-wrap items-center gap-1.5 sm:mt-3 sm:gap-2'>
-            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium sm:px-2.5 ${typeColors.bg} ${typeColors.text}`}>
-              <span className='mr-1 flex h-3 w-3 items-center justify-center [&>svg]:h-3 [&>svg]:w-3'>{typeInfo.icon}</span>
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium sm:px-2.5 ${typeColors.bg} ${typeColors.text}`}
+            >
+              <span className='mr-1 flex h-3 w-3 items-center justify-center [&>svg]:h-3 [&>svg]:w-3'>
+                {typeInfo.icon}
+              </span>
               {displayLabel}
             </span>
             {isDefault && (
               <span className='inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 sm:px-2.5'>
                 <svg className='mr-1 h-3 w-3' fill='currentColor' viewBox='0 0 20 20'>
-                  <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clipRule='evenodd' />
+                  <path
+                    fillRule='evenodd'
+                    d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                    clipRule='evenodd'
+                  />
                 </svg>
                 Địa chỉ giao hàng
               </span>
@@ -741,7 +817,14 @@ interface SortableAddressCardProps extends AddressCardProps {
 }
 
 const SortableAddressCard = ({ isDragging, ...props }: SortableAddressCardProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging: isSorting } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging: isSorting
+  } = useSortable({
     id: props.address._id,
     disabled: props.isSelectionMode,
     transition: {
@@ -788,7 +871,12 @@ const EmptyState = ({ onAddNew }: EmptyStateProps) => {
         className='relative'
       >
         <div className='flex h-24 w-24 items-center justify-center rounded-full bg-orange/10 dark:bg-orange-400/20'>
-          <svg className='h-12 w-12 text-orange dark:text-orange-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <svg
+            className='h-12 w-12 text-orange dark:text-orange-400'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
@@ -909,7 +997,12 @@ const DeleteConfirmModal = ({
       >
         <div className='mb-4 flex items-center justify-center'>
           <div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30'>
-            <svg className='h-6 w-6 text-red-600 dark:text-red-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='h-6 w-6 text-red-600 dark:text-red-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -957,7 +1050,12 @@ const NoResultsState = ({ searchQuery, filterType, onClear }: NoResultsStateProp
     >
       <div className='flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700'>
         <svg className='h-8 w-8 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+          />
         </svg>
       </div>
       <h3 className='mt-4 text-lg font-medium text-gray-700 dark:text-gray-200'>Không tìm thấy địa chỉ</h3>

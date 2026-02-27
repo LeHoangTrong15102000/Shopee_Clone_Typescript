@@ -240,20 +240,14 @@ export const calculateCheckoutRequest = http.post(`${config.baseUrl}checkout/cal
     total: subtotal + shippingMethod.price - coinsDiscount
   }
 
-  return HttpResponse.json(
-    { message: 'Tính toán thành công', data: summary },
-    { status: HTTP_STATUS_CODE.Ok }
-  )
+  return HttpResponse.json({ message: 'Tính toán thành công', data: summary }, { status: HTTP_STATUS_CODE.Ok })
 })
 
 // Order Handlers
 export const createOrderRequest = http.post(`${config.baseUrl}orders`, async ({ request }) => {
   const body = (await request.json()) as CreateOrderBody
-  const order = createMockOrder(body, `order_${Date.now()}`)
-  return HttpResponse.json(
-    { message: 'Đặt hàng thành công', data: order },
-    { status: HTTP_STATUS_CODE.Created }
-  )
+  const order = createMockOrder(body, `${Date.now().toString(16)}${Math.random().toString(16).slice(2, 10)}`)
+  return HttpResponse.json({ message: 'Đặt hàng thành công', data: order }, { status: HTTP_STATUS_CODE.Created })
 })
 
 export const getOrdersRequest = http.get(`${config.baseUrl}orders`, ({ request }) => {
@@ -284,10 +278,7 @@ export const getOrderByIdRequest = http.get(`${config.baseUrl}orders/:id`, ({ pa
     },
     id as string
   )
-  return HttpResponse.json(
-    { message: 'Lấy đơn hàng thành công', data: mockOrder },
-    { status: HTTP_STATUS_CODE.Ok }
-  )
+  return HttpResponse.json({ message: 'Lấy đơn hàng thành công', data: mockOrder }, { status: HTTP_STATUS_CODE.Ok })
 })
 
 export const cancelOrderRequest = http.put(`${config.baseUrl}orders/:id/cancel`, async ({ params }) => {
@@ -322,10 +313,7 @@ export const getAddressesRequest = http.get(`${config.baseUrl}addresses`, () => 
 export const getAddressByIdRequest = http.get(`${config.baseUrl}addresses/:id`, ({ params }) => {
   const { id } = params
   const address = mockAddresses.find((a) => a._id === id) || mockAddresses[0]
-  return HttpResponse.json(
-    { message: 'Lấy địa chỉ thành công', data: address },
-    { status: HTTP_STATUS_CODE.Ok }
-  )
+  return HttpResponse.json({ message: 'Lấy địa chỉ thành công', data: address }, { status: HTTP_STATUS_CODE.Ok })
 })
 
 export const createAddressRequest = http.post(`${config.baseUrl}addresses`, async ({ request }) => {
@@ -431,4 +419,3 @@ const checkoutRequests = [
 ]
 
 export default checkoutRequests
-

@@ -43,21 +43,13 @@ const DangerIcon = () => (
 
 const WarningIcon = () => (
   <svg className='h-12 w-12' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-    />
+    <path strokeLinecap='round' strokeLinejoin='round' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
   </svg>
 )
 
 const InfoIcon = () => (
   <svg className='h-12 w-12' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-    />
+    <path strokeLinecap='round' strokeLinejoin='round' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
   </svg>
 )
 
@@ -162,7 +154,10 @@ const ConfirmDialog = ({
               <div className={`flex justify-center ${config.iconColor}`}>{renderIcon()}</div>
 
               {/* Title */}
-              <h2 id='confirm-dialog-title' className='mt-4 text-center text-xl font-semibold text-gray-900 dark:text-gray-100'>
+              <h2
+                id='confirm-dialog-title'
+                className='mt-4 text-center text-xl font-semibold text-gray-900 dark:text-gray-100'
+              >
                 {title}
               </h2>
 
@@ -202,4 +197,3 @@ const ConfirmDialog = ({
 }
 
 export default ConfirmDialog
-

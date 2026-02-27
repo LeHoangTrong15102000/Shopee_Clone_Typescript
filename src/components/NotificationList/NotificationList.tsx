@@ -83,7 +83,12 @@ const NotificationList = ({ className }: NotificationListProps) => {
         className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
       >
         <div className='flex h-[250px] w-full flex-col items-center justify-center p-2'>
-          <svg className='h-16 w-16 text-gray-300 dark:text-gray-600' fill='currentColor' viewBox='0 0 20 20' aria-hidden='true'>
+          <svg
+            className='h-16 w-16 text-gray-300 dark:text-gray-600'
+            fill='currentColor'
+            viewBox='0 0 20 20'
+            aria-hidden='true'
+          >
             <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
           </svg>
           <span className='mt-2 text-sm text-gray-500 dark:text-gray-400'>Bạn hiện chưa có thông báo nào</span>
@@ -120,7 +125,9 @@ const NotificationList = ({ className }: NotificationListProps) => {
               tabIndex={0}
               aria-label={`${getNotificationTypeLabel(notification.type)}: ${notification.title}. ${notification.isRead ? 'Đã đọc' : 'Chưa đọc'}. ${formatTimeAgo(notification.createdAt)}`}
               className={`mt-2 flex cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-slate-700 hover:shadow-sm animate-fade-in focus:outline-none focus:ring-2 focus:ring-orange focus:ring-inset ${
-                !notification.isRead ? 'bg-[#fff5f5] dark:bg-slate-700/50 border-l-2 border-orange' : 'hover:scale-[1.01]'
+                !notification.isRead
+                  ? 'bg-[#fff5f5] dark:bg-slate-700/50 border-l-2 border-orange'
+                  : 'hover:scale-[1.01]'
               }`}
               onClick={() =>
                 !notification.isRead && !markAsReadMutation.isPending && handleMarkAsRead(notification._id)
@@ -184,14 +191,13 @@ const NotificationList = ({ className }: NotificationListProps) => {
                     {notification.title}
                   </div>
                   {!notification.isRead && (
-                    <div
-                      className='ml-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange'
-                      aria-hidden='true'
-                    ></div>
+                    <div className='ml-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange' aria-hidden='true'></div>
                   )}
                 </div>
                 <div className='mt-1 text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>{notification.content}</div>
-                <div className='mt-1 text-xs text-gray-400 dark:text-gray-500'>{formatTimeAgo(notification.createdAt)}</div>
+                <div className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
+                  {formatTimeAgo(notification.createdAt)}
+                </div>
               </div>
             </li>
           ))}

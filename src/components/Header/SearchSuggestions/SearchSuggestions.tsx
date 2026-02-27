@@ -218,11 +218,18 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           />
         </div>
         <div className='flex-1 min-w-0'>
-          <div className='text-xs md:text-sm text-gray-900 dark:text-gray-100 truncate font-medium leading-tight'>{product.name}</div>
+          <div className='text-xs md:text-sm text-gray-900 dark:text-gray-100 truncate font-medium leading-tight'>
+            {product.name}
+          </div>
           <div className='text-xs text-orange font-semibold'>₫{product.price.toLocaleString('vi-VN')}</div>
         </div>
         <div className='flex-shrink-0'>
-          <svg className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <svg
+            className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
           </svg>
         </div>
@@ -280,7 +287,12 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* No Results */}
           {suggestions.length === 0 && products.length === 0 && !showLoading && (
             <div className='px-4 py-6 text-center text-gray-500 dark:text-gray-400'>
-              <svg className='mx-auto h-8 w-8 text-gray-400 dark:text-gray-500 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <svg
+                className='mx-auto h-8 w-8 text-gray-400 dark:text-gray-500 mb-2'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -298,7 +310,9 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       {!debouncedSearchValue && searchHistory.length > 0 && (
         <div>
           <div className='px-4 py-2 flex items-center justify-between'>
-            <span className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>Lịch sử tìm kiếm</span>
+            <span className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
+              Lịch sử tìm kiếm
+            </span>
             <button
               onClick={() => clearHistoryMutation.mutate()}
               disabled={clearHistoryMutation.isPending}

@@ -27,30 +27,23 @@ export default function LivePriceTag({
       {/* Previous price with strikethrough during transition */}
       {hasChanged && previousPrice !== null && (
         <div className='mb-1 animate-pulse'>
-          <span className='text-sm text-gray-400 line-through'>
-            ₫{formatCurrency(previousPrice)}
-          </span>
+          <span className='text-sm text-gray-400 line-through'>₫{formatCurrency(previousPrice)}</span>
         </div>
       )}
 
       {/* Current price */}
       <span
-        className={classNames(
-          'text-xl font-medium text-orange transition-all duration-500',
-          {
-            'scale-110 text-green-600': hasChanged && priceDecreased,
-            'scale-110 text-red-600': hasChanged && priceIncreased,
-          }
-        )}
+        className={classNames('text-xl font-medium text-orange transition-all duration-500', {
+          'scale-110 text-green-600': hasChanged && priceDecreased,
+          'scale-110 text-red-600': hasChanged && priceIncreased
+        })}
       >
         ₫{formatCurrency(displayPrice)}
       </span>
 
       {/* Price before discount */}
       {priceBeforeDiscount && priceBeforeDiscount > displayPrice && (
-        <span className='ml-3 text-sm text-gray-500 line-through'>
-          ₫{formatCurrency(priceBeforeDiscount)}
-        </span>
+        <span className='ml-3 text-sm text-gray-500 line-through'>₫{formatCurrency(priceBeforeDiscount)}</span>
       )}
 
       {/* Price change badge */}
@@ -67,4 +60,3 @@ export default function LivePriceTag({
     </div>
   )
 }
-

@@ -25,4 +25,3 @@ export interface SellerFollowingState {
   getFollowedSellers: () => FollowedSeller[]
   clearAllFollowed: () => void
 }
-

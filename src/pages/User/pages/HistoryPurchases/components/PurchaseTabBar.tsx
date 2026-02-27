@@ -25,8 +25,10 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
           className={classNames(
             'flex items-center justify-center whitespace-nowrap bg-white dark:bg-slate-800 px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm text-center transition-all hover:text-orange dark:hover:text-orange-400 min-w-[5rem] sm:min-w-0 sm:flex-1',
             {
-              'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium': status === tab.status,
-              'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': status !== tab.status
+              'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium':
+                status === tab.status,
+              'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100':
+                status !== tab.status
             }
           )}
         >
@@ -38,4 +40,3 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
 }
 
 export default PurchaseTabBar
-

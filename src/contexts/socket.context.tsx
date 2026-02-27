@@ -137,14 +137,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     [socket, isConnected, connectionStatus, connect, disconnect]
   )
 
-  return (
-    <SocketContext.Provider value={value}>
-      {children}
-    </SocketContext.Provider>
-  )
+  return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
 }
 
 export const useSocketContext = () => {
   return useContext(SocketContext)
 }
-

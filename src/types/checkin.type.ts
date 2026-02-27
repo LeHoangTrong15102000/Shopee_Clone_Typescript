@@ -62,4 +62,3 @@ export const getRewardForDay = (day: number, config: DailyCheckInConfig = DEFAUL
     description: multiplier > 1 ? `Streak bonus x${multiplier}` : undefined
   }
 }
-

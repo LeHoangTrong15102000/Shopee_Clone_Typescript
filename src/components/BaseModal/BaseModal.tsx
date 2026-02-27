@@ -86,4 +86,3 @@ const BaseModal = ({
 }
 
 export default BaseModal
-

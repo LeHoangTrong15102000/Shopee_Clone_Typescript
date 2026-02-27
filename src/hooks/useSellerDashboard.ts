@@ -4,7 +4,7 @@ import {
   SocketEvent,
   SellerOrderNotificationPayload,
   SellerMetricsUpdatePayload,
-  SellerQANotificationPayload,
+  SellerQANotificationPayload
 } from 'src/types/socket.types'
 import { AppContext } from 'src/contexts/app.context'
 
@@ -19,7 +19,7 @@ const DEFAULT_METRICS: SellerMetricsUpdatePayload = {
   today_orders: 0,
   today_revenue: 0,
   pending_orders: 0,
-  pending_qa: 0,
+  pending_qa: 0
 }
 
 const useSellerDashboard = (): UseSellerDashboardReturn => {
@@ -69,4 +69,3 @@ const useSellerDashboard = (): UseSellerDashboardReturn => {
 }
 
 export default useSellerDashboard
-

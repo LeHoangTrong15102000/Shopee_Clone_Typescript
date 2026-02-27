@@ -141,7 +141,9 @@ const CartItemList = ({
                         <span className='mr-2 text-gray-500 dark:text-gray-400 line-through'>
                           ₫{formatCurrency(purchase.product.price_before_discount)}
                         </span>
-                        <span className='text-black/90 dark:text-gray-100'>₫{formatCurrency(purchase.product.price)}</span>
+                        <span className='text-black/90 dark:text-gray-100'>
+                          ₫{formatCurrency(purchase.product.price)}
+                        </span>
                       </div>
                     </div>
                     <div className='col-span-1'>
@@ -188,8 +190,19 @@ const CartItemList = ({
                         whileTap={{ scale: 0.95 }}
                         title='Lưu để mua sau'
                       >
-                        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-4 h-4'>
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z' />
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-4 h-4'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+                          />
                         </svg>
                         Lưu
                       </motion.button>
@@ -267,10 +280,7 @@ const CartItemList = ({
                     </Link>
 
                     <div className='mt-1'>
-                      <StockBadge
-                        availableStock={purchase.product.quantity}
-                        requestedQuantity={purchase.buy_count}
-                      />
+                      <StockBadge availableStock={purchase.product.quantity} requestedQuantity={purchase.buy_count} />
                     </div>
 
                     <AnimatePresence>
@@ -289,12 +299,10 @@ const CartItemList = ({
                       <span className='text-gray-400 dark:text-gray-500 line-through'>
                         ₫{formatCurrency(purchase.product.price_before_discount)}
                       </span>
-                      <span className='text-[#ee4d2d] font-medium'>
-                        ₫{formatCurrency(purchase.product.price)}
-                      </span>
+                      <span className='text-[#ee4d2d] font-medium'>₫{formatCurrency(purchase.product.price)}</span>
                     </div>
 
-                    <div className='mt-3 flex items-center justify-between'>
+                    <div className='mt-3 flex items-center gap-2'>
                       <QuantityController
                         handleDelete={handleDelete(index)}
                         product={purchase.product}
@@ -319,42 +327,55 @@ const CartItemList = ({
                         isQuantityInCart={true}
                       />
 
-                      <motion.button
-                        onClick={handleSaveForLater(index)}
-                        className='text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2 min-h-[40px] min-w-[40px]'
-                        aria-label='Lưu để mua sau'
-                        whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-5 h-5'>
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z' />
-                        </svg>
-                      </motion.button>
-
-                      <motion.button
-                        onClick={handleDelete(index)}
-                        className='text-gray-500 dark:text-gray-400 hover:text-[#ee4d2d] transition-colors p-2 min-h-[40px] min-w-[40px]'
-                        aria-label='Xóa sản phẩm'
-                        whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth={1.5}
-                          stroke='currentColor'
-                          className='w-5 h-5'
+                      <div className='ml-auto flex items-center gap-1'>
+                        <motion.button
+                          onClick={handleSaveForLater(index)}
+                          className='text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-1.5'
+                          aria-label='Lưu để mua sau'
+                          whileHover={{ scale: 1.15 }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{ duration: 0.2 }}
                         >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'
-                          />
-                        </svg>
-                      </motion.button>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='w-5 h-5'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+                            />
+                          </svg>
+                        </motion.button>
+
+                        <motion.button
+                          onClick={handleDelete(index)}
+                          className='text-gray-500 dark:text-gray-400 hover:text-[#ee4d2d] transition-colors p-1.5'
+                          aria-label='Xóa sản phẩm'
+                          whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='w-5 h-5'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'
+                            />
+                          </svg>
+                        </motion.button>
+                      </div>
                     </div>
 
                     <div className='mt-2 flex items-center justify-end'>
@@ -381,4 +402,3 @@ const CartItemList = ({
 }
 
 export default CartItemList
-

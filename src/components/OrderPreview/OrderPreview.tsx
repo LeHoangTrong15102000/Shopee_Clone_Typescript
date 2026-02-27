@@ -95,7 +95,11 @@ const OrderPreview = memo(function OrderPreview({
       className='space-y-4'
     >
       {/* Section 1: Địa chỉ giao hàng */}
-      <SectionWrapper title='Địa chỉ giao hàng' reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white via-orange-50/20 to-amber-50/10 dark:from-slate-800 dark:via-orange-900/10 dark:to-amber-900/5'>
+      <SectionWrapper
+        title='Địa chỉ giao hàng'
+        reducedMotion={reducedMotion}
+        gradient='bg-gradient-to-br from-white via-orange-50/20 to-amber-50/10 dark:from-slate-800 dark:via-orange-900/10 dark:to-amber-900/5'
+      >
         {selectedAddress ? (
           <div className='flex items-start gap-3'>
             <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange to-amber-500 shadow-md shadow-orange/30'>
@@ -106,7 +110,12 @@ const OrderPreview = memo(function OrderPreview({
                   strokeWidth={2}
                   d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
                 />
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
+                />
               </svg>
             </div>
             <div className='flex-1'>
@@ -115,7 +124,9 @@ const OrderPreview = memo(function OrderPreview({
                 <span className='text-gray-400 dark:text-gray-500'>|</span>
                 <span className='text-gray-600 dark:text-gray-300'>{selectedAddress.phone}</span>
                 {selectedAddress.isDefault && (
-                  <span className='rounded-full bg-gradient-to-r from-orange to-amber-500 px-2.5 py-0.5 text-xs font-medium text-white shadow-sm'>Mặc định</span>
+                  <span className='rounded-full bg-gradient-to-r from-orange to-amber-500 px-2.5 py-0.5 text-xs font-medium text-white shadow-sm'>
+                    Mặc định
+                  </span>
                 )}
               </div>
               <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
@@ -129,10 +140,17 @@ const OrderPreview = memo(function OrderPreview({
       </SectionWrapper>
 
       {/* Section 2: Sản phẩm */}
-      <SectionWrapper title={`Sản phẩm (${totalItemCount})`} reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'>
+      <SectionWrapper
+        title={`Sản phẩm (${totalItemCount})`}
+        reducedMotion={reducedMotion}
+        gradient='bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'
+      >
         <div className='space-y-3'>
           {items.map((item) => (
-            <div key={item._id} className='flex gap-3 rounded-lg bg-gradient-to-r from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 p-3 border border-gray-100 dark:border-slate-700'>
+            <div
+              key={item._id}
+              className='flex gap-3 rounded-lg bg-gradient-to-r from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 p-3 border border-gray-100 dark:border-slate-700'
+            >
               <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm'>
                 <ImageWithFallback
                   src={item.product.image}
@@ -161,7 +179,11 @@ const OrderPreview = memo(function OrderPreview({
       </SectionWrapper>
 
       {/* Section 3: Phương thức vận chuyển */}
-      <SectionWrapper title='Phương thức vận chuyển' reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white via-green-50/20 to-emerald-50/10 dark:from-slate-800 dark:via-green-900/10 dark:to-emerald-900/5'>
+      <SectionWrapper
+        title='Phương thức vận chuyển'
+        reducedMotion={reducedMotion}
+        gradient='bg-gradient-to-br from-white via-green-50/20 to-emerald-50/10 dark:from-slate-800 dark:via-green-900/10 dark:to-emerald-900/5'
+      >
         {selectedShippingMethod ? (
           <div className='flex items-start gap-3'>
             <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500 shadow-md shadow-green-500/30'>
@@ -172,8 +194,18 @@ const OrderPreview = memo(function OrderPreview({
               <p className='mt-0.5 text-sm text-gray-600 dark:text-gray-300'>{selectedShippingMethod.description}</p>
               {estimatedDeliveryDate && (
                 <p className='mt-1 inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-1 text-sm font-medium text-green-700 dark:text-green-400'>
-                  <svg className='h-4 w-4 inline-block mr-1' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' />
+                  <svg
+                    className='h-4 w-4 inline-block mr-1'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'
+                    />
                   </svg>
                   Dự kiến giao: <span className='font-semibold'>{estimatedDeliveryDate}</span>
                 </p>
@@ -189,14 +221,20 @@ const OrderPreview = memo(function OrderPreview({
       </SectionWrapper>
 
       {/* Section 4: Phương thức thanh toán */}
-      <SectionWrapper title='Phương thức thanh toán' reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/10 dark:from-slate-800 dark:via-blue-900/10 dark:to-indigo-900/5'>
+      <SectionWrapper
+        title='Phương thức thanh toán'
+        reducedMotion={reducedMotion}
+        gradient='bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/10 dark:from-slate-800 dark:via-blue-900/10 dark:to-indigo-900/5'
+      >
         {selectedPaymentMethod ? (
           <div className='flex items-center gap-3'>
             <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 shadow-md shadow-blue-500/30 text-white'>
               <PaymentIcon type={selectedPaymentMethod} className='h-5 w-5' />
             </div>
             <div className='flex-1'>
-              <p className='font-semibold text-gray-900 dark:text-gray-100'>{PAYMENT_METHOD_LABELS[selectedPaymentMethod]}</p>
+              <p className='font-semibold text-gray-900 dark:text-gray-100'>
+                {PAYMENT_METHOD_LABELS[selectedPaymentMethod]}
+              </p>
             </div>
           </div>
         ) : (
@@ -206,7 +244,11 @@ const OrderPreview = memo(function OrderPreview({
 
       {/* Section 5: Ghi chú */}
       {note && (
-        <SectionWrapper title='Ghi chú đơn hàng' reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white via-yellow-50/20 to-amber-50/10 dark:from-slate-800 dark:via-yellow-900/10 dark:to-amber-900/5'>
+        <SectionWrapper
+          title='Ghi chú đơn hàng'
+          reducedMotion={reducedMotion}
+          gradient='bg-gradient-to-br from-white via-yellow-50/20 to-amber-50/10 dark:from-slate-800 dark:via-yellow-900/10 dark:to-amber-900/5'
+        >
           <div className='flex items-center gap-3'>
             <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 shadow-md shadow-yellow-500/30'>
               <svg className='h-5 w-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -224,7 +266,11 @@ const OrderPreview = memo(function OrderPreview({
       )}
 
       {/* Section 6: Tổng kết đơn hàng */}
-      <SectionWrapper title='Tổng kết đơn hàng' reducedMotion={reducedMotion} gradient='bg-gradient-to-br from-white via-orange-50/30 to-amber-50/20 dark:from-slate-800 dark:via-orange-900/20 dark:to-amber-900/10'>
+      <SectionWrapper
+        title='Tổng kết đơn hàng'
+        reducedMotion={reducedMotion}
+        gradient='bg-gradient-to-br from-white via-orange-50/30 to-amber-50/20 dark:from-slate-800 dark:via-orange-900/20 dark:to-amber-900/10'
+      >
         <div className='space-y-3'>
           <div className='flex justify-between text-sm'>
             <span className='text-gray-600 dark:text-gray-300'>Tạm tính ({totalItemCount} sản phẩm)</span>
@@ -249,12 +295,24 @@ const OrderPreview = memo(function OrderPreview({
           <div className='border-t-2 border-orange/20 pt-3'>
             <div className='flex items-center justify-between'>
               <span className='text-base font-semibold text-gray-900 dark:text-gray-100'>Tổng thanh toán</span>
-              <span className='text-2xl font-bold bg-gradient-to-r from-orange to-red-500 bg-clip-text text-transparent'>₫{formatCurrency(Math.max(0, total))}</span>
+              <span className='text-2xl font-bold bg-gradient-to-r from-orange to-red-500 bg-clip-text text-transparent'>
+                ₫{formatCurrency(Math.max(0, total))}
+              </span>
             </div>
             {totalDiscount > 0 && (
               <p className='mt-1 text-right text-xs font-medium text-green-600'>
-                <svg className='h-4 w-4 inline-block mr-1' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z' />
+                <svg
+                  className='h-4 w-4 inline-block mr-1'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z'
+                  />
                 </svg>
                 Tiết kiệm ₫{formatCurrency(totalDiscount)}
               </p>
@@ -304,4 +362,3 @@ const OrderPreview = memo(function OrderPreview({
 })
 
 export default OrderPreview
-

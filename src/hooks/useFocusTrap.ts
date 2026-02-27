@@ -86,4 +86,3 @@ export function useFocusTrap({ isOpen, containerRef, onClose }: UseFocusTrapOpti
     }
   }, [isOpen])
 }
-

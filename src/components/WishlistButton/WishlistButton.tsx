@@ -101,4 +101,3 @@ export default function WishlistButton({ productId, productName, className, size
     </button>
   )
 }
-

@@ -33,4 +33,3 @@ const useAnimatedNumber = (value: number, duration = 400) => {
 }
 
 export default useAnimatedNumber
-

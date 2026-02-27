@@ -50,13 +50,7 @@ export default function ErrorFallback({
         animate={reducedMotion ? undefined : { scale: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
       >
-        <svg
-          className='h-8 w-8 text-orange'
-          fill='none'
-          viewBox='0 0 24 24'
-          stroke='currentColor'
-          strokeWidth={2}
-        >
+        <svg className='h-8 w-8 text-orange' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -88,9 +82,13 @@ export default function ErrorFallback({
       {/* Error Details (Development Mode) */}
       {isDevelopment && error && (
         <details className='mb-4 w-full max-w-md rounded-md bg-gray-100 dark:bg-slate-700 p-3'>
-          <summary className='cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-200'>Chi tiết lỗi (Dev)</summary>
+          <summary className='cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-200'>
+            Chi tiết lỗi (Dev)
+          </summary>
           <div className='mt-2 overflow-auto'>
-            <p className='text-xs text-red-600 dark:text-red-400'>{error.name}: {error.message}</p>
+            <p className='text-xs text-red-600 dark:text-red-400'>
+              {error.name}: {error.message}
+            </p>
             {error.stack && (
               <pre className='mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-xs text-gray-600 dark:text-gray-300'>
                 {error.stack}
@@ -109,19 +107,8 @@ export default function ErrorFallback({
         >
           {isRetrying ? (
             <>
-              <svg
-                className='h-4 w-4 animate-spin'
-                viewBox='0 0 24 24'
-                fill='none'
-              >
-                <circle
-                  className='opacity-25'
-                  cx='12'
-                  cy='12'
-                  r='10'
-                  stroke='currentColor'
-                  strokeWidth='4'
-                />
+              <svg className='h-4 w-4 animate-spin' viewBox='0 0 24 24' fill='none'>
+                <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
                 <path
                   className='opacity-75'
                   fill='currentColor'
@@ -132,13 +119,7 @@ export default function ErrorFallback({
             </>
           ) : (
             <>
-              <svg
-                className='h-4 w-4'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-                strokeWidth={2}
-              >
+              <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -153,4 +134,3 @@ export default function ErrorFallback({
     </motion.div>
   )
 }
-

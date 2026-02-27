@@ -121,12 +121,7 @@ export const ObjectFitVariants: Story = {
     <div className='flex flex-col gap-8'>
       <div className='w-[200px]'>
         <p className='mb-2 text-sm font-medium'>Object Fit: cover</p>
-        <OptimizedImage
-          src='https://picsum.photos/400/300'
-          alt='Cover fit'
-          objectFit='cover'
-          aspectRatio='1:1'
-        />
+        <OptimizedImage src='https://picsum.photos/400/300' alt='Cover fit' objectFit='cover' aspectRatio='1:1' />
       </div>
       <div className='w-[200px]'>
         <p className='mb-2 text-sm font-medium'>Object Fit: contain</p>
@@ -140,12 +135,7 @@ export const ObjectFitVariants: Story = {
       </div>
       <div className='w-[200px]'>
         <p className='mb-2 text-sm font-medium'>Object Fit: fill</p>
-        <OptimizedImage
-          src='https://picsum.photos/400/300'
-          alt='Fill fit'
-          objectFit='fill'
-          aspectRatio='1:1'
-        />
+        <OptimizedImage src='https://picsum.photos/400/300' alt='Fill fit' objectFit='fill' aspectRatio='1:1' />
       </div>
       <div className='w-[200px]'>
         <p className='mb-2 text-sm font-medium'>Object Fit: none</p>
@@ -160,4 +150,3 @@ export const ObjectFitVariants: Story = {
     </div>
   )
 }
-

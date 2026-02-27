@@ -52,4 +52,3 @@ const useInventoryAlerts = (): UseInventoryAlertsReturn => {
 }
 
 export default useInventoryAlerts
-

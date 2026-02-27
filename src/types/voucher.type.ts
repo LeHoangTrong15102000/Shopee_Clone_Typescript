@@ -64,4 +64,3 @@ export interface ValidateVoucherResponse {
   voucher?: Voucher
   message?: string
 }
-

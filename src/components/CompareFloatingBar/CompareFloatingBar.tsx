@@ -13,7 +13,7 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
   const [isExpanded, setIsExpanded] = useState(true)
 
   const handleToggleExpand = useCallback(() => {
-    setIsExpanded(prev => !prev)
+    setIsExpanded((prev) => !prev)
   }, [])
 
   const handleRemoveFromCompare = useCallback(
@@ -61,13 +61,13 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
 
       <div className='container mx-auto px-4 py-3'>
         <div className='flex items-center justify-between gap-4'>
-          <div className='flex items-center gap-3 flex-1 overflow-x-auto' role='list' aria-label='Danh sách sản phẩm so sánh'>
-            {compareList.map(product => (
-              <div
-                key={product._id}
-                className='relative flex-shrink-0 group'
-                role='listitem'
-              >
+          <div
+            className='flex items-center gap-3 flex-1 overflow-x-auto'
+            role='list'
+            aria-label='Danh sách sản phẩm so sánh'
+          >
+            {compareList.map((product) => (
+              <div key={product._id} className='relative flex-shrink-0 group' role='listitem'>
                 <img
                   src={product.image}
                   alt={product.name}
@@ -99,7 +99,13 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
                 aria-label='Vị trí trống cho sản phẩm so sánh'
                 role='listitem'
               >
-                <svg className='w-6 h-6 text-gray-300' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
+                <svg
+                  className='w-6 h-6 text-gray-300'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                  aria-hidden='true'
+                >
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
                 </svg>
               </div>
@@ -134,4 +140,3 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
 }
 
 export default memo(CompareFloatingBar)
-

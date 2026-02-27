@@ -91,10 +91,7 @@ export const getOptimizedImageUrl = (
 /**
  * Generate srcSet for responsive images
  */
-export const generateSrcSet = (
-  _src: string,
-  _widths: number[] = [320, 640, 768, 1024, 1280]
-): string => {
+export const generateSrcSet = (_src: string, _widths: number[] = [320, 640, 768, 1024, 1280]): string => {
   // For now, return empty string as we don't have image CDN
   // In the future, this can generate proper srcSet
   return ''
@@ -115,12 +112,7 @@ export type ImageLoadingState = 'idle' | 'loading' | 'loaded' | 'error'
 /**
  * Create a blur data URL placeholder (simple gray)
  */
-export const createBlurPlaceholder = (
-  width: number = 10,
-  height: number = 10,
-  color: string = '#E5E7EB'
-): string => {
+export const createBlurPlaceholder = (width: number = 10, height: number = 10, color: string = '#E5E7EB'): string => {
   const svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="${color}"/></svg>`
   return `data:image/svg+xml;base64,${btoa(svg)}`
 }
-

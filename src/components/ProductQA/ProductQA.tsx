@@ -100,26 +100,35 @@ const ProductQA = memo(function ProductQA({ productId, className = '' }: Product
     askQuestionMutation.mutate({ product_id: productId, question: questionText.trim() })
   }, [questionText, productId, askQuestionMutation])
 
-  const handleAnswerQuestion = useCallback((questionId: string) => {
-    if (!answerText.trim()) return
-    answerQuestionMutation.mutate({ questionId, answer: answerText.trim() })
-  }, [answerText, answerQuestionMutation])
+  const handleAnswerQuestion = useCallback(
+    (questionId: string) => {
+      if (!answerText.trim()) return
+      answerQuestionMutation.mutate({ questionId, answer: answerText.trim() })
+    },
+    [answerText, answerQuestionMutation]
+  )
 
-  const handleLikeQuestion = useCallback((questionId: string) => {
-    if (!isAuthenticated) {
-      toast.warning('Vui lòng đăng nhập để thích câu hỏi')
-      return
-    }
-    likeQuestionMutation.mutate(questionId)
-  }, [isAuthenticated, likeQuestionMutation])
+  const handleLikeQuestion = useCallback(
+    (questionId: string) => {
+      if (!isAuthenticated) {
+        toast.warning('Vui lòng đăng nhập để thích câu hỏi')
+        return
+      }
+      likeQuestionMutation.mutate(questionId)
+    },
+    [isAuthenticated, likeQuestionMutation]
+  )
 
-  const handleLikeAnswer = useCallback((questionId: string, answerId: string) => {
-    if (!isAuthenticated) {
-      toast.warning('Vui lòng đăng nhập để thích câu trả lời')
-      return
-    }
-    likeAnswerMutation.mutate({ questionId, answerId })
-  }, [isAuthenticated, likeAnswerMutation])
+  const handleLikeAnswer = useCallback(
+    (questionId: string, answerId: string) => {
+      if (!isAuthenticated) {
+        toast.warning('Vui lòng đăng nhập để thích câu trả lời')
+        return
+      }
+      likeAnswerMutation.mutate({ questionId, answerId })
+    },
+    [isAuthenticated, likeAnswerMutation]
+  )
 
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -272,7 +281,9 @@ const QuestionItem = memo(function QuestionItem({
           {question.user.avatar ? (
             <img src={question.user.avatar} alt={question.user.name} className='w-10 h-10 rounded-full object-cover' />
           ) : (
-            <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>{question.user.name?.charAt(0).toUpperCase()}</span>
+            <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>
+              {question.user.name?.charAt(0).toUpperCase()}
+            </span>
           )}
         </div>
         <div className='flex-1'>
@@ -312,7 +323,11 @@ const QuestionItem = memo(function QuestionItem({
 
       {/* Answers */}
       {question.answers.length > 0 && (
-        <div className='mt-4 ml-13 pl-4 border-l-2 border-gray-200 dark:border-slate-600 space-y-3' role='list' aria-label='Danh sách câu trả lời'>
+        <div
+          className='mt-4 ml-13 pl-4 border-l-2 border-gray-200 dark:border-slate-600 space-y-3'
+          role='list'
+          aria-label='Danh sách câu trả lời'
+        >
           {question.answers.map((answer: ProductAnswer) => (
             <AnswerItem key={answer._id} answer={answer} questionId={question._id} onLikeAnswer={onLikeAnswer} />
           ))}
@@ -385,7 +400,9 @@ const AnswerItem = memo(function AnswerItem({ answer, questionId, onLikeAnswer }
         {answer.user.avatar ? (
           <img src={answer.user.avatar} alt={answer.user.name} className='w-8 h-8 rounded-full object-cover' />
         ) : (
-          <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>{answer.user.name?.charAt(0).toUpperCase()}</span>
+          <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>
+            {answer.user.name?.charAt(0).toUpperCase()}
+          </span>
         )}
       </div>
       <div className='flex-1'>
@@ -419,7 +436,11 @@ const AnswerItem = memo(function AnswerItem({ answer, questionId, onLikeAnswer }
 
 const QALoadingSkeleton = memo(function QALoadingSkeleton({ className = '' }: { className?: string }) {
   return (
-    <div className={`bg-white dark:bg-slate-800 p-4 md:p-6 shadow rounded min-h-[400px] ${className}`} aria-label='Đang tải câu hỏi' role='status'>
+    <div
+      className={`bg-white dark:bg-slate-800 p-4 md:p-6 shadow rounded min-h-[400px] ${className}`}
+      aria-label='Đang tải câu hỏi'
+      role='status'
+    >
       <div className='animate-pulse'>
         <div className='h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-6'></div>
         <div className='h-24 bg-gray-200 dark:bg-slate-700 rounded mb-6'></div>
@@ -466,4 +487,3 @@ const QAEmptyState = memo(function QAEmptyState() {
 })
 
 export default ProductQA
-

@@ -224,7 +224,8 @@ export default function OrderSearchFilter({
             'relative flex items-center gap-2 px-4 py-2.5 border rounded-sm text-sm font-medium transition-colors',
             {
               'border-[#ee4d2d] text-[#ee4d2d] bg-[#ee4d2d]/5 dark:bg-[#ee4d2d]/10': isFilterPanelOpen || hasAnyFilter,
-              'border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-slate-500': !isFilterPanelOpen && !hasAnyFilter
+              'border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-slate-500':
+                !isFilterPanelOpen && !hasAnyFilter
             }
           )}
           aria-expanded={isFilterPanelOpen}
@@ -281,7 +282,9 @@ export default function OrderSearchFilter({
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 {/* Date Range Filter */}
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>Khoảng thời gian</label>
+                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+                    Khoảng thời gian
+                  </label>
                   <div className='flex items-center gap-2'>
                     <div className='flex-1'>
                       <input
@@ -310,7 +313,9 @@ export default function OrderSearchFilter({
                   <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>Khoảng giá</label>
                   <div className='flex items-center gap-2'>
                     <div className='flex-1 relative'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>₫</span>
+                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>
+                        ₫
+                      </span>
                       <input
                         type='number'
                         value={priceMin}
@@ -323,7 +328,9 @@ export default function OrderSearchFilter({
                     </div>
                     <span className='text-gray-400 dark:text-gray-500'>-</span>
                     <div className='flex-1 relative'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>₫</span>
+                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>
+                        ₫
+                      </span>
                       <input
                         type='number'
                         value={priceMax}
@@ -494,4 +501,3 @@ export default function OrderSearchFilter({
     </div>
   )
 }
-

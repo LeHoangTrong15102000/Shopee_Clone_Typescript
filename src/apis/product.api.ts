@@ -182,7 +182,13 @@ const mockSearchSuggestions: SearchSuggestionsResponse = {
   ]
 }
 
-const mockSearchHistory: string[] = ['áo thun nam', 'tai nghe bluetooth', 'balo laptop', 'kem chống nắng', 'giày thể thao']
+const mockSearchHistory: string[] = [
+  'áo thun nam',
+  'tai nghe bluetooth',
+  'balo laptop',
+  'kem chống nắng',
+  'giày thể thao'
+]
 
 const productApi = {
   getProducts: async (params: ProductListConfig, options?: ApiOptions) => {

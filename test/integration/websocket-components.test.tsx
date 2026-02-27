@@ -205,49 +205,48 @@ describe('WebSocket UI Components', () => {
 
   describe('OrderStatusTracker', () => {
     test('renders all 5 order steps', () => {
-      render(<OrderStatusTracker currentStatus='pending' lastUpdate={null} isSubscribed={false} />)
-      expect(screen.getByText('Chờ xác nhận')).toBeInTheDocument()
-      expect(screen.getByText('Đã xác nhận')).toBeInTheDocument()
-      expect(screen.getByText('Đang xử lý')).toBeInTheDocument()
-      expect(screen.getByText('Đang giao')).toBeInTheDocument()
-      expect(screen.getByText('Đã giao')).toBeInTheDocument()
+      render(<OrderStatusTracker currentStatus='pending' isSubscribed={false} />)
+      expect(screen.getByText('Đơn Hàng Đã Đặt')).toBeInTheDocument()
+      expect(screen.getByText('Đã Xác Nhận Thông Tin Thanh Toán')).toBeInTheDocument()
+      expect(screen.getByText('Vận Chuyển')).toBeInTheDocument()
+      expect(screen.getByText('Chờ Giao Hàng')).toBeInTheDocument()
+      expect(screen.getByText('Đánh Giá')).toBeInTheDocument()
     })
 
     test('shows live tracking indicator when subscribed', () => {
-      render(<OrderStatusTracker currentStatus='pending' lastUpdate={null} isSubscribed={true} />)
+      render(<OrderStatusTracker currentStatus='pending' isSubscribed={true} />)
       expect(screen.getByText('Đang theo dõi trực tiếp')).toBeInTheDocument()
     })
 
     test('does not show live tracking when not subscribed', () => {
-      render(<OrderStatusTracker currentStatus='pending' lastUpdate={null} isSubscribed={false} />)
+      render(<OrderStatusTracker currentStatus='pending' isSubscribed={false} />)
       expect(screen.queryByText('Đang theo dõi trực tiếp')).not.toBeInTheDocument()
     })
 
     test('shows cancelled status message', () => {
-      render(<OrderStatusTracker currentStatus='cancelled' lastUpdate={null} isSubscribed={false} />)
+      render(<OrderStatusTracker currentStatus='cancelled' isSubscribed={false} />)
       expect(screen.getByText(/Đơn hàng đã bị hủy/)).toBeInTheDocument()
     })
 
     test('shows returned status message', () => {
-      render(<OrderStatusTracker currentStatus='returned' lastUpdate={null} isSubscribed={false} />)
+      render(<OrderStatusTracker currentStatus='returned' isSubscribed={false} />)
       expect(screen.getByText(/Đơn hàng đã được trả lại/)).toBeInTheDocument()
     })
 
     test('hides step progress for cancelled status', () => {
-      render(<OrderStatusTracker currentStatus='cancelled' lastUpdate={null} isSubscribed={false} />)
+      render(<OrderStatusTracker currentStatus='cancelled' isSubscribed={false} />)
       // Steps should not be visible for special statuses
-      expect(screen.queryByText('Chờ xác nhận')).not.toBeInTheDocument()
+      expect(screen.queryByText('Đơn Hàng Đã Đặt')).not.toBeInTheDocument()
     })
 
-    test('shows last update timestamp', () => {
-      // Use a recent timestamp so it shows "Vừa cập nhật"
-      const recentTime = new Date().toISOString()
-      render(<OrderStatusTracker currentStatus='confirmed' lastUpdate={recentTime} isSubscribed={false} />)
-      expect(screen.getByText(/Cập nhật/)).toBeInTheDocument()
+    test('shows step timestamp for completed steps', () => {
+      const timestamps = { pending: new Date().toISOString() }
+      render(<OrderStatusTracker currentStatus='confirmed' isSubscribed={false} stepTimestamps={timestamps} />)
+      expect(screen.getByText(/Vừa cập nhật/)).toBeInTheDocument()
     })
 
     test('renders with null currentStatus', () => {
-      const { container } = render(<OrderStatusTracker currentStatus={null} lastUpdate={null} isSubscribed={false} />)
+      const { container } = render(<OrderStatusTracker currentStatus={null} isSubscribed={false} />)
       expect(container.firstChild).toBeTruthy()
     })
   })

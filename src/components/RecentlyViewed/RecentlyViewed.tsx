@@ -21,7 +21,10 @@ function RecentlyViewed({ products, maxItems = 10, className = '', onRemove, onC
   }
 
   return (
-    <section className={`bg-white dark:bg-slate-800 p-4 rounded-sm shadow ${className}`} aria-label='Sản phẩm đã xem gần đây'>
+    <section
+      className={`bg-white dark:bg-slate-800 p-4 rounded-sm shadow ${className}`}
+      aria-label='Sản phẩm đã xem gần đây'
+    >
       <div className='flex items-center justify-between mb-4'>
         <h2 className='text-gray-500 dark:text-gray-400 uppercase text-sm font-medium'>Sản phẩm đã xem gần đây</h2>
         {onClearAll && displayProducts.length > 0 && (
@@ -87,13 +90,7 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
             opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70'
           aria-label={`Xóa sản phẩm ${product.name} khỏi danh sách đã xem`}
         >
-          <svg
-            className='w-3 h-3 text-white'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-            aria-hidden='true'
-          >
+          <svg className='w-3 h-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>
@@ -117,9 +114,7 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
             <span className='text-[#ee4d2d] text-sm font-medium'>₫{formatCurrency(product.price)}</span>
           </div>
           {product.price_before_discount > product.price && (
-            <span className='text-xs text-gray-400 line-through'>
-              ₫{formatCurrency(product.price_before_discount)}
-            </span>
+            <span className='text-xs text-gray-400 line-through'>₫{formatCurrency(product.price_before_discount)}</span>
           )}
           <div className='mt-1 flex items-center gap-1'>
             <ProductRating
@@ -136,4 +131,3 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
 })
 
 export default memo(RecentlyViewed)
-

@@ -109,4 +109,3 @@ export default function WishlistPriceAlert({ productIds, onPriceChange }: Wishli
   // This component doesn't render any visible UI
   return null
 }
-

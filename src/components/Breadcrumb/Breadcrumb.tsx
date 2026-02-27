@@ -31,10 +31,7 @@ const Breadcrumb = ({ items, className = '' }: BreadcrumbProps) => {
   return (
     <>
       {/* JSON-LD Structured Data for SEO */}
-      <script
-        type='application/ld+json'
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
       <motion.nav
         aria-label='Breadcrumb'
@@ -63,10 +60,7 @@ const Breadcrumb = ({ items, className = '' }: BreadcrumbProps) => {
                   </span>
                 ) : (
                   // Link item
-                  <Link
-                    to={item.to}
-                    className='text-gray-500 dark:text-gray-400 hover:text-orange transition-colors'
-                  >
+                  <Link to={item.to} className='text-gray-500 dark:text-gray-400 hover:text-orange transition-colors'>
                     {item.label}
                   </Link>
                 )}
@@ -80,4 +74,3 @@ const Breadcrumb = ({ items, className = '' }: BreadcrumbProps) => {
 }
 
 export default Breadcrumb
-

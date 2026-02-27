@@ -155,9 +155,11 @@ const ProductListInfinite = () => {
               <div className='bg-white dark:bg-slate-800 rounded-sm p-4 animate-pulse'>
                 <div className='h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mb-4' />
                 <div className='space-y-3'>
-                  {Array(5).fill(0).map((_, i) => (
-                    <div key={i} className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-full' />
-                  ))}
+                  {Array(5)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div key={i} className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-full' />
+                    ))}
                 </div>
               </div>
             </div>
@@ -166,9 +168,11 @@ const ProductListInfinite = () => {
                 <div className='h-8 bg-gray-200 dark:bg-slate-700 rounded w-1/2' />
               </div>
               <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-                {Array(20).fill(0).map((_, index) => (
-                  <ProductSkeleton key={index} />
-                ))}
+                {Array(20)
+                  .fill(0)
+                  .map((_, index) => (
+                    <ProductSkeleton key={index} />
+                  ))}
               </div>
             </div>
           </div>
@@ -183,13 +187,11 @@ const ProductListInfinite = () => {
       <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
         <div className='container'>
           <div className='text-center py-12'>
-            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2'>Có lỗi xảy ra khi tải danh sách sản phẩm</h2>
+            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2'>
+              Có lỗi xảy ra khi tải danh sách sản phẩm
+            </h2>
             <p className='text-gray-500 dark:text-gray-400 mb-4'>Vui lòng thử lại sau</p>
-            <Button
-              variant='primary'
-              onClick={() => window.location.reload()}
-              className='px-6 py-2 rounded-sm'
-            >
+            <Button variant='primary' onClick={() => window.location.reload()} className='px-6 py-2 rounded-sm'>
               Thử lại
             </Button>
           </div>
@@ -258,11 +260,14 @@ const ProductListInfinite = () => {
                     ))}
 
                     {/* Loading more skeletons */}
-                    {isFetchingNextPage && Array(10).fill(0).map((_, index) => (
-                      <motion.div className='col-span-1' key={`skeleton-${index}`} variants={itemVariants}>
-                        <ProductSkeleton />
-                      </motion.div>
-                    ))}
+                    {isFetchingNextPage &&
+                      Array(10)
+                        .fill(0)
+                        .map((_, index) => (
+                          <motion.div className='col-span-1' key={`skeleton-${index}`} variants={itemVariants}>
+                            <ProductSkeleton />
+                          </motion.div>
+                        ))}
                   </motion.div>
                 ) : (
                   <motion.div
@@ -282,18 +287,21 @@ const ProductListInfinite = () => {
                     ))}
 
                     {/* Loading more skeletons for list view */}
-                    {isFetchingNextPage && Array(5).fill(0).map((_, index) => (
-                      <motion.div key={`skeleton-${index}`} variants={itemVariants}>
-                        <div className='flex bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/20 overflow-hidden animate-pulse'>
-                          <div className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex-shrink-0 bg-gray-200 dark:bg-slate-700' />
-                          <div className='flex-1 p-4 space-y-3'>
-                            <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4' />
-                            <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2' />
-                            <div className='h-3 bg-gray-200 dark:bg-slate-700 rounded w-1/4' />
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                    {isFetchingNextPage &&
+                      Array(5)
+                        .fill(0)
+                        .map((_, index) => (
+                          <motion.div key={`skeleton-${index}`} variants={itemVariants}>
+                            <div className='flex bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/20 overflow-hidden animate-pulse'>
+                              <div className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex-shrink-0 bg-gray-200 dark:bg-slate-700' />
+                              <div className='flex-1 p-4 space-y-3'>
+                                <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4' />
+                                <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2' />
+                                <div className='h-3 bg-gray-200 dark:bg-slate-700 rounded w-1/4' />
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -310,7 +318,9 @@ const ProductListInfinite = () => {
                   </div>
                 )}
                 {!hasNextPage && allProducts.length > 0 && (
-                  <p className='text-gray-500 dark:text-gray-400 py-4'>Đã hiển thị tất cả {allProducts.length} sản phẩm</p>
+                  <p className='text-gray-500 dark:text-gray-400 py-4'>
+                    Đã hiển thị tất cả {allProducts.length} sản phẩm
+                  </p>
                 )}
               </div>
             </div>
@@ -318,8 +328,9 @@ const ProductListInfinite = () => {
         )}
 
         {/* Empty state - Enhanced with SearchNoResults when there's a search query */}
-        {allProducts.length === 0 && !isLoading && (
-          filters.name ? (
+        {allProducts.length === 0 &&
+          !isLoading &&
+          (filters.name ? (
             <SearchNoResults
               searchTerm={filters.name}
               onPopularSearch={(term) => {
@@ -330,20 +341,23 @@ const ProductListInfinite = () => {
             <div className='text-center py-16'>
               <div className='mx-auto w-24 h-24 mb-4'>
                 <svg className='w-full h-full text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1}
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={1}
                     d='M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z'
                   />
                 </svg>
               </div>
-              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>Không tìm thấy sản phẩm nào</h3>
+              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>
+                Không tìm thấy sản phẩm nào
+              </h3>
               <p className='text-gray-500 dark:text-gray-400'>Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn</p>
             </div>
-          )
-        )}
+          ))}
       </div>
     </div>
   )
 }
 
 export default ProductListInfinite
-

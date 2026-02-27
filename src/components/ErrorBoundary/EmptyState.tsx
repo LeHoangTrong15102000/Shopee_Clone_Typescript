@@ -54,13 +54,7 @@ const sparklePositions = [
   { x: 35, y: -5, delay: 0.8 }
 ]
 
-export default function EmptyState({
-  icon,
-  title,
-  description,
-  action,
-  className = ''
-}: EmptyStateProps) {
+export default function EmptyState({ icon, title, description, action, className = '' }: EmptyStateProps) {
   const reducedMotion = useReducedMotion()
 
   if (reducedMotion) {
@@ -162,7 +156,13 @@ export default function EmptyState({
 export const EmptyCart = ({ onShopNow }: { onShopNow?: () => void }) => (
   <EmptyState
     icon={
-      <svg className='h-12 w-12 text-gray-300 dark:text-gray-500' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+      <svg
+        className='h-12 w-12 text-gray-300 dark:text-gray-500'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+        strokeWidth={1.5}
+      >
         <path
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -179,16 +179,22 @@ export const EmptyCart = ({ onShopNow }: { onShopNow?: () => void }) => (
 export const EmptySearch = ({ searchTerm, onClear }: { searchTerm?: string; onClear?: () => void }) => (
   <EmptyState
     icon={
-      <svg className='h-12 w-12 text-gray-300 dark:text-gray-500' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-        />
+      <svg
+        className='h-12 w-12 text-gray-300 dark:text-gray-500'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+        strokeWidth={1.5}
+      >
+        <path strokeLinecap='round' strokeLinejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
       </svg>
     }
     title='Không tìm thấy kết quả'
-    description={searchTerm ? `Không có kết quả nào cho "${searchTerm}". Hãy thử từ khóa khác.` : 'Không có kết quả nào phù hợp với tìm kiếm của bạn.'}
+    description={
+      searchTerm
+        ? `Không có kết quả nào cho "${searchTerm}". Hãy thử từ khóa khác.`
+        : 'Không có kết quả nào phù hợp với tìm kiếm của bạn.'
+    }
     action={onClear ? { label: 'Xóa bộ lọc', onClick: onClear } : undefined}
   />
 )
@@ -196,7 +202,13 @@ export const EmptySearch = ({ searchTerm, onClear }: { searchTerm?: string; onCl
 export const EmptyWishlist = ({ onExplore }: { onExplore?: () => void }) => (
   <EmptyState
     icon={
-      <svg className='h-12 w-12 text-gray-300 dark:text-gray-500' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+      <svg
+        className='h-12 w-12 text-gray-300 dark:text-gray-500'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+        strokeWidth={1.5}
+      >
         <path
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -213,7 +225,13 @@ export const EmptyWishlist = ({ onExplore }: { onExplore?: () => void }) => (
 export const EmptyOrders = ({ onShopNow }: { onShopNow?: () => void }) => (
   <EmptyState
     icon={
-      <svg className='h-12 w-12 text-gray-300 dark:text-gray-500' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+      <svg
+        className='h-12 w-12 text-gray-300 dark:text-gray-500'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+        strokeWidth={1.5}
+      >
         <path
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -226,4 +244,3 @@ export const EmptyOrders = ({ onShopNow }: { onShopNow?: () => void }) => (
     action={onShopNow ? { label: 'Mua sắm ngay', onClick: onShopNow } : undefined}
   />
 )
-

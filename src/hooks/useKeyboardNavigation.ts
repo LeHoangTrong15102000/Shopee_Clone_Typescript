@@ -75,4 +75,3 @@ export const useFocusTrap = (containerRef: React.RefObject<HTMLElement>, isActiv
     }
   }, [containerRef, isActive])
 }
-

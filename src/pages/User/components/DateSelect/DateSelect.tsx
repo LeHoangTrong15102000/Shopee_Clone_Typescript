@@ -45,7 +45,9 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
 
   return (
     <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-      <div className='text-[rgba(85,85,85, .6)] dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>Ngày sinh</div>
+      <div className='text-[rgba(85,85,85, .6)] dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+        Ngày sinh
+      </div>
       <div className='sm:w-[70%] sm:pl-5'>
         <div className='flex flex-col gap-2 sm:flex-row sm:justify-between'>
           <select

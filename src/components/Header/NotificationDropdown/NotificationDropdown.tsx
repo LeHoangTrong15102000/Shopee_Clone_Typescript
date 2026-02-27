@@ -39,7 +39,12 @@ const NotificationDropdown = () => {
           ))
         ) : (
           <div className='flex flex-col items-center justify-center py-8 px-4'>
-            <svg className='w-12 h-12 text-gray-300 dark:text-gray-600 mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-12 h-12 text-gray-300 dark:text-gray-600 mb-2'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -58,7 +63,10 @@ const NotificationDropdown = () => {
           <Link to={path.notifications} className='text-sm text-orange hover:text-[#d73527]'>
             Xem tất cả thông báo
           </Link>
-          <button onClick={handleClearAll} className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'>
+          <button
+            onClick={handleClearAll}
+            className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+          >
             Đánh dấu đã đọc tất cả
           </button>
         </div>

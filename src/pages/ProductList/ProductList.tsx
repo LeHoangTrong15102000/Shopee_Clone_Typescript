@@ -142,13 +142,11 @@ const ProductList = () => {
       <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
         <div className='container'>
           <div className='text-center py-12'>
-            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>Có lỗi xảy ra khi tải danh sách sản phẩm</h2>
+            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+              Có lỗi xảy ra khi tải danh sách sản phẩm
+            </h2>
             <p className='text-gray-500 dark:text-gray-400 mb-4'>Vui lòng thử lại sau</p>
-            <Button
-              variant='primary'
-              onClick={() => window.location.reload()}
-              className='px-6 py-2 rounded-sm'
-            >
+            <Button variant='primary' onClick={() => window.location.reload()} className='px-6 py-2 rounded-sm'>
               Thử lại
             </Button>
           </div>
@@ -224,7 +222,11 @@ const ProductList = () => {
                   {/* Badge hiển thị số filter đang active */}
                   {(filters.category || filters.price_min || filters.price_max || filters.rating_filter) && (
                     <span className='ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs text-white'>
-                      {[filters.category, filters.price_min || filters.price_max, filters.rating_filter].filter(Boolean).length}
+                      {
+                        [filters.category, filters.price_min || filters.price_max, filters.rating_filter].filter(
+                          Boolean
+                        ).length
+                      }
                     </span>
                   )}
                 </Button>
@@ -248,7 +250,10 @@ const ProductList = () => {
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (
-                      <div className='col-span-1 transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50' key={product._id}>
+                      <div
+                        className='col-span-1 transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50'
+                        key={product._id}
+                      >
                         <Product product={product} />
                       </div>
                     ))}
@@ -265,7 +270,10 @@ const ProductList = () => {
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (
-                      <div className='transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50' key={product._id}>
+                      <div
+                        className='transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50'
+                        key={product._id}
+                      >
                         <ProductListItem product={product} />
                       </div>
                     ))}
@@ -285,8 +293,10 @@ const ProductList = () => {
         />
 
         {/* Empty state - Enhanced with SearchNoResults when there's a search query */}
-        {products.length === 0 && !isLoading && !isFetching && (
-          filters.name ? (
+        {products.length === 0 &&
+          !isLoading &&
+          !isFetching &&
+          (filters.name ? (
             <SearchNoResults
               searchTerm={filters.name}
               onPopularSearch={(term) => {
@@ -296,7 +306,12 @@ const ProductList = () => {
           ) : (
             <div className='text-center py-16'>
               <div className='mx-auto w-24 h-24 mb-4'>
-                <svg className='w-full h-full text-gray-300 dark:text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <svg
+                  className='w-full h-full text-gray-300 dark:text-gray-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
                   <path
                     strokeLinecap='round'
                     strokeLinejoin='round'
@@ -305,8 +320,12 @@ const ProductList = () => {
                   />
                 </svg>
               </div>
-              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>Không tìm thấy sản phẩm nào</h3>
-              <p className='text-gray-500 dark:text-gray-400 mb-6'>Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn</p>
+              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>
+                Không tìm thấy sản phẩm nào
+              </h3>
+              <p className='text-gray-500 dark:text-gray-400 mb-6'>
+                Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn
+              </p>
               <Button
                 variant='primary'
                 onClick={() => {
@@ -320,8 +339,7 @@ const ProductList = () => {
                 Xem tất cả sản phẩm
               </Button>
             </div>
-          )
-        )}
+          ))}
       </div>
     </div>
   )

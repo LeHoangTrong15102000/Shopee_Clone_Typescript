@@ -117,4 +117,3 @@ export const ProductList: StoryObj = {
     layout: 'fullscreen'
   }
 }
-

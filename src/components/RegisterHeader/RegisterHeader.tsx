@@ -15,7 +15,9 @@ const RegisterHeader = () => {
               </g>
             </svg>
           </Link>
-          <div className='ml-2 text-lg sm:ml-3 sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100'>{isRegister ? 'Đăng ký' : 'Đăng nhập'}</div>
+          <div className='ml-2 text-lg sm:ml-3 sm:text-xl lg:text-2xl text-gray-900 dark:text-gray-100'>
+            {isRegister ? 'Đăng ký' : 'Đăng nhập'}
+          </div>
         </nav>
         <Link to='/' className='text-xs sm:text-[15px] text-[#ee4d2d] dark:text-orange-400'>
           Bạn cần giúp đỡ?

@@ -66,7 +66,10 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
         {/* Header */}
         <div className='flex items-center justify-between p-6 border-b dark:border-slate-700'>
           <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200'>Đánh Giá Sản Phẩm</h2>
-          <button onClick={onClose} className='text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl font-bold'>
+          <button
+            onClick={onClose}
+            className='text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl font-bold'
+          >
             ×
           </button>
         </div>

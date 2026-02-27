@@ -58,9 +58,9 @@ const CartSummaryBar = ({
         </Button>
       </div>
 
-      <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
+      <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center md:flex-row md:items-center gap-4'>
         <div className='flex flex-col justify-end'>
-          <div className='flex items-center sm:justify-end'>
+          <div className='flex items-center flex-wrap sm:justify-end md:justify-end'>
             <div className='text-gray-700 dark:text-gray-200'>
               Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
             </div>
@@ -90,21 +90,15 @@ const CartSummaryBar = ({
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Voucher giảm giá</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Giảm giá sản phẩm</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Tiết kiệm</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <hr className='border-gray-200 dark:border-slate-700 my-2' />
                       <div className='flex justify-between text-sm'>
@@ -149,7 +143,7 @@ const CartSummaryBar = ({
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center text-sm sm:justify-end'>
+          <div className='flex items-center text-sm sm:justify-end md:justify-end'>
             <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
             <motion.div
               className='ml-7 text-[#ee4d2d] relative overflow-hidden'
@@ -173,20 +167,24 @@ const CartSummaryBar = ({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.1 }}
-          animate={checkedPurchaseCount > 0 ? {
-            boxShadow: [
-              '0 0 0 0 rgba(239, 68, 68, 0)',
-              '0 0 0 6px rgba(239, 68, 68, 0.15)',
-              '0 0 0 0 rgba(239, 68, 68, 0)'
-            ]
-          } : {}}
+          animate={
+            checkedPurchaseCount > 0
+              ? {
+                  boxShadow: [
+                    '0 0 0 0 rgba(239, 68, 68, 0)',
+                    '0 0 0 6px rgba(239, 68, 68, 0.15)',
+                    '0 0 0 0 rgba(239, 68, 68, 0)'
+                  ]
+                }
+              : {}
+          }
           style={{ borderRadius: '4px' }}
         >
           <Button
             onClick={handleBuyPurchases}
             disabled={checkedPurchaseCount === 0}
             type='button'
-            className='mt-5 flex h-10 w-full sm:w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-4 sm:mt-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+            className='mt-5 flex h-10 w-full sm:w-52 md:w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-0 sm:mt-0 md:ml-0 md:mt-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
           >
             Thanh toán ({checkedPurchaseCount})
           </Button>
@@ -197,4 +195,3 @@ const CartSummaryBar = ({
 }
 
 export default CartSummaryBar
-

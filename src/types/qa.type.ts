@@ -34,4 +34,3 @@ export interface QAListConfig {
   limit?: number | string
   sort_by?: 'newest' | 'most_liked' | 'most_answered'
 }
-

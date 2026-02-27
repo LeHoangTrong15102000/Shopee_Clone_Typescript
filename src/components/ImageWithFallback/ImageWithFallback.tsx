@@ -34,13 +34,6 @@ export default function ImageWithFallback({
   }, [hasError, currentSrc, fallbackSrc, src, onLoadError])
 
   return (
-    <img
-      src={currentSrc || fallbackSrc}
-      alt={alt}
-      onError={handleError}
-      className={classNames(className)}
-      {...props}
-    />
+    <img src={currentSrc || fallbackSrc} alt={alt} onError={handleError} className={classNames(className)} {...props} />
   )
 }
-

@@ -22,7 +22,12 @@ const TIME_RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
 const TREND_CONFIG = {
   up: { color: 'text-red-500', bgColor: 'bg-red-50 dark:bg-red-900/30', icon: '↑', label: 'Tăng' },
   down: { color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/30', icon: '↓', label: 'Giảm' },
-  stable: { color: 'text-gray-500 dark:text-gray-400', bgColor: 'bg-gray-50 dark:bg-slate-700', icon: '→', label: 'Ổn định' }
+  stable: {
+    color: 'text-gray-500 dark:text-gray-400',
+    bgColor: 'bg-gray-50 dark:bg-slate-700',
+    icon: '→',
+    label: 'Ổn định'
+  }
 }
 
 const CHART_DESCRIPTION_ID = 'price-history-chart-description'
@@ -116,7 +121,9 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
 
   if (isLoading) {
     return (
-      <div className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}>
+      <div
+        className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}
+      >
         <div className='animate-pulse'>
           <div className='mb-4 h-6 w-32 rounded bg-gray-200 dark:bg-slate-700'></div>
           <div className='h-40 rounded bg-gray-200 dark:bg-slate-700'></div>
@@ -126,7 +133,9 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
   }
 
   return (
-    <div className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}>
+    <div
+      className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}
+    >
       <div className='mb-4 flex items-center justify-between'>
         <h3 className='text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200'>Lịch sử giá</h3>
         <div className='flex gap-1' role='group' aria-label='Chọn khoảng thời gian'>
@@ -174,7 +183,8 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
           {chartData && (
             <div className='relative mb-4'>
               <p id={CHART_DESCRIPTION_ID} className='sr-only'>
-                Biểu đồ lịch sử giá trong {selectedDays} ngày qua. Giá thấp nhất: {formatCurrency(chartData.minPrice)}₫, giá cao nhất: {formatCurrency(chartData.maxPrice)}₫
+                Biểu đồ lịch sử giá trong {selectedDays} ngày qua. Giá thấp nhất: {formatCurrency(chartData.minPrice)}₫,
+                giá cao nhất: {formatCurrency(chartData.maxPrice)}₫
               </p>
               <svg
                 viewBox='0 0 100 100'
@@ -270,7 +280,9 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     aria-describedby='target-price-description'
                     className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
                   />
-                  <span className='text-sm text-gray-500 dark:text-gray-400' aria-hidden='true'>₫</span>
+                  <span className='text-sm text-gray-500 dark:text-gray-400' aria-hidden='true'>
+                    ₫
+                  </span>
                 </div>
                 <div className='flex gap-2'>
                   <button
@@ -291,7 +303,8 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                   </button>
                 </div>
                 <p id='target-price-description' className='text-xs text-gray-500 dark:text-gray-400'>
-                  Bạn sẽ nhận được thông báo khi giá giảm xuống dưới {targetPrice ? formatCurrency(Number(targetPrice)) : '...'} ₫
+                  Bạn sẽ nhận được thông báo khi giá giảm xuống dưới{' '}
+                  {targetPrice ? formatCurrency(Number(targetPrice)) : '...'} ₫
                 </p>
               </div>
             )}
@@ -326,4 +339,3 @@ const PriceStatCard = memo(({ label, value, highlight = false }: PriceStatCardPr
 PriceStatCard.displayName = 'PriceStatCard'
 
 export default PriceHistoryChart
-

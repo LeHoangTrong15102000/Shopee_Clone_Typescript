@@ -20,11 +20,7 @@ const ProductRating = ({
     return '0%'
   }
   return (
-    <div
-      className='flex items-center'
-      role='img'
-      aria-label={`${rating} out of 5 stars`}
-    >
+    <div className='flex items-center' role='img' aria-label={`${rating} out of 5 stars`}>
       {/* thẻ cha chứa relative để 2 ngôi sao chồng chéo */}
       {Array(5)
         .fill(0)

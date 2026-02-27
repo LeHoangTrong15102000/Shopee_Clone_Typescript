@@ -68,8 +68,8 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
                   </div>
                   <div className='mt-6 flex items-center justify-between text-gray-500 dark:text-gray-400'>
                     <div className='text-xs capitalize'>
-                      {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} thêm
-                      hàng vào giỏ
+                      {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} thêm hàng
+                      vào giỏ
                     </div>
                     <Link
                       to={path.cart}
@@ -82,7 +82,9 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
               ) : (
                 <div className='flex h-[200px] md:h-[250px] w-[280px] md:w-[400px] flex-grow flex-col items-center justify-center p-2'>
                   <img src={noproduct} alt='no purchase' className='h-16 w-16 md:h-24 md:w-24' />
-                  <span className='mt-5 capitalize text-black/80 dark:text-gray-300 text-xs md:text-sm'>Chưa có sản phẩm</span>
+                  <span className='mt-5 capitalize text-black/80 dark:text-gray-300 text-xs md:text-sm'>
+                    Chưa có sản phẩm
+                  </span>
                 </div>
               )}
             </div>
@@ -116,4 +118,3 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
 }
 
 export default CartDropdown
-

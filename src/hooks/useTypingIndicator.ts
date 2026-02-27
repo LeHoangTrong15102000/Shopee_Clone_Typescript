@@ -90,4 +90,3 @@ const useTypingIndicator = (chatId: string | null) => {
 }
 
 export default useTypingIndicator
-

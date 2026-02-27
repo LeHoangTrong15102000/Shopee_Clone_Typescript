@@ -19,9 +19,9 @@ export function useProductComparison() {
   }, [])
 
   const addToCompare = useCallback((product: Product) => {
-    setCompareList(prev => {
+    setCompareList((prev) => {
       if (prev.length >= MAX_COMPARE_ITEMS) return prev
-      if (prev.some(p => p._id === product._id)) return prev
+      if (prev.some((p) => p._id === product._id)) return prev
       const updated = [...prev, product]
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
       return updated
@@ -29,8 +29,8 @@ export function useProductComparison() {
   }, [])
 
   const removeFromCompare = useCallback((productId: string) => {
-    setCompareList(prev => {
-      const updated = prev.filter(p => p._id !== productId)
+    setCompareList((prev) => {
+      const updated = prev.filter((p) => p._id !== productId)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
       return updated
     })
@@ -41,9 +41,12 @@ export function useProductComparison() {
     setCompareList([])
   }, [])
 
-  const isInCompare = useCallback((productId: string) => {
-    return compareList.some(p => p._id === productId)
-  }, [compareList])
+  const isInCompare = useCallback(
+    (productId: string) => {
+      return compareList.some((p) => p._id === productId)
+    },
+    [compareList]
+  )
 
   return {
     compareList,
@@ -54,4 +57,3 @@ export function useProductComparison() {
     canAddMore: compareList.length < MAX_COMPARE_ITEMS
   }
 }
-

@@ -75,7 +75,9 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
   }
 
   const filtersAsStrings = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v != null).map(([k, v]) => [k, String(v)])
+    Object.entries(filters)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
   ) as Record<string, string>
 
   const drawerContent = (
@@ -157,7 +159,10 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                         })}
                       >
                         {isActive && (
-                          <svg viewBox='0 0 4 7' className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'>
+                          <svg
+                            viewBox='0 0 4 7'
+                            className='absolute top-1 left-[-5px] mr-3 h-2 w-2 fill-orange dark:fill-orange-400'
+                          >
                             <polygon points='4 3.5 0 0 0 7' />
                           </svg>
                         )}
@@ -262,4 +267,3 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
 }
 
 export default MobileFilterDrawer
-

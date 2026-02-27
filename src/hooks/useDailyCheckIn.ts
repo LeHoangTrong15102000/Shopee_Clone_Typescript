@@ -56,7 +56,11 @@ export const useDailyCheckIn = () => {
 
         // Check if streak is broken (more than 1 day since last check-in)
         let currentStreak = data.streak.current
-        if (data.streak.lastCheckIn && !areConsecutiveDays(data.streak.lastCheckIn, today) && !isToday(data.streak.lastCheckIn)) {
+        if (
+          data.streak.lastCheckIn &&
+          !areConsecutiveDays(data.streak.lastCheckIn, today) &&
+          !isToday(data.streak.lastCheckIn)
+        ) {
           currentStreak = 0 // Reset streak if broken
         }
 
@@ -146,7 +150,9 @@ export const useDailyCheckIn = () => {
 
   // Get streak milestone progress
   const streakProgress = useMemo(() => {
-    const milestones = Object.keys(DEFAULT_CHECKIN_CONFIG.streakBonuses).map(Number).sort((a, b) => a - b)
+    const milestones = Object.keys(DEFAULT_CHECKIN_CONFIG.streakBonuses)
+      .map(Number)
+      .sort((a, b) => a - b)
     const nextMilestone = milestones.find((m) => m > state.streak.current) || milestones[milestones.length - 1]
     const prevMilestone = milestones.filter((m) => m < state.streak.current).pop() || 0
 
@@ -169,4 +175,3 @@ export const useDailyCheckIn = () => {
 }
 
 export default useDailyCheckIn
-

@@ -194,9 +194,7 @@ const Login = () => {
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex items-center justify-center text-center'>
-                  <span className='mr-1 text-black/25 dark:text-gray-400'>
-                    Bạn mới biết đến Shopee?
-                  </span>
+                  <span className='mr-1 text-black/25 dark:text-gray-400'>Bạn mới biết đến Shopee?</span>
                   <Link to={path.register} className='text-orange dark:text-orange-400'>
                     <span className=''>Đăng ký</span>
                   </Link>

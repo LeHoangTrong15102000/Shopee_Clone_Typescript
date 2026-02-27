@@ -62,12 +62,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
   }
 
   return (
-    <motion.div
-      className='text-center py-12 px-4'
-      variants={containerVariants}
-      initial='hidden'
-      animate='visible'
-    >
+    <motion.div className='text-center py-12 px-4' variants={containerVariants} initial='hidden' animate='visible'>
       {/* Icon */}
       <motion.div className='mx-auto w-24 h-24 mb-6' variants={itemVariants}>
         <svg
@@ -86,10 +81,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
       </motion.div>
 
       {/* Main message */}
-      <motion.h3
-        className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'
-        variants={itemVariants}
-      >
+      <motion.h3 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2' variants={itemVariants}>
         Không tìm thấy kết quả cho '{searchTerm}'
       </motion.h3>
 
@@ -98,20 +90,44 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
         <p className='text-gray-600 dark:text-gray-300 font-medium mb-3'>Bạn có thể thử:</p>
         <ul className='text-left text-gray-500 dark:text-gray-400 space-y-2 mb-6'>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
-            <svg className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
-              <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clipRule='evenodd' />
+            <svg
+              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fillRule='evenodd'
+                d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                clipRule='evenodd'
+              />
             </svg>
             <span>Kiểm tra lỗi chính tả</span>
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
-            <svg className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
-              <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clipRule='evenodd' />
+            <svg
+              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fillRule='evenodd'
+                d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                clipRule='evenodd'
+              />
             </svg>
             <span>Sử dụng từ khóa ngắn hơn</span>
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
-            <svg className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
-              <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clipRule='evenodd' />
+            <svg
+              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fillRule='evenodd'
+                d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                clipRule='evenodd'
+              />
             </svg>
             <span>Sử dụng từ khóa phổ biến hơn</span>
           </motion.li>
@@ -140,4 +156,3 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
 })
 
 export default SearchNoResults
-

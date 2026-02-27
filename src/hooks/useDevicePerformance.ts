@@ -28,4 +28,3 @@ export function useDevicePerformance(): DevicePerformance {
     shouldReduceAnimations: isLowEnd
   }
 }
-

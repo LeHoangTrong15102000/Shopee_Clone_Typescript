@@ -34,4 +34,3 @@ export default function OrderStatusBadge({ status, className, size = 'md' }: Ord
     </span>
   )
 }
-

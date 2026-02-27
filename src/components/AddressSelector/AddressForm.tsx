@@ -62,7 +62,11 @@ const ADDRESS_TYPE_OPTIONS: { value: AddressType; label: string; icon: React.Rea
     label: 'Văn phòng',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
-        <path fillRule='evenodd' d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z' clipRule='evenodd' />
+        <path
+          fillRule='evenodd'
+          d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z'
+          clipRule='evenodd'
+        />
       </svg>
     )
   },
@@ -71,7 +75,11 @@ const ADDRESS_TYPE_OPTIONS: { value: AddressType; label: string; icon: React.Rea
     label: 'Khác',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
-        <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
+        <path
+          fillRule='evenodd'
+          d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
+          clipRule='evenodd'
+        />
       </svg>
     )
   }
@@ -184,9 +192,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
   // Filter street suggestions
   useEffect(() => {
     if (watchedStreet && watchedStreet.length > 0) {
-      const filtered = streetSuggestions.filter((s) =>
-        s.toLowerCase().includes(watchedStreet.toLowerCase())
-      )
+      const filtered = streetSuggestions.filter((s) => s.toLowerCase().includes(watchedStreet.toLowerCase()))
       setFilteredStreetSuggestions(filtered.slice(0, 5))
     } else {
       setFilteredStreetSuggestions(streetSuggestions.slice(0, 5))
@@ -297,19 +303,33 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
       >
         {/* Header with gradient */}
         <div className='relative bg-gradient-to-r from-orange to-orange/80 px-6 py-5'>
-          <div className='absolute inset-0 bg-white/5' style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%)' }} />
+          <div
+            className='absolute inset-0 bg-white/5'
+            style={{
+              backgroundImage:
+                'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%)'
+            }}
+          />
           <div className='relative flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm'>
-                <svg className='h-5 w-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                <svg
+                  className='h-5 w-5 text-white'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                  />
                   <path strokeLinecap='round' strokeLinejoin='round' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
                 </svg>
               </div>
               <div>
-                <h3 className='text-xl font-bold text-white'>
-                  {isEditing ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}
-                </h3>
+                <h3 className='text-xl font-bold text-white'>{isEditing ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}</h3>
                 <p className='text-sm text-white/80'>Điền thông tin giao hàng của bạn</p>
               </div>
             </div>
@@ -436,7 +456,6 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
               )
             })}
           </div>
-
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className='max-h-[60vh] overflow-y-auto px-6 py-5'>
@@ -481,31 +500,33 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                     <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
                       Số điện thoại <span className='text-red-500'>*</span>
                     </label>
-                      <Controller
-                        name='phone'
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type='tel'
-                            placeholder='0901 234 567'
-                            onChange={(e) => {
-                              const formatted = formatPhoneNumber(e.target.value)
-                              field.onChange(e.target.value.replace(/\s/g, ''))
-                              e.target.value = formatted
-                            }}
-                            className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-none ${
-                              errors.phone
-                                ? 'border-red-300 focus:border-red-500'
-                                : touchedFields.phone && !errors.phone
-                                  ? 'border-green-300 focus:border-green-500'
-                                  : 'border-gray-300 dark:border-slate-600 focus:border-orange dark:bg-slate-700 dark:text-gray-100'
-                            }`}
-                          />
-                        )}
-                      />
+                    <Controller
+                      name='phone'
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type='tel'
+                          placeholder='0901 234 567'
+                          onChange={(e) => {
+                            const formatted = formatPhoneNumber(e.target.value)
+                            field.onChange(e.target.value.replace(/\s/g, ''))
+                            e.target.value = formatted
+                          }}
+                          className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-none ${
+                            errors.phone
+                              ? 'border-red-300 focus:border-red-500'
+                              : touchedFields.phone && !errors.phone
+                                ? 'border-green-300 focus:border-green-500'
+                                : 'border-gray-300 dark:border-slate-600 focus:border-orange dark:bg-slate-700 dark:text-gray-100'
+                          }`}
+                        />
+                      )}
+                    />
                     {errors.phone && <p className='mt-1 text-xs text-red-500'>{errors.phone.message}</p>}
-                    <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>Định dạng: 0901234567 hoặc +84901234567</p>
+                    <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
+                      Định dạng: 0901234567 hoặc +84901234567
+                    </p>
                   </div>
                 </div>
               </motion.div>
@@ -537,7 +558,9 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         value={watchedProvinceId || ''}
                         onChange={handleProvinceChange}
                         className={`w-full appearance-none rounded-lg border bg-white dark:bg-slate-700 px-3 py-2.5 pr-10 transition-colors focus:outline-none dark:text-gray-100 ${
-                          errors.provinceId ? 'border-red-300' : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                          errors.provinceId
+                            ? 'border-red-300'
+                            : 'border-gray-300 dark:border-slate-600 focus:border-orange'
                         }`}
                       >
                         <option value=''>Chọn tỉnh/thành</option>
@@ -548,7 +571,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         ))}
                       </select>
                       <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
-                        <svg className='h-5 w-5 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <svg
+                          className='h-5 w-5 text-gray-400 dark:text-gray-500'
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                        >
                           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                         </svg>
                       </div>
@@ -567,12 +595,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         onChange={handleDistrictChange}
                         disabled={!watchedProvinceId || isLoadingDistricts}
                         className={`w-full appearance-none rounded-lg border bg-white dark:bg-slate-700 px-3 py-2.5 pr-10 transition-colors focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-slate-600 dark:text-gray-100 ${
-                          errors.districtId ? 'border-red-300' : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                          errors.districtId
+                            ? 'border-red-300'
+                            : 'border-gray-300 dark:border-slate-600 focus:border-orange'
                         }`}
                       >
-                        <option value=''>
-                          {isLoadingDistricts ? 'Đang tải...' : 'Chọn quận/huyện'}
-                        </option>
+                        <option value=''>{isLoadingDistricts ? 'Đang tải...' : 'Chọn quận/huyện'}</option>
                         {districts.map((district) => (
                           <option key={district.id} value={district.id}>
                             {district.name}
@@ -582,11 +610,27 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
                         {isLoadingDistricts ? (
                           <svg className='h-5 w-5 animate-spin text-orange' fill='none' viewBox='0 0 24 24'>
-                            <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-                            <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' />
+                            <circle
+                              className='opacity-25'
+                              cx='12'
+                              cy='12'
+                              r='10'
+                              stroke='currentColor'
+                              strokeWidth='4'
+                            />
+                            <path
+                              className='opacity-75'
+                              fill='currentColor'
+                              d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z'
+                            />
                           </svg>
                         ) : (
-                          <svg className='h-5 w-5 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                          <svg
+                            className='h-5 w-5 text-gray-400 dark:text-gray-500'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
                             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                           </svg>
                         )}
@@ -609,9 +653,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                           errors.wardId ? 'border-red-300' : 'border-gray-300 dark:border-slate-600 focus:border-orange'
                         }`}
                       >
-                        <option value=''>
-                          {isLoadingWards ? 'Đang tải...' : 'Chọn phường/xã'}
-                        </option>
+                        <option value=''>{isLoadingWards ? 'Đang tải...' : 'Chọn phường/xã'}</option>
                         {wards.map((ward) => (
                           <option key={ward.id} value={ward.id}>
                             {ward.name}
@@ -621,11 +663,27 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
                         {isLoadingWards ? (
                           <svg className='h-5 w-5 animate-spin text-orange' fill='none' viewBox='0 0 24 24'>
-                            <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-                            <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' />
+                            <circle
+                              className='opacity-25'
+                              cx='12'
+                              cy='12'
+                              r='10'
+                              stroke='currentColor'
+                              strokeWidth='4'
+                            />
+                            <path
+                              className='opacity-75'
+                              fill='currentColor'
+                              d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z'
+                            />
                           </svg>
                         ) : (
-                          <svg className='h-5 w-5 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                          <svg
+                            className='h-5 w-5 text-gray-400 dark:text-gray-500'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
                             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                           </svg>
                         )}
@@ -644,7 +702,6 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                 <input type='hidden' {...register('wardId')} />
               </motion.div>
             )}
-
 
             {/* Step 3: Street Address & Details */}
             {currentStep === 3 && (
@@ -692,8 +749,18 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                               onClick={() => handleStreetSelect(suggestion)}
                               className='flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-orange/5 dark:hover:bg-orange/10 dark:text-gray-200'
                             >
-                              <svg className='h-4 w-4 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                              <svg
+                                className='h-4 w-4 text-gray-400 dark:text-gray-500'
+                                fill='none'
+                                stroke='currentColor'
+                                viewBox='0 0 24 24'
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  strokeWidth={2}
+                                  d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                                />
                               </svg>
                               {suggestion}
                             </button>
@@ -714,7 +781,11 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                   >
                     <div className='flex items-start gap-2'>
                       <svg className='mt-0.5 h-5 w-5 flex-shrink-0 text-orange' fill='currentColor' viewBox='0 0 20 20'>
-                        <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
+                        <path
+                          fillRule='evenodd'
+                          d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
+                          clipRule='evenodd'
+                        />
                       </svg>
                       <div>
                         <p className='text-xs font-medium text-gray-500 dark:text-gray-400'>Địa chỉ đầy đủ</p>
@@ -726,7 +797,9 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
 
                 {/* Address Type Selection */}
                 <div>
-                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Loại địa chỉ</label>
+                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+                    Loại địa chỉ
+                  </label>
                   <div className='flex flex-wrap gap-2'>
                     {ADDRESS_TYPE_OPTIONS.map((option) => (
                       <button
@@ -755,7 +828,9 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>Nhãn tùy chỉnh</label>
+                      <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+                        Nhãn tùy chỉnh
+                      </label>
                       <Input
                         type='text'
                         placeholder='VD: Nhà bà ngoại, Nhà bạn...'
@@ -778,8 +853,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                     className='h-5 w-5 rounded border-gray-300 dark:border-slate-500 text-orange focus:ring-orange dark:bg-slate-700'
                   />
                   <label htmlFor='isDefault' className='flex-1'>
-                    <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>Đặt làm địa chỉ mặc định</span>
-                    <span className='text-xs text-gray-500 dark:text-gray-400'>Địa chỉ này sẽ được chọn tự động khi thanh toán</span>
+                    <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>
+                      Đặt làm địa chỉ mặc định
+                    </span>
+                    <span className='text-xs text-gray-500 dark:text-gray-400'>
+                      Địa chỉ này sẽ được chọn tự động khi thanh toán
+                    </span>
                   </label>
                 </div>
 
@@ -787,8 +866,18 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                 <div className='overflow-hidden rounded-lg border border-dashed border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700'>
                   <div className='flex items-center justify-center p-6'>
                     <div className='text-center'>
-                      <svg className='mx-auto h-12 w-12 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7' />
+                      <svg
+                        className='mx-auto h-12 w-12 text-gray-400 dark:text-gray-500'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={1.5}
+                          d='M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7'
+                        />
                       </svg>
                       <p className='mt-2 text-sm font-medium text-gray-600 dark:text-gray-300'>Xem trên bản đồ</p>
                       <p className='text-xs text-gray-400 dark:text-gray-500'>Tính năng sẽ sớm ra mắt</p>
@@ -798,7 +887,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         disabled
                       >
                         <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={2}
+                            d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                          />
                         </svg>
                         Ghim vị trí
                       </button>

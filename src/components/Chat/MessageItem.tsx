@@ -59,7 +59,9 @@ export default function MessageItem({ message, isSent }: MessageItemProps) {
           <div
             className={classNames(
               'rounded-lg px-3 py-2 text-sm',
-              isSent ? 'rounded-br-sm bg-orange text-white' : 'rounded-bl-sm bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100'
+              isSent
+                ? 'rounded-br-sm bg-orange text-white'
+                : 'rounded-bl-sm bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100'
             )}
           >
             {message.content}
@@ -74,4 +76,3 @@ export default function MessageItem({ message, isSent }: MessageItemProps) {
     </div>
   )
 }
-
