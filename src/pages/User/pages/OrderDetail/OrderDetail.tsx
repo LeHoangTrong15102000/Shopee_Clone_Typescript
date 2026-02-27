@@ -584,52 +584,58 @@ function OrderItems({ order, shouldReduceMotion }: { order: Order; shouldReduceM
                   }
             }
             transition={{ duration: ANIMATION_DURATION.fast }}
-            className='flex gap-4 rounded-xl bg-gray-50/50 dark:bg-slate-700/30 p-3 transition-all duration-200 border border-gray-100 dark:border-slate-600/50 hover:border-orange/20 dark:hover:border-orange-500/20'
+            className='flex gap-3 sm:gap-4 rounded-xl bg-gray-50/50 dark:bg-slate-700/30 p-2.5 sm:p-3 transition-all duration-200 border border-gray-100 dark:border-slate-600/50 hover:border-orange/20 dark:hover:border-orange-500/20'
           >
-            <div className='h-18 w-18 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm'>
+            <div className='h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm'>
               <ImageWithFallback
                 src={item.product?.image || ''}
                 alt={item.product?.name || 'Product'}
                 className='h-full w-full object-cover'
               />
             </div>
-            <div className='flex-1 min-w-0'>
-              <Link
-                to={`/${item.product?.name?.replace(/\s+/g, '-')}-i-${item.product?._id}`}
-                className='font-medium text-gray-900 transition-colors duration-200 hover:text-orange dark:text-gray-100 dark:hover:text-orange-400 line-clamp-2'
-              >
-                {item.product?.name || 'Sản phẩm'}
-              </Link>
-              <p className='mt-1.5 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1'>
-                <svg
-                  className='w-3.5 h-3.5 flex-shrink-0'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  strokeWidth={1.5}
+            <div className='flex-1 min-w-0 flex flex-col justify-between'>
+              <div>
+                <Link
+                  to={`/${item.product?.name?.replace(/\s+/g, '-')}-i-${item.product?._id}`}
+                  className='text-sm sm:text-base font-medium text-gray-900 transition-colors duration-200 hover:text-orange dark:text-gray-100 dark:hover:text-orange-400 line-clamp-2 leading-snug'
                 >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25'
-                  />
-                </svg>
-                x{item.buyCount}
-              </p>
-              <div className='mt-2 flex items-center gap-2'>
-                {item.priceBeforeDiscount > item.price && (
-                  <span className='text-xs text-gray-400 line-through dark:text-gray-500'>
-                    ₫{formatCurrency(item.priceBeforeDiscount)}
-                  </span>
-                )}
-                <span className='font-semibold text-orange dark:text-orange-400'>₫{formatCurrency(item.price)}</span>
+                  {item.product?.name || 'Sản phẩm'}
+                </Link>
+                <p className='mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1'>
+                  <svg
+                    className='w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25'
+                    />
+                  </svg>
+                  x{item.buyCount}
+                </p>
               </div>
-            </div>
-            <div className='text-right flex flex-col justify-center'>
-              <span className='text-xs text-gray-400 dark:text-gray-500'>Thành tiền</span>
-              <span className='font-bold text-orange dark:text-orange-400 text-base'>
-                ₫{formatCurrency(item.price * item.buyCount)}
-              </span>
+              <div className='mt-1.5 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2'>
+                <div className='flex items-center gap-2'>
+                  {item.priceBeforeDiscount > item.price && (
+                    <span className='text-xs text-gray-400 line-through dark:text-gray-500'>
+                      ₫{formatCurrency(item.priceBeforeDiscount)}
+                    </span>
+                  )}
+                  <span className='text-sm sm:text-base font-semibold text-orange dark:text-orange-400'>
+                    ₫{formatCurrency(item.price)}
+                  </span>
+                </div>
+                <div className='flex items-baseline gap-1.5 sm:ml-auto'>
+                  <span className='text-xs text-gray-400 dark:text-gray-500'>Thành tiền:</span>
+                  <span className='font-bold text-orange dark:text-orange-400 text-sm sm:text-base'>
+                    ₫{formatCurrency(item.price * item.buyCount)}
+                  </span>
+                </div>
+              </div>
             </div>
           </motion.div>
         ))}
