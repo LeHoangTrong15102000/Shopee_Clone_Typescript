@@ -117,4 +117,3 @@ export default function StockBadge({ availableStock, requestedQuantity, classNam
 
   return badgeContent
 }
-

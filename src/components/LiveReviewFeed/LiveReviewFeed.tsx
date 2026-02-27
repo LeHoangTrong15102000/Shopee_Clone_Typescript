@@ -16,7 +16,12 @@ const renderStars = (rating: number) => {
   return '★'.repeat(rating) + '☆'.repeat(5 - rating)
 }
 
-export default function LiveReviewFeed({ newReviewCount, latestReview, onViewReviews, className }: LiveReviewFeedProps) {
+export default function LiveReviewFeed({
+  newReviewCount,
+  latestReview,
+  onViewReviews,
+  className
+}: LiveReviewFeedProps) {
   if (newReviewCount <= 0) {
     return null
   }
@@ -36,17 +41,13 @@ export default function LiveReviewFeed({ newReviewCount, latestReview, onViewRev
       <div className='flex-1 min-w-0'>
         {latestReview && (
           <p className='text-gray-700 dark:text-gray-200 truncate'>
-            <span className='text-yellow-500'>{renderStars(latestReview.rating)}</span>
-            {' '}
+            <span className='text-yellow-500'>{renderStars(latestReview.rating)}</span>{' '}
             <span className='font-medium'>{latestReview.name}</span> vừa đánh giá {latestReview.rating} sao
           </p>
         )}
-        <p className='text-[#ee4d2d] font-medium'>
-          {newReviewCount} đánh giá mới
-        </p>
+        <p className='text-[#ee4d2d] font-medium'>{newReviewCount} đánh giá mới</p>
       </div>
       <span className='text-gray-400 dark:text-gray-500 text-xs ml-auto flex-shrink-0'>Nhấn để xem ↓</span>
     </div>
   )
 }
-

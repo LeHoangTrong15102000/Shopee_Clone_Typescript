@@ -22,8 +22,9 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 // type InternalAxiosRequestConfig chỉ xuất hiện ở phiên bản axios 1.2.4
 
 // Sử dụng import.meta.env của Vite thay vì process.env (không hoạt động trong browser)
-const LOGIN_REDIRECT_URL = import.meta.env.VITE_LOGIN_REDIRECT_URL
-  ?? (import.meta.env.DEV ? 'http://localhost:4000/login' : 'https://shop.lehoangtrong.online/login')
+const LOGIN_REDIRECT_URL =
+  import.meta.env.VITE_LOGIN_REDIRECT_URL ??
+  (import.meta.env.DEV ? 'http://localhost:4000/login' : 'https://shop.lehoangtrong.online/login')
 
 interface HttpOptions {
   redirectOnTokenExpiry?: boolean
@@ -132,7 +133,10 @@ export class Http {
           clearLS()
           this.accessToken = ''
           this.refreshToken = ''
-          const errorMessage = error.response?.data?.data?.message ?? error.response?.data.message ?? 'Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!'
+          const errorMessage =
+            error.response?.data?.data?.message ??
+            error.response?.data.message ??
+            'Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!'
           toast.error(errorMessage, { autoClose: 1000 })
           if (this.redirectOnTokenExpiry) {
             setTimeout(() => {

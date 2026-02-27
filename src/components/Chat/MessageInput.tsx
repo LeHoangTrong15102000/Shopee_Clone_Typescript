@@ -98,4 +98,3 @@ export default function MessageInput({ onSendMessage, onTypingStart, onTypingSto
     </div>
   )
 }
-

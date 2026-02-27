@@ -2,7 +2,15 @@ export interface Notification {
   _id: string
   title: string
   content: string
-  type: 'promotion' | 'order' | 'system' | 'other' | 'new_message' | 'order_update' | 'flash_sale_alert' | 'flash_sale_soldout'
+  type:
+    | 'promotion'
+    | 'order'
+    | 'system'
+    | 'other'
+    | 'new_message'
+    | 'order_update'
+    | 'flash_sale_alert'
+    | 'flash_sale_soldout'
   isRead: boolean
   link?: string
   createdAt: string

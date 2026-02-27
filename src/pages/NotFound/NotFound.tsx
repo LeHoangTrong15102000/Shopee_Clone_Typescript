@@ -37,10 +37,7 @@ const NotFound = () => {
       >
         Page Not Found
       </motion.div>
-      <motion.div
-        className='mt-5'
-        variants={reducedMotion ? undefined : staggerItem}
-      >
+      <motion.div className='mt-5' variants={reducedMotion ? undefined : staggerItem}>
         <Link
           to={path.home} // cho redirect về Home
           className='active:text-orange-500 group relative inline-block text-sm font-medium text-orange dark:text-orange-400 focus:outline-none focus:ring'

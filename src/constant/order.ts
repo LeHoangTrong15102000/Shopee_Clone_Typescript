@@ -40,4 +40,3 @@ export const orderStatusFromNumber = (num: number): OrderStatus | undefined => n
 
 /** Convert OrderStatus string to numeric value (for URL) */
 export const orderStatusToNumber = (status: string): number => stringToNumber[status] ?? ordersStatus.all
-

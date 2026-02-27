@@ -114,10 +114,7 @@ const Cart = () => {
   const animatedSavingsPrice = useAnimatedNumber(totalCheckedPurchaseSavingPrice)
 
   // Extract product IDs from cart items for real-time stock monitoring
-  const cartProductIds = useMemo(
-    () => extendedPurchases.map((purchase) => purchase.product._id),
-    [extendedPurchases]
-  )
+  const cartProductIds = useMemo(() => extendedPurchases.map((purchase) => purchase.product._id), [extendedPurchases])
 
   // Handler for real-time stock changes - invalidate queries and show inline alerts
   const handleStockChange = useCallback(
@@ -371,4 +368,3 @@ const Cart = () => {
 }
 
 export default Cart
-

@@ -93,9 +93,15 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
         >
           <h4 className='font-medium text-blue-900 dark:text-blue-300'>Thông tin chuyển khoản</h4>
           <div className='mt-2 space-y-1 text-sm text-blue-800 dark:text-blue-200'>
-            <p>Ngân hàng: <span className='font-medium'>Vietcombank</span></p>
-            <p>Số tài khoản: <span className='font-medium'>1234567890</span></p>
-            <p>Chủ tài khoản: <span className='font-medium'>SHOPEE CLONE</span></p>
+            <p>
+              Ngân hàng: <span className='font-medium'>Vietcombank</span>
+            </p>
+            <p>
+              Số tài khoản: <span className='font-medium'>1234567890</span>
+            </p>
+            <p>
+              Chủ tài khoản: <span className='font-medium'>SHOPEE CLONE</span>
+            </p>
             <p className='mt-2 text-xs text-blue-600 dark:text-blue-400'>
               * Vui lòng chuyển khoản trong vòng 24h sau khi đặt hàng
             </p>
@@ -128,4 +134,3 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
 })
 
 export default PaymentMethodSelector
-

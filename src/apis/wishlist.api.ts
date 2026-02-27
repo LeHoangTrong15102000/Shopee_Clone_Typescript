@@ -193,4 +193,3 @@ const wishlistApi = {
 }
 
 export default wishlistApi
-

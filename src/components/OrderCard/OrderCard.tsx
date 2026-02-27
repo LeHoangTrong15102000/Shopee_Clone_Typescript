@@ -40,7 +40,15 @@ function getStatusDisplay(status: OrderStatus) {
   }
 }
 
-const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTrackable, isTrackingExpanded, onToggleTracking, trackingContent }: OrderCardProps) {
+const OrderCard = memo(function OrderCard({
+  order,
+  onCancel,
+  onReorder,
+  isTrackable,
+  isTrackingExpanded,
+  onToggleTracking,
+  trackingContent
+}: OrderCardProps) {
   const status = getStatusDisplay(order.status as OrderStatus)
   const canCancel = ['pending', 'confirmed'].includes(order.status)
   const canReorder = ['delivered', 'cancelled'].includes(order.status)
@@ -77,16 +85,30 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
       <div className='flex items-center justify-between border-b border-gray-100 dark:border-slate-700 px-4 py-3 bg-gradient-to-r from-gray-50/80 via-white to-gray-50/80 dark:from-slate-800/80 dark:via-slate-800 dark:to-slate-800/80'>
         <div className='flex items-center gap-3'>
           <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-orange/10 dark:bg-orange-900/30'>
-            <svg className='h-4 w-4 text-orange dark:text-orange-400' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+            <svg
+              className='h-4 w-4 text-orange dark:text-orange-400'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+              />
             </svg>
           </div>
           <div>
-            <span className='font-semibold text-sm text-gray-900 dark:text-gray-100'>{order._id.slice(-8).toUpperCase()}</span>
+            <span className='font-semibold text-sm text-gray-900 dark:text-gray-100'>
+              {order._id.slice(-8).toUpperCase()}
+            </span>
             <p className='text-xs text-gray-400 dark:text-gray-500'>{formatDate(order.createdAt)}</p>
           </div>
         </div>
-        <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold border ${status.color} ${status.bgColor} ${status.borderColor}`}>
+        <span
+          className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold border ${status.color} ${status.bgColor} ${status.borderColor}`}
+        >
           {status.label}
         </span>
       </div>
@@ -95,7 +117,10 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
       <div className='p-4'>
         <div className='space-y-3'>
           {order.items.slice(0, 2).map((item, index) => (
-            <div key={index} className='flex gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50/80 dark:hover:bg-slate-700/40'>
+            <div
+              key={index}
+              className='flex gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50/80 dark:hover:bg-slate-700/40'
+            >
               <div className='h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm'>
                 <ImageWithFallback
                   src={item.product?.image || ''}
@@ -110,9 +135,7 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
                 <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>x{item.buyCount}</p>
               </div>
               <div className='text-right'>
-                <p className='text-sm font-semibold text-orange'>
-                  ₫{formatCurrency(item.price * item.buyCount)}
-                </p>
+                <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buyCount)}</p>
               </div>
             </div>
           ))}
@@ -130,7 +153,11 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500'>
             <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' />
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'
+              />
             </svg>
             <span>{order.items.length} sản phẩm</span>
           </div>
@@ -149,7 +176,12 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
                 onClick={() => onToggleTracking(order._id)}
                 className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-500 transition-all'
               >
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='h-3.5 w-3.5 text-orange dark:text-orange-400'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 24 24'
+                  fill='currentColor'
+                  className='h-3.5 w-3.5 text-orange dark:text-orange-400'
+                >
                   <path d='M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z' />
                   <path d='M8.25 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM15.75 6.75a.75.75 0 00-.75.75v7.5h7.5v-1.5a3 3 0 00-3-3h-.375V7.5a.75.75 0 00-.75-.75h-2.625z' />
                   <path d='M21.75 18h.75a.75.75 0 00.75-.75v-1.5a.75.75 0 00-.75-.75h-.75v3zM19.5 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z' />
@@ -204,9 +236,7 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
               transition={{ duration: 0.3 }}
               className='overflow-hidden'
             >
-              <div className='mt-3 border-t border-gray-100 dark:border-slate-700 pt-3'>
-                {trackingContent}
-              </div>
+              <div className='mt-3 border-t border-gray-100 dark:border-slate-700 pt-3'>{trackingContent}</div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -216,4 +246,3 @@ const OrderCard = memo(function OrderCard({ order, onCancel, onReorder, isTracka
 })
 
 export default OrderCard
-

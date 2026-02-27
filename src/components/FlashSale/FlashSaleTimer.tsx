@@ -101,7 +101,9 @@ const FlashSaleTimer = ({
 
   if (isEnded) {
     return (
-      <div className={`flex items-center space-x-2 text-white bg-gray-500 dark:bg-gray-600 px-3 py-1 rounded ${className}`}>
+      <div
+        className={`flex items-center space-x-2 text-white bg-gray-500 dark:bg-gray-600 px-3 py-1 rounded ${className}`}
+      >
         <span className='text-sm font-medium'>Đã kết thúc</span>
       </div>
     )

@@ -72,4 +72,3 @@ const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
 }
 
 export default UserMenu
-

@@ -33,7 +33,11 @@ export const fadeInRight: Variants = {
 
 export const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: ANIMATION_DURATION.normal, ease: ANIMATION_EASING.easeOut } },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: ANIMATION_DURATION.normal, ease: ANIMATION_EASING.easeOut }
+  },
   exit: { opacity: 0, scale: 0.9, transition: { duration: ANIMATION_DURATION.fast } }
 }
 
@@ -126,4 +130,3 @@ export const sectionEntrance: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.slow, ease: ANIMATION_EASING.easeOut } }
 }
-

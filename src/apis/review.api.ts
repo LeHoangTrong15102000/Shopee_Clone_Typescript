@@ -204,7 +204,8 @@ const reviewApi = {
       const newHelpfulCount = vote === 'helpful' ? currentReview.helpful_count + 1 : currentReview.helpful_count
       return {
         data: {
-          message: vote === 'helpful' ? 'Đánh dấu hữu ích thành công (mock)' : 'Đánh dấu không hữu ích thành công (mock)',
+          message:
+            vote === 'helpful' ? 'Đánh dấu hữu ích thành công (mock)' : 'Đánh dấu không hữu ích thành công (mock)',
           data: { helpful_count: newHelpfulCount, voted: true }
         }
       }

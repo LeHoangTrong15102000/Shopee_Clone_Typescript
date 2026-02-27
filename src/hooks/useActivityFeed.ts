@@ -48,4 +48,3 @@ const useActivityFeed = (productId: string | undefined): UseActivityFeedReturn =
 }
 
 export default useActivityFeed
-

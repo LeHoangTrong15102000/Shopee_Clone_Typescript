@@ -15,9 +15,7 @@ const CartLayout = ({ children, headerTitle }: Props) => {
   return (
     <div className='min-h-screen bg-gray-100 dark:bg-slate-900'>
       <CartHeader title={headerTitle} />
-      <PageTransition>
-        {children}
-      </PageTransition>
+      <PageTransition>{children}</PageTransition>
       <Footer />
       {/* Back to top button */}
       <Suspense fallback={null}>

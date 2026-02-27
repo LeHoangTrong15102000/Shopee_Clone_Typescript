@@ -16,15 +16,17 @@ import { z } from 'zod'
 
 type FormData = Pick<UserSchema, 'password' | 'new_password' | 'confirm_password'>
 
-const changePasswordSchema = baseUserSchema.pick({ password: true, new_password: true, confirm_password: true }).superRefine((data, ctx) => {
-  if (data.new_password && data.confirm_password !== data.new_password) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Nhập lại password không khớp!!',
-      path: ['confirm_password']
-    })
-  }
-})
+const changePasswordSchema = baseUserSchema
+  .pick({ password: true, new_password: true, confirm_password: true })
+  .superRefine((data, ctx) => {
+    if (data.new_password && data.confirm_password !== data.new_password) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Nhập lại password không khớp!!',
+        path: ['confirm_password']
+      })
+    }
+  })
 
 const ChangePassword = () => {
   // Khai báo useForm
@@ -313,7 +315,11 @@ const ChangePassword = () => {
             </div>
             <ul className='space-y-2 text-xs text-gray-600 dark:text-gray-300' aria-label='Danh sách yêu cầu mật khẩu'>
               {passwordRequirements.map((req, index) => (
-                <li key={index} className='flex items-center gap-2' aria-label={`${req.label}: ${req.check ? 'Đã đạt' : 'Chưa đạt'}`}>
+                <li
+                  key={index}
+                  className='flex items-center gap-2'
+                  aria-label={`${req.label}: ${req.check ? 'Đã đạt' : 'Chưa đạt'}`}
+                >
                   {req.check ? (
                     <svg
                       className='h-3.5 w-3.5 text-green-500 dark:text-green-400 flex-shrink-0'

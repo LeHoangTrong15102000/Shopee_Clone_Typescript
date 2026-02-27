@@ -27,11 +27,23 @@ const FollowedSellers = memo(function FollowedSellers({
       <div className={classNames('bg-white dark:bg-slate-800 rounded-lg shadow p-6', className)}>
         <h3 className='text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100 mb-4'>Shop đang theo dõi</h3>
         <div className='text-center py-8'>
-          <svg className='w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' />
+          <svg
+            className='w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={1.5}
+              d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'
+            />
           </svg>
           <p className='text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2'>Bạn chưa theo dõi shop nào</p>
-          <p className='text-sm text-gray-400 dark:text-gray-500'>Theo dõi các shop yêu thích để nhận thông báo về sản phẩm mới</p>
+          <p className='text-sm text-gray-400 dark:text-gray-500'>
+            Theo dõi các shop yêu thích để nhận thông báo về sản phẩm mới
+          </p>
         </div>
       </div>
     )
@@ -45,7 +57,10 @@ const FollowedSellers = memo(function FollowedSellers({
           Shop đang theo dõi <span className='text-sm text-gray-500 dark:text-gray-400'>({followedCount})</span>
         </h3>
         {showClearAll && followedCount > 0 && (
-          <button onClick={clearAllFollowed} className='text-sm text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors'>
+          <button
+            onClick={clearAllFollowed}
+            className='text-sm text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors'
+          >
             Xóa tất cả
           </button>
         )}
@@ -101,9 +116,7 @@ const SellerCard = memo(function SellerCard({ seller }: { seller: FollowedSeller
       <div className='flex-1 min-w-0'>
         <div className='flex items-center gap-2'>
           <h4 className='font-medium text-gray-900 dark:text-gray-100 truncate'>{seller.name}</h4>
-          {seller.is_official && (
-            <span className='px-1.5 py-0.5 bg-orange text-white text-xs rounded'>Mall</span>
-          )}
+          {seller.is_official && <span className='px-1.5 py-0.5 bg-orange text-white text-xs rounded'>Mall</span>}
         </div>
         <div className='flex items-center gap-3 mt-1 text-xs text-gray-500 dark:text-gray-400'>
           {seller.location && <span>{seller.location}</span>}
@@ -128,4 +141,3 @@ const SellerCard = memo(function SellerCard({ seller }: { seller: FollowedSeller
 })
 
 export default FollowedSellers
-

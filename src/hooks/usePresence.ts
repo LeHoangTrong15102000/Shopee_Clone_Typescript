@@ -52,4 +52,3 @@ const usePresence = (userId: string | undefined): UsePresenceReturn => {
 }
 
 export default usePresence
-

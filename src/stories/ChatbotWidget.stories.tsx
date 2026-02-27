@@ -32,4 +32,3 @@ export default meta
 type Story = StoryObj<typeof ChatbotWidget>
 
 export const Default: Story = {}
-

@@ -193,4 +193,3 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
 }
 
 export default SearchBar
-

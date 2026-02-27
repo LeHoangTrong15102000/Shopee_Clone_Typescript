@@ -21,4 +21,3 @@ export interface PriceAlert {
   is_active: boolean
   createdAt: string
 }
-

@@ -148,7 +148,12 @@ const notificationApi = {
   getUnreadCount: async () => {
     try {
       const response = await http.get<any>('/notifications/unread-count')
-      return { data: { message: response.data.message, data: { unreadCount: response.data.data.unread_count ?? response.data.data.unreadCount ?? 0 } } }
+      return {
+        data: {
+          message: response.data.message,
+          data: { unreadCount: response.data.data.unread_count ?? response.data.data.unreadCount ?? 0 }
+        }
+      }
     } catch (error) {
       // Fallback
       console.warn('Unread count API not available, using mock response')

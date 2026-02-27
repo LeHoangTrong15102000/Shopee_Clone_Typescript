@@ -141,7 +141,9 @@ const CartItemList = ({
                         <span className='mr-2 text-gray-500 dark:text-gray-400 line-through'>
                           ₫{formatCurrency(purchase.product.price_before_discount)}
                         </span>
-                        <span className='text-black/90 dark:text-gray-100'>₫{formatCurrency(purchase.product.price)}</span>
+                        <span className='text-black/90 dark:text-gray-100'>
+                          ₫{formatCurrency(purchase.product.price)}
+                        </span>
                       </div>
                     </div>
                     <div className='col-span-1'>
@@ -188,8 +190,19 @@ const CartItemList = ({
                         whileTap={{ scale: 0.95 }}
                         title='Lưu để mua sau'
                       >
-                        <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-4 h-4'>
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z' />
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-4 h-4'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+                          />
                         </svg>
                         Lưu
                       </motion.button>
@@ -267,10 +280,7 @@ const CartItemList = ({
                     </Link>
 
                     <div className='mt-1'>
-                      <StockBadge
-                        availableStock={purchase.product.quantity}
-                        requestedQuantity={purchase.buy_count}
-                      />
+                      <StockBadge availableStock={purchase.product.quantity} requestedQuantity={purchase.buy_count} />
                     </div>
 
                     <AnimatePresence>
@@ -289,9 +299,7 @@ const CartItemList = ({
                       <span className='text-gray-400 dark:text-gray-500 line-through'>
                         ₫{formatCurrency(purchase.product.price_before_discount)}
                       </span>
-                      <span className='text-[#ee4d2d] font-medium'>
-                        ₫{formatCurrency(purchase.product.price)}
-                      </span>
+                      <span className='text-[#ee4d2d] font-medium'>₫{formatCurrency(purchase.product.price)}</span>
                     </div>
 
                     <div className='mt-3 flex items-center gap-2'>
@@ -328,8 +336,19 @@ const CartItemList = ({
                           whileTap={{ scale: 0.9 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-5 h-5'>
-                            <path strokeLinecap='round' strokeLinejoin='round' d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z' />
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='w-5 h-5'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+                            />
                           </svg>
                         </motion.button>
 
@@ -383,4 +402,3 @@ const CartItemList = ({
 }
 
 export default CartItemList
-

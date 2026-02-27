@@ -59,7 +59,9 @@ const ProductInfo = ({
           <div className='mx-4 h-7 w-[1px] bg-gray-300/80 dark:bg-slate-600'></div>
           {/* Reviews */}
           <div className='flex items-center'>
-            <span className='mr-1 border-b border-b-black/90 dark:border-b-gray-300 text-black/90 dark:text-gray-200'>3k</span>
+            <span className='mr-1 border-b border-b-black/90 dark:border-b-gray-300 text-black/90 dark:text-gray-200'>
+              3k
+            </span>
             <span className='text-sm capitalize text-black/60 dark:text-gray-400'>Đánh giá</span>
           </div>
           <div className='mx-4 h-7 w-[1px] bg-gray-300/80 dark:bg-slate-600'></div>
@@ -76,7 +78,9 @@ const ProductInfo = ({
               description={product.description?.slice(0, 150)}
               image={product.image}
             />
-            <button className='text-sm text-black/60 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 transition-colors'>Tố cáo</button>
+            <button className='text-sm text-black/60 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 transition-colors'>
+              Tố cáo
+            </button>
           </div>
         </div>
       </motion.div>
@@ -87,7 +91,10 @@ const ProductInfo = ({
             <div className='flex items-center'>
               <div className='flex min-h-[1.875rem] w-full flex-wrap items-center'>
                 {/* Original Price */}
-                <div className='mr-3 text-sm md:text-base text-[#929292] dark:text-gray-400 line-through' aria-label={`Giá gốc ${formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)} đồng`}>
+                <div
+                  className='mr-3 text-sm md:text-base text-[#929292] dark:text-gray-400 line-through'
+                  aria-label={`Giá gốc ${formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)} đồng`}
+                >
                   ₫{formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)}
                 </div>
                 {/* Live Price Tag */}
@@ -101,7 +108,8 @@ const ProductInfo = ({
                     className='text-xl md:text-[1.875rem]'
                   />
                   <div className='ml-4 rounded bg-orange py-0.5 px-1 text-xs font-semibold uppercase text-white'>
-                    {rateSale(livePrice ?? product?.price, livePriceBeforeDiscount ?? product?.price_before_discount)} giảm
+                    {rateSale(livePrice ?? product?.price, livePriceBeforeDiscount ?? product?.price_before_discount)}{' '}
+                    giảm
                   </div>
                 </div>
               </div>
@@ -115,4 +123,3 @@ const ProductInfo = ({
 }
 
 export default ProductInfo
-

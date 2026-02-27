@@ -40,7 +40,11 @@ const CoinIcon = ({ className = '' }: { className?: string }) => (
   </svg>
 )
 
-export default function LoyaltyPointsCard({ points, nextRewardThreshold = 1000, className = '' }: LoyaltyPointsCardProps) {
+export default function LoyaltyPointsCard({
+  points,
+  nextRewardThreshold = 1000,
+  className = ''
+}: LoyaltyPointsCardProps) {
   const [displayPoints, setDisplayPoints] = useState(points.available_points)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -135,7 +139,9 @@ export default function LoyaltyPointsCard({ points, nextRewardThreshold = 1000, 
       <div className='relative mt-4'>
         <div className='flex items-center justify-between text-xs text-white/90'>
           <span>Tiến độ đến phần thưởng</span>
-          <span className='font-medium'>{pointsToNextReward > 0 ? `Còn ${formatCurrency(pointsToNextReward)} xu` : 'Đủ điều kiện!'}</span>
+          <span className='font-medium'>
+            {pointsToNextReward > 0 ? `Còn ${formatCurrency(pointsToNextReward)} xu` : 'Đủ điều kiện!'}
+          </span>
         </div>
         <div className='mt-2 h-2 overflow-hidden rounded-full bg-white/30'>
           <motion.div
@@ -178,4 +184,3 @@ export default function LoyaltyPointsCard({ points, nextRewardThreshold = 1000, 
     </motion.div>
   )
 }
-

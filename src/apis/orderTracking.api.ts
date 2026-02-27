@@ -120,4 +120,3 @@ const orderTrackingApi = {
 }
 
 export default orderTrackingApi
-

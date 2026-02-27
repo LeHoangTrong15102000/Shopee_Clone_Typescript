@@ -35,4 +35,3 @@ export interface RedeemPointsResponse {
   remaining_points: number
   reward?: PointsReward
 }
-

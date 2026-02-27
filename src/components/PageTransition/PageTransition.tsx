@@ -25,17 +25,10 @@ const PageTransition = ({ children }: Props) => {
   }
 
   return (
-    <motion.div
-      key={location.pathname}
-      variants={variants}
-      initial='initial'
-      animate='animate'
-      exit='exit'
-    >
+    <motion.div key={location.pathname} variants={variants} initial='initial' animate='animate' exit='exit'>
       {children}
     </motion.div>
   )
 }
 
 export default PageTransition
-

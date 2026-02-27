@@ -285,4 +285,3 @@ export const getWardNameById = (provinceId: string, districtId: string, wardId: 
   const district = province?.districts.find((d) => d.id === districtId)
   return district?.wards.find((w) => w.id === wardId)?.name || ''
 }
-

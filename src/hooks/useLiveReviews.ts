@@ -12,7 +12,9 @@ interface UseLiveReviewsReturn {
 const useLiveReviews = (productId: string | undefined): UseLiveReviewsReturn => {
   const { socket, isConnected } = useSocket()
   const [newReviews, setNewReviews] = useState<NewReviewPayload['review'][]>([])
-  const [newComments, setNewComments] = useState<(NewReviewCommentPayload & { comment: NewReviewCommentPayload['comment'] })[]>([])
+  const [newComments, setNewComments] = useState<
+    (NewReviewCommentPayload & { comment: NewReviewCommentPayload['comment'] })[]
+  >([])
   const [likeUpdates, setLikeUpdates] = useState<Map<string, number>>(new Map())
 
   const clearNewReviews = useCallback(() => {
@@ -62,4 +64,3 @@ const useLiveReviews = (productId: string | undefined): UseLiveReviewsReturn => 
 }
 
 export default useLiveReviews
-

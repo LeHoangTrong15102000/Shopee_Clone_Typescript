@@ -68,7 +68,9 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
                 <ShippingIcon type={method.icon} className='h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0' />
                 <span className='text-sm sm:text-base font-medium text-gray-900 dark:text-gray-100'>{method.name}</span>
               </div>
-              <p className='mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 line-clamp-2'>{method.description}</p>
+              <p className='mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 line-clamp-2'>
+                {method.description}
+              </p>
               <p className='mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
                 Thời gian: <span className='font-medium'>{method.estimatedDays}</span>
               </p>
@@ -78,7 +80,12 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
                 transition={{ delay: 0.1 }}
                 className='mt-1 sm:mt-1.5 flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-medium text-green-600 dark:text-green-400'
               >
-                <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <svg
+                  className='h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
                   <path
                     strokeLinecap='round'
                     strokeLinejoin='round'
@@ -101,4 +108,3 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
 })
 
 export default ShippingMethodSelector
-

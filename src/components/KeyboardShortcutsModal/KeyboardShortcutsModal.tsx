@@ -165,7 +165,9 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
             <div className='space-y-6'>
               {Object.entries(groupedShortcuts).map(([category, categoryShortcuts]) => (
                 <div key={category}>
-                  <h3 className='mb-3 text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>{category}</h3>
+                  <h3 className='mb-3 text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                    {category}
+                  </h3>
                   <div className='space-y-2'>
                     {categoryShortcuts.map((shortcut, index) => (
                       <div
@@ -200,4 +202,3 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
 }
 
 export default KeyboardShortcutsModal
-

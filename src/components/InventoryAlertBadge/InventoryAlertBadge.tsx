@@ -8,12 +8,7 @@ interface InventoryAlertBadgeProps {
   className?: string
 }
 
-export default function InventoryAlertBadge({
-  alerts,
-  unreadCount,
-  onClear,
-  className
-}: InventoryAlertBadgeProps) {
+export default function InventoryAlertBadge({ alerts, unreadCount, onClear, className }: InventoryAlertBadgeProps) {
   if (unreadCount === 0) return null
 
   return (
@@ -67,17 +62,11 @@ export default function InventoryAlertBadge({
                 )}
               >
                 <div className='flex items-start gap-2'>
-                  <span className='text-base'>
-                    {alert.severity === 'critical' ? '🚨' : '⚠️'}
-                  </span>
+                  <span className='text-base'>{alert.severity === 'critical' ? '🚨' : '⚠️'}</span>
                   <div>
-                    <p className='text-sm font-medium text-gray-800 dark:text-gray-100'>
-                      {alert.product_name}
-                    </p>
+                    <p className='text-sm font-medium text-gray-800 dark:text-gray-100'>{alert.product_name}</p>
                     <p className='text-xs text-gray-500 dark:text-gray-400'>
-                      {alert.current_quantity === 0
-                        ? 'Đã hết hàng!'
-                        : `Chỉ còn ${alert.current_quantity} sản phẩm`}
+                      {alert.current_quantity === 0 ? 'Đã hết hàng!' : `Chỉ còn ${alert.current_quantity} sản phẩm`}
                     </p>
                   </div>
                 </div>
@@ -89,4 +78,3 @@ export default function InventoryAlertBadge({
     </div>
   )
 }
-

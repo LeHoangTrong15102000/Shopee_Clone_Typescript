@@ -41,4 +41,3 @@ export function useCanAnimate(): boolean {
   const reducedMotion = useReducedMotion()
   return !reducedMotion
 }
-

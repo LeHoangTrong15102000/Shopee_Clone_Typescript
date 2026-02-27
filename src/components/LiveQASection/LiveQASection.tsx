@@ -16,13 +16,23 @@ interface LiveQASectionProps {
   className?: string
 }
 
-export default function LiveQASection({ newQuestionCount, newAnswers, onViewQuestions, className }: LiveQASectionProps) {
+export default function LiveQASection({
+  newQuestionCount,
+  newAnswers,
+  onViewQuestions,
+  className
+}: LiveQASectionProps) {
   if (newQuestionCount <= 0 && newAnswers.length === 0) {
     return null
   }
 
   return (
-    <div className={classNames('rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 text-sm animate-fade-in', className)}>
+    <div
+      className={classNames(
+        'rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 text-sm animate-fade-in',
+        className
+      )}
+    >
       {newQuestionCount > 0 && (
         <div
           className='flex items-center gap-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded px-2 py-1 transition-colors'
@@ -41,14 +51,19 @@ export default function LiveQASection({ newQuestionCount, newAnswers, onViewQues
           {newAnswers.slice(-3).map((item, index) => (
             <div
               key={`${item.question_id}-${index}`}
-              className={classNames(
-                'flex items-start gap-2 rounded px-2 py-1 text-xs',
-                { 'bg-[#fff5f0] dark:bg-orange-900/20 border-l-2 border-[#ee4d2d]': item.answer.is_seller, 'bg-white dark:bg-slate-700': !item.answer.is_seller }
-              )}
+              className={classNames('flex items-start gap-2 rounded px-2 py-1 text-xs', {
+                'bg-[#fff5f0] dark:bg-orange-900/20 border-l-2 border-[#ee4d2d]': item.answer.is_seller,
+                'bg-white dark:bg-slate-700': !item.answer.is_seller
+              })}
             >
               <span>{item.answer.is_seller ? '🏪' : '💬'}</span>
               <div>
-                <span className={classNames('font-medium', { 'text-[#ee4d2d]': item.answer.is_seller, 'text-gray-700 dark:text-gray-200': !item.answer.is_seller })}>
+                <span
+                  className={classNames('font-medium', {
+                    'text-[#ee4d2d]': item.answer.is_seller,
+                    'text-gray-700 dark:text-gray-200': !item.answer.is_seller
+                  })}
+                >
                   {item.answer.user_name}
                   {item.answer.is_seller && ' (Người bán)'}
                 </span>
@@ -61,4 +76,3 @@ export default function LiveQASection({ newQuestionCount, newAnswers, onViewQues
     </div>
   )
 }
-

@@ -244,4 +244,3 @@ const voucherApi = {
 }
 
 export default voucherApi
-

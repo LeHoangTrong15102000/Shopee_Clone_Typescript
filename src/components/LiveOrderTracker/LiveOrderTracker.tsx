@@ -133,8 +133,21 @@ export default function LiveOrderTracker({
           <div className='flex items-center gap-3'>
             {/* Tracking Icon */}
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm'>
-              <svg className={classNames('h-5 w-5', isDelivered ? 'text-green-500' : isCancelled ? 'text-red-500' : 'text-[#ee4d2d]')} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                <path strokeLinecap='round' strokeLinejoin='round' d='M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7' />
+              <svg
+                className={classNames(
+                  'h-5 w-5',
+                  isDelivered ? 'text-green-500' : isCancelled ? 'text-red-500' : 'text-[#ee4d2d]'
+                )}
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7'
+                />
               </svg>
             </div>
             <div>
@@ -163,7 +176,11 @@ export default function LiveOrderTracker({
           {isDelivered && (
             <div className='flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm'>
               <svg className='h-4 w-4 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                <path fillRule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clipRule='evenodd' />
+                <path
+                  fillRule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clipRule='evenodd'
+                />
               </svg>
               <span className='text-xs font-medium text-white'>Hoàn thành</span>
             </div>
@@ -179,8 +196,18 @@ export default function LiveOrderTracker({
           variants={reducedMotion ? undefined : itemVariants}
         >
           <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white dark:bg-slate-600 shadow-sm'>
-            <svg className='h-5 w-5 text-[#ee4d2d]' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21M3.375 14.25h3.375m0 0V11.25m0 3H12M5.625 11.25H3.375m2.25 0V8.625c0-.621.504-1.125 1.125-1.125h5.25M12 11.25V8.625' />
+            <svg
+              className='h-5 w-5 text-[#ee4d2d]'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21M3.375 14.25h3.375m0 0V11.25m0 3H12M5.625 11.25H3.375m2.25 0V8.625c0-.621.504-1.125 1.125-1.125h5.25M12 11.25V8.625'
+              />
             </svg>
           </div>
           <div className='flex-1'>
@@ -205,8 +232,18 @@ export default function LiveOrderTracker({
             >
               <div className='flex items-center gap-3 p-4'>
                 <div className='flex h-10 w-10 items-center justify-center rounded-full bg-orange-100'>
-                  <svg className='h-5 w-5 text-[#ee4d2d]' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12' />
+                  <svg
+                    className='h-5 w-5 text-[#ee4d2d]'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12'
+                    />
                   </svg>
                 </div>
                 <div>
@@ -229,7 +266,13 @@ export default function LiveOrderTracker({
             className='mt-4 flex items-center justify-end gap-2 border-t border-gray-100 dark:border-slate-700 pt-3'
             variants={reducedMotion ? undefined : itemVariants}
           >
-            <svg className='h-4 w-4 text-gray-400 dark:text-gray-500' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+            <svg
+              className='h-4 w-4 text-gray-400 dark:text-gray-500'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+              strokeWidth={2}
+            >
               <path strokeLinecap='round' strokeLinejoin='round' d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
             </svg>
             <p className='text-xs text-gray-400 dark:text-gray-500'>
@@ -248,4 +291,3 @@ export default function LiveOrderTracker({
     </motion.div>
   )
 }
-

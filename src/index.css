@@ -362,7 +362,7 @@ body {
 
 /* Ensure buttons never show focus border on mouse click */
 button:focus:not(:focus-visible),
-[role="button"]:focus:not(:focus-visible),
+[role='button']:focus:not(:focus-visible),
 a:focus:not(:focus-visible) {
   outline: none !important;
   box-shadow: none !important;

@@ -134,7 +134,9 @@ export default function RealTimeStockAlert({ productIds, onStockChange }: RealTi
             <div className='flex-1'>
               <p
                 className={`text-sm font-medium ${
-                  alert.severity === 'critical' || alert.newStock === 0 ? 'text-red-700 dark:text-red-400' : 'text-orange-700 dark:text-orange-400'
+                  alert.severity === 'critical' || alert.newStock === 0
+                    ? 'text-red-700 dark:text-red-400'
+                    : 'text-orange-700 dark:text-orange-400'
                 }`}
               >
                 {alert.newStock === 0
@@ -194,7 +196,9 @@ export function InlineStockAlert({
     <motion.div {...animationProps} className='overflow-hidden'>
       <div
         className={`flex items-center gap-2 rounded px-2 py-1.5 text-xs ${
-          isCritical ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
+          isCritical
+            ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            : 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
         }`}
       >
         <span>{isCritical ? '🚫' : '⚠️'}</span>
@@ -205,4 +209,3 @@ export function InlineStockAlert({
     </motion.div>
   )
 }
-

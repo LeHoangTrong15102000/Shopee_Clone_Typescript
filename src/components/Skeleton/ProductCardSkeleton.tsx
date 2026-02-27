@@ -2,7 +2,12 @@ import SkeletonBase from './SkeletonBase'
 
 export default function ProductCardSkeleton() {
   return (
-    <div className='overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm min-h-[280px]' role='status' aria-busy='true' aria-label='Đang tải sản phẩm'>
+    <div
+      className='overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm min-h-[280px]'
+      role='status'
+      aria-busy='true'
+      aria-label='Đang tải sản phẩm'
+    >
       {/* Image placeholder - aspect ratio 1:1 */}
       <div className='relative w-full pt-[100%]'>
         <SkeletonBase className='absolute top-0 left-0 h-full w-full rounded-tl-sm rounded-tr-sm' />
@@ -40,4 +45,3 @@ export default function ProductCardSkeleton() {
     </div>
   )
 }
-

@@ -47,8 +47,12 @@ vi.mock('src/components/ImageWithFallback', () => ({
 // Mock child components to avoid render issues
 vi.mock('src/components/AddressSelector', () => ({
   default: ({ onAddressSelect }: any) => (
-    <div data-testid="address-selector">
-      <button onClick={() => onAddressSelect?.({ id: '1', name: 'Test', phone: '0123456789', address: '123 Test St', isDefault: true })}>
+    <div data-testid='address-selector'>
+      <button
+        onClick={() =>
+          onAddressSelect?.({ id: '1', name: 'Test', phone: '0123456789', address: '123 Test St', isDefault: true })
+        }
+      >
         Select Address
       </button>
     </div>
@@ -57,7 +61,7 @@ vi.mock('src/components/AddressSelector', () => ({
 
 vi.mock('src/components/ShippingMethodSelector', () => ({
   default: ({ onSelect }: any) => (
-    <div data-testid="shipping-selector">
+    <div data-testid='shipping-selector'>
       <button onClick={() => onSelect?.({ id: '1', name: 'Standard', price: 30000, estimatedDays: '3-5 ngày' })}>
         Select Shipping
       </button>
@@ -67,7 +71,7 @@ vi.mock('src/components/ShippingMethodSelector', () => ({
 
 vi.mock('src/components/PaymentMethodSelector', () => ({
   default: ({ onSelect }: any) => (
-    <div data-testid="payment-selector">
+    <div data-testid='payment-selector'>
       <button onClick={() => onSelect?.('cod')}>Select Payment</button>
     </div>
   )
@@ -75,7 +79,7 @@ vi.mock('src/components/PaymentMethodSelector', () => ({
 
 vi.mock('src/components/OrderSummary', () => ({
   default: ({ items, shippingMethod, voucherDiscount }: any) => (
-    <div data-testid="order-summary">
+    <div data-testid='order-summary'>
       <p>Tổng tiền hàng: {items?.length || 0} sản phẩm</p>
       <p>Phí vận chuyển: {shippingMethod?.price || 0}</p>
       <p>Giảm giá voucher: {voucherDiscount || 0}</p>
@@ -167,7 +171,7 @@ describe('Checkout Page', () => {
   describe('Rendering', () => {
     test('should redirect to cart when no checked items', async () => {
       const { toast } = await import('react-toastify')
-      
+
       render(<Checkout />, {
         wrapper: createWrapper([]) // Empty purchases
       })
@@ -339,4 +343,3 @@ describe('Checkout Page', () => {
     })
   })
 })
-

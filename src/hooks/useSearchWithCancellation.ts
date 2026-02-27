@@ -45,4 +45,3 @@ export const useSearchWithCancellation = (queryConfig: ProductListConfig) => {
 }
 
 export default useSearchWithCancellation
-

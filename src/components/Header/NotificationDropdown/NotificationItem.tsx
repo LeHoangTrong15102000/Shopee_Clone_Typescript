@@ -13,7 +13,12 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       case 'promotion':
         return (
           <div className='w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-yellow-600 dark:text-yellow-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-4 h-4 text-yellow-600 dark:text-yellow-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -26,7 +31,12 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       case 'order':
         return (
           <div className='w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-green-600 dark:text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-4 h-4 text-green-600 dark:text-green-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -39,7 +49,12 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       case 'system':
         return (
           <div className='w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-blue-600 dark:text-blue-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-4 h-4 text-blue-600 dark:text-blue-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -52,7 +67,12 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       case 'new_message':
         return (
           <div className='w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-purple-600 dark:text-purple-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-4 h-4 text-purple-600 dark:text-purple-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -66,7 +86,12 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       default:
         return (
           <div className='w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center'>
-            <svg className='w-4 h-4 text-gray-600 dark:text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg
+              className='w-4 h-4 text-gray-600 dark:text-gray-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'

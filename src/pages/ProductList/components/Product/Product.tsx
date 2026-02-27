@@ -46,11 +46,16 @@ const Product = ({ product }: Props) => {
     <Fragment>
       {product ? (
         <motion.div
-          role="link"
+          role='link'
           tabIndex={0}
           aria-label={`${product.name} - ₫${formatCurrency(product.price)}`}
           onClick={handleProductClick}
-          onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleProductClick(); } }}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              handleProductClick()
+            }
+          }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={`cursor-pointer h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
@@ -77,23 +82,28 @@ const Product = ({ product }: Props) => {
               />
               {/* Nút yêu thích */}
               <div className='absolute top-2 right-2 z-10'>
-                <WishlistButton
-                  productId={product._id}
-                  productName={product.name}
-                  size='sm'
-                />
+                <WishlistButton productId={product._id} productName={product.name} size='sm' />
               </div>
             </motion.div>
             {/* Thông tin sản phẩm */}
             <div className='overflow-hidden p-2'>
               <div className='min-h-[1.9rem] text-xs sm:text-sm line-clamp-2 dark:text-gray-200'>{product.name}</div>
               {/* price */}
-              <div className='mt-3 flex items-center' aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng, giá khuyến mãi ${formatCurrency(product.price)} đồng`}>
-                <div className='max-w-[50%] truncate text-gray-500 dark:text-gray-400 line-through' aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng`}>
+              <div
+                className='mt-3 flex items-center'
+                aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng, giá khuyến mãi ${formatCurrency(product.price)} đồng`}
+              >
+                <div
+                  className='max-w-[50%] truncate text-gray-500 dark:text-gray-400 line-through'
+                  aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng`}
+                >
                   <span className='text-xs'>₫</span>
                   <span className='text-xs sm:text-sm'>{formatCurrency(product.price_before_discount)}</span>
                 </div>
-                <div className='ml-[5px] max-w-[50%] truncate text-orange dark:text-orange-400' aria-label={`Giá khuyến mãi ${formatCurrency(product.price)} đồng`}>
+                <div
+                  className='ml-[5px] max-w-[50%] truncate text-orange dark:text-orange-400'
+                  aria-label={`Giá khuyến mãi ${formatCurrency(product.price)} đồng`}
+                >
                   <span className='text-xs'>₫</span>
                   <span className='text-xs sm:text-sm'>{formatCurrency(product.price)}</span>
                 </div>

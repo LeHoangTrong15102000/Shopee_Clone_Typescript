@@ -183,10 +183,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(toast.success).toHaveBeenCalledWith(
-        '🛒 Đã thêm vào giỏ hàng!',
-        expect.any(Object)
-      )
+      expect(toast.success).toHaveBeenCalledWith('🛒 Đã thêm vào giỏ hàng!', expect.any(Object))
     })
   })
 
@@ -215,10 +212,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        '❌ Không thể thêm vào giỏ hàng',
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith('❌ Không thể thêm vào giỏ hàng', expect.any(Object))
     })
 
     test('should show error toast on rollback', async () => {
@@ -242,10 +236,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        '❌ Không thể thêm vào giỏ hàng',
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith('❌ Không thể thêm vào giỏ hàng', expect.any(Object))
     })
   })
 
@@ -298,7 +289,6 @@ describe('useOptimisticAddToCart', () => {
     })
   })
 })
-
 
 describe('useOptimisticUpdateQuantity', () => {
   describe('Happy Path', () => {
@@ -394,10 +384,7 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        '❌ Không thể cập nhật số lượng',
-        expect.any(Object)
-      )
+      expect(toast.error).toHaveBeenCalledWith('❌ Không thể cập nhật số lượng', expect.any(Object))
     })
 
     test('should restore original buy_count in context on rollback', async () => {
@@ -474,9 +461,7 @@ describe('useOptimisticUpdateQuantity', () => {
         data: { data: [existingPurchase] }
       })
 
-      vi.mocked(purchaseApi.updatePurchase).mockRejectedValue(
-        new Error('Quantity exceeds available stock')
-      )
+      vi.mocked(purchaseApi.updatePurchase).mockRejectedValue(new Error('Quantity exceeds available stock'))
 
       const { result } = renderHook(() => useOptimisticUpdateQuantity(), {
         wrapper: createWrapper()
@@ -518,7 +503,6 @@ describe('useOptimisticUpdateQuantity', () => {
     })
   })
 })
-
 
 describe('useOptimisticRemoveFromCart', () => {
   describe('Happy Path', () => {
@@ -692,9 +676,16 @@ describe('useOptimisticRemoveFromCart', () => {
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, previousData)
 
       vi.mocked(purchaseApi.deletePurchase).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({
-          data: { data: { deleted_count: 1 }, message: 'Success' }
-        } as any), 100))
+        () =>
+          new Promise((resolve) =>
+            setTimeout(
+              () =>
+                resolve({
+                  data: { data: { deleted_count: 1 }, message: 'Success' }
+                } as any),
+              100
+            )
+          )
       )
 
       const { result } = renderHook(() => useOptimisticRemoveFromCart(), {

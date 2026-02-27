@@ -34,4 +34,3 @@ export interface WishlistClearResponse {
 export interface AddToWishlistBody {
   product_id: string
 }
-

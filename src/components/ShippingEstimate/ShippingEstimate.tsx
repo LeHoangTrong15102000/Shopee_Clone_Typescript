@@ -137,7 +137,9 @@ function ShippingEstimate({
                 key={option.id}
                 className={classNames(
                   'flex cursor-pointer items-center justify-between rounded-md border p-2 sm:p-3 transition-all',
-                  isSelected ? 'border-[#ee4d2d] bg-[#fff5f5] dark:bg-[#ee4d2d]/10' : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
+                  isSelected
+                    ? 'border-[#ee4d2d] bg-[#fff5f5] dark:bg-[#ee4d2d]/10'
+                    : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
                 )}
               >
                 <div className='flex items-center gap-3'>
@@ -152,7 +154,9 @@ function ShippingEstimate({
                   />
                   <div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200'>{option.name}</span>
+                      <span className='text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200'>
+                        {option.name}
+                      </span>
                       {option.id === 'instant' && (
                         <span className='rounded bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>Nhanh nhất</span>
                       )}
@@ -183,4 +187,3 @@ function ShippingEstimate({
 }
 
 export default memo(ShippingEstimate)
-

@@ -35,4 +35,3 @@ const StatusBadge = ({ status, className, size = 'md' }: StatusBadgeProps) => {
 }
 
 export default StatusBadge
-

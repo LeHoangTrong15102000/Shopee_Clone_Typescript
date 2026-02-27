@@ -37,4 +37,3 @@ const useViewerCount = (productId: string | undefined): UseViewerCountReturn => 
 }
 
 export default useViewerCount
-

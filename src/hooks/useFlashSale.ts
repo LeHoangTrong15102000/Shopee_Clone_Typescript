@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import useSocket from './useSocket'
-import { SocketEvent, FlashSaleTickPayload, FlashSaleStockUpdatePayload, FlashSaleTickProduct } from 'src/types/socket.types'
+import {
+  SocketEvent,
+  FlashSaleTickPayload,
+  FlashSaleStockUpdatePayload,
+  FlashSaleTickProduct
+} from 'src/types/socket.types'
 
 interface UseFlashSaleReturn {
   remainingSeconds: number
@@ -89,4 +94,3 @@ const useFlashSale = (saleId: string | undefined): UseFlashSaleReturn => {
 }
 
 export default useFlashSale
-

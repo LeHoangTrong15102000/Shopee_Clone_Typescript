@@ -71,14 +71,11 @@ export default function ProductVariantSelector({
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
-                className={classNames(
-                  'relative h-11 w-11 overflow-hidden rounded border-2 transition-all',
-                  {
-                    'border-orange': isSelected,
-                    'border-gray-300 dark:border-gray-600': !isSelected && isAvailable,
-                    'cursor-not-allowed border-gray-200 opacity-50 dark:border-gray-700': !isAvailable
-                  }
-                )}
+                className={classNames('relative h-11 w-11 overflow-hidden rounded border-2 transition-all', {
+                  'border-orange': isSelected,
+                  'border-gray-300 dark:border-gray-600': !isSelected && isAvailable,
+                  'cursor-not-allowed border-gray-200 opacity-50 dark:border-gray-700': !isAvailable
+                })}
                 aria-label={option.name}
                 aria-pressed={isSelected}
               >
@@ -123,16 +120,13 @@ export default function ProductVariantSelector({
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
-                className={classNames(
-                  'min-w-[50px] min-h-[44px] rounded border px-3 py-2 text-sm transition-all',
-                  {
-                    'border-orange bg-orange/10 text-orange': isSelected,
-                    'border-gray-300 bg-white text-gray-700 hover:border-orange dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300':
-                      !isSelected && isAvailable,
-                    'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600':
-                      !isAvailable
-                  }
-                )}
+                className={classNames('min-w-[50px] min-h-[44px] rounded border px-3 py-2 text-sm transition-all', {
+                  'border-orange bg-orange/10 text-orange': isSelected,
+                  'border-gray-300 bg-white text-gray-700 hover:border-orange dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300':
+                    !isSelected && isAvailable,
+                  'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600':
+                    !isAvailable
+                })}
                 aria-label={option.name}
                 aria-pressed={isSelected}
               >
@@ -161,4 +155,3 @@ export default function ProductVariantSelector({
     </div>
   )
 }
-

@@ -90,21 +90,15 @@ const CartSummaryBar = ({
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Voucher giảm giá</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Giảm giá sản phẩm</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Tiết kiệm</span>
-                        <span className='text-red-500'>
-                          -₫{formatCurrency(totalCheckedPurchaseSavingPrice)}
-                        </span>
+                        <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <hr className='border-gray-200 dark:border-slate-700 my-2' />
                       <div className='flex justify-between text-sm'>
@@ -173,13 +167,17 @@ const CartSummaryBar = ({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.1 }}
-          animate={checkedPurchaseCount > 0 ? {
-            boxShadow: [
-              '0 0 0 0 rgba(239, 68, 68, 0)',
-              '0 0 0 6px rgba(239, 68, 68, 0.15)',
-              '0 0 0 0 rgba(239, 68, 68, 0)'
-            ]
-          } : {}}
+          animate={
+            checkedPurchaseCount > 0
+              ? {
+                  boxShadow: [
+                    '0 0 0 0 rgba(239, 68, 68, 0)',
+                    '0 0 0 6px rgba(239, 68, 68, 0.15)',
+                    '0 0 0 0 rgba(239, 68, 68, 0)'
+                  ]
+                }
+              : {}
+          }
           style={{ borderRadius: '4px' }}
         >
           <Button
@@ -197,4 +195,3 @@ const CartSummaryBar = ({
 }
 
 export default CartSummaryBar
-

@@ -89,4 +89,3 @@ export function getEstimatedDeliveryDateDetails(estimatedDays: string): {
     maxDays
   }
 }
-

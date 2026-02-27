@@ -8,7 +8,10 @@ export default function NotificationSkeleton({ count = 3 }: NotificationSkeleton
   return (
     <div role='status' aria-busy='true' aria-label='Đang tải thông báo' className='min-h-[200px]'>
       {[...Array(count)].map((_, index) => (
-        <div key={index} className='flex items-start p-4 border-b border-gray-100 dark:border-slate-700 last:border-b-0 min-h-[80px]'>
+        <div
+          key={index}
+          className='flex items-start p-4 border-b border-gray-100 dark:border-slate-700 last:border-b-0 min-h-[80px]'
+        >
           {/* Icon placeholder */}
           <div className='flex-shrink-0 mr-3'>
             <SkeletonBase className='w-8 h-8 rounded-full' />
@@ -34,4 +37,3 @@ export default function NotificationSkeleton({ count = 3 }: NotificationSkeleton
     </div>
   )
 }
-

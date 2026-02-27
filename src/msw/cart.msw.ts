@@ -202,4 +202,3 @@ const cartRequests = [
 ]
 
 export default cartRequests
-

@@ -8,4 +8,3 @@ interface VisuallyHiddenProps {
 export default function VisuallyHidden({ children, as: Component = 'span' }: VisuallyHiddenProps) {
   return <Component className='sr-only'>{children}</Component>
 }
-

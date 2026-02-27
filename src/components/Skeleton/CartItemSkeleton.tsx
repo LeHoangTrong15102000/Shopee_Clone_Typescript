@@ -68,4 +68,3 @@ export default function CartItemSkeleton({ count = 1 }: CartItemSkeletonProps) {
     </>
   )
 }
-

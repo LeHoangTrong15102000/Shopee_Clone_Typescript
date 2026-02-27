@@ -7,7 +7,16 @@ import { Voucher } from 'src/types/voucher.type'
 interface VoucherCardProps {
   voucher: Pick<
     Voucher,
-    '_id' | 'code' | 'name' | 'description' | 'discount_type' | 'discount_value' | 'min_order_value' | 'max_discount' | 'end_date' | 'is_active'
+    | '_id'
+    | 'code'
+    | 'name'
+    | 'description'
+    | 'discount_type'
+    | 'discount_value'
+    | 'min_order_value'
+    | 'max_discount'
+    | 'end_date'
+    | 'is_active'
   >
   isSaved?: boolean
   onSave?: (voucherId: string) => void
@@ -88,7 +97,10 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
       whileTap={!isExpired ? { scale: 0.98 } : {}}
       transition={{ duration: 0.2 }}
     >
-      <div className='absolute left-0 top-0 bottom-0 w-1 border-l-4 border-dashed border-[#ee4d2d]' aria-hidden='true' />
+      <div
+        className='absolute left-0 top-0 bottom-0 w-1 border-l-4 border-dashed border-[#ee4d2d]'
+        aria-hidden='true'
+      />
 
       <div
         className='flex w-20 sm:w-24 flex-shrink-0 flex-col items-center justify-center bg-gradient-to-br from-[#ee4d2d] to-[#ff6633] p-2 sm:p-3 text-white'
@@ -105,9 +117,13 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
 
       <div className='flex flex-1 flex-col justify-between p-2 sm:p-3'>
         <div>
-          <h3 className='line-clamp-1 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100'>{voucher.name}</h3>
+          <h3 className='line-clamp-1 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100'>
+            {voucher.name}
+          </h3>
           <p className='mt-1 line-clamp-1 text-xs text-gray-500 dark:text-gray-400'>{voucher.description}</p>
-          <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>Đơn tối thiểu ₫{formatCurrency(voucher.min_order_value)}</p>
+          <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
+            Đơn tối thiểu ₫{formatCurrency(voucher.min_order_value)}
+          </p>
         </div>
 
         <div className='mt-2 flex items-center justify-between'>
@@ -148,7 +164,10 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
       </div>
 
       {isExpired && (
-        <div className='absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-slate-800/50' aria-hidden='true'>
+        <div
+          className='absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-slate-800/50'
+          aria-hidden='true'
+        >
           <span className='rotate-[-15deg] rounded border-2 border-gray-400 dark:border-gray-500 px-3 py-1 text-sm font-bold uppercase text-gray-400 dark:text-gray-500'>
             Hết hạn
           </span>
@@ -159,4 +178,3 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
 }
 
 export default memo(VoucherCard)
-

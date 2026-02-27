@@ -15,4 +15,3 @@ export default function ScrollToTopOnNavigate() {
 
   return null
 }
-

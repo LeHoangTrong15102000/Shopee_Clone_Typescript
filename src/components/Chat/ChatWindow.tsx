@@ -87,11 +87,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
           </div>
         </div>
         <div className='flex items-center gap-1'>
-          <button
-            onClick={handleToggle}
-            className='rounded p-1.5 transition-colors hover:bg-white/20'
-            title='Thu nhỏ'
-          >
+          <button onClick={handleToggle} className='rounded p-1.5 transition-colors hover:bg-white/20' title='Thu nhỏ'>
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M18 12H6' />
             </svg>
@@ -118,4 +114,3 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
     </div>
   )
 }
-

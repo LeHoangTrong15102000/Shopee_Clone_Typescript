@@ -41,8 +41,7 @@ const mockQuestions: ProductQuestion[] = [
       {
         _id: 'answer3',
         user: { _id: 'seller1', name: 'Shop Official', avatar: '', is_seller: true },
-        answer:
-          'Dạ sản phẩm được làm từ chất liệu cao cấp, rất bền và chắc chắn ạ. Shop cam kết chất lượng!',
+        answer: 'Dạ sản phẩm được làm từ chất liệu cao cấp, rất bền và chắc chắn ạ. Shop cam kết chất lượng!',
         likes_count: 3,
         is_liked: false,
         createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
@@ -62,7 +61,8 @@ const mockQuestions: ProductQuestion[] = [
       {
         _id: 'answer4',
         user: { _id: 'seller1', name: 'Shop Official', avatar: '', is_seller: true },
-        answer: 'Dạ bạn ở Hà Nội thì khoảng 2-3 ngày là nhận được hàng ạ. Shop gửi hàng ngay trong ngày nếu bạn đặt trước 15h.',
+        answer:
+          'Dạ bạn ở Hà Nội thì khoảng 2-3 ngày là nhận được hàng ạ. Shop gửi hàng ngay trong ngày nếu bạn đặt trước 15h.',
         likes_count: 4,
         is_liked: false,
         createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
@@ -183,9 +183,7 @@ const qaApi = {
   // Like câu hỏi
   likeQuestion: async (questionId: string) => {
     try {
-      const response = await http.post<SuccessResponseApi<{ likes_count: number }>>(
-        `/qa/questions/${questionId}/like`
-      )
+      const response = await http.post<SuccessResponseApi<{ likes_count: number }>>(`/qa/questions/${questionId}/like`)
       return response
     } catch (error) {
       console.warn('⚠️ [likeQuestion] API not available, using mock data')
@@ -218,4 +216,3 @@ const qaApi = {
 }
 
 export default qaApi
-

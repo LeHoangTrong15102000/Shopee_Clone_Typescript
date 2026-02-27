@@ -24,16 +24,15 @@ const PriceDisplay = ({
   currencySymbol = '₫'
 }: PriceDisplayProps) => {
   const hasDiscount = originalPrice !== undefined && originalPrice > price
-  const discountPercent = hasDiscount
-    ? Math.round(((originalPrice - price) / originalPrice) * 100)
-    : 0
+  const discountPercent = hasDiscount ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0
   const sizes = sizeClasses[size]
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       {hasDiscount && (
         <span className={`text-gray-400 dark:text-gray-500 line-through ${sizes.original}`}>
-          {currencySymbol}{formatCurrency(originalPrice)}
+          {currencySymbol}
+          {formatCurrency(originalPrice)}
         </span>
       )}
       <span className={`text-[#ee4d2d] font-semibold ${sizes.price}`}>
@@ -41,13 +40,10 @@ const PriceDisplay = ({
         {formatCurrency(price)}
       </span>
       {hasDiscount && showDiscount && discountPercent > 0 && (
-        <span className={`bg-[#ee4d2d] text-white rounded ${sizes.badge}`}>
-          -{discountPercent}%
-        </span>
+        <span className={`bg-[#ee4d2d] text-white rounded ${sizes.badge}`}>-{discountPercent}%</span>
       )}
     </div>
   )
 }
 
 export default PriceDisplay
-

@@ -15,7 +15,9 @@ const BannerIndicators = ({ slides, currentSlide, onSlideChange }: Props) => {
             key={index}
             onClick={() => onSlideChange(index)}
             className={`p-1 transition-all duration-300 rounded-full ${
-              index === currentSlide ? 'w-6 h-2.5 sm:w-8 sm:h-3 bg-white shadow-lg' : 'w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white/60 hover:bg-white/80'
+              index === currentSlide
+                ? 'w-6 h-2.5 sm:w-8 sm:h-3 bg-white shadow-lg'
+                : 'w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white/60 hover:bg-white/80'
             }`}
             aria-label={`Chuyển đến slide ${index + 1}`}
           />

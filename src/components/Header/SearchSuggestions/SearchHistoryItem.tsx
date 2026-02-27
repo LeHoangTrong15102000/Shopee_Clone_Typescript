@@ -37,7 +37,12 @@ const SearchHistoryItem = ({ historyItem, onSelect, onDelete }: Props) => {
           className='opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 dark:hover:bg-slate-600 rounded transition-all'
           title='Xóa khỏi lịch sử'
         >
-          <svg className='w-3 h-3 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <svg
+            className='w-3 h-3 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>

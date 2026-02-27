@@ -26,4 +26,3 @@ export const STAGGER_DELAY = {
 
 export type AnimationDuration = (typeof ANIMATION_DURATION)[keyof typeof ANIMATION_DURATION]
 export type StaggerDelay = (typeof STAGGER_DELAY)[keyof typeof STAGGER_DELAY]
-

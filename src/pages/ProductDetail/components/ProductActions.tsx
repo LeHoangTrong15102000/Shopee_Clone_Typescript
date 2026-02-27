@@ -141,4 +141,3 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
 }
 
 export default ProductActions
-

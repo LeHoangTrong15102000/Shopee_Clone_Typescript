@@ -76,4 +76,3 @@ export const useSearchHistory = () => {
 }
 
 export default useSearchHistory
-

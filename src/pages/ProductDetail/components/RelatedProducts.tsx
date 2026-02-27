@@ -53,4 +53,3 @@ const RelatedProducts = ({ categoryId, reducedMotion }: RelatedProductsProps) =>
 }
 
 export default RelatedProducts
-

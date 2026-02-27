@@ -30,7 +30,9 @@ function Info() {
     <Fragment>
       {/* Tên */}
       <div className='mt-3 sm:mt-6 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>Tên</div>
+        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+          Tên
+        </div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Input
             register={register}
@@ -44,7 +46,9 @@ function Info() {
       </div>
       {/* Số điện thoại */}
       <div className='mt-1 sm:mt-2 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>Số điện thoại</div>
+        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+          Số điện thoại
+        </div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Controller
             control={control}
@@ -235,7 +239,9 @@ const Profile = () => {
         transition={{ duration: 0.3, delay: 0.1 }}
       >
         <h1 className='text-base sm:text-lg font-medium capitalize text-gray-700 dark:text-gray-200'>Hồ sơ của tôi</h1>
-        <div className='mt-[0.1875rem] text-xs sm:text-[.875rem] dark:text-gray-300'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
+        <div className='mt-[0.1875rem] text-xs sm:text-[.875rem] dark:text-gray-300'>
+          Quản lý thông tin hồ sơ để bảo mật tài khoản
+        </div>
       </motion.div>
       {/* Form và Avatar */}
       <FormProvider {...methods}>
@@ -245,9 +251,13 @@ const Profile = () => {
             {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>Email</div>
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+                Email
+              </div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>{profile?.email}</div>
+                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>
+                  {profile?.email}
+                </div>
               </div>
             </div>
             {/* Tên đăng nhập */}
@@ -256,14 +266,18 @@ const Profile = () => {
                 Tên đăng nhập
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>{profile?.name}</div>
+                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>
+                  {profile?.name}
+                </div>
               </div>
             </div>
             {/* Info thông tin người dùng */}
             <Info />
             {/* Địa chỉ */}
             <div className='mt-1 sm:mt-2 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>Địa chỉ</div>
+              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+                Địa chỉ
+              </div>
               <div className='sm:w-[70%] sm:pl-5'>
                 <Input
                   register={register}

@@ -39,7 +39,10 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
 
       const validTypes = ['image/jpeg', 'image/png', 'image/webp']
       if (!validTypes.includes(imageFile.type)) {
-        toast.error('Định dạng file không hợp lệ. Chỉ chấp nhận JPEG, PNG, WebP', { autoClose: 2000, position: 'top-center' })
+        toast.error('Định dạng file không hợp lệ. Chỉ chấp nhận JPEG, PNG, WebP', {
+          autoClose: 2000,
+          position: 'top-center'
+        })
         onClose()
         return
       }
@@ -147,7 +150,8 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
       const img = imageRef.current
       const containerSize = 250
       const imgDisplayWidth = img.naturalWidth * scale * (containerSize / Math.max(img.naturalWidth, img.naturalHeight))
-      const imgDisplayHeight = img.naturalHeight * scale * (containerSize / Math.max(img.naturalWidth, img.naturalHeight))
+      const imgDisplayHeight =
+        img.naturalHeight * scale * (containerSize / Math.max(img.naturalWidth, img.naturalHeight))
 
       const centerOffsetX = (containerSize - imgDisplayWidth) / 2
       const centerOffsetY = (containerSize - imgDisplayHeight) / 2
@@ -221,7 +225,10 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
               className='pointer-events-auto w-full max-w-md rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl'
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 id='avatar-crop-title' className='mb-4 text-center text-lg font-semibold text-gray-900 dark:text-gray-100'>
+              <h2
+                id='avatar-crop-title'
+                className='mb-4 text-center text-lg font-semibold text-gray-900 dark:text-gray-100'
+              >
                 Chỉnh sửa ảnh đại diện
               </h2>
 
@@ -265,8 +272,18 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
 
                 {/* Zoom Control */}
                 <div className='flex w-full items-center gap-3 px-2'>
-                  <svg className='h-4 w-4 text-gray-500 dark:text-gray-400' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7' />
+                  <svg
+                    className='h-4 w-4 text-gray-500 dark:text-gray-400'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7'
+                    />
                   </svg>
                   <input
                     type='range'
@@ -277,8 +294,18 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                     onChange={handleScaleChange}
                     className='h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-slate-600 accent-[#ee4d2d]'
                   />
-                  <svg className='h-5 w-5 text-gray-500 dark:text-gray-400' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7' />
+                  <svg
+                    className='h-5 w-5 text-gray-500 dark:text-gray-400'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7'
+                    />
                   </svg>
                 </div>
 

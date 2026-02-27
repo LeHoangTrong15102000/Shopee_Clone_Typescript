@@ -28,4 +28,3 @@ export interface ProductWithVariants {
   variant_combinations: ProductVariantCombination[]
   default_combination?: ProductVariantCombination
 }
-

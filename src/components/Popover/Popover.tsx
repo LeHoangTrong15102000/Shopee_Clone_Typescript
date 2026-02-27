@@ -42,16 +42,19 @@ const Popover = ({
     setIsOpen(false)
   }
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Escape' && isOpen) {
-      event.preventDefault()
-      hidePopover()
-      // Return focus to trigger element
-      if (refs.reference.current && 'focus' in refs.reference.current) {
-        ;(refs.reference.current as HTMLElement).focus()
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        event.preventDefault()
+        hidePopover()
+        // Return focus to trigger element
+        if (refs.reference.current && 'focus' in refs.reference.current) {
+          ;(refs.reference.current as HTMLElement).focus()
+        }
       }
-    }
-  }, [isOpen, refs.reference])
+    },
+    [isOpen, refs.reference]
+  )
 
   useEffect(() => {
     if (isOpen) {
@@ -63,7 +66,14 @@ const Popover = ({
   // Dùng kĩ thuật render Props, truyền vào cái props 1 dạng function component
 
   return (
-    <Element className={className} ref={refs.setReference} onMouseEnter={showPopover} onMouseLeave={hidePopover} aria-expanded={isOpen} aria-haspopup='true'>
+    <Element
+      className={className}
+      ref={refs.setReference}
+      onMouseEnter={showPopover}
+      onMouseLeave={hidePopover}
+      aria-expanded={isOpen}
+      aria-haspopup='true'
+    >
       {children}
       {/* <svg
         xmlns='http://www.w3.org/2000/svg'

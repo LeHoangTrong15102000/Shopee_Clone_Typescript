@@ -64,7 +64,13 @@ const Home = () => {
 
   // WebSocket: Real-time flash sale data (use undefined for demo, replace with actual sale ID when available)
   const activeSaleId = undefined // TODO: Replace with actual flash sale ID from API when available
-  const { remainingSeconds, products: flashSaleProducts, isActive: _isActive, isEnded, isConnectedToServer } = useFlashSale(activeSaleId)
+  const {
+    remainingSeconds,
+    products: flashSaleProducts,
+    isActive: _isActive,
+    isEnded,
+    isConnectedToServer
+  } = useFlashSale(activeSaleId)
 
   const categories = categoriesData?.data.data || []
   const featuredProducts = featuredProductsData?.data.data.products || []
@@ -106,7 +112,11 @@ const Home = () => {
             animate='visible'
           >
             {categories.slice(0, 16).map((category) => (
-              <motion.div key={category._id} variants={itemVariants} className='hover:scale-105 transition-transform duration-300'>
+              <motion.div
+                key={category._id}
+                variants={itemVariants}
+                className='hover:scale-105 transition-transform duration-300'
+              >
                 <Link
                   to={`${path.products}?category=${category._id}`}
                   className='flex flex-col items-center p-4 rounded-lg border border-gray-200 dark:border-slate-700
@@ -162,7 +172,11 @@ const Home = () => {
             animate='visible'
           >
             {featuredProducts.slice(0, 6).map((product) => (
-              <motion.div key={product._id} variants={itemVariants} className='hover:-translate-y-[5px] transition-transform duration-300'>
+              <motion.div
+                key={product._id}
+                variants={itemVariants}
+                className='hover:-translate-y-[5px] transition-transform duration-300'
+              >
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                   className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
@@ -228,7 +242,11 @@ const Home = () => {
             animate='visible'
           >
             {newProducts.slice(0, 12).map((product) => (
-              <motion.div key={product._id} variants={itemVariants} className='hover:-translate-y-[5px] transition-transform duration-300'>
+              <motion.div
+                key={product._id}
+                variants={itemVariants}
+                className='hover:-translate-y-[5px] transition-transform duration-300'
+              >
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                   className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden

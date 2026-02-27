@@ -71,10 +71,14 @@ export default function MyVouchers() {
             <button
               key={tab.category}
               onClick={() => setActiveCategory(tab.category)}
-              className={classNames('rounded-full px-3 py-1 text-xs sm:px-4 sm:py-1.5 sm:text-sm font-medium transition-colors', {
-                'bg-[#ee4d2d] text-white': activeCategory === tab.category,
-                'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-700': activeCategory !== tab.category
-              })}
+              className={classNames(
+                'rounded-full px-3 py-1 text-xs sm:px-4 sm:py-1.5 sm:text-sm font-medium transition-colors',
+                {
+                  'bg-[#ee4d2d] text-white': activeCategory === tab.category,
+                  'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-700':
+                    activeCategory !== tab.category
+                }
+              )}
             >
               {tab.label}
             </button>
@@ -88,12 +92,17 @@ export default function MyVouchers() {
               onClick={() => setActiveStatus(tab.status)}
               className={classNames(
                 'relative flex-shrink-0 px-3 py-3 text-xs sm:px-6 sm:py-4 sm:text-sm font-medium transition-colors',
-                activeStatus === tab.status ? 'text-[#ee4d2d] dark:text-orange-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                activeStatus === tab.status
+                  ? 'text-[#ee4d2d] dark:text-orange-400'
+                  : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
               )}
             >
               {tab.label}
               {activeStatus === tab.status && (
-                <motion.div layoutId='activeVoucherTab' className='absolute bottom-0 left-0 right-0 h-0.5 bg-[#ee4d2d] dark:bg-orange-400' />
+                <motion.div
+                  layoutId='activeVoucherTab'
+                  className='absolute bottom-0 left-0 right-0 h-0.5 bg-[#ee4d2d] dark:bg-orange-400'
+                />
               )}
             </button>
           ))}
@@ -150,4 +159,3 @@ export default function MyVouchers() {
     </div>
   )
 }
-

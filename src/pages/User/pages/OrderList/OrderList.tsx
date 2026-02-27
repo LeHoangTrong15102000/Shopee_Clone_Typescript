@@ -50,11 +50,12 @@ export default function OrderList() {
 
   const { data: ordersData, isLoading } = useQuery({
     queryKey: ['orders', { status: activeTab, page }],
-    queryFn: () => orderApi.getOrders({
-      status: activeTab === ordersStatus.all ? undefined : activeStatusString,
-      page,
-      limit: 10
-    })
+    queryFn: () =>
+      orderApi.getOrders({
+        status: activeTab === ordersStatus.all ? undefined : activeStatusString,
+        page,
+        limit: 10
+      })
   })
 
   const cancelMutation = useMutation({
@@ -109,8 +110,10 @@ export default function OrderList() {
             className={classNames(
               'flex flex-1 items-center justify-center whitespace-nowrap bg-white dark:bg-slate-800 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm text-center transition-all hover:text-orange dark:hover:text-orange-400 min-w-[4.5rem] sm:min-w-0',
               {
-                'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium': activeTab === tab.status,
-                'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100': activeTab !== tab.status
+                'border-b-2 border-b-orange text-orange dark:border-b-orange-400 dark:text-orange-400 font-medium':
+                  activeTab === tab.status,
+                'border-b-2 border-b-gray-200 dark:border-b-slate-600 text-gray-900 dark:text-gray-100':
+                  activeTab !== tab.status
               }
             )}
           >
@@ -124,7 +127,10 @@ export default function OrderList() {
         {isLoading ? (
           <div className='space-y-4'>
             {[1, 2, 3].map((i) => (
-              <div key={i} className='animate-pulse rounded-xl bg-gradient-to-br from-white to-gray-50 p-4 shadow-md border border-gray-100 dark:from-slate-800 dark:to-slate-900 dark:border-slate-600'>
+              <div
+                key={i}
+                className='animate-pulse rounded-xl bg-gradient-to-br from-white to-gray-50 p-4 shadow-md border border-gray-100 dark:from-slate-800 dark:to-slate-900 dark:border-slate-600'
+              >
                 <div className='flex items-center justify-between border-b pb-3 dark:border-slate-600'>
                   <div className='h-4 w-32 rounded bg-gray-200 dark:bg-slate-600' />
                   <div className='h-6 w-24 rounded-full bg-gray-200 dark:bg-slate-600' />
@@ -261,4 +267,3 @@ export default function OrderList() {
     </div>
   )
 }
-

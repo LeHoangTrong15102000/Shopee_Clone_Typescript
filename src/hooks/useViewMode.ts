@@ -20,4 +20,3 @@ export const useViewMode = () => {
 }
 
 export default useViewMode
-

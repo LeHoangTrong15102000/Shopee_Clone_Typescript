@@ -32,7 +32,9 @@ const Compare = () => {
         <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/50 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100'>So sánh sản phẩm</h1>
+              <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100'>
+                So sánh sản phẩm
+              </h1>
               <p className='text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1'>
                 {compareList.length > 0
                   ? `Đang so sánh ${compareList.length} sản phẩm`
@@ -57,13 +59,10 @@ const Compare = () => {
 
         {/* Recently Viewed Products */}
         <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/50 p-3 sm:p-4 md:p-6'>
-          <h2 className='text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4'>Sản phẩm đã xem gần đây</h2>
-          <RecentlyViewed
-            products={recentlyViewed}
-            maxItems={10}
-            onRemove={removeProduct}
-            onClearAll={clearAll}
-          />
+          <h2 className='text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4'>
+            Sản phẩm đã xem gần đây
+          </h2>
+          <RecentlyViewed products={recentlyViewed} maxItems={10} onRemove={removeProduct} onClearAll={clearAll} />
         </div>
       </div>
     </div>
@@ -71,4 +70,3 @@ const Compare = () => {
 }
 
 export default Compare
-

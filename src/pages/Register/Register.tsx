@@ -214,9 +214,7 @@ const Register = () => {
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex items-center justify-center text-center'>
-                  <span className='mr-1 text-black/25 dark:text-gray-400'>
-                    Bạn đã có tài khoản?
-                  </span>
+                  <span className='mr-1 text-black/25 dark:text-gray-400'>Bạn đã có tài khoản?</span>
                   <Link to={path.login} className='text-orange dark:text-orange-400'>
                     <span className=''>Đăng nhập</span>
                   </Link>

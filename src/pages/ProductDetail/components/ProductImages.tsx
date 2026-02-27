@@ -175,4 +175,3 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
 }
 
 export default ProductImages
-

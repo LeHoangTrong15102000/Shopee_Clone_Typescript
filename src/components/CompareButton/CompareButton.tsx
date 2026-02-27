@@ -85,4 +85,3 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
     </button>
   )
 }
-

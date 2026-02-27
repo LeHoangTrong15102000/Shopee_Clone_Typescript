@@ -111,4 +111,3 @@ const EmptyCartState = ({
 }
 
 export default EmptyCartState
-

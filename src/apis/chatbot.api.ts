@@ -63,7 +63,8 @@ const mockMessages: ChatMessage[] = [
   {
     id: 'mock-msg-2',
     role: 'assistant' as MessageRole,
-    content: 'Chào bạn! Shopee có chính sách đổi trả trong vòng 7 ngày kể từ khi nhận hàng. Bạn cần đảm bảo sản phẩm còn nguyên tem, nhãn và chưa qua sử dụng. Bạn muốn biết thêm chi tiết về trường hợp nào?',
+    content:
+      'Chào bạn! Shopee có chính sách đổi trả trong vòng 7 ngày kể từ khi nhận hàng. Bạn cần đảm bảo sản phẩm còn nguyên tem, nhãn và chưa qua sử dụng. Bạn muốn biết thêm chi tiết về trường hợp nào?',
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000 + 5000).toISOString()
   },
   {
@@ -75,7 +76,8 @@ const mockMessages: ChatMessage[] = [
   {
     id: 'mock-msg-4',
     role: 'assistant' as MessageRole,
-    content: 'Nếu sản phẩm bị lỗi do nhà sản xuất, bạn có thể yêu cầu đổi trả miễn phí trong vòng 30 ngày. Vui lòng chụp ảnh sản phẩm lỗi và liên hệ với người bán qua Shopee Chat để được hỗ trợ nhanh nhất.',
+    content:
+      'Nếu sản phẩm bị lỗi do nhà sản xuất, bạn có thể yêu cầu đổi trả miễn phí trong vòng 30 ngày. Vui lòng chụp ảnh sản phẩm lỗi và liên hệ với người bán qua Shopee Chat để được hỗ trợ nhanh nhất.',
     timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000 + 5000).toISOString()
   }
 ]
@@ -249,8 +251,7 @@ const chatbotApi = {
       console.warn('⚠️ [testChatbot] API not available, using mock data')
       const mockResponse: TestChatbotResponse = {
         userMessage: body.message,
-        botResponse:
-          'Chào bạn! Tôi là trợ lý ảo của Shopee. Hiện tại hệ thống đang bảo trì, vui lòng thử lại sau nhé!',
+        botResponse: 'Chào bạn! Tôi là trợ lý ảo của Shopee. Hiện tại hệ thống đang bảo trì, vui lòng thử lại sau nhé!',
         timestamp: new Date().toISOString()
       }
       return {
@@ -294,4 +295,3 @@ const chatbotApi = {
 }
 
 export default chatbotApi
-

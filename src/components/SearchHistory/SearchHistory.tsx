@@ -32,10 +32,7 @@ const SearchHistory = memo(function SearchHistory({
         <div className='p-3 border-b border-gray-100 dark:border-slate-600'>
           <div className='flex items-center justify-between mb-2'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
-            <button
-              onClick={onClearAll}
-              className='text-xs text-blue-500 hover:text-blue-600 transition-colors'
-            >
+            <button onClick={onClearAll} className='text-xs text-blue-500 hover:text-blue-600 transition-colors'>
               Xóa tất cả
             </button>
           </div>
@@ -100,4 +97,3 @@ const SearchHistory = memo(function SearchHistory({
 })
 
 export default SearchHistory
-

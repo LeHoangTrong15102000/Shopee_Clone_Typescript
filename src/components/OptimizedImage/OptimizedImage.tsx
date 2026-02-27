@@ -104,7 +104,9 @@ export default function OptimizedImage({
   })
 
   const renderSkeleton = () =>
-    showSkeleton && isLoading ? <div className='absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-slate-700' aria-hidden='true' /> : null
+    showSkeleton && isLoading ? (
+      <div className='absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-slate-700' aria-hidden='true' />
+    ) : null
 
   const renderImage = (additionalClasses = '') => (
     <img
@@ -131,10 +133,11 @@ export default function OptimizedImage({
   }
 
   return (
-    <div className={classNames('relative w-full overflow-hidden', ASPECT_RATIO_CLASSES[aspectRatio], containerClassName)}>
+    <div
+      className={classNames('relative w-full overflow-hidden', ASPECT_RATIO_CLASSES[aspectRatio], containerClassName)}
+    >
       {renderSkeleton()}
       {renderImage('absolute top-0 left-0 h-full w-full')}
     </div>
   )
 }
-

@@ -51,4 +51,3 @@ const useCartSync = (): UseCartSyncReturn => {
 }
 
 export default useCartSync
-

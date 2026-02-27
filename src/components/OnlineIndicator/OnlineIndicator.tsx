@@ -45,23 +45,13 @@ export default function OnlineIndicator({
   return (
     <div className={classNames('flex items-center gap-1.5', className)}>
       <span
-        className={classNames(
-          'inline-block rounded-full',
-          dotSizes[size],
-          isOnline ? 'bg-green-500' : 'bg-gray-400'
-        )}
+        className={classNames('inline-block rounded-full', dotSizes[size], isOnline ? 'bg-green-500' : 'bg-gray-400')}
       />
       {showText && (
-        <span
-          className={classNames(
-            textSizes[size],
-            isOnline ? 'text-green-600' : 'text-gray-500'
-          )}
-        >
+        <span className={classNames(textSizes[size], isOnline ? 'text-green-600' : 'text-gray-500')}>
           {isOnline ? 'Online' : formatLastSeen(lastSeen)}
         </span>
       )}
     </div>
   )
 }
-

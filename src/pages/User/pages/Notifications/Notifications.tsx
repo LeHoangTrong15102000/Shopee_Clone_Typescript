@@ -22,7 +22,16 @@ const FILTER_TABS: { key: FilterTab; label: string }[] = [
 
 // Group notification types for filtering
 const TYPE_GROUPS: Record<FilterTab, Notification['type'][]> = {
-  all: ['promotion', 'order', 'system', 'other', 'new_message', 'order_update', 'flash_sale_alert', 'flash_sale_soldout'],
+  all: [
+    'promotion',
+    'order',
+    'system',
+    'other',
+    'new_message',
+    'order_update',
+    'flash_sale_alert',
+    'flash_sale_soldout'
+  ],
   order: ['order', 'order_update'],
   promotion: ['promotion', 'flash_sale_alert', 'flash_sale_soldout'],
   system: ['system', 'new_message'],
@@ -74,9 +83,7 @@ const Notifications = () => {
   // Merge real-time notifications with API notifications (deduplicated)
   const allNotifications = useMemo(() => {
     const apiIds = new Set(apiNotifications.map((n) => n._id))
-    const convertedRealtime = realtimeNotifications
-      .filter((n) => !apiIds.has(n._id))
-      .map(convertSocketToNotification)
+    const convertedRealtime = realtimeNotifications.filter((n) => !apiIds.has(n._id)).map(convertSocketToNotification)
     return [...convertedRealtime, ...apiNotifications]
   }, [apiNotifications, realtimeNotifications])
 
@@ -422,9 +429,7 @@ const Notifications = () => {
                   animate={isNewNotification && !reducedMotion ? { backgroundColor: 'transparent' } : undefined}
                   transition={isNewNotification ? { duration: 2, ease: 'easeOut' } : undefined}
                   style={
-                    isNewNotification && !reducedMotion
-                      ? { boxShadow: '0 0 0 2px rgba(238, 77, 45, 0.3)' }
-                      : undefined
+                    isNewNotification && !reducedMotion ? { boxShadow: '0 0 0 2px rgba(238, 77, 45, 0.3)' } : undefined
                   }
                 >
                   {/* Icon */}

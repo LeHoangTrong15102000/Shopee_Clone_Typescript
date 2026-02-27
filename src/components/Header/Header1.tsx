@@ -117,7 +117,10 @@ const Header1 = () => {
                         {/* In PurchaseInCart trong giỏ hàng */}
                         {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase) => (
                           // Danh mục các sản phẩm
-                          <div className='mt-2 flex py-2 pr-2 hover:bg-gray-100 dark:hover:bg-slate-700' key={purchase._id}>
+                          <div
+                            className='mt-2 flex py-2 pr-2 hover:bg-gray-100 dark:hover:bg-slate-700'
+                            key={purchase._id}
+                          >
                             {/* img product */}
                             <div className='flex-shrink-0'>
                               <img
@@ -160,7 +163,11 @@ const Header1 = () => {
                 </div>
               }
             >
-              <Link to={path.cart} className='relative' aria-label={`${purchasesInCart?.length || 0} sản phẩm trong giỏ hàng`}>
+              <Link
+                to={path.cart}
+                className='relative'
+                aria-label={`${purchasesInCart?.length || 0} sản phẩm trong giỏ hàng`}
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -176,7 +183,11 @@ const Header1 = () => {
                   />
                 </svg>
                 {purchasesInCart && purchasesInCart?.length > 0 ? (
-                  <span aria-live='polite' aria-atomic='true' className='absolute top-[-0.4rem] right-[-0.8rem] min-w-[0.6875rem] rounded-[2.75rem] border-[0.125rem] border-orange bg-white px-[0.37rem] text-[13px] text-orange'>
+                  <span
+                    aria-live='polite'
+                    aria-atomic='true'
+                    className='absolute top-[-0.4rem] right-[-0.8rem] min-w-[0.6875rem] rounded-[2.75rem] border-[0.125rem] border-orange bg-white px-[0.37rem] text-[13px] text-orange'
+                  >
                     {purchasesInCart?.length}
                   </span>
                 ) : (

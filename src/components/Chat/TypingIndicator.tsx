@@ -35,4 +35,3 @@ export default function TypingIndicator({ typingUsers }: TypingIndicatorProps) {
     </div>
   )
 }
-

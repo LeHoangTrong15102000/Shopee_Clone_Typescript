@@ -222,7 +222,9 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 className={`px-3 py-2 text-sm rounded ${
-                  page === currentPage ? 'bg-red-500 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+                  page === currentPage
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
                 }`}
               >
                 {page}
@@ -278,7 +280,9 @@ const ReviewItem = ({
           {review.user.avatar ? (
             <img src={review.user.avatar} alt={review.user.name} className='w-10 h-10 rounded-full object-cover' />
           ) : (
-            <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>{review.user.name?.charAt(0).toUpperCase()}</span>
+            <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>
+              {review.user.name?.charAt(0).toUpperCase()}
+            </span>
           )}
         </div>
 
@@ -305,7 +309,12 @@ const ReviewItem = ({
           {review.images && review.images.length > 0 && (
             <div className='flex space-x-2 mb-3'>
               {review.images.map((image, index) => (
-                <img key={index} src={image} alt='Review' className='w-20 h-20 object-cover rounded border dark:border-slate-600' />
+                <img
+                  key={index}
+                  src={image}
+                  alt='Review'
+                  className='w-20 h-20 object-cover rounded border dark:border-slate-600'
+                />
               ))}
             </div>
           )}
@@ -322,11 +331,17 @@ const ReviewItem = ({
               <span>Hữu ích ({review.helpful_count})</span>
             </button>
 
-            <button onClick={() => onToggleComments(review._id)} className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'>
+            <button
+              onClick={() => onToggleComments(review._id)}
+              className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            >
               Bình luận ({review.comments_count || comments.length})
             </button>
 
-            <button onClick={() => onReply()} className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'>
+            <button
+              onClick={() => onReply()}
+              className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            >
               Trả lời
             </button>
           </div>
@@ -409,7 +424,9 @@ const CommentItem = ({
           {comment.user.avatar ? (
             <img src={comment.user.avatar} alt={comment.user.name} className='w-8 h-8 rounded-full object-cover' />
           ) : (
-            <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>{comment.user.name?.charAt(0).toUpperCase()}</span>
+            <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>
+              {comment.user.name?.charAt(0).toUpperCase()}
+            </span>
           )}
         </div>
 
