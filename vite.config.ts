@@ -94,6 +94,10 @@ export default defineConfig(({ mode }) => {
           'src/**/*.test.{ts,tsx}', // Unit tests
           'test/**/*.test.{ts,tsx}' // Integration & E2E tests
         ],
+        reporters: ['default', 'junit'],
+        outputFile: {
+          junit: './test-results/junit-report.xml'
+        },
         coverage: {
           provider: 'v8',
           include: ['src/**/*.{ts,tsx}'],
