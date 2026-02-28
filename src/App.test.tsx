@@ -21,20 +21,26 @@ describe('App', () => {
      * mặc định: timeout = 1000ms và interval = 50ms
      */
     // Đợi loader biến mất trước
-    await waitFor(() => {
-      const loader = document.querySelector('.animate-spin')
-      expect(loader).not.toBeInTheDocument()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        const loader = document.querySelector('.animate-spin')
+        expect(loader).not.toBeInTheDocument()
+      },
+      { timeout: 10000 }
+    )
 
     // Verify vào đúng trang chủ - kiểm tra content thay vì title do vấn đề async
-    await waitFor(() => {
-      // Kiểm tra có phần tử đặc trưng của homepage thay vì title
-      const homeElements =
-        document.body.textContent?.includes('Kênh người bán') ||
-        document.body.textContent?.includes('Danh Mục') ||
-        window.location.pathname === '/'
-      expect(homeElements).toBeTruthy()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        // Kiểm tra có phần tử đặc trưng của homepage thay vì title
+        const homeElements =
+          document.body.textContent?.includes('Kênh người bán') ||
+          document.body.textContent?.includes('Danh Mục') ||
+          window.location.pathname === '/'
+        expect(homeElements).toBeTruthy()
+      },
+      { timeout: 10000 }
+    )
 
     // Verify chuyển sang trang Login
     // Sử dụng findAllByText để chờ lazy-loaded components render xong
@@ -42,17 +48,23 @@ describe('App', () => {
     await user.click(loginLinks[0])
 
     // Đợi loader biến mất sau khi navigate
-    await waitFor(() => {
-      const loader = document.querySelector('.animate-spin')
-      expect(loader).not.toBeInTheDocument()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        const loader = document.querySelector('.animate-spin')
+        expect(loader).not.toBeInTheDocument()
+      },
+      { timeout: 10000 }
+    )
 
-    await waitFor(() => {
-      // Chúng ta mong đợi khi nó vào được trang Login thì sẽ có cái text này xuất hiện "Bạn mới biết đến Shopee?"
-      expect(screen.queryByText('Bạn mới biết đến Shopee?')).toBeInTheDocument()
-      // Phải có  thì testCase mới pass qua được
-      expect(document.querySelector('title')?.textContent).toBe('Đăng nhập | Shopee Clone')
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        // Chúng ta mong đợi khi nó vào được trang Login thì sẽ có cái text này xuất hiện "Bạn mới biết đến Shopee?"
+        expect(screen.queryByText('Bạn mới biết đến Shopee?')).toBeInTheDocument()
+        // Phải có  thì testCase mới pass qua được
+        expect(document.querySelector('title')?.textContent).toBe('Đăng nhập | Shopee Clone')
+      },
+      { timeout: 10000 }
+    )
 
     // screen.debug(document.body.parentElement as HTMLElement, 99999999)
   })
@@ -62,15 +74,21 @@ describe('App', () => {
     renderWithRouter({ route: badRoute })
 
     // Đợi loader biến mất trước
-    await waitFor(() => {
-      const loader = document.querySelector('.animate-spin')
-      expect(loader).not.toBeInTheDocument()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        const loader = document.querySelector('.animate-spin')
+        expect(loader).not.toBeInTheDocument()
+      },
+      { timeout: 10000 }
+    )
 
-    await waitFor(() => {
-      // NotFound component có text "Page Not Found" và "404"
-      expect(screen.getByText(/Page Not Found/i) || screen.getByText(/404/i)).toBeInTheDocument()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        // NotFound component có text "Page Not Found" và "404"
+        expect(screen.getByText(/Page Not Found/i) || screen.getByText(/404/i)).toBeInTheDocument()
+      },
+      { timeout: 10000 }
+    )
   })
 
   test('Render trang Register', { timeout: 15000 }, async () => {
@@ -83,9 +101,12 @@ describe('App', () => {
     //   </MemoryRouter>
     // )
     renderWithRouter({ route: path.register })
-    await waitFor(() => {
-      expect(screen.getByText(/Bạn đã có tài khoản?/i)).toBeInTheDocument()
-    }, { timeout: 10000 })
+    await waitFor(
+      () => {
+        expect(screen.getByText(/Bạn đã có tài khoản?/i)).toBeInTheDocument()
+      },
+      { timeout: 10000 }
+    )
 
     // await logScreen()
   })

@@ -298,7 +298,9 @@ describe('Checkout Page', () => {
       await user.click(applyButton)
 
       await waitFor(() => {
-        expect(toast.error).toHaveBeenCalledWith('Mã voucher không hợp lệ. Thử: GIAM10, GIAM50K, DISCOUNT50, FREESHIP, NEWUSER')
+        expect(toast.error).toHaveBeenCalledWith(
+          'Mã voucher không hợp lệ. Thử: GIAM10, GIAM50K, DISCOUNT50, FREESHIP, NEWUSER'
+        )
       })
     })
   })

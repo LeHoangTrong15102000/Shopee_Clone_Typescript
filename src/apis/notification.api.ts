@@ -135,7 +135,10 @@ const notificationApi = {
     return {
       data: {
         message: response.data.message,
-        data: { unreadCount: response.data.data.count ?? response.data.data.unread_count ?? response.data.data.unreadCount ?? 0 }
+        data: {
+          unreadCount:
+            response.data.data.count ?? response.data.data.unread_count ?? response.data.data.unreadCount ?? 0
+        }
       }
     }
   }
