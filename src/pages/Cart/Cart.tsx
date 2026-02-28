@@ -299,7 +299,7 @@ const Cart = () => {
     }
   }
   return (
-    <div className='border-b- 4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-16'>
+    <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-6 md:py-8'>
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <Fragment>
