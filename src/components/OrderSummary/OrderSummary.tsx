@@ -81,10 +81,7 @@ const OrderSummary = memo(function OrderSummary({
         <div className='space-y-3'>
           {/* Always-visible items */}
           {items.slice(0, VISIBLE_ITEMS_COUNT).map((item) => (
-            <div
-              key={item._id}
-              className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'
-            >
+            <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'>
               <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
                 <ImageWithFallback
                   src={item.product.image}
@@ -96,9 +93,7 @@ const OrderSummary = memo(function OrderSummary({
                 </span>
               </div>
               <div className='min-w-0 flex-1'>
-                <p className='line-clamp-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
-                  {item.product.name}
-                </p>
+                <p className='line-clamp-2 text-sm font-medium text-gray-900 dark:text-gray-100'>{item.product.name}</p>
                 <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>SL: {item.buy_count}</p>
               </div>
               <div className='text-right'>
@@ -123,10 +118,7 @@ const OrderSummary = memo(function OrderSummary({
             >
               <div className='space-y-3'>
                 {items.slice(VISIBLE_ITEMS_COUNT).map((item) => (
-                  <div
-                    key={item._id}
-                    className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'
-                  >
+                  <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'>
                     <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
                       <ImageWithFallback
                         src={item.product.image}
@@ -144,7 +136,9 @@ const OrderSummary = memo(function OrderSummary({
                       <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>SL: {item.buy_count}</p>
                     </div>
                     <div className='text-right'>
-                      <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
+                      <p className='text-sm font-semibold text-orange'>
+                        ₫{formatCurrency(item.price * item.buy_count)}
+                      </p>
                       {item.price_before_discount > item.price && (
                         <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
                           ₫{formatCurrency(item.price_before_discount * item.buy_count)}
@@ -166,14 +160,24 @@ const OrderSummary = memo(function OrderSummary({
             >
               {isExpanded ? (
                 <>
-                  <svg className='h-4 w-4 transition-transform duration-300' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <svg
+                    className='h-4 w-4 transition-transform duration-300'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 15l7-7 7 7' />
                   </svg>
                   Thu gọn
                 </>
               ) : (
                 <>
-                  <svg className='h-4 w-4 transition-transform duration-300' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <svg
+                    className='h-4 w-4 transition-transform duration-300'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                   </svg>
                   Xem thêm {hiddenItemsCount} sản phẩm

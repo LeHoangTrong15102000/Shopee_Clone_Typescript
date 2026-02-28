@@ -22,7 +22,8 @@ interface MobileNavigationDrawerProps {
   onClose: () => void
 }
 
-const ITEM = 'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors'
+const ITEM =
+  'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors'
 const DIVIDER = 'my-3 h-[1px] bg-gray-200 dark:bg-slate-600'
 const SECTION_TITLE = 'px-3 pb-1 text-xs font-semibold uppercase text-gray-400 dark:text-gray-500'
 
@@ -39,7 +40,9 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [isOpen])
 
   const { data: notificationsData } = useQuery({
@@ -51,7 +54,11 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
   const unreadCount = notificationsData?.data.data.unreadCount || 0
 
   const isAdmin = profile?.roles?.includes('Admin') ?? false
-  const { alerts: inventoryAlerts, unreadCount: inventoryUnreadCount, clearAlerts: clearInventoryAlerts } = useInventoryAlerts()
+  const {
+    alerts: inventoryAlerts,
+    unreadCount: inventoryUnreadCount,
+    clearAlerts: clearInventoryAlerts
+  } = useInventoryAlerts()
 
   const logoutMutation = useMutation({
     mutationFn: () => authApi.logoutAccount(),
@@ -64,19 +71,44 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
     }
   })
 
-  const go = (to: string) => { onClose(); navigate(to) }
+  const go = (to: string) => {
+    onClose()
+    navigate(to)
+  }
   const handleLogout = () => logoutMutation.mutate()
 
   const handleTranslateLanguage = async (lng: 'en' | 'vi') => {
-    try { await loadLanguage(lng) } catch (e) { console.error('Failed to load language:', e) }
+    try {
+      await loadLanguage(lng)
+    } catch (e) {
+      console.error('Failed to load language:', e)
+    }
   }
 
   const drawerContent = (
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className='fixed inset-0 z-[9998] bg-black md:hidden' onClick={onClose} aria-label='Close navigation drawer' />
-          <motion.div ref={drawerRef} initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 25, stiffness: 300 }} className='fixed top-0 left-0 z-[9999] h-full w-[280px] overflow-y-auto rounded-r-xl bg-white dark:bg-slate-800 shadow-lg md:hidden' role='dialog' aria-modal='true' aria-label='Navigation drawer'>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className='fixed inset-0 z-[9998] bg-black md:hidden'
+            onClick={onClose}
+            aria-label='Close navigation drawer'
+          />
+          <motion.div
+            ref={drawerRef}
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className='fixed top-0 left-0 z-[9999] h-full w-[280px] overflow-y-auto rounded-r-xl bg-white dark:bg-slate-800 shadow-lg md:hidden'
+            role='dialog'
+            aria-modal='true'
+            aria-label='Navigation drawer'
+          >
             {/* Header */}
             <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-4'>
               <Link to={path.home} onClick={onClose} className='flex items-end gap-1'>
@@ -87,8 +119,17 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 </svg>
                 <span className='text-lg font-normal text-orange dark:text-orange-400'>Shopee</span>
               </Link>
-              <button onClick={onClose} className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-slate-700' aria-label='Close navigation drawer'>
-                <svg className='h-6 w-6 text-gray-600 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <button
+                onClick={onClose}
+                className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
+                aria-label='Close navigation drawer'
+              >
+                <svg
+                  className='h-6 w-6 text-gray-600 dark:text-gray-300'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
               </button>
@@ -99,44 +140,109 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
               {/* Navigation Section */}
               <div className='space-y-1'>
                 <button onClick={() => go(path.home)} className={ITEM}>
-                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25' />
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-5 w-5 flex-shrink-0'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'
+                    />
                   </svg>
                   Trang chủ
                 </button>
 
                 <button onClick={() => go(path.notifications)} className={ITEM}>
                   <div className='relative flex-shrink-0'>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0' />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+                      />
                     </svg>
                     {isAuthenticated && unreadCount > 0 && (
-                      <span className='absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-orange text-[8px] text-white'>{unreadCount > 9 ? '9+' : unreadCount}</span>
+                      <span className='absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-orange text-[8px] text-white'>
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
                     )}
                   </div>
                   <span>Thông báo</span>
                   {isAuthenticated && unreadCount > 0 && (
-                    <span className='ml-auto rounded-full bg-orange/10 dark:bg-orange/20 px-2 py-0.5 text-[10px] text-orange dark:text-orange-400 font-medium'>{unreadCount} mới</span>
+                    <span className='ml-auto rounded-full bg-orange/10 dark:bg-orange/20 px-2 py-0.5 text-[10px] text-orange dark:text-orange-400 font-medium'>
+                      {unreadCount} mới
+                    </span>
                   )}
                 </button>
 
                 <button onClick={() => go(path.cart)} className={ITEM}>
-                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121 0 2.002-.881 2.002-2.003V6.75m-14.22 0h14.22m-14.22 0L5.106 5.272M7.5 14.25L5.106 5.272m0 0a2.25 2.25 0 00-2.147-1.584H2.25' />
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-5 w-5 flex-shrink-0'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121 0 2.002-.881 2.002-2.003V6.75m-14.22 0h14.22m-14.22 0L5.106 5.272M7.5 14.25L5.106 5.272m0 0a2.25 2.25 0 00-2.147-1.584H2.25'
+                    />
                   </svg>
                   Giỏ hàng
                 </button>
 
                 <button onClick={() => go(path.wishlist)} className={ITEM}>
-                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z' />
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-5 w-5 flex-shrink-0'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
+                    />
                   </svg>
                   Yêu thích
                 </button>
 
-                <a href='https://banhang.shopee.vn/' target='_blank' rel='noopener noreferrer' className={ITEM} onClick={onClose}>
-                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.15c0 .415.336.75.75.75z' />
+                <a
+                  href='https://banhang.shopee.vn/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className={ITEM}
+                  onClick={onClose}
+                >
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-5 w-5 flex-shrink-0'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.15c0 .415.336.75.75.75z'
+                    />
                   </svg>
                   Kênh người bán
                 </a>
@@ -150,8 +256,19 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 {/* Theme Toggle */}
                 <div className='flex items-center justify-between rounded-lg px-3 py-2.5'>
                   <span className='flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200'>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z' />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 flex-shrink-0'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z'
+                      />
                     </svg>
                     Giao diện
                   </span>
@@ -161,14 +278,35 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 {/* Language Switcher */}
                 <div className='flex items-center justify-between rounded-lg px-3 py-2.5'>
                   <span className='flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200'>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418' />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 flex-shrink-0'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
+                      />
                     </svg>
                     Ngôn ngữ
                   </span>
                   <div className='flex gap-1'>
-                    <button onClick={() => handleTranslateLanguage('vi')} className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'Tiếng Việt' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}>VI</button>
-                    <button onClick={() => handleTranslateLanguage('en')} className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'English' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}>EN</button>
+                    <button
+                      onClick={() => handleTranslateLanguage('vi')}
+                      className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'Tiếng Việt' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}
+                    >
+                      VI
+                    </button>
+                    <button
+                      onClick={() => handleTranslateLanguage('en')}
+                      className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'English' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}
+                    >
+                      EN
+                    </button>
                   </div>
                 </div>
 
@@ -176,12 +314,28 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 {isAdmin && isAuthenticated && (
                   <div className='flex items-center justify-between rounded-lg px-3 py-2.5'>
                     <span className='flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200'>
-                      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z' />
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='h-5 w-5 flex-shrink-0'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'
+                        />
                       </svg>
                       Cảnh báo kho
                     </span>
-                    <InventoryAlertBadge alerts={inventoryAlerts} unreadCount={inventoryUnreadCount} onClear={clearInventoryAlerts} className='cursor-pointer' />
+                    <InventoryAlertBadge
+                      alerts={inventoryAlerts}
+                      unreadCount={inventoryUnreadCount}
+                      onClear={clearInventoryAlerts}
+                      className='cursor-pointer'
+                    />
                   </div>
                 )}
               </div>
@@ -195,33 +349,87 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                   {/* User info */}
                   <div className='flex items-center gap-3 rounded-lg px-3 py-2.5'>
                     <div className='h-8 w-8 flex-shrink-0'>
-                      <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
+                      <img
+                        src={getAvatarUrl(profile?.avatar)}
+                        alt='avatar'
+                        className='h-full w-full rounded-full object-cover'
+                      />
                     </div>
-                    <span className='truncate text-sm font-medium text-gray-800 dark:text-gray-100'>{profile?.email}</span>
+                    <span className='truncate text-sm font-medium text-gray-800 dark:text-gray-100'>
+                      {profile?.email}
+                    </span>
                   </div>
                   <button onClick={() => go(path.profile)} className={ITEM}>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z' />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 flex-shrink-0'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
+                      />
                     </svg>
                     Tài khoản của tôi
                   </button>
                   <button onClick={() => go(path.historyPurchases)} className={ITEM}>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z' />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 flex-shrink-0'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z'
+                      />
                     </svg>
                     Đơn mua
                   </button>
-                  <button onClick={handleLogout} className={`${ITEM} text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20`}>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='h-5 w-5 flex-shrink-0'>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75' />
+                  <button
+                    onClick={handleLogout}
+                    className={`${ITEM} text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20`}
+                  >
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 flex-shrink-0'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75'
+                      />
                     </svg>
                     Đăng xuất
                   </button>
                 </div>
               ) : (
                 <div className='space-y-2 px-3 pt-1'>
-                  <Link to={path.login} onClick={onClose} className='block w-full rounded-lg bg-orange py-2.5 text-center text-sm font-medium text-white hover:bg-orange/90 transition-colors'>Đăng nhập</Link>
-                  <Link to={path.register} onClick={onClose} className='block w-full rounded-lg border border-orange py-2.5 text-center text-sm font-medium text-orange dark:text-orange-400 hover:bg-orange/5 dark:hover:bg-orange/10 transition-colors'>Đăng ký</Link>
+                  <Link
+                    to={path.login}
+                    onClick={onClose}
+                    className='block w-full rounded-lg bg-orange py-2.5 text-center text-sm font-medium text-white hover:bg-orange/90 transition-colors'
+                  >
+                    Đăng nhập
+                  </Link>
+                  <Link
+                    to={path.register}
+                    onClick={onClose}
+                    className='block w-full rounded-lg border border-orange py-2.5 text-center text-sm font-medium text-orange dark:text-orange-400 hover:bg-orange/5 dark:hover:bg-orange/10 transition-colors'
+                  >
+                    Đăng ký
+                  </Link>
                 </div>
               )}
             </div>
@@ -235,4 +443,3 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
 }
 
 export default MobileNavigationDrawer
-

@@ -26,7 +26,11 @@ const useNotifications = () => {
   const [realtimeNotifications, setRealtimeNotifications] = useState<NotificationPayload[]>([])
 
   // REST API: initial load
-  const { data: notificationsData, isLoading, isError } = useQuery({
+  const {
+    data: notificationsData,
+    isLoading,
+    isError
+  } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => notificationApi.getNotifications(),
     staleTime: 5 * 60 * 1000
@@ -63,9 +67,7 @@ const useNotifications = () => {
   // Merge REST + socket notifications (deduplicated)
   const notifications: Notification[] = useMemo(() => {
     const apiIds = new Set(apiNotifications.map((n) => n._id))
-    const newRealtime = realtimeNotifications
-      .filter((n) => !apiIds.has(n._id))
-      .map(convertSocketToNotification)
+    const newRealtime = realtimeNotifications.filter((n) => !apiIds.has(n._id)).map(convertSocketToNotification)
     return [...newRealtime, ...apiNotifications]
   }, [apiNotifications, realtimeNotifications])
 
