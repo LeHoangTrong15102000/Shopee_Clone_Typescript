@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import NavHeader from '../NavHeader'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import path from 'src/constant/path'
 import useSearchProducts from 'src/hooks/useSearchProducts'
 import { motion } from 'framer-motion'
@@ -105,8 +105,99 @@ const CartHeader = ({ title = 'giỏ hàng' }: CartHeaderProps) => {
           </nav>
         </div>
       </div>
+      {/* Shopping Flow Breadcrumb Bar */}
+      <CartShoppingFlow />
       {/* Mobile Navigation Drawer */}
       <MobileNavigationDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+    </motion.div>
+  )
+}
+
+/**
+ * Shopping flow breadcrumb bar below the cart header.
+ * Shows: Trang chủ > Giỏ hàng, plus a visual step indicator for the shopping journey.
+ */
+const SHOPPING_STEPS = [
+  { label: 'Giỏ hàng', path: path.cart },
+  { label: 'Thanh toán', path: path.checkout },
+  { label: 'Hoàn tất', path: '' }
+]
+
+const CartShoppingFlow = () => {
+  const location = useLocation()
+
+  // Determine current step based on route
+  const currentStepIndex = SHOPPING_STEPS.findIndex((step) => step.path && location.pathname === step.path)
+  const activeStep = currentStepIndex >= 0 ? currentStepIndex : 0
+
+  return (
+    <motion.div
+      className='bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700'
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: 0.15 }}
+    >
+      <div className='container py-2.5 md:py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2'>
+        {/* Breadcrumb */}
+        <nav aria-label='Breadcrumb' className='text-xs md:text-sm'>
+          <ol className='flex items-center gap-1.5'>
+            <li>
+              <Link to={path.home} className='text-gray-500 dark:text-gray-400 hover:text-orange transition-colors'>
+                Trang chủ
+              </Link>
+            </li>
+            <li>
+              <span className='text-gray-300 dark:text-gray-600'>/</span>
+            </li>
+            <li>
+              <span className='text-gray-800 dark:text-gray-200 font-medium' aria-current='page'>
+                Giỏ hàng
+              </span>
+            </li>
+          </ol>
+        </nav>
+
+        {/* Step Indicator */}
+        <div className='flex items-center gap-1 md:gap-1.5'>
+          {SHOPPING_STEPS.map((step, index) => (
+            <div key={step.label} className='flex items-center'>
+              {index > 0 && (
+                <div
+                  className={`w-6 md:w-10 h-[2px] mx-0.5 md:mx-1 transition-colors ${
+                    index <= activeStep ? 'bg-orange dark:bg-orange-400' : 'bg-gray-200 dark:bg-slate-600'
+                  }`}
+                />
+              )}
+              <div className='flex items-center gap-1'>
+                <div
+                  className={`flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full text-[10px] md:text-xs font-medium transition-colors ${
+                    index <= activeStep
+                      ? 'bg-orange text-white dark:bg-orange-500'
+                      : 'bg-gray-200 dark:bg-slate-600 text-gray-400 dark:text-gray-400'
+                  }`}
+                >
+                  {index < activeStep ? (
+                    <svg className='h-3 w-3' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={3}>
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
+                    </svg>
+                  ) : (
+                    index + 1
+                  )}
+                </div>
+                <span
+                  className={`text-[10px] md:text-xs transition-colors ${
+                    index <= activeStep
+                      ? 'text-orange dark:text-orange-400 font-medium'
+                      : 'text-gray-400 dark:text-gray-500'
+                  }`}
+                >
+                  {step.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </motion.div>
   )
 }
