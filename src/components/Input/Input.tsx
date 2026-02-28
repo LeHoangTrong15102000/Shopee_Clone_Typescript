@@ -56,8 +56,32 @@ const Input = <
 Props<TFieldValues, TName>) => {
   // state để lưu trữ việc hiển thị con mắt
   const [openEye, setOpenEye] = useState(false)
+  // state để lưu trữ trạng thái focus của input -> label float lên khi focus
+  const [isFocused, setIsFocused] = useState(false)
   const reducedMotion = useReducedMotion()
   const registerResult = register && name ? register(name, rules as any) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
+
+  // Label hiển thị khi focus HOẶC khi có giá trị
+  const hasValue = Boolean(rest.value)
+  const showFloatingLabel = isFocused || hasValue
+
+  // Label text: ưu tiên placeholder, fallback sang capitalize name
+  const labelText = rest.placeholder || name?.slice(0, 1).toUpperCase() + name?.slice(1)
+
+  // Handle focus/blur events, kết hợp với onFocus/onBlur từ props và registerResult
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true)
+    // Gọi onFocus từ props nếu có
+    rest.onFocus?.(e)
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(false)
+    // Gọi onBlur từ registerResult (react-hook-form) nếu có
+    registerResult?.onBlur?.(e)
+    // Gọi onBlur từ props nếu có
+    rest.onBlur?.(e)
+  }
 
   // func toggle eye
   const handleToggleEye = () => {
@@ -87,19 +111,26 @@ Props<TFieldValues, TName>) => {
 
   return (
     <div className={className}>
-      {rest.value && (
-        <label
-          className='absolute top-[-12px] left-[8px] block animate-slide-top-sm bg-white dark:bg-slate-800 px-1 py-1 text-[12px] italic text-gray-700 dark:text-gray-300 transition-all duration-300 ease-out'
-          htmlFor={name}
-        >
-          {name?.slice(0, 1).toUpperCase() + name?.slice(1)}
-        </label>
-      )}
+      <label
+        className={`pointer-events-none absolute left-[10px] z-10 bg-white px-1 text-[12px] italic transition-all duration-200 ease-out dark:bg-slate-800 ${
+          showFloatingLabel
+            ? 'top-[-10px] text-gray-600 opacity-100 dark:text-gray-300'
+            : 'top-[14px] text-gray-400 opacity-0 dark:text-gray-500'
+        }`}
+        htmlFor={name}
+      >
+        {labelText}
+      </label>
       <input
         className={getInputClassName()}
         // Tự sinh ra cho chúng ta với name là email, nó sẽ tự sinh ra cho chúng ta nên không cần truyền vào
         {...registerResult}
         {...rest}
+        // Override onFocus/onBlur để handle floating label
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        // Ẩn placeholder khi label đang float
+        placeholder={showFloatingLabel ? '' : rest.placeholder}
         // Ensure name and type are passed through properly
         name={name}
         type={handleTypeToggleEye()}

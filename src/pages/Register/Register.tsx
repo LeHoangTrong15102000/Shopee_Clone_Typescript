@@ -197,6 +197,7 @@ const Register = () => {
                   </Button>
                 </div>
               </motion.div>
+
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex flex-col items-center justify-center text-[13px] text-gray-700 dark:text-gray-300'>
                   <div className='px-3'>Bằng việc đăng kí, bạn đã đồng ý với Shopee về</div>

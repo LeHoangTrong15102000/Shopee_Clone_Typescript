@@ -1,8 +1,7 @@
-// Test App
-import { describe, expect, test } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
+import { describe, expect, test } from 'vitest'
 import path from './constant/path'
-import { renderWithRouter, waitForPageLoad, getFirstElementByText } from './utils/testUtils'
+import { getFirstElementByText, renderWithRouter, waitForPageLoad } from './utils/testUtils'
 
 describe('App', () => {
   test('App render và chuyển trang', { timeout: 15000 }, async () => {
@@ -50,9 +49,7 @@ describe('App', () => {
     await waitFor(
       () => {
         expect(
-          screen.queryByText(/Page Not Found/i) ||
-            screen.queryByText(/404/i) ||
-            window.location.pathname === badRoute
+          screen.queryByText(/Page Not Found/i) || screen.queryByText(/404/i) || window.location.pathname === badRoute
         ).toBeTruthy()
       },
       { timeout: 10000 }
