@@ -1,9 +1,8 @@
 import { useCallback } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import notificationApi from 'src/apis/notification.api'
 import { useOptimisticNotification } from 'src/hooks/optimistic'
 import { formatTimeAgo } from 'src/utils/utils'
 import { useKeyboardNavigation } from 'src/hooks/useKeyboardNavigation'
+import useNotifications from 'src/hooks/useNotifications'
 
 interface NotificationListProps {
   className?: string
@@ -11,15 +10,7 @@ interface NotificationListProps {
 
 const NotificationList = ({ className }: NotificationListProps) => {
   const { markAsReadMutation, markAllAsReadMutation } = useOptimisticNotification()
-
-  const { data: notificationsData, isLoading } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => notificationApi.getNotifications(),
-    staleTime: 5 * 60 * 1000
-  })
-
-  const notifications = notificationsData?.data.data.notifications || []
-  const unreadCount = notificationsData?.data.data.unreadCount || 0
+  const { notifications, unreadCount, isLoading } = useNotifications()
 
   const handleMarkAsRead = useCallback(
     (notificationId: string) => {

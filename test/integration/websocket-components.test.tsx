@@ -36,6 +36,11 @@ vi.mock('src/hooks/useTypingIndicator', () => ({
   default: () => ({ typingUsers: [], startTyping: vi.fn(), stopTyping: vi.fn() })
 }))
 
+let mockSellerDashboard = { metrics: { today_orders: 0, today_revenue: 0, pending_orders: 0, pending_qa: 0 }, orderNotifications: [] as any[], qaNotifications: [] as any[], isActive: false }
+vi.mock('src/hooks/useSellerDashboard', () => ({
+  default: () => mockSellerDashboard
+}))
+
 const createMessage = (overrides: Partial<MessageReceivedPayload> = {}): MessageReceivedPayload => ({
   _id: '1', chat_id: 'chat1', sender: { _id: 'user1', name: 'Seller', avatar: '' },
   content: 'Hello', message_type: 'text', status: 'sent', created_at: '2026-02-07T10:00:00Z', ...overrides
@@ -240,9 +245,16 @@ describe('WebSocket UI Components', () => {
     })
 
     test('shows step timestamp for completed steps', () => {
-      const timestamps = { pending: new Date().toISOString() }
+      const now = new Date()
+      const timestamps = { pending: now.toISOString() }
       render(<OrderStatusTracker currentStatus='confirmed' isSubscribed={false} stepTimestamps={timestamps} />)
-      expect(screen.getByText(/Vừa cập nhật/)).toBeInTheDocument()
+      // formatLastUpdate returns "HH:mm DD-MM-YYYY"
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const year = now.getFullYear()
+      expect(screen.getByText(`${hours}:${minutes} ${day}-${month}-${year}`)).toBeInTheDocument()
     })
 
     test('renders with null currentStatus', () => {
@@ -575,28 +587,35 @@ describe('Phase3 - ActivityFeedWidget Component', () => {
 describe('Phase3 - SellerDashboardPanel Component', () => {
   const defaultMetrics = { today_orders: 10, today_revenue: 5000000, pending_orders: 3, pending_qa: 2 }
 
+  beforeEach(() => {
+    mockSellerDashboard = { metrics: defaultMetrics, orderNotifications: [], qaNotifications: [], isActive: false }
+  })
+
   test('renders nothing when not active', () => {
+    mockSellerDashboard.isActive = false
     const { container } = render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={[]} qaNotifications={[]} isActive={false} />
+        <SellerDashboardPanel />
       </MemoryRouter>
     )
     expect(container.firstChild).toBeNull()
   })
 
   test('shows dashboard title when active', () => {
+    mockSellerDashboard.isActive = true
     render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={[]} qaNotifications={[]} isActive={true} />
+        <SellerDashboardPanel />
       </MemoryRouter>
     )
     expect(screen.getByText(/Bảng điều khiển người bán/)).toBeInTheDocument()
   })
 
   test('shows metrics cards', () => {
+    mockSellerDashboard.isActive = true
     render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={[]} qaNotifications={[]} isActive={true} />
+        <SellerDashboardPanel />
       </MemoryRouter>
     )
     expect(screen.getByText('10')).toBeInTheDocument()
@@ -608,12 +627,13 @@ describe('Phase3 - SellerDashboardPanel Component', () => {
   })
 
   test('shows order notifications', () => {
-    const notifications = [
+    mockSellerDashboard.isActive = true
+    mockSellerDashboard.orderNotifications = [
       { order_id: 'o1', status: 'pending', product_names: ['iPhone 15'], total: 25000000, timestamp: '2026-02-08T10:00:00Z' }
     ]
     render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={notifications} qaNotifications={[]} isActive={true} />
+        <SellerDashboardPanel />
       </MemoryRouter>
     )
     expect(screen.getByText('iPhone 15')).toBeInTheDocument()
@@ -621,12 +641,13 @@ describe('Phase3 - SellerDashboardPanel Component', () => {
   })
 
   test('shows QA notifications with product links', () => {
-    const qaNotifications = [
+    mockSellerDashboard.isActive = true
+    mockSellerDashboard.qaNotifications = [
       { product_id: 'prod-123', product_name: 'Samsung Galaxy', question_preview: 'Có bảo hành không?', user_name: 'Nguyen Van A' }
     ]
     render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={[]} qaNotifications={qaNotifications} isActive={true} />
+        <SellerDashboardPanel />
       </MemoryRouter>
     )
     expect(screen.getByText(/Nguyen Van A/)).toBeInTheDocument()
@@ -639,9 +660,10 @@ describe('Phase3 - SellerDashboardPanel Component', () => {
   })
 
   test('applies custom className', () => {
+    mockSellerDashboard.isActive = true
     const { container } = render(
       <MemoryRouter>
-        <SellerDashboardPanel metrics={defaultMetrics} orderNotifications={[]} qaNotifications={[]} isActive={true} className='w-80' />
+        <SellerDashboardPanel className='w-80' />
       </MemoryRouter>
     )
     expect(container.firstChild).toHaveClass('w-80')

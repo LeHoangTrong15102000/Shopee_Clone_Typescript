@@ -25,25 +25,42 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 type EventHandler = (...args: any[]) => void
 const mockEventHandlers = new Map<string, EventHandler[]>()
 
+const onImpl = (event: string, handler: EventHandler) => {
+  const handlers = mockEventHandlers.get(event) || []
+  handlers.push(handler)
+  mockEventHandlers.set(event, handlers)
+}
+
+const offImpl = (event: string, handler?: EventHandler) => {
+  if (handler) {
+    const handlers = mockEventHandlers.get(event) || []
+    mockEventHandlers.set(event, handlers.filter((h) => h !== handler))
+  } else {
+    mockEventHandlers.delete(event)
+  }
+}
+
 const mockSocket = {
   connected: false,
-  on: vi.fn((event: string, handler: EventHandler) => {
-    const handlers = mockEventHandlers.get(event) || []
-    handlers.push(handler)
-    mockEventHandlers.set(event, handlers)
-  }),
-  off: vi.fn((event: string, handler?: EventHandler) => {
-    if (handler) {
-      const handlers = mockEventHandlers.get(event) || []
-      mockEventHandlers.set(event, handlers.filter((h) => h !== handler))
-    } else {
-      mockEventHandlers.delete(event)
-    }
-  }),
+  on: vi.fn(onImpl),
+  off: vi.fn(offImpl),
   emit: vi.fn(),
   connect: vi.fn(),
   disconnect: vi.fn(),
-  removeAllListeners: vi.fn()
+  removeAllListeners: vi.fn(() => { mockEventHandlers.clear() })
+}
+
+/** Restore mock implementations after vi.clearAllMocks() */
+const restoreMockSocket = async () => {
+  mockSocket.on.mockImplementation(onImpl)
+  mockSocket.off.mockImplementation(offImpl)
+  mockSocket.removeAllListeners.mockImplementation(() => { mockEventHandlers.clear() })
+  // Restore io mock - must return mockSocket
+  const socketIoModule = await import('socket.io-client')
+  ;(socketIoModule.io as ReturnType<typeof vi.fn>).mockReturnValue(mockSocket)
+  // Restore auth mock - getAccessTokenFromLS returns 'mock-token'
+  const authModule = await import('src/utils/auth')
+  ;(authModule.getAccessTokenFromLS as ReturnType<typeof vi.fn>).mockReturnValue('mock-token')
 }
 
 const emitSocketEvent = (event: string, data?: any) => {
@@ -51,7 +68,34 @@ const emitSocketEvent = (event: string, data?: any) => {
   handlers.forEach((handler) => handler(data))
 }
 
+/** Wait for the SocketProvider to register its connect handler (async import completes) */
+const waitForSocketReady = async (maxWait = 500) => {
+  const start = Date.now()
+  while (Date.now() - start < maxWait) {
+    if (mockEventHandlers.has('connect')) {
+      return true
+    }
+    await delay(10)
+  }
+  return false
+}
+
+/** Helper to connect socket in tests - waits for handler registration then emits connect */
+const connectSocket = async () => {
+  await waitForSocketReady()
+  emitSocketEvent('connect')
+  await delay(20) // Allow React state updates to propagate
+}
+
 vi.mock('socket.io-client', () => ({ io: vi.fn(() => mockSocket) }))
+vi.mock('src/constant/config', () => ({
+  default: {
+    baseUrl: 'https://api-ecom.duthanhduoc.com/',
+    socketUrl: 'https://api-ecom.duthanhduoc.com',
+    maxSizeUploadAvatar: 1048576,
+    enableSocket: true
+  }
+}))
 vi.mock('src/utils/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('src/utils/auth')>()
   return { ...actual, getAccessTokenFromLS: vi.fn(() => 'mock-token') }
@@ -87,7 +131,7 @@ const createAdminWrapper = () => {
 }
 
 describe('12.1 - WebSocket Connection with Authentication', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks() })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket() })
 
   test('connects when authenticated', async () => {
     const wrapper = createWrapper(true)
@@ -104,7 +148,7 @@ describe('12.1 - WebSocket Connection with Authentication', () => {
 })
 
 describe('12.2 - Real-time Chat', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('joinChat emits JOIN_CHAT event', async () => {
@@ -137,7 +181,7 @@ describe('12.2 - Real-time Chat', () => {
 })
 
 describe('12.3 - Typing Indicators', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
 
   test('startTyping emits TYPING_START', async () => {
     const wrapper = createWrapper(true)
@@ -156,7 +200,7 @@ describe('12.3 - Typing Indicators', () => {
 })
 
 describe('12.4 - Notification Delivery', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
 
   test('NOTIFICATION adds to notifications and increments unreadCount', async () => {
     const { toast } = await import('react-toastify')
@@ -181,7 +225,7 @@ describe('12.4 - Notification Delivery', () => {
 })
 
 describe('12.5 - Reconnection', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks() })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket() })
 
   test('disconnect event updates connectionStatus', async () => {
     const wrapper = createWrapper(true)
@@ -204,27 +248,27 @@ describe('12.6 - Graceful Degradation', () => {
 })
 
 describe('Phase2 12.1 - Order Tracking Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('subscribes to order room on mount', async () => {
     const wrapper = createWrapper(true)
     renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(mockSocket.emit).toHaveBeenCalledWith('subscribe_order', { order_id: 'order-123' })
   })
 
   test('returns isSubscribed=true when connected with orderId', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(result.current.isSubscribed).toBe(true)
   })
 
   test('handles ORDER_STATUS_UPDATED event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('order_status_updated', {
         order_id: 'order-123',
@@ -244,7 +288,7 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
   test('ignores events for different order IDs', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('order_status_updated', {
         order_id: 'order-999',
@@ -260,7 +304,7 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createWrapper(true)
     renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('order_status_updated', {
         order_id: 'order-123',
@@ -276,7 +320,7 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createWrapper(true)
     renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('order_status_updated', {
         order_id: 'order-123',
@@ -291,7 +335,7 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
   test('unsubscribes on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useOrderTracking('order-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.emit).toHaveBeenCalledWith('unsubscribe_order', { order_id: 'order-123' })
   })
@@ -305,20 +349,20 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
 })
 
 describe('Phase2 12.2 - Flash Sale Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('subscribes to flash sale room on mount', async () => {
     const wrapper = createWrapper(true)
     renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(mockSocket.emit).toHaveBeenCalledWith('subscribe_flash_sale', { sale_id: 'sale-123' })
   })
 
   test('handles FLASH_SALE_TICK event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('flash_sale_tick', {
         sale_id: 'sale-123',
@@ -338,7 +382,7 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
   test('handles FLASH_SALE_STOCK_UPDATE event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('flash_sale_tick', {
         sale_id: 'sale-123',
@@ -363,7 +407,7 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
   test('sets isEnded when remaining_seconds reaches 0', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('flash_sale_tick', {
         sale_id: 'sale-123',
@@ -380,7 +424,7 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
   test('ignores events for different sale IDs', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('flash_sale_tick', {
         sale_id: 'sale-999',
@@ -394,7 +438,7 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
   test('unsubscribes on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useFlashSale('sale-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.emit).toHaveBeenCalledWith('unsubscribe_flash_sale', { sale_id: 'sale-123' })
   })
@@ -408,13 +452,13 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
 })
 
 describe('Phase2 12.3 - Viewer Count Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('handles VIEWER_COUNT_UPDATE event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useViewerCount('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('viewer_count_update', { product_id: 'product-123', viewer_count: 5 })
     })
@@ -427,7 +471,7 @@ describe('Phase2 12.3 - Viewer Count Hook', () => {
   test('sets isPopular when viewerCount > 10', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useViewerCount('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('viewer_count_update', { product_id: 'product-123', viewer_count: 15 })
     })
@@ -440,7 +484,7 @@ describe('Phase2 12.3 - Viewer Count Hook', () => {
   test('ignores events for different product IDs', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useViewerCount('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('viewer_count_update', { product_id: 'product-999', viewer_count: 20 })
     })
@@ -450,7 +494,7 @@ describe('Phase2 12.3 - Viewer Count Hook', () => {
   test('cleans up listener on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useViewerCount('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith('viewer_count_update', expect.any(Function))
   })
@@ -478,13 +522,13 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
     )
   }
 
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('handles CART_UPDATED event and sets isSyncing', async () => {
     const wrapper = createCartSyncWrapper(true)
     const { result } = renderHook(() => useCartSync(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('cart_updated', {
         user_id: 'user-1',
@@ -502,7 +546,7 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
   test('resets isSyncing after timeout', async () => {
     const wrapper = createCartSyncWrapper(true)
     const { result } = renderHook(() => useCartSync(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('cart_updated', {
         user_id: 'user-1',
@@ -527,7 +571,7 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createCartSyncWrapper(true)
     renderHook(() => useCartSync(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('cart_updated', {
         user_id: 'user-1',
@@ -541,27 +585,27 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
   test('cleans up listener on unmount', async () => {
     const wrapper = createCartSyncWrapper(true)
     const { unmount } = renderHook(() => useCartSync(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith('cart_updated', expect.any(Function))
   })
 })
 
 describe('Phase1 11.1 - usePresence Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('emits get_presence on mount with userId', async () => {
     const wrapper = createWrapper(true)
     renderHook(() => usePresence('user-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(mockSocket.emit).toHaveBeenCalledWith(SocketEvent.GET_PRESENCE, { user_id: 'user-123' })
   })
 
   test('handles presence_status response', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => usePresence('user-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRESENCE_STATUS, { user_id: 'user-123', status: 'online', last_seen: null })
     })
@@ -574,7 +618,7 @@ describe('Phase1 11.1 - usePresence Hook', () => {
   test('handles presence_update for tracked user', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => usePresence('user-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRESENCE_UPDATE, { user_id: 'user-123', status: 'offline', last_seen: '2026-02-08T10:00:00Z' })
     })
@@ -588,7 +632,7 @@ describe('Phase1 11.1 - usePresence Hook', () => {
   test('ignores presence updates for different users', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => usePresence('user-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRESENCE_UPDATE, { user_id: 'user-999', status: 'online', last_seen: null })
     })
@@ -599,7 +643,7 @@ describe('Phase1 11.1 - usePresence Hook', () => {
   test('cleans up listeners on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => usePresence('user-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith(SocketEvent.PRESENCE_STATUS, expect.any(Function))
     expect(mockSocket.off).toHaveBeenCalledWith(SocketEvent.PRESENCE_UPDATE, expect.any(Function))
@@ -616,20 +660,20 @@ describe('Phase1 11.1 - usePresence Hook', () => {
 
 
 describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('subscribes to product room on mount', async () => {
     const wrapper = createWrapper(true)
     renderHook(() => useLivePriceUpdate('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(mockSocket.emit).toHaveBeenCalledWith(SocketEvent.SUBSCRIBE_PRODUCT, { product_id: 'product-123' })
   })
 
   test('handles price_updated event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLivePriceUpdate('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRICE_UPDATED, {
         product_id: 'product-123',
@@ -650,7 +694,7 @@ describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
   test('ignores price updates for different products', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLivePriceUpdate('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRICE_UPDATED, {
         product_id: 'product-999',
@@ -667,7 +711,7 @@ describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createWrapper(true)
     renderHook(() => useLivePriceUpdate('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.PRICE_ALERT_TRIGGERED, {
         alert_id: 'alert-1',
@@ -683,7 +727,7 @@ describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
   test('unsubscribes on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useLivePriceUpdate('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.emit).toHaveBeenCalledWith(SocketEvent.UNSUBSCRIBE_PRODUCT, { product_id: 'product-123' })
     expect(mockSocket.off).toHaveBeenCalledWith(SocketEvent.PRICE_UPDATED, expect.any(Function))
@@ -699,13 +743,13 @@ describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
 })
 
 describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('subscribes to inventory alerts when admin', async () => {
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.INVENTORY_ALERT, {
         product_id: 'product-1',
@@ -724,7 +768,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
   test('does not subscribe when not admin', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.INVENTORY_ALERT, {
         product_id: 'product-1',
@@ -742,7 +786,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.INVENTORY_ALERT, {
         product_id: 'product-1',
@@ -762,7 +806,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
     const { toast } = await import('react-toastify')
     const wrapper = createAdminWrapper()
     renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.INVENTORY_ALERT, {
         product_id: 'product-1',
@@ -778,7 +822,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
   test('clearAlerts resets alerts and unreadCount', async () => {
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent(SocketEvent.INVENTORY_ALERT, {
         product_id: 'product-1',
@@ -797,7 +841,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
   test('cleans up listener on unmount', async () => {
     const wrapper = createAdminWrapper()
     const { unmount } = renderHook(() => useInventoryAlerts(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith(SocketEvent.INVENTORY_ALERT, expect.any(Function))
   })
@@ -805,13 +849,13 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
 
 
 describe('Phase3 12.1 - useLiveReviews Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('handles NEW_REVIEW event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveReviews('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('new_review', {
         product_id: 'product-123',
@@ -827,7 +871,7 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
   test('handles NEW_REVIEW_COMMENT event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveReviews('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('new_review_comment', {
         product_id: 'product-123',
@@ -843,7 +887,7 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
   test('handles REVIEW_LIKED event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveReviews('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('review_liked', {
         product_id: 'product-123',
@@ -859,7 +903,7 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
   test('ignores events for different productId', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveReviews('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('new_review', {
         product_id: 'product-999',
@@ -879,7 +923,7 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
   test('cleans up listeners on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useLiveReviews('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith('new_review', expect.any(Function))
     expect(mockSocket.off).toHaveBeenCalledWith('new_review_comment', expect.any(Function))
@@ -888,13 +932,13 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
 })
 
 describe('Phase3 12.2 - useLiveQA Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('handles NEW_QUESTION event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveQA('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('new_question', {
         product_id: 'product-123',
@@ -910,7 +954,7 @@ describe('Phase3 12.2 - useLiveQA Hook', () => {
   test('handles NEW_ANSWER event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveQA('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('new_answer', {
         product_id: 'product-123',
@@ -927,7 +971,7 @@ describe('Phase3 12.2 - useLiveQA Hook', () => {
   test('handles QUESTION_LIKED event', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useLiveQA('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('question_liked', {
         product_id: 'product-123',
@@ -950,7 +994,7 @@ describe('Phase3 12.2 - useLiveQA Hook', () => {
   test('cleans up listeners on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useLiveQA('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith('new_question', expect.any(Function))
     expect(mockSocket.off).toHaveBeenCalledWith('new_answer', expect.any(Function))
@@ -960,13 +1004,13 @@ describe('Phase3 12.2 - useLiveQA Hook', () => {
 
 
 describe('Phase3 12.3 - useActivityFeed Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('handles ACTIVITY_EVENT', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useActivityFeed('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('activity_event', {
         product_id: 'product-123',
@@ -985,7 +1029,7 @@ describe('Phase3 12.3 - useActivityFeed Hook', () => {
   test('handles ACTIVITY_BUFFER on room join', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useActivityFeed('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('activity_buffer', {
         product_id: 'product-123',
@@ -1011,7 +1055,7 @@ describe('Phase3 12.3 - useActivityFeed Hook', () => {
   test('cleans up listeners on unmount', async () => {
     const wrapper = createWrapper(true)
     const { unmount } = renderHook(() => useActivityFeed('product-123'), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.off).toHaveBeenCalledWith('activity_buffer', expect.any(Function))
     expect(mockSocket.off).toHaveBeenCalledWith('activity_event', expect.any(Function))
@@ -1019,27 +1063,27 @@ describe('Phase3 12.3 - useActivityFeed Hook', () => {
 })
 
 describe('Phase3 12.4 - useSellerDashboard Hook', () => {
-  beforeEach(() => { mockEventHandlers.clear(); vi.clearAllMocks(); mockSocket.connected = true })
+  beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
   afterEach(() => { mockSocket.connected = false })
 
   test('subscribes when admin', async () => {
     const wrapper = createAdminWrapper()
     renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(mockSocket.emit).toHaveBeenCalledWith('subscribe_seller_dashboard')
   })
 
   test('does not subscribe when not admin', async () => {
     const wrapper = createWrapper(true)
     const { result } = renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     expect(result.current.isActive).toBe(false)
   })
 
   test('handles SELLER_ORDER_NOTIFICATION event', async () => {
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('seller_order_notification', {
         order_id: 'o1',
@@ -1058,7 +1102,7 @@ describe('Phase3 12.4 - useSellerDashboard Hook', () => {
   test('handles SELLER_METRICS_UPDATE event', async () => {
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('seller_metrics_update', {
         today_orders: 5,
@@ -1078,7 +1122,7 @@ describe('Phase3 12.4 - useSellerDashboard Hook', () => {
   test('handles SELLER_QA_NOTIFICATION event', async () => {
     const wrapper = createAdminWrapper()
     const { result } = renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     act(() => {
       emitSocketEvent('seller_qa_notification', {
         product_id: 'p1',
@@ -1097,7 +1141,7 @@ describe('Phase3 12.4 - useSellerDashboard Hook', () => {
   test('unsubscribes on unmount', async () => {
     const wrapper = createAdminWrapper()
     const { unmount } = renderHook(() => useSellerDashboard(), { wrapper })
-    await act(async () => { emitSocketEvent('connect'); await delay(50) })
+    await act(async () => { await connectSocket() })
     unmount()
     expect(mockSocket.emit).toHaveBeenCalledWith('unsubscribe_seller_dashboard')
   })

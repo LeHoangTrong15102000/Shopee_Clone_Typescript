@@ -5,6 +5,7 @@ import App from 'src/App'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider, getInitialAppContext } from 'src/contexts/app.context'
+import { ThemeProvider } from 'src/contexts/theme.context'
 import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
 import { expect } from 'vitest'
 
@@ -47,7 +48,9 @@ const createWrapper = () => {
   })
   const Provider = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <HelmetProvider>{children}</HelmetProvider>
+      <ThemeProvider>
+        <HelmetProvider>{children}</HelmetProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   )
   return Provider

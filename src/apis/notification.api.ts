@@ -52,7 +52,12 @@ const mockNotifications: NotificationResponse = {
         updatedAt: new Date(Date.now() - 259200000).toISOString()
       }
     ],
-    totalCount: 5,
+    pagination: {
+      page: 1,
+      limit: 10,
+      total: 5,
+      total_pages: 1
+    },
     unreadCount: 2
   }
 }
@@ -74,7 +79,12 @@ const transformNotificationResponse = (backendResponse: any): NotificationRespon
   message: backendResponse.message,
   data: {
     notifications: backendResponse.data.notifications.map(transformNotification),
-    totalCount: backendResponse.data.pagination?.total ?? backendResponse.data.totalCount ?? 0,
+    pagination: {
+      page: backendResponse.data.pagination?.page ?? 1,
+      limit: backendResponse.data.pagination?.limit ?? 10,
+      total: backendResponse.data.pagination?.total ?? 0,
+      total_pages: backendResponse.data.pagination?.total_pages ?? 1
+    },
     unreadCount: backendResponse.data.unread_count ?? backendResponse.data.unreadCount ?? 0
   }
 })
@@ -83,6 +93,7 @@ const notificationApi = {
   // Lấy danh sách thông báo với fallback mock data
   getNotifications: async () => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await http.get<any>('/notifications')
       return { data: transformNotificationResponse(response.data) }
     } catch (error) {
@@ -98,70 +109,34 @@ const notificationApi = {
 
   // Đánh dấu thông báo đã đọc
   markAsRead: async (notificationId: string) => {
-    try {
-      const response = await http.put<any>(`/notifications/${notificationId}/read`)
-      return { data: { message: response.data.message, data: transformNotification(response.data.data) } }
-    } catch (error) {
-      console.warn('⚠️ [markAsRead] API not available, using mock data')
-      return {
-        data: {
-          message: 'Đánh dấu đã đọc thành công (mock)',
-          data: { _id: notificationId, isRead: true }
-        }
-      }
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await http.put<any>(`/notifications/${notificationId}/read`)
+    return { data: { message: response.data.message, data: transformNotification(response.data.data) } }
   },
 
   // Đánh dấu tất cả thông báo đã đọc
   markAllAsRead: async () => {
-    try {
-      const response = await http.put<any>('/notifications/read-all')
-      return { data: response.data }
-    } catch (error) {
-      console.warn('⚠️ [markAllAsRead] API not available, using mock data')
-      return {
-        data: {
-          message: 'Đánh dấu tất cả đã đọc thành công (mock)',
-          data: { updated_count: mockNotifications.data.unreadCount }
-        }
-      }
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await http.put<any>('/notifications/read-all')
+    return { data: response.data }
   },
 
   // Xóa thông báo
   deleteNotification: async (notificationId: string) => {
-    try {
-      const response = await http.delete<any>(`/notifications/${notificationId}`)
-      return { data: response.data }
-    } catch (error) {
-      console.warn('⚠️ [deleteNotification] API not available, using mock data')
-      return {
-        data: {
-          message: 'Xóa thông báo thành công (mock)',
-          data: { _id: notificationId }
-        }
-      }
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await http.delete<any>(`/notifications/${notificationId}`)
+    return { data: response.data }
   },
 
   // Lấy số thông báo chưa đọc
   getUnreadCount: async () => {
-    try {
-      const response = await http.get<any>('/notifications/unread-count')
-      return {
-        data: {
-          message: response.data.message,
-          data: { unreadCount: response.data.data.unread_count ?? response.data.data.unreadCount ?? 0 }
-        }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await http.get<any>('/notifications/unread-count')
+    return {
+      data: {
+        message: response.data.message,
+        data: { unreadCount: response.data.data.count ?? response.data.data.unread_count ?? response.data.data.unreadCount ?? 0 }
       }
-    } catch (error) {
-      // Fallback
-      console.warn('Unread count API not available, using mock response')
-      return new Promise<{ data: { message: string; data: { unreadCount: number } } }>((resolve) => {
-        setTimeout(() => {
-          resolve({ data: { message: 'Success', data: { unreadCount: 2 } } })
-        }, 200)
-      })
     }
   }
 }

@@ -1,14 +1,11 @@
 import { useCallback, useMemo, useState, useEffect, useRef } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
-import notificationApi from 'src/apis/notification.api'
 import { useOptimisticNotification } from 'src/hooks/optimistic'
 import { formatTimeAgo } from 'src/utils/utils'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { Notification } from 'src/types/notification.type'
+import { Notification, NotificationType } from 'src/types/notification.type'
 import useNotifications from 'src/hooks/useNotifications'
 import useNotificationSound from 'src/hooks/useNotificationSound'
-import { NotificationPayload } from 'src/types/socket.types'
 
 type FilterTab = 'all' | 'order' | 'promotion' | 'system' | 'other'
 
@@ -21,84 +18,39 @@ const FILTER_TABS: { key: FilterTab; label: string }[] = [
 ]
 
 // Group notification types for filtering
-const TYPE_GROUPS: Record<FilterTab, Notification['type'][]> = {
-  all: [
-    'promotion',
-    'order',
-    'system',
-    'other',
-    'new_message',
-    'order_update',
-    'flash_sale_alert',
-    'flash_sale_soldout'
-  ],
-  order: ['order', 'order_update'],
-  promotion: ['promotion', 'flash_sale_alert', 'flash_sale_soldout'],
-  system: ['system', 'new_message'],
+const TYPE_GROUPS: Record<FilterTab, NotificationType[]> = {
+  all: ['promotion', 'order', 'system', 'other'],
+  order: ['order'],
+  promotion: ['promotion'],
+  system: ['system'],
   other: ['other']
 }
-
-// Convert socket notification payload to Notification type
-const convertSocketToNotification = (payload: NotificationPayload): Notification => ({
-  _id: payload._id,
-  title: payload.title,
-  content: payload.content,
-  type: payload.type,
-  isRead: false,
-  link: payload.link,
-  createdAt: payload.created_at,
-  updatedAt: payload.created_at
-})
 
 const Notifications = () => {
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const { markAsReadMutation, markAllAsReadMutation } = useOptimisticNotification()
   const reducedMotion = useReducedMotion()
-  const queryClient = useQueryClient()
   const listRef = useRef<HTMLUListElement>(null)
 
-  // Real-time notifications hook
-  const { notifications: realtimeNotifications, isConnected } = useNotifications()
+  // Unified notifications hook (REST + socket merged)
+  const { notifications: allNotifications, unreadCount, isConnected, isLoading } = useNotifications()
 
   // Sound notification hook
   const { isMuted, toggleMute, playNotificationSound } = useNotificationSound()
 
   // Track new notification IDs for highlight animation
   const [newNotificationIds, setNewNotificationIds] = useState<Set<string>>(new Set())
+  const prevNotificationCountRef = useRef(allNotifications.length)
 
   // Track if user has scrolled down (to show "new notification" banner)
   const [showNewBanner, setShowNewBanner] = useState(false)
   const [newBannerCount, setNewBannerCount] = useState(0)
   const bannerTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const { data: notificationsData, isLoading } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => notificationApi.getNotifications(),
-    staleTime: 5 * 60 * 1000
-  })
-
-  const apiNotifications = notificationsData?.data.data.notifications || []
-  const apiUnreadCount = notificationsData?.data.data.unreadCount || 0
-
-  // Merge real-time notifications with API notifications (deduplicated)
-  const allNotifications = useMemo(() => {
-    const apiIds = new Set(apiNotifications.map((n) => n._id))
-    const convertedRealtime = realtimeNotifications.filter((n) => !apiIds.has(n._id)).map(convertSocketToNotification)
-    return [...convertedRealtime, ...apiNotifications]
-  }, [apiNotifications, realtimeNotifications])
-
-  // Calculate total unread count
-  const unreadCount = useMemo(() => {
-    const realtimeUnread = realtimeNotifications.filter(
-      (n) => !apiNotifications.some((api) => api._id === n._id)
-    ).length
-    return apiUnreadCount + realtimeUnread
-  }, [apiUnreadCount, realtimeNotifications, apiNotifications])
-
-  // Handle new real-time notifications
+  // Handle new notifications (detect when count increases)
   useEffect(() => {
-    if (realtimeNotifications.length > 0) {
-      const latestNotification = realtimeNotifications[0]
+    if (allNotifications.length > prevNotificationCountRef.current && prevNotificationCountRef.current > 0) {
+      const latestNotification = allNotifications[0]
 
       // Add to highlight set
       setNewNotificationIds((prev) => new Set([...prev, latestNotification._id]))
@@ -121,9 +73,6 @@ const Notifications = () => {
         }, 5000)
       }
 
-      // Invalidate query to sync with server
-      queryClient.invalidateQueries({ queryKey: ['notifications'] })
-
       // Remove highlight after 2 seconds
       setTimeout(() => {
         setNewNotificationIds((prev) => {
@@ -133,7 +82,8 @@ const Notifications = () => {
         })
       }, 2000)
     }
-  }, [realtimeNotifications.length, playNotificationSound, queryClient])
+    prevNotificationCountRef.current = allNotifications.length
+  }, [allNotifications, playNotificationSound])
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -174,7 +124,6 @@ const Notifications = () => {
     const iconClasses = 'h-5 w-5'
     switch (type) {
       case 'order':
-      case 'order_update':
         return (
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-100'>
             <svg className={`${iconClasses} text-green-600`} fill='currentColor' viewBox='0 0 20 20'>
@@ -183,8 +132,6 @@ const Notifications = () => {
           </div>
         )
       case 'promotion':
-      case 'flash_sale_alert':
-      case 'flash_sale_soldout':
         return (
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-red-100'>
             <svg className={`${iconClasses} text-red-600`} fill='currentColor' viewBox='0 0 20 20'>
@@ -197,7 +144,6 @@ const Notifications = () => {
           </div>
         )
       case 'system':
-      case 'new_message':
         return (
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-100'>
             <svg className={`${iconClasses} text-blue-600`} fill='currentColor' viewBox='0 0 20 20'>
@@ -246,7 +192,7 @@ const Notifications = () => {
           <div className='h-8 w-32 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
           <div className='h-8 w-40 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
         </div>
-        <div className='mb-6 flex gap-4 overflow-x-auto'>
+        <div className='mb-6 flex gap-4 overflow-x-auto scrollbar-hide'>
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className='h-8 w-20 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
           ))}
@@ -347,7 +293,7 @@ const Notifications = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className='mb-6 flex gap-1 overflow-x-auto border-b border-gray-200 pb-px md:gap-2 dark:border-slate-600'>
+      <div className='mb-6 flex gap-1 overflow-x-auto scrollbar-hide border-b border-gray-200 pb-px md:gap-2 dark:border-slate-600'>
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.key}

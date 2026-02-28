@@ -260,7 +260,7 @@ describe('Checkout Page', () => {
       await user.click(applyButton)
 
       await waitFor(() => {
-        expect(toast.success).toHaveBeenCalledWith('Áp dụng voucher thành công!')
+        expect(toast.success).toHaveBeenCalledWith('Áp dụng voucher thành công! Giảm 10.000đ')
       })
     })
 
@@ -279,7 +279,7 @@ describe('Checkout Page', () => {
       await user.click(applyButton)
 
       await waitFor(() => {
-        expect(toast.success).toHaveBeenCalledWith('Áp dụng voucher thành công!')
+        expect(toast.success).toHaveBeenCalledWith('Áp dụng voucher thành công! Giảm 50.000đ')
       })
     })
 
@@ -298,7 +298,7 @@ describe('Checkout Page', () => {
       await user.click(applyButton)
 
       await waitFor(() => {
-        expect(toast.error).toHaveBeenCalledWith('Mã voucher không hợp lệ')
+        expect(toast.error).toHaveBeenCalledWith('Mã voucher không hợp lệ. Thử: GIAM10, GIAM50K, DISCOUNT50, FREESHIP, NEWUSER')
       })
     })
   })

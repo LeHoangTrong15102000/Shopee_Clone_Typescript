@@ -21,21 +21,22 @@ const MoonIcon = () => (
 
 interface ThemeToggleProps {
   className?: string
+  colorClassName?: string
 }
 
-const ThemeToggle = ({ className = '' }: ThemeToggleProps) => {
+const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
   const { resolvedTheme, toggleTheme } = useTheme()
   const prefersReducedMotion = useReducedMotion()
   const isDark = resolvedTheme === 'dark'
+  const colorClasses = colorClassName ?? 'text-white/90 hover:text-white'
 
   return (
     <motion.button
       onClick={toggleTheme}
-      className={`text-white/90 hover:text-white transition-colors duration-200
+      className={`${colorClasses} ${className} transition-colors duration-200
                   border-none outline-none
                   focus:outline-none focus:border-none focus:ring-0
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0
-                  ${className}`}
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0`}
       whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
       whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
       aria-label={isDark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}

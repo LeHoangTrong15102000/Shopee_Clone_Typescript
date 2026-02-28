@@ -122,15 +122,7 @@ export interface NotificationPayload {
   _id: string
   title: string
   content: string
-  type:
-    | 'order'
-    | 'promotion'
-    | 'system'
-    | 'other'
-    | 'new_message'
-    | 'order_update'
-    | 'flash_sale_alert'
-    | 'flash_sale_soldout'
+  type: 'order' | 'promotion' | 'system' | 'other'
   link?: string
   created_at: string
 }

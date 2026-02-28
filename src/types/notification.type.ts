@@ -1,16 +1,10 @@
+export type NotificationType = 'order' | 'promotion' | 'system' | 'other'
+
 export interface Notification {
   _id: string
   title: string
   content: string
-  type:
-    | 'promotion'
-    | 'order'
-    | 'system'
-    | 'other'
-    | 'new_message'
-    | 'order_update'
-    | 'flash_sale_alert'
-    | 'flash_sale_soldout'
+  type: NotificationType
   isRead: boolean
   link?: string
   createdAt: string
@@ -21,7 +15,12 @@ export interface NotificationResponse {
   message: string
   data: {
     notifications: Notification[]
-    totalCount: number
+    pagination: {
+      page: number
+      limit: number
+      total: number
+      total_pages: number
+    }
     unreadCount: number
   }
 }

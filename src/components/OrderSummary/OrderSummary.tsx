@@ -1,5 +1,5 @@
 import { memo, useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { formatCurrency } from 'src/utils/utils'
 import { getEstimatedDeliveryDate } from 'src/utils/date'
 import { ExtendedPurchase } from 'src/types/purchases.type'
@@ -54,7 +54,6 @@ const OrderSummary = memo(function OrderSummary({
     return getEstimatedDeliveryDate(shippingMethod.estimatedDays)
   }, [shippingMethod])
 
-  const visibleItems = isExpanded ? items : items.slice(0, VISIBLE_ITEMS_COUNT)
   const hiddenItemsCount = items.length - VISIBLE_ITEMS_COUNT
 
   return (
@@ -80,69 +79,107 @@ const OrderSummary = memo(function OrderSummary({
       <div className='p-6'>
         {/* Collapsible Product List */}
         <div className='space-y-3'>
-          <AnimatePresence initial={false}>
-            {visibleItems.map((item, index) => (
-              <motion.div
-                key={item._id}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2, delay: index * 0.05 }}
-                className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'
-              >
-                <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
-                  <ImageWithFallback
-                    src={item.product.image}
-                    alt={item.product.name}
-                    className='h-full w-full object-cover'
-                  />
-                  <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
-                    {item.buy_count}
-                  </span>
-                </div>
-                <div className='min-w-0 flex-1'>
-                  <p className='line-clamp-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
-                    {item.product.name}
+          {/* Always-visible items */}
+          {items.slice(0, VISIBLE_ITEMS_COUNT).map((item) => (
+            <div
+              key={item._id}
+              className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'
+            >
+              <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
+                <ImageWithFallback
+                  src={item.product.image}
+                  alt={item.product.name}
+                  className='h-full w-full object-cover'
+                />
+                <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
+                  {item.buy_count}
+                </span>
+              </div>
+              <div className='min-w-0 flex-1'>
+                <p className='line-clamp-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
+                  {item.product.name}
+                </p>
+                <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>SL: {item.buy_count}</p>
+              </div>
+              <div className='text-right'>
+                <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
+                {item.price_before_discount > item.price && (
+                  <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
+                    ₫{formatCurrency(item.price_before_discount * item.buy_count)}
                   </p>
-                  <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>SL: {item.buy_count}</p>
-                </div>
-                <div className='text-right'>
-                  <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
-                  {item.price_before_discount > item.price && (
-                    <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
-                      ₫{formatCurrency(item.price_before_discount * item.buy_count)}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {/* Expandable hidden items - CSS transition for smooth 60fps animation */}
+          {hiddenItemsCount > 0 && (
+            <div
+              className='overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out'
+              style={{
+                maxHeight: isExpanded ? `${hiddenItemsCount * 100}px` : '0px',
+                opacity: isExpanded ? 1 : 0
+              }}
+            >
+              <div className='space-y-3'>
+                {items.slice(VISIBLE_ITEMS_COUNT).map((item) => (
+                  <div
+                    key={item._id}
+                    className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'
+                  >
+                    <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
+                      <ImageWithFallback
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className='h-full w-full object-cover'
+                      />
+                      <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
+                        {item.buy_count}
+                      </span>
+                    </div>
+                    <div className='min-w-0 flex-1'>
+                      <p className='line-clamp-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
+                        {item.product.name}
+                      </p>
+                      <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>SL: {item.buy_count}</p>
+                    </div>
+                    <div className='text-right'>
+                      <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
+                      {item.price_before_discount > item.price && (
+                        <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
+                          ₫{formatCurrency(item.price_before_discount * item.buy_count)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Expand/Collapse button */}
           {hiddenItemsCount > 0 && (
-            <motion.button
+            <button
               type='button'
               onClick={() => setIsExpanded(!isExpanded)}
               className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 dark:border-slate-600 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange'
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
             >
               {isExpanded ? (
                 <>
-                  <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <svg className='h-4 w-4 transition-transform duration-300' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 15l7-7 7 7' />
                   </svg>
                   Thu gọn
                 </>
               ) : (
                 <>
-                  <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <svg className='h-4 w-4 transition-transform duration-300' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                   </svg>
                   Xem thêm {hiddenItemsCount} sản phẩm
                 </>
               )}
-            </motion.button>
+            </button>
           )}
         </div>
 

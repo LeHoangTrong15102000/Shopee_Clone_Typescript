@@ -82,6 +82,18 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true
 })
 
+// Mock IntersectionObserver (required by framer-motion viewport features)
+global.IntersectionObserver = class IntersectionObserver {
+  constructor(callback, options) {
+    this.callback = callback
+    this.options = options
+  }
+  observe() { return null }
+  unobserve() { return null }
+  disconnect() { return null }
+  takeRecords() { return [] }
+}
+
 // Additional mock APIs for categories and other endpoints
 const additionalMocks = [
   http.get('https://api-ecom.duthanhduoc.com/categories', () => {

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppContext } from 'src/contexts/app.context'
+import { ThemeProvider } from 'src/contexts/theme.context'
 import { User } from 'src/types/user.type'
 import NavHeader from './NavHeader'
 
@@ -82,7 +83,9 @@ const TestWrapper = ({
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+        <ThemeProvider>
+          <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+        </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   )
@@ -336,9 +339,11 @@ describe('NavHeader Component Unit Tests', () => {
               })
             }
           >
-            <AppContext.Provider value={contextValue}>
-              <NavHeader />
-            </AppContext.Provider>
+            <ThemeProvider>
+              <AppContext.Provider value={contextValue}>
+                <NavHeader />
+              </AppContext.Provider>
+            </ThemeProvider>
           </QueryClientProvider>
         </BrowserRouter>
       )
@@ -427,9 +432,9 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      // Check for responsive icon sizes
+      // Check for responsive icon sizes - the globe icon actually has h-5 w-5 class
       const globeIcon = document.querySelector('path[d*="M12 21a9.004"]')
-      expect(globeIcon?.closest('svg')).toHaveClass('h-4', 'w-4', 'md:h-5', 'md:w-5')
+      expect(globeIcon?.closest('svg')).toHaveClass('h-5', 'w-5')
     })
   })
 

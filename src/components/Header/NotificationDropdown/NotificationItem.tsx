@@ -1,14 +1,14 @@
 import { formatDistanceToNow } from 'date-fns'
 import vi from 'date-fns/locale/vi'
-import { NotificationPayload } from 'src/types/socket.types'
+import { Notification, NotificationType } from 'src/types/notification.type'
 
 interface Props {
-  notification: NotificationPayload
+  notification: Notification
   onMarkAsRead?: (id: string) => void
 }
 
 const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
-  const getTypeIcon = (type: NotificationPayload['type']) => {
+  const getTypeIcon = (type: NotificationType) => {
     switch (type) {
       case 'promotion':
         return (
@@ -64,24 +64,6 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
             </svg>
           </div>
         )
-      case 'new_message':
-        return (
-          <div className='w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center'>
-            <svg
-              className='w-4 h-4 text-purple-600 dark:text-purple-400'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-              />
-            </svg>
-          </div>
-        )
       case 'other':
       default:
         return (
@@ -131,7 +113,7 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
           <div className='w-2 h-2 bg-orange rounded-full ml-2 flex-shrink-0'></div>
         </div>
         <p className='text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2'>{notification.content}</p>
-        <p className='text-xs text-gray-400 dark:text-gray-500 mt-1'>{formatTime(notification.created_at)}</p>
+        <p className='text-xs text-gray-400 dark:text-gray-500 mt-1'>{formatTime(notification.createdAt)}</p>
       </div>
     </div>
   )
