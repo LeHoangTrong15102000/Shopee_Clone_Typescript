@@ -2,13 +2,13 @@ import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { Link, createSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import Button from 'src/components/Button'
 import InputNumber from 'src/components/InputNumber'
 import path from 'src/constant/path'
 
 import { Category } from 'src/types/category.type'
-import { InputNumberSchema, inputNumberSchema } from 'src/utils/rules'
-import { NoUndefinedField } from 'src/types/utils.type'
+import { inputNumberSchema } from 'src/utils/rules'
 import RatingStars from 'src/pages/ProductList/components/RatingStars'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 import { useTranslation } from 'react-i18next'
@@ -17,7 +17,7 @@ interface Props {
   categories: Category[]
 }
 
-type FormData = NoUndefinedField<InputNumberSchema>
+type FormData = z.infer<typeof inputNumberSchema>
 
 const AsideFilter = ({ categories }: Props) => {
   const { t } = useTranslation('home')

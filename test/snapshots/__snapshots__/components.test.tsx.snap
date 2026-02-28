@@ -23,6 +23,12 @@ exports[`Component Snapshots > Button component renders correctly > Button-defau
 
 exports[`Component Snapshots > Input component renders correctly > Input-default 1`] = `
 <div>
+  <label
+    class="pointer-events-none absolute left-[10px] z-10 bg-white px-1 text-[12px] italic transition-all duration-200 ease-out dark:bg-slate-800 top-[14px] text-gray-400 opacity-0 dark:text-gray-500"
+    for="test"
+  >
+    Test input
+  </label>
   <input
     aria-invalid="false"
     class="w-full rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-3 shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500 transition-colors duration-150"
@@ -37,6 +43,12 @@ exports[`Component Snapshots > Input component renders correctly > Input-default
 
 exports[`Component Snapshots > Input component with error state > Input-error 1`] = `
 <div>
+  <label
+    class="pointer-events-none absolute left-[10px] z-10 bg-white px-1 text-[12px] italic transition-all duration-200 ease-out dark:bg-slate-800 top-[14px] text-gray-400 opacity-0 dark:text-gray-500"
+    for="test-error"
+  >
+    Test input
+  </label>
   <input
     aria-describedby="test-error-error"
     aria-invalid="true"

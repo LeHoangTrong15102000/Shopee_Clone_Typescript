@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import omit from 'lodash/omit'
 import { motion } from 'framer-motion'
-import { Schema, registerSchema } from 'src/utils/rules'
+import { RegisterSchema, registerSchema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import PasswordStrengthMeter from 'src/components/PasswordStrengthMeter'
 import authApi from 'src/apis/auth.api'
@@ -20,7 +20,7 @@ import { Helmet } from 'react-helmet-async'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
 
-type FormData = Schema
+type FormData = RegisterSchema
 // co ra sau thì ra chứ t vẫn đứng ở đây mà thôi có gì mà đâu mà phải sợ
 
 const Register = () => {

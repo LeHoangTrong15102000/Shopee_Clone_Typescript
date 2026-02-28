@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useForm, Controller } from 'react-hook-form'
 import { Link, createSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import classNames from 'classnames'
 
 import Button from 'src/components/Button'
@@ -13,8 +14,7 @@ import path from 'src/constant/path'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 import { useFocusTrap } from 'src/hooks/useFocusTrap'
 import { Category } from 'src/types/category.type'
-import { InputNumberSchema, inputNumberSchema } from 'src/utils/rules'
-import { NoUndefinedField } from 'src/types/utils.type'
+import { inputNumberSchema } from 'src/utils/rules'
 import { useTranslation } from 'react-i18next'
 
 interface MobileFilterDrawerProps {
@@ -23,7 +23,7 @@ interface MobileFilterDrawerProps {
   categories: Category[]
 }
 
-type FormData = NoUndefinedField<InputNumberSchema>
+type FormData = z.infer<typeof inputNumberSchema>
 
 const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerProps) => {
   const { t } = useTranslation('home')

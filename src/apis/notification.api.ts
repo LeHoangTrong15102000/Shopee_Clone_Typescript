@@ -96,7 +96,7 @@ const notificationApi = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await http.get<any>('/notifications')
       return { data: transformNotificationResponse(response.data) }
-    } catch (error) {
+    } catch (_error) {
       // Fallback to mock data when API is not available
       console.warn('Notification API not available, using mock data')
       return new Promise<{ data: NotificationResponse }>((resolve) => {

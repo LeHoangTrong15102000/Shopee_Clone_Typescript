@@ -37,9 +37,11 @@ const addressSchema = z.object({
   ward: z.string().min(1, 'Vui lòng chọn phường/xã'),
   street: z.string().min(1, 'Vui lòng nhập địa chỉ cụ thể').max(200, 'Địa chỉ tối đa 200 ký tự'),
   addressType: z.enum(['home', 'office', 'other']),
-  label: z.string().max(50, 'Nhãn tối đa 50 ký tự').optional().default(''),
+  label: z.string().max(50, 'Nhãn tối đa 50 ký tự').optional(),
   isDefault: z.boolean().optional()
 })
+
+type AddressSchemaFormData = z.infer<typeof addressSchema>
 
 const FORM_STEPS = [
   { id: 1, title: 'Liên hệ' },
@@ -110,7 +112,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
     setValue,
     trigger,
     formState: { errors, touchedFields }
-  } = useForm<AddressFormData>({
+  } = useForm<AddressSchemaFormData>({
     resolver: zodResolver(addressSchema),
     mode: 'onChange',
     defaultValues: address
@@ -276,11 +278,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
     }
   })
 
-  const onSubmit = (data: AddressFormData) => {
+  const onSubmit = (data: AddressSchemaFormData) => {
+    const formData = data as unknown as AddressFormData
     if (isEditing) {
-      updateMutation.mutate(data)
+      updateMutation.mutate(formData)
     } else {
-      createMutation.mutate(data)
+      createMutation.mutate(formData)
     }
   }
 
