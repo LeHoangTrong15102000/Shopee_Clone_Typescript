@@ -103,15 +103,19 @@ vi.mock('src/utils/auth', async (importOriginal) => {
 vi.mock('react-toastify', () => ({ toast: { info: vi.fn(), warning: vi.fn(), success: vi.fn(), error: vi.fn() } }))
 
 const createWrapper = (isAuthenticated: boolean) => {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   const appContext = { ...getInitialAppContext(), isAuthenticated }
   return ({ children }: { children: ReactNode }) => (
-    <AppProvider defaultValue={appContext}>
-      <SocketProvider>{children}</SocketProvider>
-    </AppProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppProvider defaultValue={appContext}>
+        <SocketProvider>{children}</SocketProvider>
+      </AppProvider>
+    </QueryClientProvider>
   )
 }
 
 const createAdminWrapper = () => {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   const appContext = {
     ...getInitialAppContext(),
     isAuthenticated: true,
@@ -124,9 +128,11 @@ const createAdminWrapper = () => {
     }
   }
   return ({ children }: { children: ReactNode }) => (
-    <AppContext.Provider value={appContext}>
-      <SocketProvider>{children}</SocketProvider>
-    </AppContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AppContext.Provider value={appContext}>
+        <SocketProvider>{children}</SocketProvider>
+      </AppContext.Provider>
+    </QueryClientProvider>
   )
 }
 
