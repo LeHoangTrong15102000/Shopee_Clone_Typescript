@@ -1,5 +1,4 @@
-import Tippy from '@tippyjs/react'
-import 'tippy.js/dist/tippy.css'
+import { Tooltip } from '@heroui/tooltip'
 import { Link } from 'react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
@@ -69,7 +68,7 @@ const Header1 = () => {
           {/* search */}
 
           <form className='col-span-8 md:col-span-9' onSubmit={onSubmitSearch}>
-            <Tippy content='Lịch sử tìm kiếm'>
+            <Tooltip content='Lịch sử tìm kiếm'>
               <div className='flex rounded-xs bg-white p-1 dark:bg-slate-800'>
                 <input
                   type='text'
@@ -99,7 +98,7 @@ const Header1 = () => {
                   </svg>
                 </button>
               </div>
-            </Tippy>
+            </Tooltip>
           </form>
 
           {/* Cart */}

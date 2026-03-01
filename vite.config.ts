@@ -64,8 +64,12 @@ export default defineConfig(({ mode }) => {
             if (id.includes('node_modules/react-router') || id.includes('node_modules/nuqs')) {
               return 'router-vendor'
             }
-            // HeroUI + framer-motion (keep together, they're tightly coupled)
-            if (id.includes('node_modules/@heroui/') || id.includes('node_modules/framer-motion')) {
+            // framer-motion - separate chunk (used in 82+ app files, independent of HeroUI)
+            if (id.includes('node_modules/framer-motion')) {
+              return 'motion-vendor'
+            }
+            // HeroUI only (system + tooltip + theme + aria-utils)
+            if (id.includes('node_modules/@heroui/')) {
               return 'heroui-vendor'
             }
             // Forms
@@ -91,6 +95,22 @@ export default defineConfig(({ mode }) => {
             if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
               return 'i18n-vendor'
             }
+            // Floating UI (tooltip/popover positioning)
+            if (id.includes('node_modules/@floating-ui/')) {
+              return 'floating-vendor'
+            }
+            // Toast notifications
+            if (id.includes('node_modules/react-toastify')) {
+              return 'toast-vendor'
+            }
+            // Misc vendor (sanitization, SEO, etc.)
+            if (
+              id.includes('node_modules/react-helmet-async') ||
+              id.includes('node_modules/dompurify') ||
+              id.includes('node_modules/html-to-text')
+            ) {
+              return 'misc-vendor'
+            }
             // Utils (small, no React dependency)
             if (
               id.includes('node_modules/classnames') ||
@@ -99,9 +119,7 @@ export default defineConfig(({ mode }) => {
             ) {
               return 'utils-vendor'
             }
-            // Let everything else (floating-ui, tippy, socket.io, dompurify, html-to-text,
-            // react-toastify, react-helmet-async, devtools, etc.) go into default chunks
-            // This avoids circular dependencies
+            // Everything else (socket.io, devtools, etc.) goes into default chunks
           }
         }
       }

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require('tailwindcss/plugin')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { heroui } = require('@heroui/react')
+const { heroui } = require('@heroui/theme')
 
 /**
  * Elevation System:
@@ -27,6 +27,9 @@ module.exports = {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
+    // HeroUI theme content path — required for Tailwind to generate HeroUI component classes.
+    // With Tailwind v4 + @tailwindcss/vite, content detection is automatic from the module graph,
+    // but this explicit path ensures all HeroUI theme classes are available.
     './node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
   corePlugins: {
