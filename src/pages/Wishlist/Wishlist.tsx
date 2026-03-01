@@ -1,20 +1,20 @@
-import { useMemo, Fragment, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Fragment, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router'
 import { toast } from 'react-toastify'
-import { motion, AnimatePresence } from 'framer-motion'
-import wishlistApi from 'src/apis/wishlist.api'
 import productApi from 'src/apis/product.api'
 import purchaseApi from 'src/apis/purchases.api'
-import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
+import wishlistApi from 'src/apis/wishlist.api'
+import ImageWithFallback from 'src/components/ImageWithFallback'
 import ProductRating from 'src/components/ProductRating'
 import WishlistPriceAlert from 'src/components/WishlistPriceAlert'
-import ImageWithFallback from 'src/components/ImageWithFallback'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
-import { Product } from 'src/types/product.type'
 import { useIsMobile } from 'src/hooks/useIsMobile'
+import { Product } from 'src/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 
 // Mock categories for visual enhancement
 const mockCategories = ['Điện tử', 'Thời trang', 'Gia dụng', 'Làm đẹp', 'Thể thao', 'Sách', 'Đồ chơi', 'Phụ kiện']
@@ -756,7 +756,7 @@ export default function Wishlist() {
                         scale: hoveredCardId === item._id ? 1 : 0.8
                       }}
                       onClick={() => removeMutation.mutate(item.product._id)}
-                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white active:scale-90 focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden dark:bg-slate-700/90 dark:shadow-slate-900/50'
+                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden active:scale-90 dark:bg-slate-700/90 dark:shadow-slate-900/50'
                       aria-label='Xóa khỏi yêu thích'
                     >
                       <svg
@@ -834,7 +834,7 @@ export default function Wishlist() {
                       {/* Add to Cart Button */}
                       <button
                         onClick={() => addToCartMutation.mutate(item.product._id)}
-                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 active:scale-95 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
+                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden active:scale-95 dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
                         aria-label='Thêm vào giỏ hàng'
                       >
                         <IconShoppingCart className='h-3.5 w-3.5' />

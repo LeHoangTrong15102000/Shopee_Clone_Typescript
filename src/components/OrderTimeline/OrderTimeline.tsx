@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { purchasesStatus } from 'src/constant/purchase'
 import { ANIMATION_DURATION } from 'src/styles/animations'
 
@@ -153,7 +153,11 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
                   }
                 )}
               >
-                <StepSvgIcon iconKey={step.icon} className='h-5 w-5 md:h-6 md:w-6' isActive={isCompleted || isCurrent} />
+                <StepSvgIcon
+                  iconKey={step.icon}
+                  className='h-5 w-5 md:h-6 md:w-6'
+                  isActive={isCompleted || isCurrent}
+                />
               </div>
 
               {/* Step label */}

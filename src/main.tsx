@@ -1,18 +1,18 @@
+import { HeroUIProvider } from '@heroui/system'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { domAnimation, LazyMotion } from 'framer-motion'
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v7'
 import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { LazyMotion, domAnimation } from 'framer-motion'
-import App from 'src/App'
-import './index.css'
-import { BrowserRouter } from 'react-router'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AppProvider } from './contexts/app.context'
-import { ThemeProvider } from './contexts/theme.context'
-import { SocketProvider } from './contexts/socket.context'
-import 'src/i18n/i18n'
 import { HelmetProvider } from 'react-helmet-async'
+import { BrowserRouter } from 'react-router'
+import App from 'src/App'
+import 'src/i18n/i18n'
 import ErrorBoundary from './components/ErrorBoundary'
-import { HeroUIProvider } from '@heroui/system'
-import { NuqsAdapter } from 'nuqs/adapters/react-router/v7'
+import { AppProvider } from './contexts/app.context'
+import { SocketProvider } from './contexts/socket.context'
+import { ThemeProvider } from './contexts/theme.context'
+import './index.css'
 
 // Lazy load ReactQueryDevtools - chỉ load trong development
 const ReactQueryDevtools = lazy(() =>
@@ -67,14 +67,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                   <HeroUIProvider>
                     <LazyMotion features={domAnimation}>
                       <ErrorBoundary>
-                      <App />
-                      {/* CHỈ render ReactQueryDevtools trong development */}
-                      {import.meta.env.DEV && (
-                        <Suspense fallback={null}>
-                          <ReactQueryDevtools initialIsOpen={false} />
-                        </Suspense>
-                      )}
-                    </ErrorBoundary>
+                        <App />
+                        {/* CHỈ render ReactQueryDevtools trong development */}
+                        {import.meta.env.DEV && (
+                          <Suspense fallback={null}>
+                            <ReactQueryDevtools initialIsOpen={false} />
+                          </Suspense>
+                        )}
+                      </ErrorBoundary>
                     </LazyMotion>
                   </HeroUIProvider>
                 </HelmetProvider>

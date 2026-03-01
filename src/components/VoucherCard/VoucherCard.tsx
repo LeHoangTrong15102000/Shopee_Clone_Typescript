@@ -1,7 +1,7 @@
-import { memo, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
-import { formatCurrency } from 'src/utils/utils'
+import { memo, useCallback, useMemo } from 'react'
 import { Voucher } from 'src/types/voucher.type'
+import { formatCurrency } from 'src/utils/utils'
 
 interface VoucherCardProps {
   voucher: Pick<
@@ -149,16 +149,13 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
             disabled={isLoading || isExpired}
             aria-label={buttonAriaLabel}
             aria-disabled={isLoading || isExpired}
-            className={classNames(
-              'rounded-sm px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-4',
-              {
-                'bg-[#ee4d2d] text-white hover:bg-[#d73211]': !isExpired && !isSaved,
-                'border border-[#ee4d2d] text-[#ee4d2d] hover:bg-[#ee4d2d]/10': !isExpired && isSaved,
-                'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500': isExpired,
-                'cursor-not-allowed opacity-50': isLoading,
-                'hover:scale-105 active:scale-95': !isExpired && !isLoading
-              }
-            )}
+            className={classNames('rounded-sm px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-4', {
+              'bg-[#ee4d2d] text-white hover:bg-[#d73211]': !isExpired && !isSaved,
+              'border border-[#ee4d2d] text-[#ee4d2d] hover:bg-[#ee4d2d]/10': !isExpired && isSaved,
+              'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500': isExpired,
+              'cursor-not-allowed opacity-50': isLoading,
+              'hover:scale-105 active:scale-95': !isExpired && !isLoading
+            })}
           >
             {buttonText}
           </button>

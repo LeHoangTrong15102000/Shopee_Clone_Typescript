@@ -1,26 +1,26 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { useMemo, useCallback } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useMemo } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
-import { motion, AnimatePresence } from 'framer-motion'
 
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 
-import AsideFilter from './components/AsideFilter'
-import SortProductList from './components/SortProductList'
-import Product from './components/Product/Product'
 import ProductListItem from 'src/components/ProductListItem'
 import ProductSkeleton from 'src/components/ProductSkeleton'
 import SearchNoResults from 'src/components/SearchNoResults'
+import AsideFilter from './components/AsideFilter'
+import Product from './components/Product/Product'
+import SortProductList from './components/SortProductList'
 
-import { useProductQueryStates, normalizeProductQueryKey } from 'src/hooks/nuqs'
-import useInfiniteScroll from 'src/hooks/useInfiniteScroll'
-import { useViewMode } from 'src/hooks/useViewMode'
-import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Helmet } from 'react-helmet-async'
 import Breadcrumb from 'src/components/Breadcrumb'
-import path from 'src/constant/path'
 import Button from 'src/components/Button'
+import path from 'src/constant/path'
+import { normalizeProductQueryKey, useProductQueryStates } from 'src/hooks/nuqs'
+import useInfiniteScroll from 'src/hooks/useInfiniteScroll'
+import { useIsMobile } from 'src/hooks/useIsMobile'
+import { useViewMode } from 'src/hooks/useViewMode'
 
 const containerVariantsBase = {
   hidden: { opacity: 0 },
@@ -47,13 +47,9 @@ const ProductListInfinite = () => {
   const [filters, setFilters] = useProductQueryStates()
   const isMobile = useIsMobile()
 
-  const containerVariants = isMobile
-    ? undefined
-    : containerVariantsBase
+  const containerVariants = isMobile ? undefined : containerVariantsBase
 
-  const itemVariants = isMobile
-    ? undefined
-    : itemVariantsBase
+  const itemVariants = isMobile ? undefined : itemVariantsBase
 
   // View Mode - Grid/List toggle with localStorage persistence
   const { viewMode, changeViewMode } = useViewMode()

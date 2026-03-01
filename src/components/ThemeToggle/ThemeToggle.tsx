@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useTheme } from 'src/hooks/useTheme'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { useTheme } from 'src/hooks/useTheme'
 
 // Icons
 const SunIcon = () => (
@@ -33,7 +33,7 @@ const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
   return (
     <button
       onClick={toggleTheme}
-      className={`${colorClasses} ${className} border-none outline-hidden transition-all duration-200 hover:scale-110 active:scale-90 focus:border-none focus:ring-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 focus-visible:outline-hidden`}
+      className={`${colorClasses} ${className} border-none outline-hidden transition-all duration-200 hover:scale-110 focus:border-none focus:ring-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 focus-visible:outline-hidden active:scale-90`}
       aria-label={isDark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
       title={isDark ? 'Chế độ sáng' : 'Chế độ tối'}
     >

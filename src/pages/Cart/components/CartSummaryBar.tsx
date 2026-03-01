@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
 import { Tooltip } from '@heroui/tooltip'
-import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
+import { motion } from 'framer-motion'
 import Button from 'src/components/Button'
+import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
 import { ExtendedPurchase } from '../types'
 
 interface CartSummaryBarProps {
@@ -120,9 +120,7 @@ const CartSummaryBar = ({
                   content: 'p-0 bg-transparent'
                 }}
               >
-                <button
-                  className='group ml-2 text-gray-600 transition-all duration-100 hover:scale-110 hover:text-[#ee4d2d] active:scale-90 dark:text-gray-400'
-                >
+                <button className='group ml-2 text-gray-600 transition-all duration-100 hover:scale-110 hover:text-[#ee4d2d] active:scale-90 dark:text-gray-400'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
