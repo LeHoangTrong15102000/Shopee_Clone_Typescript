@@ -1,6 +1,4 @@
-import { motion } from 'framer-motion'
 import classNames from 'classnames'
-import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 export type ViewMode = 'grid' | 'list'
 
@@ -11,12 +9,6 @@ interface ViewToggleProps {
 }
 
 const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
-  const prefersReducedMotion = useReducedMotion()
-
-  const buttonVariants = {
-    tap: prefersReducedMotion ? {} : { scale: 0.95 }
-  }
-
   const handleGridClick = () => {
     onViewChange('grid')
   }
@@ -28,11 +20,10 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
   return (
     <div className={classNames('flex items-center gap-1 overflow-hidden rounded-lg', className)}>
       {/* Grid View Button */}
-      <motion.button
+      <button
         type='button'
         onClick={handleGridClick}
-        whileTap={buttonVariants.tap}
-        className={classNames('p-2 transition-colors', {
+        className={classNames('p-2 transition-all duration-100 active:scale-95', {
           'bg-orange text-white': viewMode === 'grid',
           'border border-gray-200 bg-white text-gray-500 hover:text-gray-700 dark:border-gray-600 dark:bg-slate-800 dark:text-gray-400 dark:hover:text-gray-300':
             viewMode !== 'grid'
@@ -48,14 +39,13 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
           <rect x='1' y='9' width='6' height='6' rx='1' />
           <rect x='9' y='9' width='6' height='6' rx='1' />
         </svg>
-      </motion.button>
+      </button>
 
       {/* List View Button */}
-      <motion.button
+      <button
         type='button'
         onClick={handleListClick}
-        whileTap={buttonVariants.tap}
-        className={classNames('p-2 transition-colors', {
+        className={classNames('p-2 transition-all duration-100 active:scale-95', {
           'bg-orange text-white': viewMode === 'list',
           'border border-gray-200 bg-white text-gray-500 hover:text-gray-700 dark:border-gray-600 dark:bg-slate-800 dark:text-gray-400 dark:hover:text-gray-300':
             viewMode !== 'list'
@@ -70,7 +60,7 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
           <rect x='1' y='6.75' width='14' height='2.5' rx='1' />
           <rect x='1' y='11.5' width='14' height='2.5' rx='1' />
         </svg>
-      </motion.button>
+      </button>
     </div>
   )
 }

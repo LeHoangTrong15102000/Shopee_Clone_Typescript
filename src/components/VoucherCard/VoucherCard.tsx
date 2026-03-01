@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import classNames from 'classnames'
 import { formatCurrency } from 'src/utils/utils'
 import { Voucher } from 'src/types/voucher.type'
@@ -87,15 +86,16 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
   }, [isExpired, isLoading, isSaved, voucher.name, discountDisplay])
 
   return (
-    <motion.div
+    <div
       role='article'
       aria-label={`Voucher ${voucher.name} - Giảm ${discountDisplay}`}
-      className={classNames('relative flex overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800', {
-        'opacity-60': isExpired
-      })}
-      whileHover={!isExpired ? { scale: 1.02, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' } : {}}
-      whileTap={!isExpired ? { scale: 0.98 } : {}}
-      transition={{ duration: 0.2 }}
+      className={classNames(
+        'relative flex overflow-hidden rounded-lg bg-white shadow-xs transition-all duration-200 dark:bg-slate-800',
+        {
+          'opacity-60': isExpired,
+          'hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]': !isExpired
+        }
+      )}
     >
       <div
         className='absolute top-0 bottom-0 left-0 w-1 border-l-4 border-dashed border-[#ee4d2d]'
@@ -143,23 +143,25 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
             </span>
           </div>
 
-          <motion.button
+          <button
             type='button'
             onClick={handleButtonClick}
             disabled={isLoading || isExpired}
             aria-label={buttonAriaLabel}
             aria-disabled={isLoading || isExpired}
-            className={classNames('rounded-sm px-3 py-1.5 text-xs font-medium transition-colors sm:px-4', {
-              'bg-[#ee4d2d] text-white hover:bg-[#d73211]': !isExpired && !isSaved,
-              'border border-[#ee4d2d] text-[#ee4d2d] hover:bg-[#ee4d2d]/10': !isExpired && isSaved,
-              'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500': isExpired,
-              'cursor-not-allowed opacity-50': isLoading
-            })}
-            whileHover={!isExpired && !isLoading ? { scale: 1.05 } : {}}
-            whileTap={!isExpired && !isLoading ? { scale: 0.95 } : {}}
+            className={classNames(
+              'rounded-sm px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-4',
+              {
+                'bg-[#ee4d2d] text-white hover:bg-[#d73211]': !isExpired && !isSaved,
+                'border border-[#ee4d2d] text-[#ee4d2d] hover:bg-[#ee4d2d]/10': !isExpired && isSaved,
+                'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500': isExpired,
+                'cursor-not-allowed opacity-50': isLoading,
+                'hover:scale-105 active:scale-95': !isExpired && !isLoading
+              }
+            )}
           >
             {buttonText}
-          </motion.button>
+          </button>
         </div>
       </div>
 
@@ -173,7 +175,7 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
           </span>
         </div>
       )}
-    </motion.div>
+    </div>
   )
 }
 

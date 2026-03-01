@@ -19,8 +19,8 @@ export const ANIMATION_SPRING = {
 } as const
 
 export const STAGGER_DELAY = {
-  fast: 0.03,
-  normal: 0.02,
+  fast: 0.015,
+  normal: 0.01,
   slow: 0.1
 } as const
 

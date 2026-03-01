@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react'
 import { useNavigate } from 'react-router'
-import { motion } from 'framer-motion'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
 import WishlistButton from 'src/components/WishlistButton'
@@ -8,7 +7,6 @@ import path from 'src/constant/path'
 import { Product } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import { scrollManager } from 'src/hooks/useScrollRestoration'
-import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 interface ProductListItemProps {
   product: Product
@@ -16,7 +14,6 @@ interface ProductListItemProps {
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
   const navigate = useNavigate()
-  const prefersReducedMotion = useReducedMotion()
 
   const handleProductClick = useCallback(() => {
     // Lưu vị trí scroll hiện tại trước khi navigate
@@ -26,14 +23,6 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
     navigate(`${path.home}${generateNameId({ name: product.name, id: product._id })}`)
   }, [navigate, product.name, product._id])
 
-  const hoverAnimation = prefersReducedMotion
-    ? {}
-    : {
-        y: -2,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-        transition: { duration: 0.2 }
-      }
-
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
@@ -42,14 +31,13 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
   }
 
   return (
-    <motion.div
+    <div
       onClick={handleProductClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role='link'
       aria-label={`${product.name} - ₫${formatCurrency(product.price)}`}
-      className='relative flex cursor-pointer overflow-hidden rounded-lg bg-white shadow-xs transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange dark:bg-slate-800 dark:shadow-slate-900/20'
-      whileHover={hoverAnimation}
+      className='relative flex cursor-pointer overflow-hidden rounded-lg bg-white shadow-xs transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange dark:bg-slate-800 dark:shadow-slate-900/20'
     >
       {/* Product Image - Left side */}
       <div className='relative h-32 w-32 shrink-0 sm:h-40 sm:w-40 md:h-48 md:w-48'>
@@ -122,7 +110,7 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
           <span className='truncate'>{product.location}</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

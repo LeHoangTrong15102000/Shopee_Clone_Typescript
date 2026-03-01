@@ -8,6 +8,7 @@ import StockBadge from 'src/components/StockBadge'
 import { InlineStockAlert } from 'src/components/RealTimeStockAlert'
 import { Purchase } from 'src/types/purchases.type'
 import { ExtendedPurchase, InlineStockAlertState } from '../types'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 
 interface CartItemListProps {
   extendedPurchases: ExtendedPurchase[]
@@ -42,6 +43,8 @@ const CartItemList = ({
   formatCurrency,
   generateNameId
 }: CartItemListProps) => {
+  const isMobile = useIsMobile()
+
   return (
     <div className='overflow-auto'>
       {/* Desktop Layout - Table view (lg and above) */}
@@ -71,9 +74,9 @@ const CartItemList = ({
             {extendedPurchases?.map((purchase, index) => (
               <motion.div
                 key={purchase._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                initial={isMobile ? false : { opacity: 0, y: 20 }}
+                animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+                transition={isMobile ? undefined : { duration: 0.3, delay: index * 0.1 }}
                 className='mt-5 grid grid-cols-12 items-center rounded-xs border border-[rgba(0,0,0,.09)] bg-white px-9 py-5 text-sm text-gray-500 transition-shadow first:mt-0 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300 dark:hover:shadow-slate-900/50'
               >
                 <div className='col-span-6'>
@@ -238,9 +241,9 @@ const CartItemList = ({
             {extendedPurchases?.map((purchase, index) => (
               <motion.div
                 key={purchase._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                initial={isMobile ? false : { opacity: 0, y: 20 }}
+                animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+                transition={isMobile ? undefined : { duration: 0.3, delay: index * 0.1 }}
                 className='rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               >
                 <div className='flex gap-3'>

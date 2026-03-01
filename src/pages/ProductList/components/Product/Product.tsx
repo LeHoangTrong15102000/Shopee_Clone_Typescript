@@ -1,6 +1,5 @@
 import { Fragment, memo, useCallback } from 'react'
 import { useNavigate } from 'react-router'
-import { motion } from 'framer-motion'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
 import WishlistButton from 'src/components/WishlistButton'
@@ -45,7 +44,7 @@ const Product = ({ product }: Props) => {
     // Khi nhấn vào thì truyền lên cái _id của sản phẩm
     <Fragment>
       {product ? (
-        <motion.div
+        <div
           role='link'
           tabIndex={0}
           aria-label={`${product.name} - ₫${formatCurrency(product.price)}`}
@@ -58,19 +57,11 @@ const Product = ({ product }: Props) => {
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`h-full cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
-          whileHover={{
-            y: -5,
-            transition: { duration: 0.2 }
-          }}
+          className={`h-full cursor-pointer transition-transform duration-200 ease-out hover:-translate-y-[5px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
         >
           <div className='h-full overflow-hidden rounded-lg bg-white shadow-xs transition-shadow hover:shadow-md dark:bg-slate-800 dark:shadow-slate-900/20'>
             {/* Ảnh sản phẩm */}
-            <motion.div
-              className='relative w-full overflow-hidden'
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div className='relative w-full overflow-hidden'>
               <OptimizedImage
                 src={product.image}
                 alt={product.name}
@@ -84,7 +75,7 @@ const Product = ({ product }: Props) => {
               <div className='absolute top-2 right-2 z-10'>
                 <WishlistButton productId={product._id} productName={product.name} size='sm' />
               </div>
-            </motion.div>
+            </div>
             {/* Thông tin sản phẩm */}
             <div className='overflow-hidden p-2'>
               <div className='line-clamp-2 min-h-[1.9rem] text-xs sm:text-sm dark:text-gray-200'>{product.name}</div>
@@ -126,7 +117,7 @@ const Product = ({ product }: Props) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       ) : (
         <NotFound />
       )}

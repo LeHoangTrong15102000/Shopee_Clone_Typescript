@@ -9,6 +9,7 @@ import OrderCard from 'src/components/OrderCard'
 import LiveOrderTracker from 'src/components/LiveOrderTracker'
 import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
 import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 
 const orderTabs: { status: number; label: string }[] = [
   { status: ordersStatus.all, label: 'Tất cả' },
@@ -27,6 +28,7 @@ export default function OrderList() {
   const [cancelOrderId, setCancelOrderId] = useState<string | null>(null)
   const [cancelReason, setCancelReason] = useState('')
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const isMobile = useIsMobile()
 
   const toggleOrderTracking = (orderId: string) => {
     setExpandedOrderIds((prev) => {
@@ -147,8 +149,8 @@ export default function OrderList() {
           </div>
         ) : orders.length === 0 ? (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={isMobile ? false : { opacity: 0, y: 20 }}
+            animate={isMobile ? undefined : { opacity: 1, y: 0 }}
             className='flex flex-col items-center justify-center rounded-xl border border-orange-100/30 bg-linear-to-br from-white via-orange-50/20 to-amber-50/20 py-16 shadow-md dark:border-slate-600 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800'
           >
             <div className='text-6xl'>📦</div>

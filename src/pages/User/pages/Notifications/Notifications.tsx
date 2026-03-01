@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useOptimisticNotification } from 'src/hooks/optimistic'
 import { formatTimeAgo } from 'src/utils/utils'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Notification, NotificationType } from 'src/types/notification.type'
 import useNotifications from 'src/hooks/useNotifications'
 import useNotificationSound from 'src/hooks/useNotificationSound'
@@ -30,6 +31,7 @@ const Notifications = () => {
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const { markAsReadMutation, markAllAsReadMutation } = useOptimisticNotification()
   const reducedMotion = useReducedMotion()
+  const isMobile = useIsMobile()
   const listRef = useRef<HTMLUListElement>(null)
 
   // Unified notifications hook (REST + socket merged)
@@ -171,13 +173,15 @@ const Notifications = () => {
   }
 
   // Animation variants for stagger effect
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.05 }
-    }
-  }
+  const containerVariants = isMobile
+    ? undefined
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.05 }
+        }
+      }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
@@ -350,8 +354,8 @@ const Notifications = () => {
             ref={listRef}
             className='max-h-[600px] space-y-3 overflow-y-auto'
             variants={reducedMotion ? undefined : containerVariants}
-            initial='hidden'
-            animate='visible'
+            initial={isMobile ? false : 'hidden'}
+            animate={isMobile ? undefined : 'visible'}
           >
             {filteredNotifications.map((notification) => {
               const isNewNotification = newNotificationIds.has(notification._id)

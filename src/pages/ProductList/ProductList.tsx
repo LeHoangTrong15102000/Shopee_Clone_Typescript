@@ -19,19 +19,10 @@ import path from 'src/constant/path'
 import { useProductQueryStates, normalizeProductQueryKey } from 'src/hooks/nuqs'
 import { useScrollRestoration } from 'src/hooks/useScrollRestoration'
 import { useViewMode } from 'src/hooks/useViewMode'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Helmet } from 'react-helmet-async'
 import Loader from 'src/components/Loader'
 import Button from 'src/components/Button'
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.015
-    }
-  }
-}
 
 /**
  * ProductList Component với Query Cancellation
@@ -40,6 +31,17 @@ const containerVariants = {
 const ProductList = () => {
   const [filters, setFilters] = useProductQueryStates()
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
+
+  const containerVariants = isMobile
+    ? undefined
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.015 }
+        }
+      }
 
   // State cho Mobile Filter Drawer
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
@@ -245,8 +247,8 @@ const ProductList = () => {
                     aria-live='polite'
                     aria-busy={isFetching}
                     variants={containerVariants}
-                    initial='hidden'
-                    animate='visible'
+                    initial={isMobile ? false : 'hidden'}
+                    animate={isMobile ? undefined : 'visible'}
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (
@@ -265,8 +267,8 @@ const ProductList = () => {
                     aria-live='polite'
                     aria-busy={isFetching}
                     variants={containerVariants}
-                    initial='hidden'
-                    animate='visible'
+                    initial={isMobile ? false : 'hidden'}
+                    animate={isMobile ? undefined : 'visible'}
                     exit={{ opacity: 0 }}
                   >
                     {products.map((product) => (

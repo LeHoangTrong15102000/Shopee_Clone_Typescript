@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
+import { LazyMotion, domAnimation } from 'framer-motion'
 import App from 'src/App'
 import './index.css'
 import { BrowserRouter } from 'react-router'
@@ -64,7 +65,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <SocketProvider>
                 <HelmetProvider>
                   <HeroUIProvider>
-                    <ErrorBoundary>
+                    <LazyMotion features={domAnimation}>
+                      <ErrorBoundary>
                       <App />
                       {/* CHỈ render ReactQueryDevtools trong development */}
                       {import.meta.env.DEV && (
@@ -73,6 +75,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                         </Suspense>
                       )}
                     </ErrorBoundary>
+                    </LazyMotion>
                   </HeroUIProvider>
                 </HelmetProvider>
               </SocketProvider>

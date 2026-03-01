@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { purchasesStatus } from 'src/constant/purchase'
-import { STAGGER_DELAY, ANIMATION_DURATION } from 'src/styles/animations'
+import { ANIMATION_DURATION } from 'src/styles/animations'
 
 interface OrderTimelineProps {
   orderId: string
@@ -11,24 +11,18 @@ interface OrderTimelineProps {
   timestamps?: Record<number, string> // Optional timestamps for each status
 }
 
-interface OrderStep {
-  status: number
-  label: string
-  icon: string
-  description: string
-}
-
-const StepSvgIcon = ({ iconKey, className }: { iconKey: string; className?: string }) => {
+const StepSvgIcon = ({ iconKey, className, isActive }: { iconKey: string; className?: string; isActive?: boolean }) => {
+  const sw = isActive ? 2 : 1.5
   switch (iconKey) {
     case 'clock':
       return (
-        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
           <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' />
         </svg>
       )
     case 'package':
       return (
-        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -38,7 +32,7 @@ const StepSvgIcon = ({ iconKey, className }: { iconKey: string; className?: stri
       )
     case 'truck':
       return (
-        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -48,7 +42,7 @@ const StepSvgIcon = ({ iconKey, className }: { iconKey: string; className?: stri
       )
     case 'check-circle':
       return (
-        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
+        <svg className={className} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={sw}>
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -61,65 +55,30 @@ const StepSvgIcon = ({ iconKey, className }: { iconKey: string; className?: stri
   }
 }
 
-const ORDER_STEPS: OrderStep[] = [
-  {
-    status: purchasesStatus.waitForConfirmation,
-    label: 'Chờ xác nhận',
-    icon: 'clock',
-    description: 'Đơn hàng đang chờ người bán xác nhận'
-  },
-  {
-    status: purchasesStatus.waitForGetting,
-    label: 'Chờ lấy hàng',
-    icon: 'package',
-    description: 'Người bán đang chuẩn bị hàng'
-  },
-  {
-    status: purchasesStatus.inProgress,
-    label: 'Đang giao',
-    icon: 'truck',
-    description: 'Đơn hàng đang được vận chuyển'
-  },
-  { status: purchasesStatus.delivered, label: 'Đã giao', icon: 'check-circle', description: 'Giao hàng thành công' }
+const ORDER_STEPS = [
+  { status: purchasesStatus.waitForConfirmation, label: 'Chờ xác nhận', icon: 'clock' },
+  { status: purchasesStatus.waitForGetting, label: 'Chờ lấy hàng', icon: 'package' },
+  { status: purchasesStatus.inProgress, label: 'Đang giao', icon: 'truck' },
+  { status: purchasesStatus.delivered, label: 'Đã giao', icon: 'check-circle' }
 ]
 
 function formatDateTime(timestamp: string): string {
   const date = new Date(timestamp)
-  return date.toLocaleString('vi-VN', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${hours}:${minutes} ${day}-${month}-${year}`
 }
 
 export default function OrderTimeline({ orderId: _orderId, currentStatus, className, timestamps }: OrderTimelineProps) {
-  const reducedMotion = useReducedMotion()
   const isCancelled = currentStatus === purchasesStatus.cancelled
 
-  // Timeline item entrance animation
-  const timelineItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * STAGGER_DELAY.normal,
-        duration: ANIMATION_DURATION.normal,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    })
-  }
-
-  // Progress line animation
-  const lineVariants = {
-    hidden: { scaleY: 0 },
-    visible: {
-      scaleY: 1,
-      transition: { duration: ANIMATION_DURATION.slow, ease: 'easeOut' }
-    }
-  }
+  const currentStepIndex = useMemo(() => {
+    if (isCancelled) return -1
+    return ORDER_STEPS.findIndex((step) => step.status === currentStatus)
+  }, [currentStatus, isCancelled])
 
   // Cancelled state
   if (isCancelled) {
@@ -127,11 +86,10 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
       <div className={classNames('relative', className)}>
         <motion.div
           className='flex items-center gap-4 rounded-xl border border-red-200 bg-linear-to-r from-red-50 to-rose-50 p-4 dark:border-red-800 dark:from-red-900/30 dark:to-rose-900/30'
-          initial={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
-          animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: ANIMATION_DURATION.normal }}
         >
-          {/* Cancelled icon */}
           <div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-500 shadow-lg shadow-red-200 dark:shadow-red-900/50'>
             <svg className='h-6 w-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
               <path
@@ -152,108 +110,75 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
     )
   }
 
-  // Filter steps: only show statuses up to and including the current status
-  const visibleSteps = ORDER_STEPS.filter((step) => step.status <= currentStatus)
-
   return (
-    <div className={classNames('relative', className)}>
-      {/* Progress bar background */}
-      {visibleSteps.length > 0 && (
-        <div className='absolute top-6 left-[23px] h-[calc(100%-48px)] w-1 rounded-full bg-gray-100 md:left-[27px] dark:bg-slate-700' />
-      )}
+    <div className={classNames('relative pt-2', className)}>
+      {/* Horizontal progress line background */}
+      <div
+        className='absolute top-7 h-1.5 rounded-full bg-linear-to-r from-gray-100 via-gray-200 to-gray-100 md:top-8 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'
+        style={{
+          left: `calc(100% / ${ORDER_STEPS.length} / 2)`,
+          right: `calc(100% / ${ORDER_STEPS.length} / 2)`
+        }}
+      >
+        {/* Animated progress fill */}
+        <motion.div
+          role='progressbar'
+          initial={{ width: 0 }}
+          animate={{
+            width: currentStepIndex >= 0 ? `${(currentStepIndex / (ORDER_STEPS.length - 1)) * 100}%` : '0%'
+          }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className='h-full rounded-full bg-[#2dc258]'
+          style={{ boxShadow: '0 0 8px rgba(45, 194, 88, 0.3)' }}
+        />
+      </div>
 
-      <AnimatePresence>
-        {visibleSteps.map((step, index) => {
-          const isCompleted = currentStatus > step.status
-          const isCurrent = currentStatus === step.status
-          const isLast = index === visibleSteps.length - 1
+      {/* Steps */}
+      <div className='relative flex justify-between'>
+        {ORDER_STEPS.map((step, index) => {
+          const isCompleted = index < currentStepIndex
+          const isCurrent = index === currentStepIndex
+          const isFuture = index > currentStepIndex
           const timestamp = timestamps?.[step.status]
 
           return (
-            <motion.div
-              key={step.status}
-              className='relative flex items-start gap-4 pb-6 last:pb-0'
-              custom={index}
-              variants={reducedMotion ? undefined : timelineItemVariants}
-              initial='hidden'
-              animate='visible'
-            >
-              {/* Progress line */}
-              {!isLast && (
-                <motion.div
-                  className={classNames(
-                    'absolute top-12 left-[23px] h-[calc(100%-24px)] w-1 origin-top rounded-full md:left-[27px]',
-                    {
-                      'bg-linear-to-b from-green-500 to-green-400': isCompleted,
-                      'bg-linear-to-b from-[#ee4d2d] to-orange-300': isCurrent
-                    }
-                  )}
-                  variants={reducedMotion ? undefined : lineVariants}
-                  initial='hidden'
-                  animate='visible'
-                />
-              )}
-
-              {/* Step circle - border only style without animation */}
+            <div key={step.status} className='flex flex-1 flex-col items-center'>
+              {/* Step circle */}
               <div
                 className={classNames(
-                  'relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 bg-white md:h-14 md:w-14 dark:bg-slate-800',
+                  'relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 bg-white md:h-14 md:w-14 dark:bg-slate-800',
                   {
-                    'border-green-500 text-green-500': isCompleted,
-                    'border-[#ee4d2d] text-[#ee4d2d]': isCurrent
+                    'border-[#2dc258] text-[#2dc258]': isCompleted || isCurrent,
+                    'border-gray-200 text-gray-300 dark:border-slate-600 dark:text-slate-400': isFuture
                   }
                 )}
               >
-                {isCompleted ? (
-                  <svg
-                    className='h-6 w-6 md:h-7 md:w-7'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    strokeWidth={2}
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
-                  </svg>
-                ) : (
-                  <StepSvgIcon iconKey={step.icon} className='h-5 w-5 md:h-6 md:w-6' />
-                )}
+                <StepSvgIcon iconKey={step.icon} className='h-5 w-5 md:h-6 md:w-6' isActive={isCompleted || isCurrent} />
               </div>
 
-              {/* Content */}
-              <div className='flex-1 pt-1'>
-                <div className='flex items-center gap-2'>
-                  <span
-                    className={classNames('text-base md:text-lg', {
-                      'text-green-600 dark:text-green-400': isCompleted,
-                      'text-[#ee4d2d]': isCurrent
-                    })}
-                  >
-                    {step.label}
-                  </span>
-                  {isCurrent && (
-                    <span className='rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-[#ee4d2d] dark:bg-orange-900/30'>
-                      Hiện tại
-                    </span>
-                  )}
-                </div>
-                <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>{step.description}</p>
-                {timestamp && (
-                  <p className='mt-2 flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500'>
-                    <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
-                      />
-                    </svg>
-                    {formatDateTime(timestamp)}
-                  </p>
+              {/* Step label */}
+              <span
+                className={classNames(
+                  'mt-2 max-w-[72px] text-center text-[10px] leading-tight md:mt-3 md:max-w-[110px] md:text-xs',
+                  {
+                    'font-medium text-gray-900 dark:text-gray-100': isCompleted || isCurrent,
+                    'font-medium text-gray-400 dark:text-slate-400': isFuture
+                  }
                 )}
-              </div>
-            </motion.div>
+              >
+                {step.label}
+              </span>
+
+              {/* Step timestamp */}
+              {(isCompleted || isCurrent) && timestamp && (
+                <span className='mt-0.5 text-center text-[10px] text-gray-400 md:text-xs dark:text-slate-500'>
+                  {formatDateTime(timestamp)}
+                </span>
+              )}
+            </div>
           )
         })}
-      </AnimatePresence>
+      </div>
     </div>
   )
 }

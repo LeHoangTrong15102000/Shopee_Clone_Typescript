@@ -1,11 +1,14 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
+import { useQuery } from '@tanstack/react-query'
+import orderTrackingApi from 'src/apis/orderTracking.api'
 import OrderTimeline from 'src/components/OrderTimeline'
 import useOrderTracking from 'src/hooks/useOrderTracking'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { purchasesStatus } from 'src/constant/purchase'
+import { orderStatusFromNumber } from 'src/constant/order'
 import { ANIMATION_DURATION, STAGGER_DELAY } from 'src/styles/animations'
 
 interface LiveOrderTrackerProps {
@@ -59,25 +62,49 @@ export default function LiveOrderTracker({
 }: LiveOrderTrackerProps) {
   const reducedMotion = useReducedMotion()
   const [currentStatus, setCurrentStatus] = useState(initialStatus)
-  const [timestamps, setTimestamps] = useState<Record<number, string>>({})
 
   // Use the existing order tracking hook for real-time updates
-  const { currentStatus: socketStatus, lastUpdate, isSubscribed } = useOrderTracking(orderId)
+  const { currentStatus: socketStatus, lastUpdate, isSubscribed, statusHistory } = useOrderTracking(orderId)
 
-  // Handle real-time status updates from socket
+  // Convert numeric initialStatus to string status for API call
+  const statusString = orderStatusFromNumber(initialStatus)
+
+  // Fetch initial tracking data from API
+  const { data: trackingData } = useQuery({
+    queryKey: ['orderTracking', orderId, statusString],
+    queryFn: () => orderTrackingApi.getTracking({ order_id: orderId, status: statusString }),
+    enabled: !!orderId
+  })
+
+  // Build timestamps from tracking API timeline + websocket statusHistory
+  const timestamps = useMemo(() => {
+    const result: Record<number, string> = {}
+    // From tracking API timeline
+    const timeline = trackingData?.data?.data?.timeline
+    if (timeline) {
+      for (const event of timeline) {
+        const mappedStatus = STATUS_MAP[event.status]
+        if (mappedStatus !== undefined) {
+          result[mappedStatus] = event.timestamp
+        }
+      }
+    }
+    // Override/add from real-time websocket statusHistory
+    for (const entry of statusHistory) {
+      const mappedStatus = STATUS_MAP[entry.status]
+      if (mappedStatus !== undefined) {
+        result[mappedStatus] = entry.updated_at
+      }
+    }
+    return result
+  }, [trackingData?.data?.data?.timeline, statusHistory])
+
+  // Handle real-time status updates from socket (for currentStatus and toast notifications)
   useEffect(() => {
     if (socketStatus) {
       const mappedStatus = STATUS_MAP[socketStatus]
       if (mappedStatus !== undefined && mappedStatus !== currentStatus) {
         setCurrentStatus(mappedStatus)
-
-        // Update timestamp for this status
-        if (lastUpdate) {
-          setTimestamps((prev) => ({
-            ...prev,
-            [mappedStatus]: lastUpdate
-          }))
-        }
 
         // Show toast notification for status change
         const statusLabel = STATUS_LABELS[mappedStatus] || 'Cập nhật'
@@ -90,7 +117,7 @@ export default function LiveOrderTracker({
         }
       }
     }
-  }, [socketStatus, lastUpdate, currentStatus])
+  }, [socketStatus, currentStatus])
 
   // Calculate estimated delivery time (mock: 2-3 days from now for in-progress orders)
   const getEstimatedDelivery = useCallback(() => {

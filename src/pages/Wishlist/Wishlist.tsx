@@ -14,6 +14,7 @@ import ImageWithFallback from 'src/components/ImageWithFallback'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
 import { Product } from 'src/types/product.type'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 
 // Mock categories for visual enhancement
 const mockCategories = ['Điện tử', 'Thời trang', 'Gia dụng', 'Làm đẹp', 'Thể thao', 'Sách', 'Đồ chơi', 'Phụ kiện']
@@ -261,6 +262,10 @@ export default function Wishlist() {
   const [activeSort, setActiveSort] = useState('newest')
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
+  const isMobile = useIsMobile()
+
+  const activeContainerVariants = isMobile ? undefined : containerVariants
+  const activeFadeInUp = isMobile ? undefined : fadeInUp
 
   // Fetch real products from API
   const { data: productsData } = useQuery({
@@ -471,9 +476,9 @@ export default function Wishlist() {
 
             {/* Wishlist Hero Banner */}
             <motion.div
-              variants={fadeInUp}
-              initial='hidden'
-              animate='visible'
+              variants={activeFadeInUp}
+              initial={isMobile ? false : 'hidden'}
+              animate={isMobile ? undefined : 'visible'}
               className='relative mb-6 overflow-hidden rounded-xl bg-linear-to-r from-[#ee4d2d] via-[#ff6b4a] to-[#ff8c6b] shadow-lg dark:from-orange-700 dark:via-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'
             >
               {/* Decorative blurred circles */}
@@ -519,9 +524,9 @@ export default function Wishlist() {
 
             {/* Stats Header - 4 Cards */}
             <motion.div
-              variants={containerVariants}
-              initial='hidden'
-              animate='visible'
+              variants={activeContainerVariants}
+              initial={isMobile ? false : 'hidden'}
+              animate={isMobile ? undefined : 'visible'}
               className='mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4'
             >
               <motion.div
@@ -583,9 +588,9 @@ export default function Wishlist() {
             {/* Wishlist Insights Banner */}
             {insights && (
               <motion.div
-                variants={fadeInUp}
-                initial='hidden'
-                animate='visible'
+                variants={activeFadeInUp}
+                initial={isMobile ? false : 'hidden'}
+                animate={isMobile ? undefined : 'visible'}
                 className='mb-6 rounded-xl border border-purple-200 bg-linear-to-r from-violet-500/10 via-purple-500/10 to-fuchsia-500/10 p-4 dark:border-purple-800/50 dark:from-violet-500/20 dark:via-purple-500/20 dark:to-fuchsia-500/20'
               >
                 <div className='flex flex-wrap items-center gap-4 text-sm'>
@@ -690,9 +695,9 @@ export default function Wishlist() {
 
             {/* Product Card Grid */}
             <motion.div
-              variants={containerVariants}
-              initial='hidden'
-              animate='visible'
+              variants={activeContainerVariants}
+              initial={isMobile ? false : 'hidden'}
+              animate={isMobile ? undefined : 'visible'}
               key={activeFilter + activeSort}
               className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
             >
@@ -708,11 +713,10 @@ export default function Wishlist() {
                     key={item._id}
                     variants={itemVariants}
                     layout
-                    whileHover={{ y: -4 }}
                     transition={{ duration: 0.2 }}
                     onMouseEnter={() => setHoveredCardId(item._id)}
                     onMouseLeave={() => setHoveredCardId(null)}
-                    className='group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-slate-900/70'
+                    className='group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-slate-900/70'
                   >
                     {/* Top-left badges stack */}
                     <div className='absolute top-2 left-2 z-10 flex flex-col gap-1'>
@@ -752,8 +756,7 @@ export default function Wishlist() {
                         scale: hoveredCardId === item._id ? 1 : 0.8
                       }}
                       onClick={() => removeMutation.mutate(item.product._id)}
-                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden dark:bg-slate-700/90 dark:shadow-slate-900/50'
-                      whileTap={{ scale: 0.9 }}
+                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white active:scale-90 focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden dark:bg-slate-700/90 dark:shadow-slate-900/50'
                       aria-label='Xóa khỏi yêu thích'
                     >
                       <svg
@@ -829,15 +832,14 @@ export default function Wishlist() {
                       </div>
 
                       {/* Add to Cart Button */}
-                      <motion.button
+                      <button
                         onClick={() => addToCartMutation.mutate(item.product._id)}
-                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
-                        whileTap={{ scale: 0.95 }}
+                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 active:scale-95 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
                         aria-label='Thêm vào giỏ hàng'
                       >
                         <IconShoppingCart className='h-3.5 w-3.5' />
                         Thêm vào giỏ
-                      </motion.button>
+                      </button>
                     </div>
                   </motion.div>
                 )
@@ -862,9 +864,9 @@ export default function Wishlist() {
 
             {/* Two-column banners */}
             <motion.div
-              variants={fadeInUp}
-              initial='hidden'
-              animate='visible'
+              variants={activeFadeInUp}
+              initial={isMobile ? false : 'hidden'}
+              animate={isMobile ? undefined : 'visible'}
               className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2'
             >
               {/* Price Alert Banner */}
@@ -914,7 +916,12 @@ export default function Wishlist() {
             </motion.div>
 
             {/* Category breakdown mini cards */}
-            <motion.div variants={fadeInUp} initial='hidden' animate='visible' className='mt-6'>
+            <motion.div
+              variants={activeFadeInUp}
+              initial={isMobile ? false : 'hidden'}
+              animate={isMobile ? undefined : 'visible'}
+              className='mt-6'
+            >
               <h3 className='mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300'>
                 <IconFolder className='h-4 w-4' /> Phân loại yêu thích
               </h3>

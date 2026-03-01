@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 import { sectionEntrance, staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
 
 const Footer = () => {
   const reducedMotion = useReducedMotion()
+  const isMobile = useIsMobile()
+  const disableAnimation = reducedMotion || isMobile
 
   return (
     <footer className='relative overflow-hidden py-12 md:py-16'>
@@ -29,9 +32,9 @@ const Footer = () => {
       <div className='relative z-10 container'>
         {/* Copyright & Regions Section */}
         <motion.div
-          variants={!reducedMotion ? sectionEntrance : undefined}
-          initial={!reducedMotion ? 'hidden' : undefined}
-          whileInView={!reducedMotion ? 'visible' : undefined}
+          variants={!disableAnimation ? sectionEntrance : undefined}
+          initial={!disableAnimation ? 'hidden' : undefined}
+          whileInView={!disableAnimation ? 'visible' : undefined}
           viewport={{ once: true, amount: 0.3 }}
         >
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
@@ -52,16 +55,16 @@ const Footer = () => {
         {/* Main Footer Content */}
         <motion.div
           className='py-10'
-          variants={!reducedMotion ? staggerContainer(STAGGER_DELAY.slow) : undefined}
-          initial={!reducedMotion ? 'hidden' : undefined}
-          whileInView={!reducedMotion ? 'visible' : undefined}
+          variants={!disableAnimation ? staggerContainer(STAGGER_DELAY.slow) : undefined}
+          initial={!disableAnimation ? 'hidden' : undefined}
+          whileInView={!disableAnimation ? 'visible' : undefined}
           viewport={{ once: true, amount: 0.1 }}
         >
           <div className='text-center'>
             {/* Policy Links */}
             <motion.div
               className='flex flex-wrap items-center justify-center gap-4 md:gap-8'
-              variants={!reducedMotion ? staggerItem : undefined}
+              variants={!disableAnimation ? staggerItem : undefined}
             >
               {['CHÍNH SÁCH BẢO MẬT', 'QUY CHẾ HOẠT ĐỘNG', 'CHÍNH SÁCH VẬN CHUYỂN', 'CHÍNH SÁCH TRẢ HÀNG'].map(
                 (text) => (
@@ -82,7 +85,7 @@ const Footer = () => {
             {/* Certification Badges */}
             <motion.div
               className='mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-8'
-              variants={!reducedMotion ? staggerItem : undefined}
+              variants={!disableAnimation ? staggerItem : undefined}
             >
               <Link to='/' className='group cursor-pointer transition-all duration-300 hover:scale-105'>
                 <div
@@ -120,7 +123,7 @@ const Footer = () => {
             </motion.div>
 
             {/* Company Info Section - No card, blends with background */}
-            <motion.div className='mt-12' variants={!reducedMotion ? staggerItem : undefined}>
+            <motion.div className='mt-12' variants={!disableAnimation ? staggerItem : undefined}>
               <div className='mx-auto max-w-4xl space-y-3 border-t border-orange-200/30 px-4 py-6 md:px-8 dark:border-slate-700/40'>
                 {/* Company Name */}
                 <div className='text-base font-bold text-orange dark:text-orange-400'>Công ty TNHH Shopee</div>

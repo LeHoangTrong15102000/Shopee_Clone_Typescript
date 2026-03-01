@@ -16,12 +16,13 @@ import SearchNoResults from 'src/components/SearchNoResults'
 import { useProductQueryStates, normalizeProductQueryKey } from 'src/hooks/nuqs'
 import useInfiniteScroll from 'src/hooks/useInfiniteScroll'
 import { useViewMode } from 'src/hooks/useViewMode'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Helmet } from 'react-helmet-async'
 import Breadcrumb from 'src/components/Breadcrumb'
 import path from 'src/constant/path'
 import Button from 'src/components/Button'
 
-const containerVariants = {
+const containerVariantsBase = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -29,7 +30,7 @@ const containerVariants = {
   }
 }
 
-const itemVariants = {
+const itemVariantsBase = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -44,6 +45,15 @@ const itemVariants = {
  */
 const ProductListInfinite = () => {
   const [filters, setFilters] = useProductQueryStates()
+  const isMobile = useIsMobile()
+
+  const containerVariants = isMobile
+    ? undefined
+    : containerVariantsBase
+
+  const itemVariants = isMobile
+    ? undefined
+    : itemVariantsBase
 
   // View Mode - Grid/List toggle with localStorage persistence
   const { viewMode, changeViewMode } = useViewMode()
@@ -249,8 +259,8 @@ const ProductListInfinite = () => {
                     aria-live='polite'
                     aria-busy={isFetchingNextPage}
                     variants={containerVariants}
-                    initial='hidden'
-                    animate='visible'
+                    initial={isMobile ? false : 'hidden'}
+                    animate={isMobile ? undefined : 'visible'}
                     exit={{ opacity: 0 }}
                   >
                     {allProducts.map((product) => (
@@ -276,8 +286,8 @@ const ProductListInfinite = () => {
                     aria-live='polite'
                     aria-busy={isFetchingNextPage}
                     variants={containerVariants}
-                    initial='hidden'
-                    animate='visible'
+                    initial={isMobile ? false : 'hidden'}
+                    animate={isMobile ? undefined : 'visible'}
                     exit={{ opacity: 0 }}
                   >
                     {allProducts.map((product) => (

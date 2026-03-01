@@ -31,11 +31,9 @@ const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
   const colorClasses = colorClassName ?? 'text-white/90 hover:text-white'
 
   return (
-    <motion.button
+    <button
       onClick={toggleTheme}
-      className={`${colorClasses} ${className} border-none outline-hidden transition-colors duration-200 focus:border-none focus:ring-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 focus-visible:outline-hidden`}
-      whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
-      whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+      className={`${colorClasses} ${className} border-none outline-hidden transition-all duration-200 hover:scale-110 active:scale-90 focus:border-none focus:ring-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 focus-visible:outline-hidden`}
       aria-label={isDark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
       title={isDark ? 'Chế độ sáng' : 'Chế độ tối'}
     >
@@ -50,7 +48,7 @@ const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
           {isDark ? <MoonIcon /> : <SunIcon />}
         </motion.div>
       </AnimatePresence>
-    </motion.button>
+    </button>
   )
 }
 

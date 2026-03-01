@@ -186,6 +186,7 @@ const ChangePassword = () => {
                 autoComplete='on'
                 classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
+                disableFloatingLabel
               />
             </div>
           </motion.div>
@@ -224,6 +225,7 @@ const ChangePassword = () => {
                 autoComplete='on'
                 classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
+                disableFloatingLabel
               />
             </div>
           </motion.div>
@@ -262,6 +264,7 @@ const ChangePassword = () => {
                 autoComplete='on'
                 classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
+                disableFloatingLabel
               />
               <PasswordStrengthMeter password={watchedNewPassword ?? ''} className='mt-2' />
             </div>

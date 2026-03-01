@@ -30,6 +30,7 @@ interface Props<
   classNameInput?: string
   classNameError?: string
   classNameEye?: string
+  disableFloatingLabel?: boolean
   register?: UseFormRegister<TFieldValues> // có hay không cũng được
   rules?: RegisterOptions // Là những options trong tham số thứ 2 của register{...}
   // autoComplete?: string
@@ -51,6 +52,7 @@ const Input = <
   classNameInput = 'w-full rounded-xs border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-3 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500',
   classNameError = 'mt-1 min-h-5 text-sm text-red-600 dark:text-red-400',
   classNameEye = 'absolute right-[5px] top-[6px] h-8 w-8 md:right-[8px] md:top-[9px] md:h-6 md:w-6 cursor-pointer p-1 md:p-0 dark:text-gray-300',
+  disableFloatingLabel,
   ...rest
 }: // TFieldValues ở đây truyền thông qua
 Props<TFieldValues, TName>) => {
@@ -111,16 +113,18 @@ Props<TFieldValues, TName>) => {
 
   return (
     <div className={className}>
-      <label
-        className={`pointer-events-none absolute left-[10px] z-10 bg-white px-1 text-[12px] italic transition-all duration-200 ease-out dark:bg-slate-800 ${
-          showFloatingLabel
-            ? 'top-[-10px] text-gray-600 opacity-100 dark:text-gray-300'
-            : 'top-[14px] text-gray-400 opacity-0 dark:text-gray-500'
-        }`}
-        htmlFor={name}
-      >
-        {labelText}
-      </label>
+      {!disableFloatingLabel && (
+        <label
+          className={`pointer-events-none absolute left-[10px] z-10 bg-white px-1 text-[12px] italic transition-all duration-200 ease-out dark:bg-slate-800 ${
+            showFloatingLabel
+              ? 'top-[-10px] text-gray-600 opacity-100 dark:text-gray-300'
+              : 'top-[14px] text-gray-400 opacity-0 dark:text-gray-500'
+          }`}
+          htmlFor={name}
+        >
+          {labelText}
+        </label>
+      )}
       <input
         className={getInputClassName()}
         // Tự sinh ra cho chúng ta với name là email, nó sẽ tự sinh ra cho chúng ta nên không cần truyền vào

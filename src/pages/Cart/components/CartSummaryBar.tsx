@@ -120,26 +120,20 @@ const CartSummaryBar = ({
                   content: 'p-0 bg-transparent'
                 }}
               >
-                <motion.button
-                  className='group ml-2 text-gray-600 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.1 }}
+                <button
+                  className='group ml-2 text-gray-600 transition-all duration-100 hover:scale-110 hover:text-[#ee4d2d] active:scale-90 dark:text-gray-400'
                 >
-                  <motion.svg
+                  <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-4 w-4 transition-transform duration-75'
-                    initial={{ rotate: 180 }}
-                    whileHover={{ rotate: 0 }}
-                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className='h-4 w-4 rotate-180 transition-transform duration-75 group-hover:rotate-0'
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M4.5 15.75l7.5-7.5 7.5 7.5' />
-                  </motion.svg>
-                </motion.button>
+                  </svg>
+                </button>
               </Tooltip>
             )}
           </div>
@@ -164,9 +158,6 @@ const CartSummaryBar = ({
           </div>
         </div>
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.1 }}
           animate={
             checkedPurchaseCount > 0
               ? {
@@ -178,6 +169,8 @@ const CartSummaryBar = ({
                 }
               : {}
           }
+          transition={{ duration: 0.1 }}
+          className='transition-transform duration-100 hover:scale-105 active:scale-95'
           style={{ borderRadius: '4px' }}
         >
           <Button

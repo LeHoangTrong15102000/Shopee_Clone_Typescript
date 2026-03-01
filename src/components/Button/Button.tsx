@@ -1,8 +1,5 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react'
 import { Link } from 'react-router'
-import { motion } from 'framer-motion'
-import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { buttonHover } from 'src/styles/animations/variants'
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg'
@@ -46,9 +43,8 @@ type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
   const { className, isLoading, children, ariaLabel, variant, size, ...rest } = props
-  const prefersReducedMotion = useReducedMotion()
 
-  const getClassName = (addOpacityTransition = false) => {
+  const getClassName = (addHoverTransition = false) => {
     const classes: string[] = [
       'outline-hidden focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
     ]
@@ -61,14 +57,15 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
     if (className) {
       classes.push(className)
     }
-    if ('disabled' in rest && rest.disabled) {
+    const isDisabledState = ('disabled' in rest && rest.disabled) || isLoading
+    if (isDisabledState) {
       classes.push('cursor-not-allowed opacity-70')
     }
-    if (isLoading) {
-      classes.push('cursor-not-allowed opacity-70')
-    }
-    if (addOpacityTransition) {
-      classes.push('transition-opacity duration-150')
+    if (addHoverTransition) {
+      classes.push('transition-all duration-150')
+      if (!isDisabledState) {
+        classes.push('hover:scale-[1.02] active:scale-[0.98]')
+      }
     }
     return classes.join(' ').trim()
   }
@@ -108,19 +105,11 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
   }
 
   // Render as button (default)
-  const { disabled, onDrag, onDragStart, onDragEnd, onAnimationStart, ...buttonRest } = rest as ButtonAsButton & {
-    onDrag?: unknown
-    onDragStart?: unknown
-    onDragEnd?: unknown
-    onAnimationStart?: unknown
-  }
+  const { disabled, ...buttonRest } = rest as ButtonAsButton
   const isDisabled = disabled || isLoading
 
-  // Determine if animations should be applied
-  const canAnimate = !prefersReducedMotion && !isDisabled
-
   return (
-    <motion.button
+    <button
       type='button'
       className={getClassName(true)}
       disabled={isDisabled}
@@ -128,9 +117,6 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
       aria-busy={isLoading}
       aria-disabled={isDisabled}
       ref={ref as React.Ref<HTMLButtonElement>}
-      whileHover={canAnimate ? buttonHover.whileHover : undefined}
-      whileTap={canAnimate ? buttonHover.whileTap : undefined}
-      transition={buttonHover.transition}
       {...buttonRest}
     >
       {isLoading && (
@@ -152,7 +138,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
         </svg>
       )}
       {children}
-    </motion.button>
+    </button>
   )
 })
 

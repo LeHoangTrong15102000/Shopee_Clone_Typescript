@@ -76,13 +76,11 @@ const BackToTopInner = () => {
         <motion.button
           type='button'
           onClick={scrollToTop}
-          className='fixed bottom-4 left-3 z-60 flex h-12 w-12 items-center justify-center rounded-full bg-orange text-white shadow-lg transition-colors hover:bg-[#d73211] focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden md:bottom-24 md:left-6'
+          className='fixed bottom-4 left-3 z-60 flex h-12 w-12 items-center justify-center rounded-full bg-orange text-white shadow-lg transition-all duration-200 hover:scale-110 hover:bg-[#d73211] active:scale-90 focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden md:bottom-24 md:left-6'
           variants={variants}
           initial='hidden'
           animate='visible'
           exit='exit'
-          whileHover={prefersReducedMotion ? undefined : { scale: 1.1 }}
-          whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
           aria-label='Cuộn lên đầu trang'
           role='button'
         >
