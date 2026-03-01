@@ -89,7 +89,18 @@ export default defineConfig(({ mode }) => {
         environment: 'jsdom',
         setupFiles: ['./vitest.setup.js'],
         css: true,
+        testTimeout: process.env.CI ? 60000 : 60000,
+        hookTimeout: process.env.CI ? 60000 : 60000,
         pool: 'forks',
+        poolOptions: {
+          forks: {
+            // Limit concurrent workers to prevent OOM - heavy integration tests render full App
+            minForks: 1,
+            maxForks: process.env.CI ? 1 : 2,
+            // Increase heap memory for worker processes (integration tests need ~4GB each)
+            execArgv: ['--max-old-space-size=8192']
+          }
+        },
         include: [
           'src/**/*.test.{ts,tsx}', // Unit tests
           'test/**/*.test.{ts,tsx}' // Integration & E2E tests

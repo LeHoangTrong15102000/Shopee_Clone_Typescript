@@ -899,11 +899,13 @@ const userApi = {
 
 #### 🎯 Multi-page Form Strategy
 
+> ⚠️ **Lưu ý**: Project hiện tại đã migrate sang Zod. Các ví dụ Yup bên dưới chỉ mang tính tham khảo lịch sử. Xem `src/utils/rules.ts` để tham khảo cách sử dụng Zod với baseSchema pattern và .superRefine() cho cross-field validation.
+
 ```typescript
 // Use FormProvider cho complex forms
 import { FormProvider, useFormContext } from 'react-hook-form';
 
-// User schema với Yup
+// User schema với Yup (ví dụ cũ - chỉ tham khảo)
 const userSchema = yup.object({
   name: yup.string().max(160, 'Độ dài tối đa là 160 ký tự'),
   phone: yup.string().max(20, 'Độ dài tối đa là 20 ký tự'),
@@ -1097,7 +1099,7 @@ import _ from 'lodash'; // ❌ Bad for bundle size
 - ✅ **Nested Routing**: Clean route structure với React Router v6
 - ✅ **Form Handling**: Multi-step forms với React Hook Form
 - ✅ **File Upload**: Avatar upload với FormData
-- ✅ **Validation**: Complex cross-field validation với Yup
+- ✅ **Validation**: Complex cross-field validation với Zod (đã migrate từ Yup)
 
 #### ⚡ **Performance (Chương 23)**
 

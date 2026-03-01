@@ -141,7 +141,7 @@ const useRouteElements = () => {
           path: path.wishlist,
           element: (
             <Suspense fallback={<Loader />}>
-              <CartLayout headerTitle='sản phẩm yêu thích'>
+              <CartLayout headerTitle='sản phẩm yêu thích' showStepper={false}>
                 <Suspense fallback={<Loader />}>
                   <Wishlist />
                 </Suspense>

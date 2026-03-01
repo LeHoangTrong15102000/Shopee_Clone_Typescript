@@ -134,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [changes, code-quality]
-    if: (needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true') && github.event_name != 'pull_request'
+    if: needs.changes.outputs.src == 'true' || needs.changes.outputs.tests == 'true'
 
     strategy:
       matrix:
@@ -156,19 +156,11 @@ jobs:
       - name: 📦 Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🧪 Run Unit Tests
-        run: pnpm run test:unit
-
-      - name: 🔗 Run Integration Tests
-        run: pnpm run test:integration
-        continue-on-error: true
-
-      - name: 📸 Run Snapshot Tests
-        run: pnpm run test:snapshots
-        continue-on-error: true
-
-      - name: 📊 Generate Coverage Report
+      - name: 🧪 Run All Tests with Coverage
         run: pnpm run test:coverage
+        env:
+          CI: 'true'
+          NODE_OPTIONS: '--max-old-space-size=4096'
 
       - name: 📈 Upload Coverage to Codecov
         uses: codecov/codecov-action@v5

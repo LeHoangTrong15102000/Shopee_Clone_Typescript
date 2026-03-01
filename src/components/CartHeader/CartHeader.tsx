@@ -8,9 +8,10 @@ import MobileNavigationDrawer from '../MobileNavigationDrawer'
 
 interface CartHeaderProps {
   title?: string
+  showStepper?: boolean
 }
 
-const CartHeader = ({ title = 'giỏ hàng' }: CartHeaderProps) => {
+const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderProps) => {
   const { onSubmitSearch, register } = useSearchProducts()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   return (
@@ -106,7 +107,7 @@ const CartHeader = ({ title = 'giỏ hàng' }: CartHeaderProps) => {
         </div>
       </div>
       {/* Shopping Flow Breadcrumb Bar */}
-      <CartShoppingFlow />
+      {showStepper && <CartShoppingFlow />}
       {/* Mobile Navigation Drawer */}
       <MobileNavigationDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </motion.div>

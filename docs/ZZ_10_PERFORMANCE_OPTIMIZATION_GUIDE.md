@@ -136,7 +136,7 @@ build: {
         'http-vendor': ['axios', '@tanstack/react-query', '@tanstack/react-query-devtools'],
 
         // Form & Validation
-        'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
+        'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
 
         // Router & Utils
         'router-vendor': ['react-router-dom'],

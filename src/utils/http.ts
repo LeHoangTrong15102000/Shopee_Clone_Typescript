@@ -30,8 +30,10 @@ interface HttpOptions {
   redirectOnTokenExpiry?: boolean
 }
 
+// Note: Request deduplication, retry logic, and abort handling are managed by
+// TanStack React Query at the application layer — not in this HTTP client.
 export class Http {
-  instance: AxiosInstance
+  readonly instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
   private refreshTokenRequest: Promise<string> | null
@@ -87,10 +89,10 @@ export class Http {
       },
       async (error: AxiosError) => {
         // Nếu không phải lỗi liên quan đến 422 hoặc là 401
+        const status = error.response?.status
         if (
-          ![HTTP_STATUS_CODE.UnprocessableEntity, HTTP_STATUS_CODE.Unauthorized].includes(
-            error.response?.status as number
-          )
+          status !== undefined &&
+          ![HTTP_STATUS_CODE.UnprocessableEntity, HTTP_STATUS_CODE.Unauthorized].includes(status)
         ) {
           const data = error.response?.data as { message?: string } | undefined
           const message = data?.message || error.message
@@ -115,13 +117,10 @@ export class Http {
             this.refreshTokenRequest = this.refreshTokenRequest
               ? this.refreshTokenRequest
               : this.handleRefreshToken().finally(() => {
-                  setTimeout(() => {
-                    // Giữ API refreshToken lại 10s cho những Api kế bên gọi chung để  set lại access_token lấy lại dự liệu, nếu sau khoảng thời gian này thì mới gọi lại refreshTokenRequest = null lại như ban đầu
-                    this.refreshTokenRequest = null
-                  }, 10000)
+                  this.refreshTokenRequest = null
                 })
 
-            return this.refreshTokenRequest?.then((access_token) => {
+            return this.refreshTokenRequest.then((access_token) => {
               return this.instance({ ...config, headers: { ...(config.headers || {}), authorization: access_token } })
             })
           }
@@ -152,7 +151,7 @@ export class Http {
   private async handleRefreshToken() {
     // console.log('Refresh chạy vào đây ------------')
     // Nếu chúng ta không return thì nó sẽ trả về Promise() và không thể .finally() được
-    return await this.instance
+    return this.instance
       .post<RefreshTokenResponse>(URL_REFRESH_TOKEN, {
         // Bắt buộc phải truyền lên `refresh_token` đúng chữ vì ở dưới backend yêu cầu như vậy
         refresh_token: this.refreshToken

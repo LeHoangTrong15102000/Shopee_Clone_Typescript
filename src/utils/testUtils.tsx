@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider, getInitialAppContext } from 'src/contexts/app.context'
 import { ThemeProvider } from 'src/contexts/theme.context'
+import { SocketProvider } from 'src/contexts/socket.context'
 import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
 import { expect } from 'vitest'
 
@@ -39,7 +40,9 @@ const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false
+        retry: false,
+        staleTime: 5 * 60 * 1000,
+        gcTime: 10 * 60 * 1000
       },
       mutations: {
         retry: false
@@ -74,7 +77,9 @@ export const renderWithRouter = ({ route = '/' } = {}) => {
     ...render(
       <Provider>
         <AppProvider defaultValue={defaultValueAppContext}>
-          <App />
+          <SocketProvider>
+            <App />
+          </SocketProvider>
         </AppProvider>
       </Provider>,
       { wrapper: RouterWithNuqs }

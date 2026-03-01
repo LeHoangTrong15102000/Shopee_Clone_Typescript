@@ -163,3 +163,13 @@ global.PointerEvent = class PointerEvent extends Event {
 Object.defineProperty(window, 'HTMLElement', {
   value: HTMLElement
 })
+
+// Mock heavy lazy-loaded components to prevent OOM in integration tests
+// These are only used in App.tsx via React.lazy() - component tests import directly and override
+vi.mock('src/components/ChatbotWidget', () => ({
+  default: () => null
+}))
+
+vi.mock('src/components/PWAInstallPrompt', () => ({
+  default: () => null
+}))
