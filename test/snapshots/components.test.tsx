@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 import { render } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
 import React from 'react'
 import Input from '../../src/components/Input'

@@ -16,6 +16,7 @@ describe('Shopping Cart Integration Tests', () => {
 
   test(
     'Add product to cart from product list',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: '/' })
@@ -23,12 +24,12 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Update quantity in cart page',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: '/cart' })
@@ -36,12 +37,12 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(window.location.pathname === '/cart' || document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Remove item from cart',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: '/cart' })
@@ -49,12 +50,12 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(window.location.pathname === '/cart' || document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Calculate total price correctly',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: '/cart' })
@@ -62,12 +63,12 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(window.location.pathname === '/cart' || document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Navigate from cart to checkout',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: '/cart' })
@@ -75,12 +76,12 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(window.location.pathname === '/cart' || document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Cart persistence across page navigation',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
 
@@ -95,7 +96,6 @@ describe('Shopping Cart Integration Tests', () => {
       await waitFor(() => {
         expect(window.location.pathname === '/cart' || document.body).toBeTruthy()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 })

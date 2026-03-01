@@ -16,6 +16,7 @@ describe('Authentication Flow Integration Tests', () => {
 
   test(
     'Login flow: Enter credentials → API call → Redirect to home',
+    { timeout: 15000 },
     async () => {
       const { user } = renderWithRouter({ route: path.login })
 
@@ -49,12 +50,12 @@ describe('Authentication Flow Integration Tests', () => {
         // If form elements not found, test still passes (graceful degradation)
         expect(document.body).toBeTruthy()
       }
-    },
-    { timeout: 15000 }
+    }
   )
 
   test(
     'Protected route access: Without token → Redirect to login',
+    { timeout: 10000 },
     async () => {
       renderWithRouter({ route: path.profile })
 
@@ -64,12 +65,12 @@ describe('Authentication Flow Integration Tests', () => {
         },
         { timeout: 3000 }
       )
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Protected route access: With valid token → Allow access',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter({ route: path.profile })
@@ -80,12 +81,12 @@ describe('Authentication Flow Integration Tests', () => {
         },
         { timeout: 3000 }
       )
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Logout flow: User logged in → Check app state',
+    { timeout: 10000 },
     async () => {
       setAccessTokenToLS(access_token)
       renderWithRouter()
@@ -94,12 +95,12 @@ describe('Authentication Flow Integration Tests', () => {
         expect(document.body).toBeTruthy()
         expect(window.location.pathname).toBeDefined()
       })
-    },
-    { timeout: 10000 }
+    }
   )
 
   test(
     'Registration flow: Fill form → Submit → Check response',
+    { timeout: 15000 },
     async () => {
       const { user } = renderWithRouter({ route: path.register })
 
@@ -139,7 +140,6 @@ describe('Authentication Flow Integration Tests', () => {
       } else {
         expect(document.body).toBeTruthy()
       }
-    },
-    { timeout: 15000 }
+    }
   )
 })
