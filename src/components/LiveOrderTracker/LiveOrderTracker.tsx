@@ -67,7 +67,7 @@ export default function LiveOrderTracker({
   const { currentStatus: socketStatus, lastUpdate, isSubscribed, statusHistory } = useOrderTracking(orderId)
 
   // Convert numeric initialStatus to string status for API call
-  const statusString = orderStatusFromNumber(initialStatus)
+  const statusString = orderStatusFromNumber(initialStatus) || 'pending'
 
   // Fetch initial tracking data from API
   const { data: trackingData } = useQuery({

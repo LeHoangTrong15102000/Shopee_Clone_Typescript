@@ -134,7 +134,7 @@ export default function OrderDetail() {
     queryKey: ['orderTracking', orderId, statusString],
     queryFn: () =>
       orderTrackingApi.getTracking({ order_id: orderId, status: statusString || orderData?.data.data.status }),
-    enabled: !!orderId
+    enabled: !!orderId && (!!statusString || !!orderData)
   })
 
   const cancelMutation = useMutation({
