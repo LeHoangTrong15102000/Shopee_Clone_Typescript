@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import Popover from 'src/components/Popover'
 import NotificationItem from './NotificationItem'
 import NotificationBadge from './NotificationBadge'
@@ -17,9 +17,9 @@ const NotificationDropdown = () => {
   }
 
   const renderNotifications = () => (
-    <div className='relative max-w-[min(400px,calc(100vw-2rem))] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg'>
+    <div className='relative max-w-[min(400px,calc(100vw-2rem))] rounded-xs border border-gray-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800'>
       {/* Header */}
-      <div className='flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-slate-700'>
+      <div className='flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-slate-700'>
         <div className='flex items-center gap-2'>
           <h3 className='text-sm font-medium text-gray-900 dark:text-gray-100'>Thông báo mới nhận</h3>
           {/* Real-time connection indicator */}
@@ -38,9 +38,9 @@ const NotificationDropdown = () => {
             <NotificationItem key={notification._id} notification={notification} onMarkAsRead={handleMarkAsRead} />
           ))
         ) : (
-          <div className='flex flex-col items-center justify-center py-8 px-4'>
+          <div className='flex flex-col items-center justify-center px-4 py-8'>
             <svg
-              className='w-12 h-12 text-gray-300 dark:text-gray-600 mb-2'
+              className='mb-2 h-12 w-12 text-gray-300 dark:text-gray-600'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -52,20 +52,20 @@ const NotificationDropdown = () => {
                 d='M15 17h5l-5-5 5-5h-5m-6 10h5l-5-5 5-5H9'
               />
             </svg>
-            <p className='text-sm text-gray-500 dark:text-gray-400 text-center'>Chưa có thông báo nào</p>
+            <p className='text-center text-sm text-gray-500 dark:text-gray-400'>Chưa có thông báo nào</p>
           </div>
         )}
       </div>
 
       {/* Footer */}
       {notifications.length > 0 && (
-        <div className='px-4 py-3 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center'>
+        <div className='flex items-center justify-between border-t border-gray-100 px-4 py-3 dark:border-slate-700'>
           <Link to={path.notifications} className='text-sm text-orange hover:text-[#d73527]'>
             Xem tất cả thông báo
           </Link>
           <button
             onClick={handleClearAll}
-            className='text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            className='text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
           >
             Đánh dấu đã đọc tất cả
           </button>
@@ -76,14 +76,14 @@ const NotificationDropdown = () => {
 
   return (
     <Popover className='relative' renderPopover={renderNotifications()} placement='bottom-end'>
-      <button className='relative flex items-center justify-center text-white hover:text-white/80 transition-colors'>
+      <button className='relative flex items-center justify-center text-white transition-colors hover:text-white/80'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='w-6 h-6'
+          className='h-6 w-6'
         >
           <path
             strokeLinecap='round'

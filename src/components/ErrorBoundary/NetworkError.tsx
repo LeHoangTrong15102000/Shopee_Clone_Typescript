@@ -127,7 +127,7 @@ export default function NetworkError({
         <button
           onClick={handleRetry}
           disabled={isRetrying}
-          className='flex items-center gap-2 rounded-sm bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
+          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
         >
           {isRetrying ? (
             <>

@@ -14,11 +14,11 @@ const SearchHistoryItem = ({ historyItem, onSelect, onDelete }: Props) => {
 
   return (
     <div
-      className='flex items-center py-2 px-4 hover:bg-gray-50 dark:hover:bg-slate-700 cursor-pointer transition-colors group'
+      className='group flex cursor-pointer items-center px-4 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
       onClick={onSelect}
     >
       <svg
-        className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500 mr-2 md:mr-3 flex-shrink-0'
+        className='mr-2 h-3 w-3 shrink-0 text-gray-400 md:mr-3 md:h-4 md:w-4 dark:text-gray-500'
         fill='none'
         stroke='currentColor'
         viewBox='0 0 24 24'
@@ -30,15 +30,15 @@ const SearchHistoryItem = ({ historyItem, onSelect, onDelete }: Props) => {
           d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
         />
       </svg>
-      <span className='text-xs md:text-sm text-gray-600 dark:text-gray-300 flex-1 leading-tight'>{historyItem}</span>
+      <span className='flex-1 text-xs leading-tight text-gray-600 md:text-sm dark:text-gray-300'>{historyItem}</span>
       {onDelete && (
         <button
           onClick={handleDelete}
-          className='opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 dark:hover:bg-slate-600 rounded transition-all'
+          className='rounded-sm p-1 opacity-0 transition-all group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-slate-600'
           title='Xóa khỏi lịch sử'
         >
           <svg
-            className='w-3 h-3 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
+            className='h-3 w-3 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'

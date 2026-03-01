@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import purchaseApi from 'src/apis/purchases.api'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
@@ -189,117 +189,122 @@ const Cart = () => {
   }, [])
 
   // func xử lý checked cho 1 sản phẩm
-  const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setExtendedPurchases(
-      produce((draft) => {
-        draft[purchaseIndex].isChecked = event.target.checked
-      })
-    )
-  }
+  const handleChecked = useCallback(
+    (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[purchaseIndex].isChecked = event.target.checked
+        })
+      )
+    },
+    [setExtendedPurchases]
+  )
 
   // func xử lý checkedAll khi nhấn vào nhiều sản phẩm
-  const handleCheckedAll = () => {
-    // Khi mà có sản phẩm trong cart và > 0 thì mới cho checkedAll
-    // set lại extendedPurchase
-    if (extendedPurchases.length > 0) {
-      setExtendedPurchases((prev) =>
-        prev.map((purchase) => ({
-          ...purchase,
-          isChecked: !isAllChecked // khi mà có 1 purchase chưa checked thì khi nhấn vào nó sẽ checked
-        }))
-      )
-    }
-  }
+  const handleCheckedAll = useCallback(() => {
+    setExtendedPurchases((prev) => {
+      if (prev.length === 0) return prev
+      return prev.map((purchase) => ({
+        ...purchase,
+        isChecked: !isAllChecked
+      }))
+    })
+  }, [isAllChecked, setExtendedPurchases])
 
   // Func xử lý onchange input
-  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
-    setExtendedPurchases(
-      produce((draft) => {
-        draft[purchaseIndex].buy_count = value
-      })
-    )
-  }
+  const handleTypeQuantity = useCallback(
+    (purchaseIndex: number) => (value: number) => {
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[purchaseIndex].buy_count = value
+        })
+      )
+    },
+    [setExtendedPurchases]
+  )
 
   // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart với Optimistic Updates
-  const handleQuantity = (purchaseIndex: number, value: number, enabled: boolean) => {
-    if (enabled) {
-      const purchase = extendedPurchases[purchaseIndex] // lấy ra cái purchase
+  const handleQuantity = useCallback(
+    (purchaseIndex: number, value: number, enabled: boolean) => {
+      if (enabled) {
+        const purchase = extendedPurchases[purchaseIndex]
 
-      // Với Optimistic Updates, không cần disable UI
-      // setExtendedPurchases sẽ được xử lý trong hook useOptimisticUpdateQuantity
-
-      // Gọi Api update với optimistic behavior
-      updatePurchaseMutation.mutate({
-        product_id: purchase.product._id,
-        buy_count: value
-      })
-    }
-  }
+        updatePurchaseMutation.mutate({
+          product_id: purchase.product._id,
+          buy_count: value
+        })
+      }
+    },
+    [extendedPurchases, updatePurchaseMutation]
+  )
 
   // func xử lý xóa 1 sản phẩm với Optimistic Updates
-  const handleDelete = (purchaseIndex: number) => () => {
-    const purchaseId = extendedPurchases[purchaseIndex]._id
-    deletePurchasesMutation.mutate([purchaseId])
-  }
+  const handleDelete = useCallback(
+    (purchaseIndex: number) => () => {
+      const purchaseId = extendedPurchases[purchaseIndex]._id
+      deletePurchasesMutation.mutate([purchaseId])
+    },
+    [extendedPurchases, deletePurchasesMutation]
+  )
 
   // func xử lý xóa nhiều sản phẩm với Optimistic Updates
-  const handleDeleteManyPurchases = () => {
-    // lấy ra các mảng purchasesIds từ mảng filter checkedPurchase
+  const handleDeleteManyPurchases = useCallback(() => {
     const purchaseIds = checkedPurchases.map((purchase) => purchase._id)
     deletePurchasesMutation.mutate(purchaseIds)
-  }
+  }, [checkedPurchases, deletePurchasesMutation])
 
   // func xử lý lưu sản phẩm để mua sau
-  const handleSaveForLater = (purchaseIndex: number) => () => {
-    const purchase = extendedPurchases[purchaseIndex]
-    const wasAdded = saveForLater(purchase.product, purchase.buy_count)
+  const handleSaveForLater = useCallback(
+    (purchaseIndex: number) => () => {
+      const purchase = extendedPurchases[purchaseIndex]
+      const wasAdded = saveForLater(purchase.product, purchase.buy_count)
 
-    if (wasAdded) {
-      // Remove from cart after saving
-      deletePurchasesMutation.mutate([purchase._id])
-      toast.success(TOAST_MESSAGES.SAVE_FOR_LATER_SUCCESS, { position: 'top-center', autoClose: 1500 })
-    } else {
-      toast.info(TOAST_MESSAGES.SAVE_FOR_LATER_ALREADY_SAVED, { position: 'top-center', autoClose: 1500 })
-    }
-  }
+      if (wasAdded) {
+        deletePurchasesMutation.mutate([purchase._id])
+        toast.success(TOAST_MESSAGES.SAVE_FOR_LATER_SUCCESS, { position: 'top-center', autoClose: 1500 })
+      } else {
+        toast.info(TOAST_MESSAGES.SAVE_FOR_LATER_ALREADY_SAVED, { position: 'top-center', autoClose: 1500 })
+      }
+    },
+    [extendedPurchases, saveForLater, deletePurchasesMutation]
+  )
 
   // func xử lý chuyển sản phẩm đã lưu vào giỏ hàng
-  const handleMoveToCart = (item: SavedItem) => {
-    // Check if product is already in cart
-    const existingInCart = extendedPurchases.find((p) => p.product._id === item.product._id)
+  const handleMoveToCart = useCallback(
+    (item: SavedItem) => {
+      const existingInCart = extendedPurchases.find((p) => p.product._id === item.product._id)
 
-    if (existingInCart) {
-      // Product already in cart, just remove from saved
-      removeFromSaved(item.product._id)
-      toast.info('Sản phẩm đã có trong giỏ hàng', { position: 'top-center', autoClose: 1500 })
-    } else {
-      // Add to cart with original quantity
-      addToCartMutation.mutate(
-        { product_id: item.product._id, buy_count: item.originalBuyCount },
-        {
-          onSuccess: () => {
-            removeFromSaved(item.product._id)
+      if (existingInCart) {
+        removeFromSaved(item.product._id)
+        toast.info('Sản phẩm đã có trong giỏ hàng', { position: 'top-center', autoClose: 1500 })
+      } else {
+        addToCartMutation.mutate(
+          { product_id: item.product._id, buy_count: item.originalBuyCount },
+          {
+            onSuccess: () => {
+              removeFromSaved(item.product._id)
+            }
           }
-        }
-      )
-    }
-  }
+        )
+      }
+    },
+    [extendedPurchases, removeFromSaved, addToCartMutation]
+  )
 
   // func xử lý xóa tất cả sản phẩm đã lưu
-  const handleClearSaved = () => {
+  const handleClearSaved = useCallback(() => {
     clearSaved()
     toast.success(TOAST_MESSAGES.CLEAR_SAVED_SUCCESS, { position: 'top-center', autoClose: 1500 })
-  }
+  }, [clearSaved])
 
   // func xử lý buy product - chuyển đến trang checkout
-  const handleBuyPurchases = () => {
+  const handleBuyPurchases = useCallback(() => {
     if (checkedPurchases.length > 0) {
-      // Chuyển đến trang checkout thay vì mua trực tiếp
       navigate(path.checkout)
     }
-  }
+  }, [checkedPurchases.length, navigate])
   return (
-    <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-6 md:py-8'>
+    <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-6 md:py-8 dark:bg-slate-900'>
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <Fragment>

@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import Footer from 'src/components/Footer'
 import RegisterHeader from 'src/components/RegisterHeader'
 import PageTransition from 'src/components/PageTransition'

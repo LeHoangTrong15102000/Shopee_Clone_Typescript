@@ -203,7 +203,7 @@ const Cart = () => {
         <div className="overflow-auto">
           <div className="min-w-[1000px]">
             {/* Header */}
-            <div className="grid grid-cols-12 rounded-sm bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow">
+            <div className="grid grid-cols-12 rounded-xs bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow-sm">
               <div className="col-span-6">Sản phẩm</div>
               <div className="col-span-2">Đơn giá</div>
               <div className="col-span-2">Số lượng</div>
@@ -219,9 +219,9 @@ const Cart = () => {
         </div>
 
         {/* Sticky Summary */}
-        <div className="sticky bottom-0 z-10 mt-8 flex flex-col rounded-sm border border-gray-100 bg-white p-5 shadow sm:flex-row sm:items-center">
+        <div className="sticky bottom-0 z-10 mt-8 flex flex-col rounded-xs border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
           <div className="flex items-center">
-            <div className="flex flex-shrink-0 items-center justify-center pr-3">
+            <div className="flex shrink-0 items-center justify-center pr-3">
               <input
                 type="checkbox"
                 className="h-5 w-5"
@@ -498,7 +498,7 @@ const CartHeader = () => {
               <svg className="mr-4 h-8 w-8 lg:h-11 lg:w-11" viewBox="0 0 192 65">
                 {/* Logo SVG */}
               </svg>
-              <div className="mx-4 h-6 w-[1px] bg-orange-300 lg:h-8" />
+              <div className="mx-4 h-6 w-px bg-orange-300 lg:h-8" />
               <div className="capitalize text-orange-300 lg:text-xl">Giỏ hàng</div>
             </Link>
           </nav>
@@ -732,14 +732,14 @@ const UserSideNav = () => {
   return (
     <div>
       <div className="flex items-center border-b border-b-gray-200 py-4">
-        <Link to={path.profile} className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border">
+        <Link to={path.profile} className="h-12 w-12 shrink-0 overflow-hidden rounded-full border">
           <img
             src="https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn"
             alt="avatar"
             className="h-full w-full object-cover"
           />
         </Link>
-        <div className="flex-grow pl-4">
+        <div className="grow pl-4">
           <div className="mb-1 truncate font-semibold text-gray-600">duthanhduoc</div>
           <Link to={path.profile} className="flex items-center capitalize text-gray-500">
             <svg className="mr-1 h-3 w-3" viewBox="0 0 12 12">
@@ -793,20 +793,20 @@ const UserSideNav = () => {
 ```typescript
 const Profile = () => {
   return (
-    <div className="rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20">
+    <div className="rounded-xs bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20">
       <div className="border-b border-b-gray-200 py-6">
         <h1 className="text-lg font-medium capitalize text-gray-900">Hồ Sơ Của Tôi</h1>
         <div className="mt-1 text-sm text-gray-700">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
       </div>
 
       <div className="mt-8 flex flex-col-reverse md:flex-row md:items-start">
-        <form className="mt-6 flex-grow md:mt-0 md:pr-12">
+        <form className="mt-6 grow md:mt-0 md:pr-12">
           {/* Form fields */}
           <div className="mt-6 flex flex-col flex-wrap sm:flex-row">
             <div className="truncate pt-3 capitalize sm:w-[20%] sm:text-right">Tên</div>
             <div className="sm:w-[80%] sm:pl-5">
               <Input
-                classNameInput="w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm"
+                classNameInput="w-full rounded-xs border border-gray-300 px-3 py-2 outline-hidden focus:border-gray-500 focus:shadow-xs"
                 name="name"
                 placeholder="Tên"
                 register={register}
@@ -842,7 +842,7 @@ const Profile = () => {
             </div>
             <input className="hidden" type="file" accept=".jpg,.jpeg,.png" />
             <button
-              className="flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm"
+              className="flex h-10 items-center justify-end rounded-xs border bg-white px-6 text-sm text-gray-600 shadow-xs"
               type="button"
             >
               Chọn ảnh
@@ -962,7 +962,7 @@ const Profile = () => {
   }, [profile, setValue]);
 
   return (
-    <div className="rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20">
+    <div className="rounded-xs bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Form content */}

@@ -14,7 +14,7 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
 
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <span key={index} className='text-orange font-medium'>
+        <span key={index} className='font-medium text-orange'>
           {part}
         </span>
       ) : (
@@ -25,11 +25,11 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
 
   return (
     <div
-      className='flex items-center py-2 px-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded cursor-pointer -mx-2 transition-colors'
+      className='-mx-2 flex cursor-pointer items-center rounded-sm px-2 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
       onClick={onSelect}
     >
       <svg
-        className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500 mr-2 md:mr-3 flex-shrink-0'
+        className='mr-2 h-3 w-3 shrink-0 text-gray-400 md:mr-3 md:h-4 md:w-4 dark:text-gray-500'
         fill='none'
         stroke='currentColor'
         viewBox='0 0 24 24'
@@ -41,7 +41,7 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
           d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
         />
       </svg>
-      <span className='text-xs md:text-sm text-gray-700 dark:text-gray-300 flex-1 leading-tight'>
+      <span className='flex-1 text-xs leading-tight text-gray-700 md:text-sm dark:text-gray-300'>
         {highlightSearchValue(suggestion, searchValue)}
       </span>
     </div>

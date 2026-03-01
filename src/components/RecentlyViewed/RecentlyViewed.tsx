@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { RecentlyViewedProduct } from 'src/hooks/useRecentlyViewed'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import path from 'src/constant/path'
@@ -22,15 +22,15 @@ function RecentlyViewed({ products, maxItems = 10, className = '', onRemove, onC
 
   return (
     <section
-      className={`bg-white dark:bg-slate-800 p-4 rounded-sm shadow ${className}`}
+      className={`rounded-xs bg-white p-4 shadow-sm dark:bg-slate-800 ${className}`}
       aria-label='Sản phẩm đã xem gần đây'
     >
-      <div className='flex items-center justify-between mb-4'>
-        <h2 className='text-gray-500 dark:text-gray-400 uppercase text-sm font-medium'>Sản phẩm đã xem gần đây</h2>
+      <div className='mb-4 flex items-center justify-between'>
+        <h2 className='text-sm font-medium text-gray-500 uppercase dark:text-gray-400'>Sản phẩm đã xem gần đây</h2>
         {onClearAll && displayProducts.length > 0 && (
           <button
             onClick={onClearAll}
-            className='text-sm text-[#ee4d2d] hover:text-[#d73211] transition-colors'
+            className='text-sm text-[#ee4d2d] transition-colors hover:text-[#d73211]'
             aria-label='Xóa tất cả sản phẩm đã xem'
           >
             Xóa tất cả
@@ -39,10 +39,10 @@ function RecentlyViewed({ products, maxItems = 10, className = '', onRemove, onC
       </div>
 
       {/* Mobile: Horizontal scroll */}
-      <div className='md:hidden overflow-x-auto scrollbar-hide' aria-live='polite'>
+      <div className='scrollbar-hide overflow-x-auto md:hidden' aria-live='polite'>
         <div className='flex gap-3' style={{ width: 'max-content' }} role='list' aria-label='Danh sách sản phẩm đã xem'>
           {displayProducts.map((product) => (
-            <div key={product._id} className='relative w-32 flex-shrink-0' role='listitem'>
+            <div key={product._id} className='relative w-32 shrink-0' role='listitem'>
               <ProductCard product={product} onRemove={onRemove} />
             </div>
           ))}
@@ -51,7 +51,7 @@ function RecentlyViewed({ products, maxItems = 10, className = '', onRemove, onC
 
       {/* Desktop: Grid 6 columns */}
       <div
-        className='hidden md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3'
+        className='hidden gap-3 md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
         role='list'
         aria-label='Danh sách sản phẩm đã xem'
         aria-live='polite'
@@ -82,15 +82,14 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
   )
 
   return (
-    <article className='group relative bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-600 rounded-sm overflow-hidden hover:shadow-md transition-shadow'>
+    <article className='group relative overflow-hidden rounded-xs border border-gray-100 bg-white transition-shadow hover:shadow-md dark:border-slate-600 dark:bg-slate-800'>
       {onRemove && (
         <button
           onClick={handleRemove}
-          className='absolute top-1 right-1 z-10 w-5 h-5 bg-black/50 rounded-full flex items-center justify-center
-            opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70'
+          className='absolute top-1 right-1 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/70'
           aria-label={`Xóa sản phẩm ${product.name} khỏi danh sách đã xem`}
         >
-          <svg className='w-3 h-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
+          <svg className='h-3 w-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>
@@ -105,13 +104,13 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
           <img
             src={product.image}
             alt={`Hình ảnh sản phẩm ${product.name}`}
-            className='absolute left-0 top-0 h-full w-full object-cover'
+            className='absolute top-0 left-0 h-full w-full object-cover'
           />
         </div>
         <div className='p-2'>
-          <h3 className='text-xs line-clamp-2 min-h-[2rem] text-gray-800 dark:text-gray-200'>{product.name}</h3>
+          <h3 className='line-clamp-2 min-h-8 text-xs text-gray-800 dark:text-gray-200'>{product.name}</h3>
           <div className='mt-1 flex items-center gap-1'>
-            <span className='text-[#ee4d2d] text-sm font-medium'>₫{formatCurrency(product.price)}</span>
+            <span className='text-sm font-medium text-[#ee4d2d]'>₫{formatCurrency(product.price)}</span>
           </div>
           {product.price_before_discount > product.price && (
             <span className='text-xs text-gray-400 line-through'>₫{formatCurrency(product.price_before_discount)}</span>

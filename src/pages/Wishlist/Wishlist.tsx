@@ -1,6 +1,6 @@
 import { useMemo, Fragment, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Helmet } from 'react-helmet-async'
 import { toast } from 'react-toastify'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -411,19 +411,19 @@ export default function Wishlist() {
   // Skeleton Loading State
   if (isLoading) {
     return (
-      <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-16'>
+      <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-16 dark:bg-slate-900'>
         <div className='container'>
           {/* Skeleton Stats Header */}
           <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3'>
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className='flex items-center gap-4 rounded-lg bg-white dark:bg-slate-800 p-4 shadow-sm dark:shadow-slate-900/50'
+                className='flex items-center gap-4 rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               >
                 <div className='h-12 w-12 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                 <div className='flex-1'>
-                  <div className='h-6 w-20 animate-pulse rounded bg-gray-200 dark:bg-slate-700 mb-2' />
-                  <div className='h-4 w-24 animate-pulse rounded bg-gray-100 dark:bg-slate-600' />
+                  <div className='mb-2 h-6 w-20 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
+                  <div className='h-4 w-24 animate-pulse rounded-sm bg-gray-100 dark:bg-slate-600' />
                 </div>
               </div>
             ))}
@@ -431,10 +431,7 @@ export default function Wishlist() {
           {/* Skeleton Filter Pills */}
           <div className='mb-6 flex gap-2 overflow-x-auto pb-2'>
             {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className='h-8 w-20 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700 flex-shrink-0'
-              />
+              <div key={i} className='h-8 w-20 shrink-0 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
             ))}
           </div>
           {/* Skeleton Product Grid */}
@@ -442,14 +439,14 @@ export default function Wishlist() {
             {[...Array(10)].map((_, i) => (
               <div
                 key={i}
-                className='overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-slate-900/50'
+                className='overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               >
                 <div className='aspect-square w-full animate-pulse bg-gray-200 dark:bg-slate-700' />
                 <div className='p-3'>
-                  <div className='h-4 w-full animate-pulse rounded bg-gray-200 dark:bg-slate-700 mb-2' />
-                  <div className='h-4 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-slate-700 mb-3' />
-                  <div className='h-5 w-1/2 animate-pulse rounded bg-gray-100 dark:bg-slate-600 mb-2' />
-                  <div className='h-8 w-full animate-pulse rounded bg-gray-200 dark:bg-slate-700' />
+                  <div className='mb-2 h-4 w-full animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
+                  <div className='mb-3 h-4 w-3/4 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
+                  <div className='mb-2 h-5 w-1/2 animate-pulse rounded-sm bg-gray-100 dark:bg-slate-600' />
+                  <div className='h-8 w-full animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
                 </div>
               </div>
             ))}
@@ -460,7 +457,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 dark:bg-slate-900 py-16'>
+    <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-16 dark:bg-slate-900'>
       <Helmet>
         <title>Sản phẩm yêu thích | Shopee Clone</title>
         <meta name='description' content='Danh sách sản phẩm yêu thích của bạn' />
@@ -477,26 +474,26 @@ export default function Wishlist() {
               variants={fadeInUp}
               initial='hidden'
               animate='visible'
-              className='relative mb-6 overflow-hidden rounded-xl bg-gradient-to-r from-[#ee4d2d] via-[#ff6b4a] to-[#ff8c6b] shadow-lg dark:from-orange-700 dark:via-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'
+              className='relative mb-6 overflow-hidden rounded-xl bg-linear-to-r from-[#ee4d2d] via-[#ff6b4a] to-[#ff8c6b] shadow-lg dark:from-orange-700 dark:via-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'
             >
               {/* Decorative blurred circles */}
-              <div className='pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl' />
+              <div className='pointer-events-none absolute -top-10 -right-10 h-48 w-48 rounded-full bg-white/10 blur-2xl' />
               <div className='pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/5 blur-2xl' />
 
               <div className='relative z-10 flex flex-col items-center gap-4 px-6 py-7 sm:flex-row sm:justify-between sm:px-8 sm:py-8'>
                 {/* Left content */}
                 <div className='flex items-center gap-4 text-center sm:text-left'>
-                  <div className='hidden h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:flex'>
+                  <div className='hidden h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs sm:flex'>
                     <IconHeart className='h-7 w-7 text-white' />
                   </div>
                   <div className='text-white'>
                     <div className='mb-1 flex items-center justify-center gap-2 sm:justify-start'>
                       <IconSparkles className='h-4 w-4 text-yellow-200' />
-                      <span className='text-[11px] font-semibold uppercase tracking-wider text-white/80'>
+                      <span className='text-[11px] font-semibold tracking-wider text-white/80 uppercase'>
                         Danh sách yêu thích
                       </span>
                     </div>
-                    <h2 className='text-xl font-bold drop-shadow-sm sm:text-2xl'>
+                    <h2 className='text-xl font-bold drop-shadow-xs sm:text-2xl'>
                       Theo dõi {allWishlistItems.length} sản phẩm bạn yêu thích
                     </h2>
                     <p className='mt-1 max-w-md text-xs text-white/80 sm:text-sm'>
@@ -507,13 +504,13 @@ export default function Wishlist() {
 
                 {/* Right decorative icons */}
                 <div className='hidden items-center gap-3 md:flex'>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-xs'>
                     <IconStar className='h-5 w-5 text-yellow-200' />
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-xs'>
                     <IconBell className='h-5 w-5 text-white/90' />
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-xs'>
                     <IconTrendingDown className='h-5 w-5 text-emerald-200' />
                   </div>
                 </div>
@@ -529,9 +526,9 @@ export default function Wishlist() {
             >
               <motion.div
                 variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm dark:shadow-slate-900/50 border border-gray-100 dark:border-slate-700'
+                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
               >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-red-500 text-white shadow-sm shadow-orange-500/30'>
+                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-red-500 text-white shadow-xs shadow-orange-500/30'>
                   <IconHeart className='h-5 w-5' />
                 </div>
                 <div>
@@ -541,9 +538,9 @@ export default function Wishlist() {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm dark:shadow-slate-900/50 border border-gray-100 dark:border-slate-700'
+                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
               >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 text-white shadow-sm shadow-blue-500/30'>
+                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-blue-400 to-indigo-500 text-white shadow-xs shadow-blue-500/30'>
                   <IconCurrencyDollar className='h-5 w-5' />
                 </div>
                 <div>
@@ -555,9 +552,9 @@ export default function Wishlist() {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm dark:shadow-slate-900/50 border border-gray-100 dark:border-slate-700'
+                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
               >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-sm shadow-emerald-500/30'>
+                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-teal-500 text-white shadow-xs shadow-emerald-500/30'>
                   <IconTag className='h-5 w-5' />
                 </div>
                 <div>
@@ -569,9 +566,9 @@ export default function Wishlist() {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm dark:shadow-slate-900/50 border border-gray-100 dark:border-slate-700'
+                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
               >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-500 text-white shadow-sm shadow-violet-500/30'>
+                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-violet-400 to-purple-500 text-white shadow-xs shadow-violet-500/30'>
                   <IconChartBar className='h-5 w-5' />
                 </div>
                 <div>
@@ -589,7 +586,7 @@ export default function Wishlist() {
                 variants={fadeInUp}
                 initial='hidden'
                 animate='visible'
-                className='mb-6 rounded-xl bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-fuchsia-500/10 dark:from-violet-500/20 dark:via-purple-500/20 dark:to-fuchsia-500/20 border border-purple-200 dark:border-purple-800/50 p-4'
+                className='mb-6 rounded-xl border border-purple-200 bg-linear-to-r from-violet-500/10 via-purple-500/10 to-fuchsia-500/10 p-4 dark:border-purple-800/50 dark:from-violet-500/20 dark:via-purple-500/20 dark:to-fuchsia-500/20'
               >
                 <div className='flex flex-wrap items-center gap-4 text-sm'>
                   <span className='inline-flex items-center gap-1.5 font-medium text-purple-700 dark:text-purple-300'>
@@ -606,9 +603,9 @@ export default function Wishlist() {
                     </span>{' '}
                     ({insights.topCategoryCount} SP)
                   </span>
-                  <span className='hidden sm:inline text-gray-300 dark:text-gray-600'>|</span>
+                  <span className='hidden text-gray-300 sm:inline dark:text-gray-600'>|</span>
                   {insights.priceDropCount > 0 && (
-                    <span className='inline-flex items-center gap-1 text-green-600 dark:text-green-400 font-semibold'>
+                    <span className='inline-flex items-center gap-1 font-semibold text-green-600 dark:text-green-400'>
                       <IconFire className='h-3.5 w-3.5' /> {insights.priceDropCount} sản phẩm giảm &gt;30%
                     </span>
                   )}
@@ -623,15 +620,15 @@ export default function Wishlist() {
               transition={{ delay: 0.15 }}
               className='mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'
             >
-              <div className='flex gap-2 overflow-x-auto pb-1 scrollbar-hide'>
+              <div className='scrollbar-hide flex gap-2 overflow-x-auto pb-1'>
                 {filterPills.map((pill) => (
                   <button
                     key={pill.id}
                     onClick={() => setActiveFilter(pill.id)}
-                    className={`cursor-pointer flex-shrink-0 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:ring-offset-1 ${
+                    className={`inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:focus:ring-orange-400 ${
                       activeFilter === pill.id
-                        ? 'bg-[#ee4d2d] dark:bg-orange-500 text-white shadow-md shadow-orange-500/25'
-                        : 'border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:border-[#ee4d2d] hover:text-[#ee4d2d] dark:hover:border-orange-400 dark:hover:text-orange-400'
+                        ? 'bg-[#ee4d2d] text-white shadow-md shadow-orange-500/25 dark:bg-orange-500'
+                        : 'border border-gray-200 bg-white text-gray-600 hover:border-[#ee4d2d] hover:text-[#ee4d2d] dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-orange-400 dark:hover:text-orange-400'
                     }`}
                   >
                     <pill.Icon className='h-3.5 w-3.5' />
@@ -640,10 +637,10 @@ export default function Wishlist() {
                 ))}
               </div>
               {/* Sort dropdown */}
-              <div className='relative flex-shrink-0'>
+              <div className='relative shrink-0'>
                 <button
                   onClick={() => setShowSortDropdown(!showSortDropdown)}
-                  className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:ring-offset-1'
+                  className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-600 transition-colors hover:border-[#ee4d2d] focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-orange-400 dark:focus:ring-orange-400'
                 >
                   <span>Sắp xếp: {sortOptions.find((s) => s.id === activeSort)?.label}</span>
                   <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -656,7 +653,7 @@ export default function Wishlist() {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className='absolute right-0 top-full z-30 mt-1 w-48 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 py-1 shadow-lg dark:shadow-slate-900/50'
+                      className='absolute top-full right-0 z-30 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-slate-600 dark:bg-slate-800 dark:shadow-slate-900/50'
                     >
                       {sortOptions.map((opt) => (
                         <button
@@ -665,10 +662,10 @@ export default function Wishlist() {
                             setActiveSort(opt.id)
                             setShowSortDropdown(false)
                           }}
-                          className={`flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500 dark:focus:ring-orange-400 ${
+                          className={`flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-sm transition-colors focus:ring-2 focus:ring-orange-500 focus:outline-hidden focus:ring-inset dark:focus:ring-orange-400 ${
                             activeSort === opt.id
-                              ? 'bg-orange-50 dark:bg-orange-900/20 text-[#ee4d2d] dark:text-orange-400 font-medium'
-                              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
+                              ? 'bg-orange-50 font-medium text-[#ee4d2d] dark:bg-orange-900/20 dark:text-orange-400'
+                              : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700'
                           }`}
                         >
                           <opt.Icon className='h-4 w-4' /> {opt.label}
@@ -715,23 +712,23 @@ export default function Wishlist() {
                     transition={{ duration: 0.2 }}
                     onMouseEnter={() => setHoveredCardId(item._id)}
                     onMouseLeave={() => setHoveredCardId(null)}
-                    className='group relative overflow-hidden rounded-xl bg-white dark:bg-slate-800 shadow-sm dark:shadow-slate-900/50 hover:shadow-xl dark:hover:shadow-slate-900/70 transition-all duration-300 border border-gray-100 dark:border-slate-700'
+                    className='group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-slate-900/70'
                   >
                     {/* Top-left badges stack */}
                     <div className='absolute top-2 left-2 z-10 flex flex-col gap-1'>
                       {recent && (
-                        <span className='inline-flex items-center gap-0.5 rounded bg-gradient-to-r from-blue-500 to-cyan-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm'>
+                        <span className='inline-flex items-center gap-0.5 rounded-sm bg-linear-to-r from-blue-500 to-cyan-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs'>
                           <IconSparkles className='h-2.5 w-2.5' /> MỚI
                         </span>
                       )}
                       {trending && (
-                        <span className='inline-flex items-center gap-0.5 rounded bg-gradient-to-r from-amber-500 to-orange-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm'>
+                        <span className='inline-flex items-center gap-0.5 rounded-sm bg-linear-to-r from-amber-500 to-orange-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs'>
                           <IconFire className='h-2.5 w-2.5' /> HOT
                         </span>
                       )}
                       {stock && (
                         <span
-                          className={`rounded ${stock.color} px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm`}
+                          className={`rounded-sm ${stock.color} px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs`}
                         >
                           {stock.label}
                         </span>
@@ -741,7 +738,7 @@ export default function Wishlist() {
                     {/* Discount badge - top right */}
                     {discount > 0 && (
                       <div className='absolute top-0 right-0 z-10'>
-                        <div className='relative inline-flex items-center gap-0.5 bg-[#ee4d2d] dark:bg-orange-500 text-white text-[11px] font-bold px-2 py-1 rounded-bl-lg'>
+                        <div className='relative inline-flex items-center gap-0.5 rounded-bl-lg bg-[#ee4d2d] px-2 py-1 text-[11px] font-bold text-white dark:bg-orange-500'>
                           -{discount}%{discount >= 30 && <IconLightning className='h-2.5 w-2.5' />}
                         </div>
                       </div>
@@ -755,7 +752,7 @@ export default function Wishlist() {
                         scale: hoveredCardId === item._id ? 1 : 0.8
                       }}
                       onClick={() => removeMutation.mutate(item.product._id)}
-                      className='absolute bottom-[calc(100%-2rem)] right-2 z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 dark:bg-slate-700/90 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-150 shadow-md dark:shadow-slate-900/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1'
+                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden dark:bg-slate-700/90 dark:shadow-slate-900/50'
                       whileTap={{ scale: 0.9 }}
                       aria-label='Xóa khỏi yêu thích'
                     >
@@ -765,7 +762,7 @@ export default function Wishlist() {
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='w-3.5 h-3.5'
+                        className='h-3.5 w-3.5'
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
                       </svg>
@@ -774,18 +771,18 @@ export default function Wishlist() {
                     {/* Product Image */}
                     <Link
                       to={getProductLink(item.product)}
-                      className='relative block w-full pt-[100%] cursor-pointer overflow-hidden'
+                      className='relative block w-full cursor-pointer overflow-hidden pt-[100%]'
                     >
                       <ImageWithFallback
                         src={item.product.image}
                         alt={item.product.name}
-                        className='absolute top-0 left-0 h-full w-full bg-white dark:bg-slate-700 object-cover transition-transform duration-500 group-hover:scale-110'
+                        className='absolute top-0 left-0 h-full w-full bg-white object-cover transition-transform duration-500 group-hover:scale-110 dark:bg-slate-700'
                         loading='lazy'
                       />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                      <div className='absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
                       {/* Heart icon overlay on hover */}
-                      <div className='absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                        <div className='flex h-7 w-7 items-center justify-center rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm'>
+                      <div className='absolute bottom-2 left-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
+                        <div className='flex h-7 w-7 items-center justify-center rounded-full bg-white/80 backdrop-blur-xs dark:bg-slate-800/80'>
                           <svg className='h-4 w-4 text-red-500' fill='currentColor' viewBox='0 0 24 24'>
                             <path d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
                           </svg>
@@ -797,14 +794,14 @@ export default function Wishlist() {
                     <div className='p-3'>
                       <Link
                         to={getProductLink(item.product)}
-                        className='line-clamp-2 min-h-[2.5rem] text-xs text-gray-800 dark:text-gray-100 hover:text-[#ee4d2d] dark:hover:text-orange-400 transition-colors duration-150 cursor-pointer leading-relaxed'
+                        className='line-clamp-2 min-h-10 cursor-pointer text-xs leading-relaxed text-gray-800 transition-colors duration-150 hover:text-[#ee4d2d] dark:text-gray-100 dark:hover:text-orange-400'
                       >
                         {item.product.name}
                       </Link>
 
                       {/* Category Tag with icon */}
                       <div className='mt-1.5'>
-                        <span className='inline-flex items-center gap-1 rounded-full bg-gray-50 dark:bg-slate-700/50 px-2 py-0.5 text-[10px] text-gray-500 dark:text-gray-400'>
+                        <span className='inline-flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-[10px] text-gray-500 dark:bg-slate-700/50 dark:text-gray-400'>
                           {(() => {
                             const CatIcon = categoryIconComponents[categoryName] || IconCube
                             return <CatIcon className='h-3 w-3' />
@@ -815,11 +812,11 @@ export default function Wishlist() {
 
                       {/* Price */}
                       <div className='mt-2 flex items-baseline gap-1.5'>
-                        <span className='truncate text-sm text-[#ee4d2d] dark:text-orange-400 font-bold'>
+                        <span className='truncate text-sm font-bold text-[#ee4d2d] dark:text-orange-400'>
                           ₫{formatCurrency(item.product.price)}
                         </span>
                         {discount > 0 && (
-                          <span className='truncate text-[10px] text-gray-400 dark:text-gray-500 line-through'>
+                          <span className='truncate text-[10px] text-gray-400 line-through dark:text-gray-500'>
                             ₫{formatCurrency(item.product.price_before_discount)}
                           </span>
                         )}
@@ -834,7 +831,7 @@ export default function Wishlist() {
                       {/* Add to Cart Button */}
                       <motion.button
                         onClick={() => addToCartMutation.mutate(item.product._id)}
-                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-[#ee4d2d] to-[#ff6b4a] dark:from-orange-500 dark:to-orange-400 py-2 text-xs font-medium text-white hover:from-[#d73211] hover:to-[#ee4d2d] dark:hover:from-orange-600 dark:hover:to-orange-500 transition-all duration-200 shadow-sm dark:shadow-slate-900/50 hover:shadow-md hover:shadow-orange-500/20 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:ring-offset-1'
+                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
                         whileTap={{ scale: 0.95 }}
                         aria-label='Thêm vào giỏ hàng'
                       >
@@ -850,13 +847,13 @@ export default function Wishlist() {
             {/* Empty filter result */}
             {wishlistItems.length === 0 && activeFilter !== 'all' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='py-12 text-center'>
-                <div className='mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-gray-500'>
+                <div className='mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-slate-700 dark:text-gray-500'>
                   <IconMagnifyingGlass className='h-7 w-7' />
                 </div>
                 <p className='text-gray-500 dark:text-gray-400'>Không tìm thấy sản phẩm phù hợp</p>
                 <button
                   onClick={() => setActiveFilter('all')}
-                  className='mt-3 cursor-pointer text-sm text-[#ee4d2d] dark:text-orange-400 hover:underline focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 rounded'
+                  className='mt-3 cursor-pointer rounded-sm text-sm text-[#ee4d2d] hover:underline focus:ring-2 focus:ring-orange-500 focus:outline-hidden dark:text-orange-400 dark:focus:ring-orange-400'
                 >
                   Xem tất cả
                 </button>
@@ -871,30 +868,30 @@ export default function Wishlist() {
               className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2'
             >
               {/* Price Alert Banner */}
-              <div className='overflow-hidden rounded-xl bg-gradient-to-br from-[#ee4d2d] to-[#ff6b4a] dark:from-orange-600 dark:to-orange-500 p-5 shadow-lg dark:shadow-slate-900/50'>
+              <div className='overflow-hidden rounded-xl bg-linear-to-br from-[#ee4d2d] to-[#ff6b4a] p-5 shadow-lg dark:from-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'>
                 <div className='flex items-center gap-3'>
-                  <div className='flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
+                  <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
                     <IconBell className='h-6 w-6' />
                   </div>
                   <div className='text-white'>
                     <h3 className='text-sm font-semibold'>Theo dõi giá sản phẩm</h3>
-                    <p className='text-xs text-white/80 mt-0.5'>Nhận thông báo ngay khi giá giảm!</p>
+                    <p className='mt-0.5 text-xs text-white/80'>Nhận thông báo ngay khi giá giảm!</p>
                   </div>
                 </div>
-                <button className='mt-3 cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-[#ee4d2d] dark:text-orange-600 transition-all duration-200 hover:bg-white/90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-orange-500'>
+                <button className='mt-3 cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-[#ee4d2d] transition-all duration-200 hover:bg-white/90 hover:shadow-md focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-orange-500 focus:outline-hidden dark:text-orange-600'>
                   Bật thông báo
                 </button>
               </div>
 
               {/* Savings Goal Banner */}
-              <div className='overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 dark:from-emerald-600 dark:to-teal-600 p-5 shadow-lg dark:shadow-slate-900/50'>
+              <div className='overflow-hidden rounded-xl bg-linear-to-br from-emerald-500 to-teal-500 p-5 shadow-lg dark:from-emerald-600 dark:to-teal-600 dark:shadow-slate-900/50'>
                 <div className='flex items-center gap-3'>
-                  <div className='flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
+                  <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
                     <IconTarget className='h-6 w-6' />
                   </div>
                   <div className='text-white'>
                     <h3 className='text-sm font-semibold'>Mục tiêu tiết kiệm</h3>
-                    <p className='text-xs text-white/80 mt-0.5'>
+                    <p className='mt-0.5 text-xs text-white/80'>
                       Bạn đã tiết kiệm ₫{formatCurrency(totalSavings)} từ {allWishlistItems.length} sản phẩm
                     </p>
                   </div>
@@ -921,7 +918,7 @@ export default function Wishlist() {
               <h3 className='mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300'>
                 <IconFolder className='h-4 w-4' /> Phân loại yêu thích
               </h3>
-              <div className='flex gap-2 overflow-x-auto pb-2 scrollbar-hide'>
+              <div className='scrollbar-hide flex gap-2 overflow-x-auto pb-2'>
                 {Object.entries(
                   allWishlistItems.reduce<Record<string, number>>((acc, item) => {
                     const cat =
@@ -936,13 +933,13 @@ export default function Wishlist() {
                     return (
                       <div
                         key={cat}
-                        className='flex flex-shrink-0 items-center gap-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-2 text-xs'
+                        className='flex shrink-0 items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs dark:border-slate-600 dark:bg-slate-800'
                       >
                         <span className='text-gray-500 dark:text-gray-400'>
                           <CatIcon className='h-4 w-4' />
                         </span>
-                        <span className='text-gray-700 dark:text-gray-300 font-medium'>{cat}</span>
-                        <span className='rounded-full bg-gray-100 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] text-gray-500 dark:text-gray-400'>
+                        <span className='font-medium text-gray-700 dark:text-gray-300'>{cat}</span>
+                        <span className='rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 dark:bg-slate-700 dark:text-gray-400'>
                           {count}
                         </span>
                       </div>
@@ -956,7 +953,7 @@ export default function Wishlist() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className='relative rounded-xl bg-white dark:bg-slate-800 p-12 md:p-16 text-center shadow-sm dark:shadow-slate-900/50 border border-gray-100 dark:border-slate-700 overflow-hidden'
+            className='relative overflow-hidden rounded-xl border border-gray-100 bg-white p-12 text-center shadow-xs md:p-16 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
           >
             <motion.div
               animate={{ y: [0, -10, 0], opacity: [0.3, 0.6, 0.3] }}
@@ -982,22 +979,22 @@ export default function Wishlist() {
             <motion.div
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className='mx-auto mb-6 w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-orange-50 to-red-50 dark:from-slate-700 dark:to-slate-600 rounded-full flex items-center justify-center shadow-inner'
+              className='mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-orange-50 to-red-50 shadow-inner md:h-40 md:w-40 dark:from-slate-700 dark:to-slate-600'
             >
               <span className='text-orange-400 dark:text-orange-500'>
                 <IconHeart className='h-16 w-16 md:h-20 md:w-20' />
               </span>
             </motion.div>
 
-            <h3 className='text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-2'>
+            <h3 className='mb-2 text-xl font-semibold text-gray-800 md:text-2xl dark:text-gray-100'>
               Chưa có sản phẩm yêu thích
             </h3>
-            <p className='mb-6 text-gray-500 dark:text-gray-400 max-w-md mx-auto text-sm'>
+            <p className='mx-auto mb-6 max-w-md text-sm text-gray-500 dark:text-gray-400'>
               Hãy khám phá và thêm những sản phẩm bạn yêu thích vào danh sách để theo dõi giá và mua sắm dễ dàng hơn
             </p>
             <Link
               to={path.home}
-              className='inline-flex cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-[#ee4d2d] to-[#ff6b4a] dark:from-orange-500 dark:to-orange-400 px-8 py-3 text-white font-medium transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/30 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:ring-offset-2'
+              className='inline-flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] px-8 py-3 font-medium text-white transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/30 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:focus:ring-orange-400'
             >
               <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path

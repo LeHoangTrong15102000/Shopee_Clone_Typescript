@@ -63,7 +63,7 @@ const BaseModal = ({
             onClick={handleBackdropClick}
             aria-hidden='true'
           />
-          <div className='pointer-events-none fixed inset-0 z-[51] flex items-center justify-center'>
+          <div className='pointer-events-none fixed inset-0 z-51 flex items-center justify-center'>
             <motion.div
               ref={modalRef}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -72,7 +72,7 @@ const BaseModal = ({
               transition={{ duration: 0.2 }}
               role='dialog'
               aria-modal='true'
-              className={`pointer-events-auto mx-4 w-full max-w-md rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl ${className}`}
+              className={`pointer-events-auto mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800 ${className}`}
               onClick={(e) => e.stopPropagation()}
             >
               {children}

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import { useContext } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router'
 import path from 'src/constant/path'
 import MobileAccountNav from 'src/components/MobileAccountNav'
 import { AppContext } from 'src/contexts/app.context'
@@ -20,11 +20,11 @@ const UserSideNav = () => {
       {/* Desktop sidebar - hidden on mobile */}
       <div className='hidden md:block'>
         {/* Avatar */}
-        <div className='flex items-center border-b border-b-gray-200 dark:border-b-slate-700 py-4'>
+        <div className='flex items-center border-b border-b-gray-200 py-4 dark:border-b-slate-700'>
           {/* Avatar */}
           <Link
             to={path.profile}
-            className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-gray-200 dark:border-slate-600'
+            className='h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gray-200 dark:border-slate-600'
           >
             <img
               // src='https://down-vn.img.susercontent.com/file/b34a1e6b65aaa8ba6474c7886dc59df2_tn'
@@ -34,7 +34,7 @@ const UserSideNav = () => {
             />
           </Link>
           {/* Tên user, mục: sửa hồ sơ */}
-          <div className='flex-grow pl-[14px]'>
+          <div className='grow pl-[14px]'>
             <div className='mb-1 truncate font-semibold text-gray-600 dark:text-gray-300'>{profile?.name}</div>
             <Link to={path.profile} className='flex items-center bg-transparent capitalize'>
               {/* Icon */}
@@ -52,25 +52,22 @@ const UserSideNav = () => {
                 />
               </svg>
               {/* Title Sửa hồ sơ */}
-              <span className='capitalize text-[#888] dark:text-gray-400'>Sửa hồ sơ</span>
+              <span className='text-[#888] capitalize dark:text-gray-400'>Sửa hồ sơ</span>
             </Link>
           </div>
         </div>
         {/* Link chứa profile, password, historyPurchases */}
         <div className='mt-7 ml-2'>
           {/* Sale 4.4 */}
-          <Link
-            to={path.profile}
-            className='mb-[0.9375rem] flex items-center justify-start capitalize transition-colors'
-          >
-            <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+          <Link to={path.profile} className='mb-3.75 flex items-center justify-start capitalize transition-colors'>
+            <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
               <img
                 src='https://down-vn.img.susercontent.com/file/sg-11134004-7qvfe-lezlew2dqrn784'
                 alt='Avatar'
                 className='h-6 w-6'
               />
             </div>
-            <span className='relative flex items-center font-medium capitalize leading-tight'>
+            <span className='relative flex items-center leading-tight font-medium capitalize'>
               <span>Ngày 15 sale giữa tháng</span>
               {/* <span className='ml-2 rounded-tl-2xl rounded-tr-3xl rounded-br-3xl bg-[#ee4d2d] p-1 text-[9px] text-white'>
               New
@@ -97,7 +94,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.profile}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -114,7 +111,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <img
                       src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
                       alt='Avatar'
@@ -130,7 +127,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.changePassword}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -147,7 +144,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -172,7 +169,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.historyPurchases}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -189,7 +186,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <img
                       src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
                       alt='Avatar'
@@ -205,7 +202,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.orderList}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -222,7 +219,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -247,7 +244,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.dailyCheckIn}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -264,7 +261,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -289,7 +286,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.followedShops}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -306,7 +303,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -331,7 +328,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.addressBook}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -348,7 +345,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -374,7 +371,7 @@ const UserSideNav = () => {
           <NavLink
             to={path.notifications}
             className={({ isActive }) =>
-              classNames('relative mb-[0.9375rem] mt-4 flex items-center justify-start capitalize transition-colors', {
+              classNames('relative mt-4 mb-3.75 flex items-center justify-start capitalize transition-colors', {
                 'text-[#ee4d2d]': isActive,
                 'text-gray-600 dark:text-gray-300': !isActive
               })
@@ -391,7 +388,7 @@ const UserSideNav = () => {
                 )}
                 {isActive && reducedMotion && <div className='absolute inset-0 rounded-lg bg-[#ee4d2d]/5' />}
                 <div className='relative z-10 flex items-center'>
-                  <div className='mr-2 flex flex-shrink-0 items-center justify-center rounded'>
+                  <div className='mr-2 flex shrink-0 items-center justify-center rounded-sm'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'

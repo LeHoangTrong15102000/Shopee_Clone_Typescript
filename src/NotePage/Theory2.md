@@ -243,14 +243,14 @@ export default function UserSideNav() {
     <div>
       {/* User Info */}
       <div className='flex items-center border-b border-b-gray-200 py-4'>
-        <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border'>
+        <Link to={path.profile} className='h-12 w-12 shrink-0 overflow-hidden rounded-full border'>
           <img
             src={profile?.avatar || '/src/assets/images/user.svg'}
             alt='avatar'
             className='h-full w-full object-cover'
           />
         </Link>
-        <div className='flex-grow pl-4'>
+        <div className='grow pl-4'>
           <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name || profile?.email}</div>
           <Link to={path.profile} className='flex items-center capitalize text-gray-500'>
             <svg width='12' height='12' viewBox='0 0 12 12' fill='none'>
@@ -317,7 +317,7 @@ Tạo form chỉnh sửa thông tin cá nhân với layout responsive và upload
 // pages/User/pages/Profile/Profile.tsx
 export default function Profile() {
   return (
-    <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
+    <div className='rounded-xs bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20'>
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-900'>Hồ Sơ Của Tôi</h1>
         <div className='mt-1 text-sm text-gray-700'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
@@ -325,7 +325,7 @@ export default function Profile() {
 
       <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
         {/* Form Fields */}
-        <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
+        <div className='mt-6 grow md:mt-0 md:pr-12'>
           {/* Email Field */}
           <div className='flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Email</div>
@@ -339,7 +339,7 @@ export default function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameInput='w-full rounded-xs border border-gray-300 px-3 py-2 outline-hidden focus:border-gray-500 focus:shadow-xs'
                 name='name'
                 placeholder='Tên'
               />
@@ -351,7 +351,7 @@ export default function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameInput='w-full rounded-xs border border-gray-300 px-3 py-2 outline-hidden focus:border-gray-500 focus:shadow-xs'
                 name='phone'
                 placeholder='Số điện thoại'
               />
@@ -363,7 +363,7 @@ export default function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Địa chỉ</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameInput='w-full rounded-xs border border-gray-300 px-3 py-2 outline-hidden focus:border-gray-500 focus:shadow-xs'
                 name='address'
                 placeholder='Địa chỉ'
               />
@@ -383,7 +383,7 @@ export default function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right' />
             <div className='sm:w-[80%] sm:pl-5'>
               <Button
-                className='flex h-9 items-center rounded-sm bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
+                className='flex h-9 items-center rounded-xs bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
                 type='submit'
               >
                 Lưu
@@ -633,7 +633,7 @@ export default function Profile() {
         <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
         <div className='sm:w-[80%] sm:pl-5'>
           <Input
-            classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+            classNameInput='w-full rounded-xs border border-gray-300 px-3 py-2 outline-hidden focus:border-gray-500 focus:shadow-xs'
             register={register}
             name='name'
             placeholder='Tên'
@@ -658,7 +658,7 @@ export default function Profile() {
 
       {/* Submit button */}
       <Button
-        className='flex h-9 items-center rounded-sm bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
+        className='flex h-9 items-center rounded-xs bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
         type='submit'
         isLoading={updateProfileMutation.isPending}
       >

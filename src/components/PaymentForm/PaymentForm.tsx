@@ -239,7 +239,7 @@ const PaymentForm = memo(function PaymentForm({
                 type='checkbox'
                 id='saveCard'
                 {...register('saveCard')}
-                className='h-4 w-4 rounded border-gray-300 text-orange focus:ring-orange dark:border-slate-600 dark:bg-slate-800'
+                className='h-4 w-4 rounded-sm border-gray-300 text-orange focus:ring-orange dark:border-slate-600 dark:bg-slate-800'
               />
               <label htmlFor='saveCard' className='text-sm text-gray-700 dark:text-gray-300'>
                 Lưu thẻ cho lần thanh toán sau

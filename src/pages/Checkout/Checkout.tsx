@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
@@ -26,17 +26,17 @@ const CHECKOUT_STEPS = [
 const CheckoutProgressStepper = ({ currentStep }: { currentStep: number }) => {
   return (
     <div className='mb-6 md:mb-8'>
-      <div className='flex items-center justify-center max-w-2xl mx-auto'>
+      <div className='mx-auto flex max-w-2xl items-center justify-center'>
         {CHECKOUT_STEPS.map((step, index) => (
           <div key={step.id} className='flex flex-1 items-center'>
             <div className='flex flex-col items-center'>
               <motion.div
                 initial={{ scale: 1 }}
                 animate={{ scale: 1 }}
-                className={`flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border-2 transition-colors ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors md:h-10 md:w-10 ${
                   currentStep >= step.id
                     ? 'border-orange bg-orange text-white'
-                    : 'border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-400 dark:text-gray-300'
+                    : 'border-gray-300 bg-white text-gray-400 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-300'
                 }`}
               >
                 {currentStep > step.id ? (
@@ -44,11 +44,11 @@ const CheckoutProgressStepper = ({ currentStep }: { currentStep: number }) => {
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                   </svg>
                 ) : (
-                  <span className='text-xs md:text-sm font-semibold'>{step.id}</span>
+                  <span className='text-xs font-semibold md:text-sm'>{step.id}</span>
                 )}
               </motion.div>
               <span
-                className={`mt-1 md:mt-2 text-xs md:text-sm font-medium ${
+                className={`mt-1 text-xs font-medium md:mt-2 md:text-sm ${
                   currentStep >= step.id ? 'text-orange' : 'text-gray-400 dark:text-gray-300'
                 }`}
               >
@@ -56,7 +56,7 @@ const CheckoutProgressStepper = ({ currentStep }: { currentStep: number }) => {
               </span>
             </div>
             {index < CHECKOUT_STEPS.length - 1 && (
-              <div className='mx-1 md:mx-2 h-0.5 flex-1 bg-gray-200 dark:bg-slate-600'>
+              <div className='mx-1 h-0.5 flex-1 bg-gray-200 md:mx-2 dark:bg-slate-600'>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: currentStep > step.id ? '100%' : '0%' }}
@@ -77,13 +77,13 @@ const SectionHeader = ({ number, title }: { number: number; title: string }) => 
     <div className='flex h-8 w-8 items-center justify-center rounded-full bg-orange text-sm font-bold text-white shadow-lg shadow-orange/30 dark:shadow-slate-900/50'>
       {number}
     </div>
-    <h2 className='text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100'>{title}</h2>
+    <h2 className='text-base font-semibold text-gray-800 md:text-lg dark:text-gray-100'>{title}</h2>
   </div>
 )
 
 const SecurityBadge = () => (
-  <div className='mt-4 flex items-center justify-center gap-2 rounded-lg bg-gray-50 dark:bg-slate-700/50 p-2.5 border border-gray-200 dark:border-slate-600 transition-all'>
-    <div className='flex h-5 w-5 items-center justify-center rounded-full bg-green-500 flex-shrink-0'>
+  <div className='mt-4 flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-2.5 transition-all dark:border-slate-600 dark:bg-slate-700/50'>
+    <div className='flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500'>
       <svg className='h-3 w-3 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
         <path
           strokeLinecap='round'
@@ -92,7 +92,7 @@ const SecurityBadge = () => (
         />
       </svg>
     </div>
-    <span className='text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300'>
+    <span className='text-xs font-medium text-gray-600 sm:text-sm dark:text-gray-300'>
       Thanh toán an toàn & bảo mật
     </span>
   </div>
@@ -100,31 +100,31 @@ const SecurityBadge = () => (
 
 const PaymentIcons = () => (
   <div className='flex flex-wrap items-center justify-center gap-2 md:gap-3'>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-blue-200/50 dark:ring-blue-700/50 transition-all hover:shadow-md hover:ring-blue-300 dark:hover:ring-blue-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-blue-50 to-blue-100 px-3 shadow-xs ring-1 ring-blue-200/50 transition-all hover:shadow-md hover:ring-blue-300 md:h-9 dark:from-blue-900/30 dark:to-blue-800/30 dark:shadow-slate-900/50 dark:ring-blue-700/50 dark:hover:ring-blue-600'>
       <span className='text-xs font-bold text-blue-600 dark:text-blue-300'>VISA</span>
     </div>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-red-200/50 dark:ring-red-700/50 transition-all hover:shadow-md hover:ring-red-300 dark:hover:ring-red-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-red-50 to-orange-50 px-3 shadow-xs ring-1 ring-red-200/50 transition-all hover:shadow-md hover:ring-red-300 md:h-9 dark:from-red-900/30 dark:to-orange-900/30 dark:shadow-slate-900/50 dark:ring-red-700/50 dark:hover:ring-red-600'>
       <span className='text-xs font-bold text-red-500 dark:text-red-300'>Master</span>
     </div>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-blue-200/50 dark:ring-blue-700/50 transition-all hover:shadow-md hover:ring-blue-300 dark:hover:ring-blue-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-blue-50 to-indigo-50 px-3 shadow-xs ring-1 ring-blue-200/50 transition-all hover:shadow-md hover:ring-blue-300 md:h-9 dark:from-blue-900/30 dark:to-indigo-900/30 dark:shadow-slate-900/50 dark:ring-blue-700/50 dark:hover:ring-blue-600'>
       <span className='text-xs font-bold text-blue-800 dark:text-blue-200'>JCB</span>
     </div>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-pink-50 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-pink-200/50 dark:ring-pink-700/50 transition-all hover:shadow-md hover:ring-pink-300 dark:hover:ring-pink-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-pink-50 to-rose-100 px-3 shadow-xs ring-1 ring-pink-200/50 transition-all hover:shadow-md hover:ring-pink-300 md:h-9 dark:from-pink-900/30 dark:to-rose-900/30 dark:shadow-slate-900/50 dark:ring-pink-700/50 dark:hover:ring-pink-600'>
       <span className='text-xs font-bold text-pink-600 dark:text-pink-300'>MoMo</span>
     </div>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-blue-200/50 dark:ring-blue-700/50 transition-all hover:shadow-md hover:ring-blue-300 dark:hover:ring-blue-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-blue-50 to-cyan-50 px-3 shadow-xs ring-1 ring-blue-200/50 transition-all hover:shadow-md hover:ring-blue-300 md:h-9 dark:from-blue-900/30 dark:to-cyan-900/30 dark:shadow-slate-900/50 dark:ring-blue-700/50 dark:hover:ring-blue-600'>
       <span className='text-xs font-bold text-blue-500 dark:text-blue-300'>ZaloPay</span>
     </div>
-    <div className='flex h-8 md:h-9 items-center rounded-lg bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 px-3 shadow-sm dark:shadow-slate-900/50 ring-1 ring-blue-200/50 dark:ring-blue-700/50 transition-all hover:shadow-md hover:ring-blue-300 dark:hover:ring-blue-600'>
+    <div className='flex h-8 items-center rounded-lg bg-linear-to-r from-blue-50 to-indigo-100 px-3 shadow-xs ring-1 ring-blue-200/50 transition-all hover:shadow-md hover:ring-blue-300 md:h-9 dark:from-blue-900/30 dark:to-indigo-900/30 dark:shadow-slate-900/50 dark:ring-blue-700/50 dark:hover:ring-blue-600'>
       <span className='text-xs font-bold text-blue-700 dark:text-blue-200'>VNPay</span>
     </div>
   </div>
 )
 
 const TrustIndicators = () => (
-  <div className='mt-4 grid grid-cols-3 gap-2 border-t border-gray-100 dark:border-slate-700 pt-4'>
-    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/30 dark:to-slate-800 p-2'>
-      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30 dark:shadow-slate-900/50'>
+  <div className='mt-4 grid grid-cols-3 gap-2 border-t border-gray-100 pt-4 dark:border-slate-700'>
+    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-linear-to-b from-blue-50 to-white p-2 dark:from-blue-900/30 dark:to-slate-800'>
+      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-r from-blue-500 to-cyan-500 shadow-xs shadow-blue-500/30 dark:shadow-slate-900/50'>
         <svg className='h-5 w-5 text-white' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
           <path
             fillRule='evenodd'
@@ -133,12 +133,12 @@ const TrustIndicators = () => (
           />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+      <span className='text-center text-[10px] font-medium text-gray-600 md:text-xs dark:text-gray-300'>
         Chính hãng
       </span>
     </div>
-    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-green-50 to-white dark:from-green-900/30 dark:to-slate-800 p-2'>
-      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm shadow-green-500/30 dark:shadow-slate-900/50'>
+    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-linear-to-b from-green-50 to-white p-2 dark:from-green-900/30 dark:to-slate-800'>
+      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-r from-green-500 to-emerald-500 shadow-xs shadow-green-500/30 dark:shadow-slate-900/50'>
         <svg className='h-5 w-5 text-white' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
           <path
             fillRule='evenodd'
@@ -147,18 +147,18 @@ const TrustIndicators = () => (
           />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+      <span className='text-center text-[10px] font-medium text-gray-600 md:text-xs dark:text-gray-300'>
         Đổi trả 7 ngày
       </span>
     </div>
-    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-gradient-to-b from-orange-50 to-white dark:from-orange-900/30 dark:to-slate-800 p-2'>
-      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 shadow-sm shadow-orange-500/30 dark:shadow-slate-900/50'>
+    <div className='flex flex-col items-center gap-1.5 rounded-lg bg-linear-to-b from-orange-50 to-white p-2 dark:from-orange-900/30 dark:to-slate-800'>
+      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-r from-orange-500 to-amber-500 shadow-xs shadow-orange-500/30 dark:shadow-slate-900/50'>
         {/* Lightning bolt icon - Heroicons mini */}
         <svg className='h-5 w-5 text-white' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
           <path d='M11.983 1.907a.75.75 0 00-1.292-.657l-8.5 9.5A.75.75 0 002.75 12h6.572l-1.305 6.093a.75.75 0 001.292.657l8.5-9.5A.75.75 0 0017.25 8h-6.572l1.305-6.093z' />
         </svg>
       </div>
-      <span className='text-[10px] md:text-xs text-center text-gray-600 dark:text-gray-300 font-medium'>
+      <span className='text-center text-[10px] font-medium text-gray-600 md:text-xs dark:text-gray-300'>
         Giao nhanh
       </span>
     </div>
@@ -346,18 +346,18 @@ const Checkout = () => {
   }
 
   return (
-    <div className='bg-gradient-to-b from-neutral-100 via-orange-50/10 to-neutral-100 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900 py-4 md:py-8 min-h-screen'>
+    <div className='min-h-screen bg-linear-to-b from-neutral-100 via-orange-50/10 to-neutral-100 py-4 md:py-8 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900'>
       <div className='container'>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className='mb-4 md:mb-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-orange via-orange/90 to-orange-400 p-3 sm:p-4 md:p-6 shadow-lg overflow-hidden'
+          className='mb-4 overflow-hidden rounded-lg bg-linear-to-r from-orange via-orange/90 to-orange-400 p-3 shadow-lg sm:rounded-xl sm:p-4 md:mb-6 md:p-6'
         >
           <div className='flex items-center gap-2.5 sm:gap-3'>
-            <div className='flex h-9 w-9 sm:h-11 sm:w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0'>
+            <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs sm:h-11 sm:w-11 md:h-12 md:w-12'>
               <svg
-                className='h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6 text-white'
+                className='h-[18px] w-[18px] text-white sm:h-5 sm:w-5 md:h-6 md:w-6'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -371,10 +371,10 @@ const Checkout = () => {
               </svg>
             </div>
             <div className='min-w-0 flex-1'>
-              <h1 className='text-base sm:text-lg md:text-2xl font-bold text-white leading-tight truncate'>
+              <h1 className='truncate text-base leading-tight font-bold text-white sm:text-lg md:text-2xl'>
                 Thanh toán
               </h1>
-              <p className='mt-0.5 text-[11px] sm:text-xs md:text-sm text-white/80 leading-snug truncate'>
+              <p className='mt-0.5 truncate text-[11px] leading-snug text-white/80 sm:text-xs md:text-sm'>
                 Hoàn tất đơn hàng của bạn
               </p>
             </div>
@@ -386,7 +386,7 @@ const Checkout = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className='mb-6 rounded-xl bg-gradient-to-r from-white via-orange-50/20 to-white dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-lg dark:shadow-slate-900/50 border border-orange-100/30 dark:border-slate-700'
+          className='mb-6 rounded-xl border border-orange-100/30 bg-linear-to-r from-white via-orange-50/20 to-white p-4 shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
         >
           <CheckoutProgressStepper currentStep={currentStep} />
         </motion.div>
@@ -414,7 +414,7 @@ const Checkout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
-                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+                className='rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-md transition-shadow hover:shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
               >
                 <SectionHeader number={1} title='Địa chỉ giao hàng' />
                 <AddressSelector selectedAddressId={selectedAddress?._id || null} onSelect={handleAddressSelect} />
@@ -425,7 +425,7 @@ const Checkout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+                className='rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-md transition-shadow hover:shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
               >
                 <SectionHeader number={2} title='Phương thức vận chuyển' />
                 <ShippingMethodSelector
@@ -439,7 +439,7 @@ const Checkout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+                className='rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-md transition-shadow hover:shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
               >
                 <SectionHeader number={3} title='Phương thức thanh toán' />
                 <PaymentMethodSelector selectedMethodType={selectedPaymentMethod} onSelect={handlePaymentSelect} />
@@ -451,19 +451,19 @@ const Checkout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+                className='rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-md transition-shadow hover:shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
               >
                 <SectionHeader number={4} title='Mã giảm giá & Shopee Xu' />
 
                 <div className='mb-4'>
                   <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Mã voucher</label>
-                  <div className='flex flex-col sm:flex-row gap-2'>
+                  <div className='flex flex-col gap-2 sm:flex-row'>
                     <input
                       type='text'
                       value={voucherCode}
                       onChange={(e) => setVoucherCode(e.target.value)}
                       placeholder='Nhập mã voucher'
-                      className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
+                      className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 dark:placeholder-gray-400'
                     />
                     <Button
                       onClick={handleApplyVoucher}
@@ -490,14 +490,14 @@ const Checkout = () => {
                   <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
                     Sử dụng Shopee Xu
                   </label>
-                  <div className='flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4'>
+                  <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
                     <input
                       type='number'
                       value={coinsUsed}
                       onChange={(e) => setCoinsUsed(Math.max(0, parseInt(e.target.value) || 0))}
                       min={0}
                       max={10000}
-                      className='w-full sm:w-32 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
+                      className='w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-orange focus:outline-hidden sm:w-32 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                     />
                     <span className='text-sm text-gray-500 dark:text-gray-400'>
                       Bạn có 10,000 xu (tối đa 10,000 xu)
@@ -511,7 +511,7 @@ const Checkout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 }}
-                className='rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-md dark:shadow-slate-900/50 border border-gray-100/50 dark:border-slate-700 hover:shadow-lg transition-shadow'
+                className='rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-md transition-shadow hover:shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
               >
                 <SectionHeader number={5} title='Ghi chú đơn hàng' />
                 <textarea
@@ -519,7 +519,7 @@ const Checkout = () => {
                   onChange={(e) => setNote(e.target.value)}
                   placeholder='Ghi chú cho người bán (không bắt buộc)'
                   rows={3}
-                  className='w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:border-orange focus:outline-none'
+                  className='w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 dark:placeholder-gray-400'
                 />
               </motion.div>
             </div>
@@ -543,20 +543,20 @@ const Checkout = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className='rounded-xl bg-gradient-to-br from-white via-orange-50/10 to-amber-50/10 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-4 md:p-6 shadow-lg dark:shadow-slate-900/50 border border-orange-100/30 dark:border-slate-700'
+                  className='rounded-xl border border-orange-100/30 bg-linear-to-br from-white via-orange-50/10 to-amber-50/10 p-4 shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
                 >
                   {/* Total Amount Display */}
-                  <div className='mb-4 flex items-center justify-between border-b border-gray-100 dark:border-slate-700 pb-4'>
-                    <span className='text-base md:text-lg font-medium text-gray-700 dark:text-gray-200'>
+                  <div className='mb-4 flex items-center justify-between border-b border-gray-100 pb-4 dark:border-slate-700'>
+                    <span className='text-base font-medium text-gray-700 md:text-lg dark:text-gray-200'>
                       Tổng thanh toán:
                     </span>
-                    <span className='text-xl md:text-2xl font-bold text-orange'>
+                    <span className='text-xl font-bold text-orange md:text-2xl'>
                       ₫{totalAmount.toLocaleString('vi-VN')}
                     </span>
                   </div>
 
                   {/* Secure Checkout Badge */}
-                  <div className='mb-4 flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 py-2'>
+                  <div className='mb-4 flex items-center justify-center gap-2 rounded-lg border border-green-200 bg-green-50 py-2 dark:border-green-800/40 dark:bg-green-900/20'>
                     <svg
                       className='h-4 w-4 text-green-600 dark:text-green-400'
                       fill='none'
@@ -570,7 +570,7 @@ const Checkout = () => {
                         d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
                       />
                     </svg>
-                    <span className='text-xs md:text-sm font-medium text-green-700 dark:text-green-300'>
+                    <span className='text-xs font-medium text-green-700 md:text-sm dark:text-green-300'>
                       Thanh toán an toàn
                     </span>
                   </div>
@@ -578,18 +578,18 @@ const Checkout = () => {
                   <Button
                     onClick={handleGoToReview}
                     disabled={!isFormValid}
-                    className='w-full rounded-xl bg-gradient-to-r from-orange via-orange to-amber-500 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg shadow-orange/30 dark:shadow-slate-900/50 hover:shadow-xl hover:shadow-orange/40 hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 transition-all disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+                    className='w-full rounded-xl bg-linear-to-r from-orange via-orange to-amber-500 py-3 text-base font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none md:py-4 md:text-lg dark:shadow-slate-900/50'
                   >
                     Đặt hàng ngay
                   </Button>
 
-                  <p className='mt-3 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>
+                  <p className='mt-3 text-center text-[10px] text-gray-500 md:text-xs dark:text-gray-400'>
                     Nhấn "Đặt hàng ngay" để xem lại và xác nhận đơn hàng
                   </p>
 
                   {/* Payment Icons */}
-                  <div className='mt-4 border-t border-gray-100 dark:border-slate-700 pt-4'>
-                    <p className='mb-2 text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400'>
+                  <div className='mt-4 border-t border-gray-100 pt-4 dark:border-slate-700'>
+                    <p className='mb-2 text-center text-[10px] text-gray-500 md:text-xs dark:text-gray-400'>
                       Chấp nhận thanh toán
                     </p>
                     <PaymentIcons />

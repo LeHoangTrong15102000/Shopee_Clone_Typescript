@@ -133,9 +133,9 @@
   ```tsx
   const inputClassName = classNameInput
     ? classNameInput
-    : `w-full rounded-sm border ${
+    : `w-full rounded-xs border ${
         errorMessage ? 'border-red-600' : 'border-gray-300' // ✅ Error border
-      } p-3 shadow-sm outline-none focus:border-gray-500`
+      } p-3 shadow-xs outline-hidden focus:border-gray-500`
   ```
 
 #### **Vấn đề 2.3: Thiếu ARIA attributes cho accessibility**

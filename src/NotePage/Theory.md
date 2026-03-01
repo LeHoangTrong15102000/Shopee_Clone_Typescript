@@ -912,7 +912,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
       if (!dotBefore) {
         dotBefore = true;
         return (
-          <span key={index} className="mx-2 cursor-default rounded border bg-white px-3 py-2 shadow-sm">
+          <span key={index} className="mx-2 cursor-default rounded-sm border bg-white px-3 py-2 shadow-xs">
             ...
           </span>
         );
@@ -924,7 +924,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
       if (!dotAfter) {
         dotAfter = true;
         return (
-          <span key={index} className="mx-2 cursor-default rounded border bg-white px-3 py-2 shadow-sm">
+          <span key={index} className="mx-2 cursor-default rounded-sm border bg-white px-3 py-2 shadow-xs">
             ...
           </span>
         );
@@ -961,7 +961,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
             }}
             key={index}
             className={classNames(
-              'mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm',
+              'mx-2 cursor-pointer rounded-sm border bg-white px-3 py-2 shadow-xs',
               {
                 'border-cyan-500': pageNumber === page,
                 'border-transparent': pageNumber !== page
@@ -977,7 +977,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
   return (
     <div className="mt-6 flex flex-wrap justify-center">
       {page === 1 ? (
-        <span className="mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm">Prev</span>
+        <span className="mx-2 cursor-not-allowed rounded-sm border bg-white/60 px-3 py-2 shadow-xs">Prev</span>
       ) : (
         <Link
           to={{
@@ -987,7 +987,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
               page: (page - 1).toString()
             }).toString()
           }}
-          className="mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm"
+          className="mx-2 cursor-pointer rounded-sm border bg-white px-3 py-2 shadow-xs"
         >
           Prev
         </Link>
@@ -996,7 +996,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
       {renderPagination()}
 
       {page === pageSize ? (
-        <span className="mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm">Next</span>
+        <span className="mx-2 cursor-not-allowed rounded-sm border bg-white/60 px-3 py-2 shadow-xs">Next</span>
       ) : (
         <Link
           to={{
@@ -1006,7 +1006,7 @@ const Pagination = ({ queryConfig, pageSize }: PaginationProps) => {
               page: (page + 1).toString()
             }).toString()
           }}
-          className="mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm"
+          className="mx-2 cursor-pointer rounded-sm border bg-white px-3 py-2 shadow-xs"
         >
           Next
         </Link>

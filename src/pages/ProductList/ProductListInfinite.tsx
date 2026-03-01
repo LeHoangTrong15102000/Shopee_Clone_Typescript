@@ -145,27 +145,27 @@ const ProductListInfinite = () => {
   // Initial loading state with skeletons
   if (isLoading) {
     return (
-      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
         <Helmet>
           <title>Đang tải... | Shopee Clone</title>
         </Helmet>
         <div className='container'>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-12'>
-            <div className='hidden md:block md:col-span-3'>
-              <div className='bg-white dark:bg-slate-800 rounded-sm p-4 animate-pulse'>
-                <div className='h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mb-4' />
+            <div className='hidden md:col-span-3 md:block'>
+              <div className='animate-pulse rounded-xs bg-white p-4 dark:bg-slate-800'>
+                <div className='mb-4 h-6 w-3/4 rounded-sm bg-gray-200 dark:bg-slate-700' />
                 <div className='space-y-3'>
                   {Array(5)
                     .fill(0)
                     .map((_, i) => (
-                      <div key={i} className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-full' />
+                      <div key={i} className='h-4 w-full rounded-sm bg-gray-200 dark:bg-slate-700' />
                     ))}
                 </div>
               </div>
             </div>
             <div className='col-span-1 md:col-span-9'>
-              <div className='bg-white dark:bg-slate-800 rounded-sm p-3 mb-6 animate-pulse'>
-                <div className='h-8 bg-gray-200 dark:bg-slate-700 rounded w-1/2' />
+              <div className='mb-6 animate-pulse rounded-xs bg-white p-3 dark:bg-slate-800'>
+                <div className='h-8 w-1/2 rounded-sm bg-gray-200 dark:bg-slate-700' />
               </div>
               <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {Array(20)
@@ -184,14 +184,14 @@ const ProductListInfinite = () => {
   // Error state
   if (error && !productsData) {
     return (
-      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
         <div className='container'>
-          <div className='text-center py-12'>
-            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2'>
+          <div className='py-12 text-center'>
+            <h2 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-200'>
               Có lỗi xảy ra khi tải danh sách sản phẩm
             </h2>
-            <p className='text-gray-500 dark:text-gray-400 mb-4'>Vui lòng thử lại sau</p>
-            <Button variant='primary' onClick={() => window.location.reload()} className='px-6 py-2 rounded-sm'>
+            <p className='mb-4 text-gray-500 dark:text-gray-400'>Vui lòng thử lại sau</p>
+            <Button variant='primary' onClick={() => window.location.reload()} className='rounded-xs px-6 py-2'>
               Thử lại
             </Button>
           </div>
@@ -201,7 +201,7 @@ const ProductListInfinite = () => {
   }
 
   return (
-    <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+    <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
       <Helmet>
         <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : 'Tất cả sản phẩm | Shopee Clone'}</title>
         <meta name='description' content='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng' />
@@ -218,10 +218,10 @@ const ProductListInfinite = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className='fixed top-20 right-4 z-50 bg-white dark:bg-slate-800 shadow-lg rounded-lg p-3 border border-gray-200 dark:border-slate-700'
+              className='fixed top-20 right-4 z-50 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800'
             >
               <div className='flex items-center space-x-2'>
-                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-orange'></div>
+                <div className='h-4 w-4 animate-spin rounded-full border-b-2 border-orange'></div>
                 <span className='text-sm text-gray-600 dark:text-gray-300'>Đang cập nhật...</span>
               </div>
             </motion.div>
@@ -230,7 +230,7 @@ const ProductListInfinite = () => {
 
         {allProducts.length > 0 && (
           <div className='grid grid-cols-1 gap-6 md:grid-cols-12'>
-            <div className='hidden md:block md:col-span-3'>
+            <div className='hidden md:col-span-3 md:block'>
               <AsideFilter categories={categories} />
             </div>
             <div className='col-span-1 md:col-span-9'>
@@ -292,12 +292,12 @@ const ProductListInfinite = () => {
                         .fill(0)
                         .map((_, index) => (
                           <motion.div key={`skeleton-${index}`} variants={itemVariants}>
-                            <div className='flex bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/20 overflow-hidden animate-pulse'>
-                              <div className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex-shrink-0 bg-gray-200 dark:bg-slate-700' />
-                              <div className='flex-1 p-4 space-y-3'>
-                                <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4' />
-                                <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2' />
-                                <div className='h-3 bg-gray-200 dark:bg-slate-700 rounded w-1/4' />
+                            <div className='flex animate-pulse overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800 dark:shadow-slate-900/20'>
+                              <div className='h-32 w-32 shrink-0 bg-gray-200 sm:h-40 sm:w-40 md:h-48 md:w-48 dark:bg-slate-700' />
+                              <div className='flex-1 space-y-3 p-4'>
+                                <div className='h-4 w-3/4 rounded-sm bg-gray-200 dark:bg-slate-700' />
+                                <div className='h-4 w-1/2 rounded-sm bg-gray-200 dark:bg-slate-700' />
+                                <div className='h-3 w-1/4 rounded-sm bg-gray-200 dark:bg-slate-700' />
                               </div>
                             </div>
                           </motion.div>
@@ -313,12 +313,12 @@ const ProductListInfinite = () => {
               <div className='mt-6 text-center'>
                 {isFetchingNextPage && (
                   <div className='flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300'>
-                    <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-orange'></div>
+                    <div className='h-5 w-5 animate-spin rounded-full border-b-2 border-orange'></div>
                     <span>Đang tải thêm sản phẩm...</span>
                   </div>
                 )}
                 {!hasNextPage && allProducts.length > 0 && (
-                  <p className='text-gray-500 dark:text-gray-400 py-4'>
+                  <p className='py-4 text-gray-500 dark:text-gray-400'>
                     Đã hiển thị tất cả {allProducts.length} sản phẩm
                   </p>
                 )}
@@ -338,9 +338,9 @@ const ProductListInfinite = () => {
               }}
             />
           ) : (
-            <div className='text-center py-16'>
-              <div className='mx-auto w-24 h-24 mb-4'>
-                <svg className='w-full h-full text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <div className='py-16 text-center'>
+              <div className='mx-auto mb-4 h-24 w-24'>
+                <svg className='h-full w-full text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path
                     strokeLinecap='round'
                     strokeLinejoin='round'
@@ -349,7 +349,7 @@ const ProductListInfinite = () => {
                   />
                 </svg>
               </div>
-              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>
+              <h3 className='mb-2 text-xl font-semibold text-gray-600 dark:text-gray-300'>
                 Không tìm thấy sản phẩm nào
               </h3>
               <p className='text-gray-500 dark:text-gray-400'>Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn</p>

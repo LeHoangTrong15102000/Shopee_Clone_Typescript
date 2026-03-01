@@ -82,7 +82,7 @@ export default function ChatbotWidget() {
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className={classNames(
-          'fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 hidden md:flex h-14 w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-colors hover:bg-[#d73211]',
+          'fixed right-3 bottom-4 z-50 hidden h-14 w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-colors hover:bg-[#d73211] sm:right-6 sm:bottom-6 md:flex',
           !isOpen && 'animate-[message-shake_2s_ease-in-out_infinite]'
         )}
         whileHover={{ scale: 1.05 }}
@@ -115,7 +115,7 @@ export default function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className='fixed bottom-24 right-3 sm:right-6 z-50 hidden md:flex h-[calc(100vh-8rem)] sm:h-[500px] w-[calc(100vw-1.5rem)] sm:w-[360px] max-h-[calc(100vh-8rem)] flex-col overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-2xl'
+            className='fixed right-3 bottom-24 z-50 hidden h-[calc(100vh-8rem)] max-h-[calc(100vh-8rem)] w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-lg bg-white shadow-2xl sm:right-6 sm:h-[500px] sm:w-[360px] md:flex dark:bg-slate-800'
           >
             <div className='flex items-center justify-between bg-orange px-4 py-3 text-white'>
               <div className='flex items-center gap-2'>
@@ -140,7 +140,7 @@ export default function ChatbotWidget() {
               </button>
             </div>
 
-            <div className='flex-1 space-y-3 overflow-y-auto bg-gray-50 dark:bg-slate-900 p-4'>
+            <div className='flex-1 space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-slate-900'>
               {messages.map((msg) => (
                 <div key={msg.id} className={classNames('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                   <div
@@ -148,7 +148,7 @@ export default function ChatbotWidget() {
                       'max-w-[80%] rounded-lg px-3 py-2 text-sm',
                       msg.role === 'user'
                         ? 'rounded-br-none bg-orange text-white'
-                        : 'rounded-bl-none bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 shadow-sm'
+                        : 'rounded-bl-none bg-white text-gray-800 shadow-xs dark:bg-slate-700 dark:text-gray-200'
                     )}
                   >
                     {msg.content}
@@ -158,7 +158,7 @@ export default function ChatbotWidget() {
 
               {sendMutation.isPending && (
                 <div className='flex justify-start'>
-                  <div className='rounded-bl-none rounded-lg bg-white dark:bg-slate-700 px-4 py-2 shadow-sm'>
+                  <div className='rounded-lg rounded-bl-none bg-white px-4 py-2 shadow-xs dark:bg-slate-700'>
                     <div className='flex gap-1'>
                       <span
                         className='h-2 w-2 animate-bounce rounded-full bg-gray-400 dark:bg-gray-500'
@@ -179,7 +179,7 @@ export default function ChatbotWidget() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className='border-t dark:border-slate-700 bg-white dark:bg-slate-800 p-3'>
+            <div className='border-t bg-white p-3 dark:border-slate-700 dark:bg-slate-800'>
               <div className='flex gap-2'>
                 <input
                   ref={inputRef}
@@ -188,7 +188,7 @@ export default function ChatbotWidget() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder='Nhập tin nhắn...'
-                  className='flex-1 rounded-full border border-gray-300 dark:border-slate-600 px-3 py-2 text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
+                  className='flex-1 rounded-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                   disabled={sendMutation.isPending}
                 />
                 <button
@@ -198,7 +198,7 @@ export default function ChatbotWidget() {
                     'flex h-10 w-10 items-center justify-center rounded-full transition-colors',
                     inputValue.trim() && !sendMutation.isPending
                       ? 'bg-orange text-white hover:bg-[#d73211]'
-                      : 'cursor-not-allowed bg-gray-200 dark:bg-slate-600 text-gray-400 dark:text-gray-500'
+                      : 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-600 dark:text-gray-500'
                   )}
                 >
                   <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

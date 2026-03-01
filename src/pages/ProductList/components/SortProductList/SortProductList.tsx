@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router'
 import path from 'src/constant/path'
 import { sortBy, order as orderConstant } from 'src/constant/product'
 import { useProductQueryStates } from 'src/hooks/nuqs'
@@ -37,15 +37,15 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
   }
 
   return (
-    <div className='bg-gray-300/40 dark:bg-slate-700/40 py-4 px-3'>
+    <div className='bg-gray-300/40 px-3 py-4 dark:bg-slate-700/40'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         {/* sort theo tên: phổ biến - mới nhất - bán chạy */}
         <div className='flex flex-wrap items-center gap-2'>
           <div className='text-sm text-[rgba(0,0,0,.7)] dark:text-gray-300'>Sắp xếp theo</div>
           <button
-            className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
+            className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.view),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+              'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
                 !isActiveSortBy(sortBy.view)
             })}
             onClick={() => handleSortNavigate(sortBy.view)}
@@ -53,9 +53,9 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             Phổ biến
           </button>
           <button
-            className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
+            className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.createdAt),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+              'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
                 !isActiveSortBy(sortBy.createdAt)
             })}
             onClick={() => handleSortNavigate(sortBy.createdAt)}
@@ -63,9 +63,9 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             Mới nhất
           </button>
           <button
-            className={classNames('capitaliz h-10 md:h-8 rounded-sm px-4 text-center text-sm', {
+            className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.sold),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+              'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
                 !isActiveSortBy(sortBy.sold)
             })}
             onClick={() => handleSortNavigate(sortBy.sold)}
@@ -75,23 +75,23 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           {/* sort productList */}
           <select
             aria-label='Sắp xếp theo giá'
-            className={classNames('h-10 md:h-8  px-4 text-left text-sm capitalize outline-none ', {
-              'bg-white/70 dark:bg-slate-700/70 text-orange hover:bg-slate-100 dark:hover:bg-slate-700': isActiveSortBy(
+            className={classNames('h-10 px-4 text-left text-sm capitalize outline-hidden md:h-8', {
+              'bg-white/70 text-orange hover:bg-slate-100 dark:bg-slate-700/70 dark:hover:bg-slate-700': isActiveSortBy(
                 sortBy.price
               ),
-              'bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700':
+              'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
                 !isActiveSortBy(sortBy.price)
             })}
             value={order || ''}
             onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
           >
-            <option value='' className='bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200' disabled>
+            <option value='' className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200' disabled>
               Giá
             </option>
-            <option value={orderConstant.asc} className='bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200'>
+            <option value={orderConstant.asc} className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200'>
               Giá: Thấp đến cao
             </option>
-            <option value={orderConstant.desc} className='bg-white dark:bg-slate-800 text-black/80 dark:text-gray-200'>
+            <option value={orderConstant.desc} className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200'>
               Giá: Cao đến thấp
             </option>
           </select>
@@ -107,7 +107,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
           </div>
           <div className='ml-6 flex items-center'>
             {page === 1 ? (
-              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700 opacity-50'>
+              <span className='flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 opacity-50 shadow-sm hover:bg-slate-100 md:h-8 md:w-9 dark:bg-slate-700/40 dark:shadow-slate-900/20 dark:hover:bg-slate-700'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -128,7 +128,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
                     page: String(page - 1)
                   }).toString()
                 }}
-                className='flex h-10 w-10 md:h-8 md:w-9 cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700'
+                className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 shadow-sm hover:bg-slate-100 md:h-8 md:w-9 dark:bg-slate-700/40 dark:shadow-slate-900/20 dark:hover:bg-slate-700'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -143,7 +143,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
               </Link>
             )}
             {page === pageSize ? (
-              <span className='flex h-10 w-10 md:h-8 md:w-9 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700 opacity-50'>
+              <span className='flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 opacity-50 shadow-sm hover:bg-slate-100 md:h-8 md:w-9 dark:bg-slate-700/40 dark:shadow-slate-900/20 dark:hover:bg-slate-700'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -164,7 +164,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
                     page: String(page + 1)
                   }).toString()
                 }}
-                className='flex h-10 w-10 md:h-8 md:w-9 cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 dark:bg-slate-700/40 shadow dark:shadow-slate-900/20 hover:bg-slate-100 dark:hover:bg-slate-700'
+                className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm bg-white/40 shadow-sm hover:bg-slate-100 md:h-8 md:w-9 dark:bg-slate-700/40 dark:shadow-slate-900/20 dark:hover:bg-slate-700'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -178,7 +178,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
                 </svg>
               </Link>
             )}
-            {/* <button className='h-8 rounded-tr-sm rounded-br-sm bg-white px-3 shadow hover:bg-slate-100'>
+            {/* <button className='h-8 rounded-tr-sm rounded-br-sm bg-white px-3 shadow-sm hover:bg-slate-100'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'

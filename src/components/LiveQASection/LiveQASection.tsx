@@ -29,21 +29,21 @@ export default function LiveQASection({
   return (
     <div
       className={classNames(
-        'rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 text-sm animate-fade-in',
+        'animate-fade-in rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm dark:border-blue-800 dark:bg-blue-900/20',
         className
       )}
     >
       {newQuestionCount > 0 && (
         <div
-          className='flex items-center gap-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded px-2 py-1 transition-colors'
+          className='flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/30'
           onClick={onViewQuestions}
           role='button'
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && onViewQuestions?.()}
         >
           <span className='text-lg'>❓</span>
-          <span className='text-blue-600 dark:text-blue-400 font-medium'>{newQuestionCount} câu hỏi mới</span>
-          <span className='text-gray-400 dark:text-gray-500 text-xs ml-auto'>Nhấn để xem ↓</span>
+          <span className='font-medium text-blue-600 dark:text-blue-400'>{newQuestionCount} câu hỏi mới</span>
+          <span className='ml-auto text-xs text-gray-400 dark:text-gray-500'>Nhấn để xem ↓</span>
         </div>
       )}
       {newAnswers.length > 0 && (
@@ -51,8 +51,8 @@ export default function LiveQASection({
           {newAnswers.slice(-3).map((item, index) => (
             <div
               key={`${item.question_id}-${index}`}
-              className={classNames('flex items-start gap-2 rounded px-2 py-1 text-xs', {
-                'bg-[#fff5f0] dark:bg-orange-900/20 border-l-2 border-[#ee4d2d]': item.answer.is_seller,
+              className={classNames('flex items-start gap-2 rounded-sm px-2 py-1 text-xs', {
+                'border-l-2 border-[#ee4d2d] bg-[#fff5f0] dark:bg-orange-900/20': item.answer.is_seller,
                 'bg-white dark:bg-slate-700': !item.answer.is_seller
               })}
             >
@@ -67,7 +67,7 @@ export default function LiveQASection({
                   {item.answer.user_name}
                   {item.answer.is_seller && ' (Người bán)'}
                 </span>
-                <p className='text-gray-600 dark:text-gray-300 mt-0.5 line-clamp-2'>{item.answer.answer}</p>
+                <p className='mt-0.5 line-clamp-2 text-gray-600 dark:text-gray-300'>{item.answer.answer}</p>
               </div>
             </div>
           ))}

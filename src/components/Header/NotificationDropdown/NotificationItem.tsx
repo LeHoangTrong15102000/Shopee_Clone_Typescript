@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns'
-import vi from 'date-fns/locale/vi'
+import { vi } from 'date-fns/locale'
 import { Notification, NotificationType } from 'src/types/notification.type'
 
 interface Props {
@@ -12,9 +12,9 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
     switch (type) {
       case 'promotion':
         return (
-          <div className='w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center'>
+          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30'>
             <svg
-              className='w-4 h-4 text-yellow-600 dark:text-yellow-400'
+              className='h-4 w-4 text-yellow-600 dark:text-yellow-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -30,9 +30,9 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
         )
       case 'order':
         return (
-          <div className='w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center'>
+          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30'>
             <svg
-              className='w-4 h-4 text-green-600 dark:text-green-400'
+              className='h-4 w-4 text-green-600 dark:text-green-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -48,9 +48,9 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
         )
       case 'system':
         return (
-          <div className='w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center'>
+          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30'>
             <svg
-              className='w-4 h-4 text-blue-600 dark:text-blue-400'
+              className='h-4 w-4 text-blue-600 dark:text-blue-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -67,9 +67,9 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
       case 'other':
       default:
         return (
-          <div className='w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center'>
+          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700'>
             <svg
-              className='w-4 h-4 text-gray-600 dark:text-gray-400'
+              className='h-4 w-4 text-gray-600 dark:text-gray-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -103,17 +103,17 @@ const NotificationItem = ({ notification, onMarkAsRead }: Props) => {
   return (
     <div
       onClick={handleClick}
-      className='flex items-start p-4 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-100 dark:border-slate-700 last:border-b-0 bg-blue-50 dark:bg-slate-700/50 cursor-pointer'
+      className='flex cursor-pointer items-start border-b border-gray-100 bg-blue-50 p-4 last:border-b-0 hover:bg-gray-50 dark:border-slate-700 dark:bg-slate-700/50 dark:hover:bg-slate-700'
     >
-      <div className='flex-shrink-0 mr-3'>{getTypeIcon(notification.type)}</div>
+      <div className='mr-3 shrink-0'>{getTypeIcon(notification.type)}</div>
 
-      <div className='flex-1 min-w-0'>
+      <div className='min-w-0 flex-1'>
         <div className='flex items-start justify-between'>
-          <h4 className='text-sm font-semibold text-gray-900 dark:text-gray-100 line-clamp-1'>{notification.title}</h4>
-          <div className='w-2 h-2 bg-orange rounded-full ml-2 flex-shrink-0'></div>
+          <h4 className='line-clamp-1 text-sm font-semibold text-gray-900 dark:text-gray-100'>{notification.title}</h4>
+          <div className='ml-2 h-2 w-2 shrink-0 rounded-full bg-orange'></div>
         </div>
-        <p className='text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2'>{notification.content}</p>
-        <p className='text-xs text-gray-400 dark:text-gray-500 mt-1'>{formatTime(notification.createdAt)}</p>
+        <p className='mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400'>{notification.content}</p>
+        <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>{formatTime(notification.createdAt)}</p>
       </div>
     </div>
   )

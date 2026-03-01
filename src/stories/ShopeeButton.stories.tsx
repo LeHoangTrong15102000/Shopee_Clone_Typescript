@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import Button from 'src/components/Button'
 
 const meta: Meta<typeof Button> = {
@@ -37,8 +37,8 @@ const meta: Meta<typeof Button> = {
 export default meta
 type Story = StoryObj<typeof Button>
 
-const primaryClassName = 'bg-[#ee4d2d] text-white px-4 py-2 rounded hover:bg-[#d73211] flex items-center'
-const secondaryClassName = 'bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 flex items-center'
+const primaryClassName = 'bg-[#ee4d2d] text-white px-4 py-2 rounded-sm hover:bg-[#d73211] flex items-center'
+const secondaryClassName = 'bg-gray-200 text-gray-800 px-4 py-2 rounded-sm hover:bg-gray-300 flex items-center'
 
 export const Default: Story = {
   args: {

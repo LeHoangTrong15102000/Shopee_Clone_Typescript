@@ -76,13 +76,13 @@ const HeroBanner = () => {
 
   return (
     <div
-      className='relative w-full h-[280px] md:h-[320px] overflow-hidden rounded-lg shadow-lg'
+      className='relative h-[280px] w-full overflow-hidden rounded-lg shadow-lg md:h-[320px]'
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* Banner Slides */}
       <div
-        className='flex transition-transform duration-500 ease-in-out h-full'
+        className='flex h-full transition-transform duration-500 ease-in-out'
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
         {bannerSlides.map((slide, index) => (
@@ -93,22 +93,20 @@ const HeroBanner = () => {
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevSlide}
-        className='absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white 
-          rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-10'
+        className='absolute top-1/2 left-4 z-10 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-200 hover:bg-white'
         aria-label='Previous slide'
       >
-        <svg className='w-5 h-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+        <svg className='h-5 w-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
       </button>
 
       <button
         onClick={goToNextSlide}
-        className='absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white 
-          rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-10'
+        className='absolute top-1/2 right-4 z-10 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-200 hover:bg-white'
         aria-label='Next slide'
       >
-        <svg className='w-5 h-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+        <svg className='h-5 w-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
         </svg>
       </button>

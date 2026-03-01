@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 
@@ -95,18 +95,18 @@ const Home = () => {
 
       {/* Category Section */}
       <motion.div
-        className='bg-white dark:bg-slate-800 mt-4'
+        className='mt-4 bg-white dark:bg-slate-800'
         initial='hidden'
         animate='visible'
         variants={sectionVariants}
       >
         <div className='container py-6'>
           <div className='mb-6'>
-            <h2 className='text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2'>Danh Mục</h2>
+            <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>Danh Mục</h2>
             <p className='text-gray-600 dark:text-gray-300'>Khám phá các danh mục sản phẩm hàng đầu</p>
           </div>
           <motion.div
-            className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4'
+            className='grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8'
             variants={containerVariants}
             initial='hidden'
             animate='visible'
@@ -115,21 +115,16 @@ const Home = () => {
               <motion.div
                 key={category._id}
                 variants={itemVariants}
-                className='hover:scale-105 transition-transform duration-300'
+                className='transition-transform duration-300 hover:scale-105'
               >
                 <Link
                   to={`${path.products}?category=${category._id}`}
-                  className='flex flex-col items-center p-4 rounded-lg border border-gray-200 dark:border-slate-700
-                    hover:border-orange dark:hover:border-orange-500 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group bg-white dark:bg-slate-800'
+                  className='group flex flex-col items-center rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:border-orange hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-orange-500 dark:hover:shadow-slate-900/50'
                 >
-                  <div
-                    className='w-12 h-12 mb-3 bg-gradient-to-br from-orange-400 to-red-500 dark:from-orange-500 dark:to-red-500
-                    rounded-full flex items-center justify-center text-white font-bold text-lg
-                    group-hover:scale-110 transition-transform duration-300 shadow-sm shadow-orange-500/20'
-                  >
+                  <div className='mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-red-500 text-lg font-bold text-white shadow-xs shadow-orange-500/20 transition-transform duration-300 group-hover:scale-110 dark:from-orange-500 dark:to-red-500'>
                     {category.name.charAt(0)}
                   </div>
-                  <span className='text-sm text-gray-700 dark:text-gray-300 text-center font-medium group-hover:text-orange dark:group-hover:text-orange-400'>
+                  <span className='text-center text-sm font-medium text-gray-700 group-hover:text-orange dark:text-gray-300 dark:group-hover:text-orange-400'>
                     {category.name}
                   </span>
                 </Link>
@@ -141,16 +136,16 @@ const Home = () => {
 
       {/* Flash Sale Section - Giả lập */}
       <motion.div
-        className='bg-white dark:bg-slate-800 mt-4'
+        className='mt-4 bg-white dark:bg-slate-800'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
       >
         <div className='container py-6'>
-          <div className='flex flex-wrap items-center justify-between gap-2 mb-6'>
+          <div className='mb-6 flex flex-wrap items-center justify-between gap-2'>
             <div className='flex items-center'>
-              <h2 className='text-base sm:text-xl font-semibold text-orange mr-4'>FLASH SALE</h2>
+              <h2 className='mr-4 text-base font-semibold text-orange sm:text-xl'>FLASH SALE</h2>
               <FlashSaleTimer
                 serverRemainingSeconds={remainingSeconds}
                 isServerSynced={isConnectedToServer}
@@ -160,13 +155,13 @@ const Home = () => {
             </div>
             <Link
               to={`${path.products}?sort_by=sold&order=desc`}
-              className='text-orange hover:text-[#d73527] font-medium'
+              className='font-medium text-orange hover:text-[#d73527]'
             >
               Xem tất cả →
             </Link>
           </div>
           <motion.div
-            className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'
+            className='grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6'
             variants={containerVariants}
             initial='hidden'
             animate='visible'
@@ -175,22 +170,21 @@ const Home = () => {
               <motion.div
                 key={product._id}
                 variants={itemVariants}
-                className='hover:-translate-y-[5px] transition-transform duration-300'
+                className='transition-transform duration-300 hover:-translate-y-[5px]'
               >
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
-                    hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
+                  className='group block overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-300 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:hover:shadow-slate-900/50'
                 >
                   <div className='relative overflow-hidden'>
                     <OptimizedImage
                       src={product.image}
                       alt={product.name}
-                      className='w-full h-40 group-hover:scale-105 transition-transform duration-300'
+                      className='h-40 w-full transition-transform duration-300 group-hover:scale-105'
                       loading='lazy'
                       showSkeleton={true}
                     />
-                    <div className='absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded'>
+                    <div className='absolute top-2 left-2 rounded-sm bg-orange px-2 py-1 text-xs text-white'>
                       -
                       {Math.round(
                         ((product.price_before_discount - product.price) / product.price_before_discount) * 100
@@ -199,11 +193,11 @@ const Home = () => {
                     </div>
                   </div>
                   <div className='p-3'>
-                    <h3 className='text-sm font-medium text-gray-800 dark:text-gray-100 line-clamp-2 mb-2 group-hover:text-orange dark:group-hover:text-orange-400'>
+                    <h3 className='mb-2 line-clamp-2 text-sm font-medium text-gray-800 group-hover:text-orange dark:text-gray-100 dark:group-hover:text-orange-400'>
                       {product.name}
                     </h3>
                     <div className='flex items-center justify-between'>
-                      <span className='text-orange font-bold'>₫{product.price.toLocaleString()}</span>
+                      <span className='font-bold text-orange'>₫{product.price.toLocaleString()}</span>
                       <span className='text-xs text-gray-500 dark:text-gray-400'>Đã bán {product.sold}</span>
                     </div>
                   </div>
@@ -216,27 +210,27 @@ const Home = () => {
 
       {/* Sản phẩm mới Section */}
       <motion.div
-        className='bg-white dark:bg-slate-800 mt-4'
+        className='mt-4 bg-white dark:bg-slate-800'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
       >
         <div className='container py-6'>
-          <div className='flex items-center justify-between mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h2 className='text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2'>Sản Phẩm Mới</h2>
+              <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>Sản Phẩm Mới</h2>
               <p className='text-gray-600 dark:text-gray-300'>Những sản phẩm mới nhất được cập nhật</p>
             </div>
             <Link
               to={`${path.products}?sort_by=createdAt&order=desc`}
-              className='text-orange hover:text-[#d73527] dark:hover:text-orange-400 font-medium'
+              className='font-medium text-orange hover:text-[#d73527] dark:hover:text-orange-400'
             >
               Xem tất cả →
             </Link>
           </div>
           <motion.div
-            className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4'
+            className='grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
             variants={containerVariants}
             initial='hidden'
             animate='visible'
@@ -245,31 +239,32 @@ const Home = () => {
               <motion.div
                 key={product._id}
                 variants={itemVariants}
-                className='hover:-translate-y-[5px] transition-transform duration-300'
+                className='transition-transform duration-300 hover:-translate-y-[5px]'
               >
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden
-                    hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 group block'
+                  className='group block overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-300 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:hover:shadow-slate-900/50'
                 >
                   <div className='relative overflow-hidden'>
                     <OptimizedImage
                       src={product.image}
                       alt={product.name}
-                      className='w-full h-40 group-hover:scale-105 transition-transform duration-300'
+                      className='h-40 w-full transition-transform duration-300 group-hover:scale-105'
                       loading='lazy'
                       showSkeleton={true}
                     />
-                    <div className='absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded'>Mới</div>
+                    <div className='absolute top-2 right-2 rounded-sm bg-green-500 px-2 py-1 text-xs text-white'>
+                      Mới
+                    </div>
                   </div>
                   <div className='p-3'>
-                    <h3 className='text-sm font-medium text-gray-800 dark:text-gray-100 line-clamp-2 mb-2 group-hover:text-orange dark:group-hover:text-orange-400'>
+                    <h3 className='mb-2 line-clamp-2 text-sm font-medium text-gray-800 group-hover:text-orange dark:text-gray-100 dark:group-hover:text-orange-400'>
                       {product.name}
                     </h3>
                     <div className='flex items-center justify-between'>
-                      <span className='text-orange font-bold'>₫{product.price.toLocaleString()}</span>
+                      <span className='font-bold text-orange'>₫{product.price.toLocaleString()}</span>
                       <div className='flex items-center'>
-                        <svg className='w-3 h-3 text-yellow-400 mr-1' fill='currentColor' viewBox='0 0 20 20'>
+                        <svg className='mr-1 h-3 w-3 text-yellow-400' fill='currentColor' viewBox='0 0 20 20'>
                           <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
                         </svg>
                         <span className='text-xs text-gray-500 dark:text-gray-400'>{product.rating}</span>
@@ -285,7 +280,7 @@ const Home = () => {
 
       {/* Call to Action Section */}
       <motion.div
-        className='bg-gradient-to-r from-[#ee4d2d] to-[#f53d2d] mt-4'
+        className='mt-4 bg-linear-to-r from-[#ee4d2d] to-[#f53d2d]'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true, margin: '-100px' }}
@@ -293,15 +288,14 @@ const Home = () => {
       >
         <div className='container py-12'>
           <div className='text-center text-white'>
-            <h2 className='text-2xl md:text-3xl font-bold mb-4'>Khám phá hàng triệu sản phẩm với giá tốt nhất</h2>
-            <p className='text-lg mb-6 opacity-90'>Mua sắm thông minh, tiết kiệm hơn mỗi ngày</p>
+            <h2 className='mb-4 text-2xl font-bold md:text-3xl'>Khám phá hàng triệu sản phẩm với giá tốt nhất</h2>
+            <p className='mb-6 text-lg opacity-90'>Mua sắm thông minh, tiết kiệm hơn mỗi ngày</p>
             <Link
               to={`${path.products}?sort_by=sold&order=desc`}
-              className='inline-flex items-center px-8 py-3 bg-white text-orange font-semibold
-                rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105'
+              className='inline-flex transform items-center rounded-full bg-white px-8 py-3 font-semibold text-orange transition-all duration-300 hover:scale-105 hover:bg-gray-100'
             >
               <span>Mua sắm ngay</span>
-              <svg className='w-5 h-5 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <svg className='ml-2 h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
               </svg>
             </Link>

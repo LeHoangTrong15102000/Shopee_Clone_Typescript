@@ -19,7 +19,7 @@ export default function MessageList({ messages, isLoading, currentUserId }: Mess
     return (
       <div className='flex flex-1 items-center justify-center'>
         <div className='flex flex-col items-center gap-2'>
-          <div className='h-8 w-8 animate-spin rounded-full border-2 border-gray-300 dark:border-slate-600 border-t-orange' />
+          <div className='h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-orange dark:border-slate-600' />
           <span className='text-sm text-gray-500 dark:text-gray-400'>Đang tải tin nhắn...</span>
         </div>
       </div>

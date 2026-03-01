@@ -49,7 +49,7 @@ function App() {
       </Suspense>
       {/* Seller Dashboard Panel - chỉ hiển thị cho Admin */}
       <Suspense fallback={null}>
-        <SellerDashboardPanel className='fixed bottom-4 left-4 w-80 z-40' />
+        <SellerDashboardPanel className='fixed bottom-4 left-4 z-40 w-80' />
       </Suspense>
       {/* PWA Install Prompt */}
       <Suspense fallback={null}>

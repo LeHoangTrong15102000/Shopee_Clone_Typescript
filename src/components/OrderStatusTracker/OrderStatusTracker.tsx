@@ -106,7 +106,7 @@ export default function OrderStatusTracker({
   return (
     <div
       className={classNames(
-        'relative rounded-2xl bg-white dark:bg-slate-800 p-4 md:p-6 shadow-lg border border-gray-100/50 dark:border-slate-700 overflow-hidden',
+        'relative overflow-hidden rounded-2xl border border-gray-100/50 bg-white p-4 shadow-lg md:p-6 dark:border-slate-700 dark:bg-slate-800',
         className
       )}
     >
@@ -115,12 +115,12 @@ export default function OrderStatusTracker({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className='mb-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 px-4 py-2.5 ring-1 ring-green-200/50 dark:ring-green-700/50'
+          className='mb-4 flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-green-50 to-emerald-50 px-4 py-2.5 ring-1 ring-green-200/50 dark:from-green-900/30 dark:to-emerald-900/30 dark:ring-green-700/50'
           aria-label='Đang theo dõi trạng thái đơn hàng trực tiếp'
         >
           <span className='relative flex h-2.5 w-2.5'>
             <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75'></span>
-            <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500'></span>
+            <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-linear-to-r from-green-500 to-emerald-500'></span>
           </span>
           <span className='text-sm font-medium text-green-700 dark:text-green-400'>Đang theo dõi trực tiếp</span>
           <svg className='h-4 w-4 text-green-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -135,10 +135,10 @@ export default function OrderStatusTracker({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className={classNames(
-            'mb-4 flex items-center justify-center gap-3 rounded-xl py-4 px-6',
+            'mb-4 flex items-center justify-center gap-3 rounded-xl px-6 py-4',
             isCancelled
-              ? 'bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 ring-1 ring-red-200/50 dark:ring-red-700/50'
-              : 'bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 ring-1 ring-amber-200/50 dark:ring-amber-700/50'
+              ? 'bg-linear-to-r from-red-50 to-rose-50 ring-1 ring-red-200/50 dark:from-red-900/30 dark:to-rose-900/30 dark:ring-red-700/50'
+              : 'bg-linear-to-r from-amber-50 to-orange-50 ring-1 ring-amber-200/50 dark:from-amber-900/30 dark:to-orange-900/30 dark:ring-amber-700/50'
           )}
         >
           <div
@@ -195,7 +195,7 @@ export default function OrderStatusTracker({
         <div className='relative pt-2'>
           {/* Progress line background - inset to align with circle centers using calc */}
           <div
-            className='absolute top-7 md:top-8 h-1.5 rounded-full bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'
+            className='absolute top-7 h-1.5 rounded-full bg-linear-to-r from-gray-100 via-gray-200 to-gray-100 md:top-8 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700'
             style={{ left: `calc(100% / ${ORDER_STEPS.length} / 2)`, right: `calc(100% / ${ORDER_STEPS.length} / 2)` }}
           >
             {/* Animated progress fill */}
@@ -225,10 +225,10 @@ export default function OrderStatusTracker({
                   {/* Step circle */}
                   <div
                     className={classNames(
-                      'relative z-10 flex h-11 w-11 md:h-14 md:w-14 items-center justify-center rounded-full border-2 bg-white dark:bg-slate-800',
+                      'relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 bg-white md:h-14 md:w-14 dark:bg-slate-800',
                       {
                         'border-[#2dc258] text-[#2dc258]': isCompleted || isCurrent,
-                        'border-gray-200 dark:border-slate-600 text-gray-300 dark:text-slate-400': isFuture
+                        'border-gray-200 text-gray-300 dark:border-slate-600 dark:text-slate-400': isFuture
                       }
                     )}
                   >
@@ -238,10 +238,10 @@ export default function OrderStatusTracker({
                   {/* Step label */}
                   <span
                     className={classNames(
-                      'mt-2 md:mt-3 max-w-[72px] md:max-w-[110px] text-center text-[10px] md:text-xs leading-tight',
+                      'mt-2 max-w-[72px] text-center text-[10px] leading-tight md:mt-3 md:max-w-[110px] md:text-xs',
                       {
-                        'text-gray-900 dark:text-gray-100 font-medium': isCompleted || isCurrent,
-                        'text-gray-400 dark:text-slate-400 font-medium': isFuture
+                        'font-medium text-gray-900 dark:text-gray-100': isCompleted || isCurrent,
+                        'font-medium text-gray-400 dark:text-slate-400': isFuture
                       }
                     )}
                   >
@@ -252,7 +252,7 @@ export default function OrderStatusTracker({
 
                   {/* Step timestamp */}
                   {(isCompleted || isCurrent) && stepTimestamps?.[step.key] && (
-                    <span className='mt-0.5 text-[10px] md:text-xs text-gray-400 dark:text-slate-500 text-center'>
+                    <span className='mt-0.5 text-center text-[10px] text-gray-400 md:text-xs dark:text-slate-500'>
                       {formatLastUpdate(stepTimestamps[step.key])}
                     </span>
                   )}

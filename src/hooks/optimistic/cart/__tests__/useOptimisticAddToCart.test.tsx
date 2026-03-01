@@ -78,7 +78,7 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: ReturnType<typeof vi.fn>
+let mockSetExtendedPurchases: any
 let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
@@ -150,10 +150,13 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.addToCart).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 2
-      })
+      expect(purchaseApi.addToCart).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 2
+        },
+        expect.anything()
+      )
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
@@ -214,10 +217,13 @@ describe('useOptimisticAddToCart', () => {
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
-      expect(purchaseApi.addToCart).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 3
-      })
+      expect(purchaseApi.addToCart).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 3
+        },
+        expect.anything()
+      )
     })
   })
 
@@ -594,10 +600,13 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.addToCart).toHaveBeenCalledWith({
-        product_id: 'product-2',
-        buy_count: 1
-      })
+      expect(purchaseApi.addToCart).toHaveBeenCalledWith(
+        {
+          product_id: 'product-2',
+          buy_count: 1
+        },
+        expect.anything()
+      )
     })
 
     test('should handle concurrent add to cart requests', async () => {
@@ -662,10 +671,13 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.addToCart).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 999
-      })
+      expect(purchaseApi.addToCart).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 999
+        },
+        expect.anything()
+      )
     })
   })
 })

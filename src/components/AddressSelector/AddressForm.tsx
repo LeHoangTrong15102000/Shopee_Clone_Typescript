@@ -294,18 +294,18 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className='fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 backdrop-blur-sm p-4'
+      className='fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-xs'
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className='my-8 w-full max-w-2xl overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-2xl ring-1 ring-black/5 dark:ring-white/10'
+        className='my-8 w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 dark:bg-slate-800 dark:ring-white/10'
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with gradient */}
-        <div className='relative bg-gradient-to-r from-orange to-orange/80 px-6 py-5'>
+        <div className='relative bg-linear-to-r from-orange to-orange/80 px-6 py-5'>
           <div
             className='absolute inset-0 bg-white/5'
             style={{
@@ -315,7 +315,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
           />
           <div className='relative flex items-center justify-between'>
             <div className='flex items-center gap-3'>
-              <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm'>
+              <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-xs'>
                 <svg
                   className='h-5 w-5 text-white'
                   fill='none'
@@ -338,7 +338,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
             </div>
             <button
               onClick={onClose}
-              className='flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-all hover:bg-white/30 hover:scale-105'
+              className='flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-xs transition-all hover:scale-105 hover:bg-white/30'
               aria-label='Đóng'
             >
               <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -349,7 +349,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
         </div>
 
         {/* Progress Indicator - Enhanced UI */}
-        <div className='border-b border-gray-100 dark:border-slate-700 bg-gradient-to-b from-gray-50/80 dark:from-slate-700/50 to-white dark:to-slate-800 px-4 sm:px-6 py-5 sm:py-6'>
+        <div className='border-b border-gray-100 bg-linear-to-b from-gray-50/80 to-white px-4 py-5 sm:px-6 sm:py-6 dark:border-slate-700 dark:from-slate-700/50 dark:to-slate-800'>
           <div className='flex items-center justify-center'>
             {FORM_STEPS.map((step, index) => {
               const isCompleted = stepProgress >= step.id && currentStep !== step.id
@@ -363,7 +363,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                     type='button'
                     onClick={() => canClick && setCurrentStep(step.id)}
                     disabled={!canClick}
-                    className='group flex flex-col items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/50 focus-visible:ring-offset-2 rounded-lg p-1'
+                    className='group flex flex-col items-center gap-2 rounded-lg p-1 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange/50 focus-visible:ring-offset-2'
                     aria-label={`Bước ${step.id}: ${step.title}`}
                     aria-current={isCurrent ? 'step' : undefined}
                   >
@@ -379,14 +379,14 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                             : '0 1px 3px rgba(0, 0, 0, 0.1)'
                       }}
                       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      className={`relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 transition-all duration-300 ${
+                      className={`relative flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-300 sm:h-12 sm:w-12 ${
                         isCompleted
-                          ? 'border-green-500 bg-gradient-to-br from-green-500 to-emerald-500'
+                          ? 'border-green-500 bg-linear-to-br from-green-500 to-emerald-500'
                           : isCurrent
-                            ? 'border-orange bg-gradient-to-br from-orange to-orange/90'
+                            ? 'border-orange bg-linear-to-br from-orange to-orange/90'
                             : canClick
-                              ? 'border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-700 group-hover:border-orange/50 group-hover:bg-orange/5 dark:group-hover:bg-orange/10'
-                              : 'border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700'
+                              ? 'border-gray-300 bg-white group-hover:border-orange/50 group-hover:bg-orange/5 dark:border-slate-500 dark:bg-slate-700 dark:group-hover:bg-orange/10'
+                              : 'border-gray-200 bg-gray-50 dark:border-slate-600 dark:bg-slate-700'
                       }`}
                     >
                       {/* Completed Checkmark */}
@@ -395,7 +395,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                           initial={{ scale: 0, rotate: -45 }}
                           animate={{ scale: 1, rotate: 0 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                          className='h-5 w-5 sm:h-6 sm:w-6 text-white'
+                          className='h-5 w-5 text-white sm:h-6 sm:w-6'
                           fill='none'
                           stroke='currentColor'
                           viewBox='0 0 24 24'
@@ -409,11 +409,11 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         <motion.span
                           initial={false}
                           animate={{ scale: isCurrent ? 1 : 0.9 }}
-                          className={`text-sm sm:text-base font-bold ${
+                          className={`text-sm font-bold sm:text-base ${
                             isCurrent
                               ? 'text-white'
                               : canClick
-                                ? 'text-gray-500 dark:text-gray-400 group-hover:text-orange'
+                                ? 'text-gray-500 group-hover:text-orange dark:text-gray-400'
                                 : 'text-gray-400 dark:text-gray-500'
                           }`}
                         >
@@ -428,13 +428,13 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                     <motion.span
                       initial={false}
                       animate={{ y: isCurrent ? -2 : 0 }}
-                      className={`text-xs sm:text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
+                      className={`text-xs font-medium whitespace-nowrap transition-colors duration-200 sm:text-sm ${
                         isCompleted
                           ? 'text-green-600 dark:text-green-400'
                           : isCurrent
-                            ? 'text-orange font-semibold'
+                            ? 'font-semibold text-orange'
                             : canClick
-                              ? 'text-gray-500 dark:text-gray-400 group-hover:text-orange/80'
+                              ? 'text-gray-500 group-hover:text-orange/80 dark:text-gray-400'
                               : 'text-gray-400 dark:text-gray-500'
                       }`}
                     >
@@ -444,14 +444,14 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
 
                   {/* Connecting Line */}
                   {index < FORM_STEPS.length - 1 && (
-                    <div className='relative mx-2 sm:mx-4 h-0.5 w-8 sm:w-16 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-600'>
+                    <div className='relative mx-2 h-0.5 w-8 overflow-hidden rounded-full bg-gray-200 sm:mx-4 sm:w-16 dark:bg-slate-600'>
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{
                           width: stepProgress > step.id ? '100%' : currentStep > step.id ? '100%' : '0%'
                         }}
                         transition={{ duration: 0.4, ease: 'easeInOut' }}
-                        className='absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-green-500 to-emerald-400'
+                        className='absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-green-500 to-emerald-400'
                       />
                     </div>
                   )}
@@ -488,14 +488,14 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       register={register}
                       name='fullName'
                       errorMessage={errors.fullName?.message}
-                      classNameInput={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-none ${
+                      classNameInput={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-hidden ${
                         errors.fullName
                           ? 'border-red-300 focus:border-red-500'
                           : touchedFields.fullName && !errors.fullName
                             ? 'border-green-300 focus:border-green-500'
                             : 'border-gray-300 dark:border-slate-600 focus:border-orange dark:bg-slate-700 dark:text-gray-100'
                       }`}
-                      classNameError='mt-1 min-h-[1rem] text-xs text-red-500'
+                      classNameError='mt-1 min-h-4 text-xs text-red-500'
                     />
                   </div>
 
@@ -516,12 +516,12 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                             field.onChange(e.target.value.replace(/\s/g, ''))
                             e.target.value = formatted
                           }}
-                          className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-none ${
+                          className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-hidden ${
                             errors.phone
                               ? 'border-red-300 focus:border-red-500'
                               : touchedFields.phone && !errors.phone
                                 ? 'border-green-300 focus:border-green-500'
-                                : 'border-gray-300 dark:border-slate-600 focus:border-orange dark:bg-slate-700 dark:text-gray-100'
+                                : 'border-gray-300 focus:border-orange dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                           }`}
                         />
                       )}
@@ -560,10 +560,10 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       <select
                         value={watchedProvinceId || ''}
                         onChange={handleProvinceChange}
-                        className={`w-full appearance-none rounded-lg border bg-white dark:bg-slate-700 px-3 py-2.5 pr-10 transition-colors focus:outline-none dark:text-gray-100 ${
+                        className={`w-full appearance-none rounded-lg border bg-white px-3 py-2.5 pr-10 transition-colors focus:outline-hidden dark:bg-slate-700 dark:text-gray-100 ${
                           errors.provinceId
                             ? 'border-red-300'
-                            : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                            : 'border-gray-300 focus:border-orange dark:border-slate-600'
                         }`}
                       >
                         <option value=''>Chọn tỉnh/thành</option>
@@ -597,10 +597,10 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         value={watchedDistrictId || ''}
                         onChange={handleDistrictChange}
                         disabled={!watchedProvinceId || isLoadingDistricts}
-                        className={`w-full appearance-none rounded-lg border bg-white dark:bg-slate-700 px-3 py-2.5 pr-10 transition-colors focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-slate-600 dark:text-gray-100 ${
+                        className={`w-full appearance-none rounded-lg border bg-white px-3 py-2.5 pr-10 transition-colors focus:outline-hidden disabled:cursor-not-allowed disabled:bg-gray-100 dark:bg-slate-700 dark:text-gray-100 dark:disabled:bg-slate-600 ${
                           errors.districtId
                             ? 'border-red-300'
-                            : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                            : 'border-gray-300 focus:border-orange dark:border-slate-600'
                         }`}
                       >
                         <option value=''>{isLoadingDistricts ? 'Đang tải...' : 'Chọn quận/huyện'}</option>
@@ -652,8 +652,8 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         value={watch('wardId') || ''}
                         onChange={handleWardChange}
                         disabled={!watchedDistrictId || isLoadingWards}
-                        className={`w-full appearance-none rounded-lg border bg-white dark:bg-slate-700 px-3 py-2.5 pr-10 transition-colors focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-slate-600 dark:text-gray-100 ${
-                          errors.wardId ? 'border-red-300' : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                        className={`w-full appearance-none rounded-lg border bg-white px-3 py-2.5 pr-10 transition-colors focus:outline-hidden disabled:cursor-not-allowed disabled:bg-gray-100 dark:bg-slate-700 dark:text-gray-100 dark:disabled:bg-slate-600 ${
+                          errors.wardId ? 'border-red-300' : 'border-gray-300 focus:border-orange dark:border-slate-600'
                         }`}
                       >
                         <option value=''>{isLoadingWards ? 'Đang tải...' : 'Chọn phường/xã'}</option>
@@ -732,8 +732,8 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       placeholder='Số nhà, tên đường...'
                       onFocus={() => setShowStreetSuggestions(true)}
                       onBlur={() => setTimeout(() => setShowStreetSuggestions(false), 200)}
-                      className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-none dark:bg-slate-700 dark:text-gray-100 ${
-                        errors.street ? 'border-red-300' : 'border-gray-300 dark:border-slate-600 focus:border-orange'
+                      className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-hidden dark:bg-slate-700 dark:text-gray-100 ${
+                        errors.street ? 'border-red-300' : 'border-gray-300 focus:border-orange dark:border-slate-600'
                       }`}
                     />
                     <AnimatePresence>
@@ -742,7 +742,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className='absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-y-auto rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 shadow-lg'
+                          className='absolute top-full right-0 left-0 z-10 mt-1 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-700'
                         >
                           <div className='p-2 text-xs font-medium text-gray-500 dark:text-gray-400'>Gợi ý địa chỉ</div>
                           {filteredStreetSuggestions.map((suggestion, index) => (
@@ -750,7 +750,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                               key={index}
                               type='button'
                               onClick={() => handleStreetSelect(suggestion)}
-                              className='flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-orange/5 dark:hover:bg-orange/10 dark:text-gray-200'
+                              className='flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-orange/5 dark:text-gray-200 dark:hover:bg-orange/10'
                             >
                               <svg
                                 className='h-4 w-4 text-gray-400 dark:text-gray-500'
@@ -780,10 +780,10 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className='rounded-lg bg-gray-50 dark:bg-slate-700 p-3'
+                    className='rounded-lg bg-gray-50 p-3 dark:bg-slate-700'
                   >
                     <div className='flex items-start gap-2'>
-                      <svg className='mt-0.5 h-5 w-5 flex-shrink-0 text-orange' fill='currentColor' viewBox='0 0 20 20'>
+                      <svg className='mt-0.5 h-5 w-5 shrink-0 text-orange' fill='currentColor' viewBox='0 0 20 20'>
                         <path
                           fillRule='evenodd'
                           d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
@@ -811,8 +811,8 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         onClick={() => handleTypeSelect(option.value)}
                         className={`flex items-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all ${
                           watchedAddressType === option.value
-                            ? 'border-orange bg-orange/5 dark:bg-orange/10 text-orange'
-                            : 'border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-gray-300 dark:hover:border-slate-500'
+                            ? 'border-orange bg-orange/5 text-orange dark:bg-orange/10'
+                            : 'border-gray-200 text-gray-600 hover:border-gray-300 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500'
                         }`}
                       >
                         {option.icon}
@@ -840,20 +840,20 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                         register={register}
                         name='label'
                         errorMessage={errors.label?.message}
-                        classNameInput='w-full rounded-lg border border-gray-300 dark:border-slate-600 px-3 py-2.5 focus:border-orange focus:outline-none dark:bg-slate-700 dark:text-gray-100'
-                        classNameError='mt-1 min-h-[1rem] text-xs text-red-500'
+                        classNameInput='w-full rounded-lg border border-gray-300 dark:border-slate-600 px-3 py-2.5 focus:border-orange focus:outline-hidden dark:bg-slate-700 dark:text-gray-100'
+                        classNameError='mt-1 min-h-4 text-xs text-red-500'
                       />
                     </motion.div>
                   )}
                 </AnimatePresence>
 
                 {/* Default Address Checkbox */}
-                <div className='flex items-center gap-3 rounded-lg border border-gray-200 dark:border-slate-600 p-3'>
+                <div className='flex items-center gap-3 rounded-lg border border-gray-200 p-3 dark:border-slate-600'>
                   <input
                     type='checkbox'
                     id='isDefault'
                     {...register('isDefault')}
-                    className='h-5 w-5 rounded border-gray-300 dark:border-slate-500 text-orange focus:ring-orange dark:bg-slate-700'
+                    className='h-5 w-5 rounded-sm border-gray-300 text-orange focus:ring-orange dark:border-slate-500 dark:bg-slate-700'
                   />
                   <label htmlFor='isDefault' className='flex-1'>
                     <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>
@@ -866,7 +866,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                 </div>
 
                 {/* Map Preview Placeholder */}
-                <div className='overflow-hidden rounded-lg border border-dashed border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700'>
+                <div className='overflow-hidden rounded-lg border border-dashed border-gray-300 bg-gray-50 dark:border-slate-600 dark:bg-slate-700'>
                   <div className='flex items-center justify-center p-6'>
                     <div className='text-center'>
                       <svg
@@ -886,7 +886,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                       <p className='text-xs text-gray-400 dark:text-gray-500'>Tính năng sẽ sớm ra mắt</p>
                       <button
                         type='button'
-                        className='mt-3 inline-flex items-center gap-1 rounded-lg bg-gray-200 dark:bg-slate-600 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300'
+                        className='mt-3 inline-flex items-center gap-1 rounded-lg bg-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 dark:bg-slate-600 dark:text-gray-300'
                         disabled
                       >
                         <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -908,13 +908,13 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
         </form>
 
         {/* Footer with Navigation */}
-        <div className='flex items-center justify-between border-t border-gray-100 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-800 to-gray-50 dark:to-slate-800/50 px-6 py-4'>
+        <div className='flex items-center justify-between border-t border-gray-100 bg-linear-to-b from-white to-gray-50 px-6 py-4 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800/50'>
           <div>
             {currentStep > 1 && (
               <Button
                 type='button'
                 onClick={() => setCurrentStep(currentStep - 1)}
-                className='flex items-center gap-1.5 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-600 hover:shadow'
+                className='flex items-center gap-1.5 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 hover:shadow-sm dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
               >
                 <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
@@ -927,7 +927,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
             <Button
               type='button'
               onClick={onClose}
-              className='rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-600 hover:shadow'
+              className='rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 hover:shadow-sm dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
             >
               Hủy
             </Button>
@@ -936,11 +936,11 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                 type='button'
                 onClick={() => setCurrentStep(currentStep + 1)}
                 disabled={!canProceedToStep(currentStep + 1)}
-                className='inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange to-orange/90 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+                className='inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-orange to-orange/90 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
               >
                 <span className='inline-flex items-center leading-none'>Tiếp tục</span>
                 <svg
-                  className='h-4 w-4 flex-shrink-0'
+                  className='h-4 w-4 shrink-0'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -955,7 +955,7 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
                 onClick={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 isLoading={isLoading}
-                className='flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-orange to-orange/90 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 disabled:opacity-50 disabled:shadow-none'
+                className='flex items-center gap-1.5 rounded-xl bg-linear-to-r from-orange to-orange/90 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 disabled:opacity-50 disabled:shadow-none'
               >
                 <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />

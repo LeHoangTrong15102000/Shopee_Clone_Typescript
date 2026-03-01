@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import InputNumber, { InputNumberProps } from 'src/components/InputNumber'
 import DeleteModal from '../DeleteModal'
@@ -113,7 +113,7 @@ const QuantityController = ({
       <motion.button
         type='button'
         aria-label='Decrease quantity'
-        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors duration-100'
+        className='flex h-10 w-10 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] bg-white text-black transition-colors duration-100 hover:bg-black/4 sm:h-8 sm:w-8 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-white/6'
         onClick={decrease}
         whileTap={{ scale: 0.85 }}
       >
@@ -146,7 +146,7 @@ const QuantityController = ({
       <motion.button
         type='button'
         aria-label='Increase quantity'
-        className='flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] dark:border-slate-600 text-black dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors duration-100'
+        className='flex h-10 w-10 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] bg-white text-black transition-colors duration-100 hover:bg-black/4 sm:h-8 sm:w-8 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-white/6'
         onClick={increase}
         whileTap={{ scale: 0.85 }}
       >
@@ -174,4 +174,4 @@ const QuantityController = ({
   )
 }
 
-export default QuantityController
+export default memo(QuantityController)

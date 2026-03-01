@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { toast } from 'react-toastify'
 import orderApi from 'src/apis/order.api'
 import orderTrackingApi from 'src/apis/orderTracking.api'
@@ -216,19 +216,19 @@ export default function OrderDetail() {
       {/* Header */}
       <motion.div
         variants={sectionItemVariants}
-        className='relative rounded-xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
+        className='relative overflow-hidden rounded-xl bg-white p-4 shadow-xs transition-all duration-200 hover:shadow-md dark:border dark:border-slate-700 dark:bg-slate-800'
       >
-        <div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-rose-500 to-amber-500' />
+        <div className='absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange via-rose-500 to-amber-500' />
         <div className='flex items-center justify-between'>
           <div>
             <motion.button
               onClick={() => navigate(-1)}
-              className='mb-2 flex items-center gap-1.5 text-sm text-gray-500 transition-colors duration-200 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400 cursor-pointer'
+              className='mb-2 flex cursor-pointer items-center gap-1.5 text-sm text-gray-500 transition-colors duration-200 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
               whileHover={shouldReduceMotion ? {} : { x: -3 }}
               transition={{ duration: ANIMATION_DURATION.fast }}
               aria-label='Quay lại trang trước'
             >
-              <svg className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+              <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
               </svg>
               Quay lại
@@ -252,7 +252,7 @@ export default function OrderDetail() {
       {tracking && (
         <motion.div
           variants={sectionItemVariants}
-          className='rounded-xl bg-white shadow-sm transition-all duration-200 hover:shadow-md dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
+          className='overflow-hidden rounded-xl bg-white shadow-xs transition-all duration-200 hover:shadow-md dark:border dark:border-slate-700 dark:bg-slate-800'
         >
           <OrderTrackingTimeline tracking={tracking} />
         </motion.div>
@@ -274,11 +274,11 @@ export default function OrderDetail() {
         variants={sectionItemVariants}
         whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
         transition={{ duration: ANIMATION_DURATION.fast }}
-        className='relative rounded-xl bg-white dark:bg-slate-800 p-5 shadow-sm transition-all duration-200 border border-gray-100 dark:border-slate-700 overflow-hidden'
+        className='relative overflow-hidden rounded-xl border border-gray-100 bg-white p-5 shadow-xs transition-all duration-200 dark:border-slate-700 dark:bg-slate-800'
       >
-        <h2 className='mb-4 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-3'>
-          <span className='inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-orange to-rose-500 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
-            <svg className='w-3.5 h-3.5 text-white' fill='currentColor' viewBox='0 0 20 20'>
+        <h2 className='mb-4 flex items-center gap-3 font-semibold text-gray-900 dark:text-gray-100'>
+          <span className='inline-flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-orange to-rose-500 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
+            <svg className='h-3.5 w-3.5 text-white' fill='currentColor' viewBox='0 0 20 20'>
               <path
                 fillRule='evenodd'
                 d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
@@ -289,10 +289,10 @@ export default function OrderDetail() {
           Địa chỉ nhận hàng
         </h2>
         <div className='ml-12 space-y-1.5 text-sm'>
-          <p className='font-semibold text-gray-900 dark:text-gray-100 text-base'>{order.shippingAddress.fullName}</p>
-          <p className='text-gray-600 dark:text-gray-300 flex items-center gap-1.5'>
+          <p className='text-base font-semibold text-gray-900 dark:text-gray-100'>{order.shippingAddress.fullName}</p>
+          <p className='flex items-center gap-1.5 text-gray-600 dark:text-gray-300'>
             <svg
-              className='w-3.5 h-3.5 text-gray-400 dark:text-gray-500 flex-shrink-0'
+              className='h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-gray-500'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -306,9 +306,9 @@ export default function OrderDetail() {
             </svg>
             {order.shippingAddress.phone}
           </p>
-          <p className='text-gray-600 dark:text-gray-300 flex items-start gap-1.5'>
+          <p className='flex items-start gap-1.5 text-gray-600 dark:text-gray-300'>
             <svg
-              className='w-3.5 h-3.5 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5'
+              className='mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-gray-500'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -335,11 +335,11 @@ export default function OrderDetail() {
         <motion.div
           whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
           transition={{ duration: ANIMATION_DURATION.fast }}
-          className='rounded-xl bg-white p-5 shadow-sm transition-all duration-200 dark:bg-slate-800 dark:border dark:border-slate-700'
+          className='rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
         >
-          <h2 className='mb-3 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2.5'>
-            <span className='inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 shadow-md shadow-violet-200/40 dark:shadow-violet-800/30'>
-              <svg className='w-4 h-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <h2 className='mb-3 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
+            <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-violet-500 to-purple-600 shadow-md shadow-violet-200/40 dark:shadow-violet-800/30'>
+              <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -356,11 +356,11 @@ export default function OrderDetail() {
         <motion.div
           whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
           transition={{ duration: ANIMATION_DURATION.fast }}
-          className='rounded-xl bg-white p-5 shadow-sm transition-all duration-200 dark:bg-slate-800 dark:border dark:border-slate-700'
+          className='rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
         >
-          <h2 className='mb-3 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2.5'>
-            <span className='inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 shadow-md shadow-sky-200/40 dark:shadow-sky-800/30'>
-              <svg className='w-4 h-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <h2 className='mb-3 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
+            <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-sky-500 to-blue-600 shadow-md shadow-sky-200/40 dark:shadow-sky-800/30'>
+              <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -372,7 +372,7 @@ export default function OrderDetail() {
           </h2>
           <div className='ml-10.5'>
             <p className='text-sm text-gray-600 dark:text-gray-300'>{order.shippingMethod.name}</p>
-            <p className='text-xs text-gray-400 dark:text-slate-400 mt-1'>{order.shippingMethod.estimatedDays}</p>
+            <p className='mt-1 text-xs text-gray-400 dark:text-slate-400'>{order.shippingMethod.estimatedDays}</p>
           </div>
         </motion.div>
       </motion.div>
@@ -382,12 +382,12 @@ export default function OrderDetail() {
         variants={sectionItemVariants}
         whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
         transition={{ duration: ANIMATION_DURATION.fast }}
-        className='relative rounded-xl bg-white p-5 shadow-sm transition-all duration-200 dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
+        className='relative overflow-hidden rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
       >
-        <div className='absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500' />
-        <h2 className='mb-4 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2.5'>
-          <span className='inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-200/40 dark:shadow-emerald-800/30'>
-            <svg className='w-4 h-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+        <div className='absolute top-0 right-0 left-0 h-0.5 bg-linear-to-r from-emerald-400 via-teal-500 to-cyan-500' />
+        <h2 className='mb-4 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
+          <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-200/40 dark:shadow-emerald-800/30'>
+            <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -398,18 +398,18 @@ export default function OrderDetail() {
           Tổng cộng
         </h2>
         <div className='space-y-3 text-sm'>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between'>
             <span className='text-gray-500 dark:text-gray-300'>Tạm tính</span>
             <span className='text-gray-700 dark:text-gray-200'>₫{formatCurrency(order.subtotal)}</span>
           </div>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between'>
             <span className='text-gray-500 dark:text-gray-300'>Phí vận chuyển</span>
             <span className='text-gray-700 dark:text-gray-200'>₫{formatCurrency(order.shippingFee)}</span>
           </div>
           {order.discount > 0 && (
-            <div className='flex justify-between items-center text-green-600 dark:text-green-400'>
+            <div className='flex items-center justify-between text-green-600 dark:text-green-400'>
               <span className='flex items-center gap-1'>
-                <svg className='w-3.5 h-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                   <path
                     strokeLinecap='round'
                     strokeLinejoin='round'
@@ -423,9 +423,9 @@ export default function OrderDetail() {
             </div>
           )}
           {order.coinsDiscount > 0 && (
-            <div className='flex justify-between items-center text-amber-600 dark:text-amber-400'>
+            <div className='flex items-center justify-between text-amber-600 dark:text-amber-400'>
               <span className='flex items-center gap-1'>
-                <svg className='w-3.5 h-3.5' fill='currentColor' viewBox='0 0 20 20'>
+                <svg className='h-3.5 w-3.5' fill='currentColor' viewBox='0 0 20 20'>
                   <path d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.798 7.45c.512-.67 1.135-.95 1.702-.95s1.19.28 1.702.95a.75.75 0 001.192-.91C12.637 5.55 11.5 5 10.5 5s-2.137.55-2.894 1.54A5.205 5.205 0 006.83 8H5.75a.75.75 0 000 1.5h.77a6.333 6.333 0 000 1h-.77a.75.75 0 000 1.5h1.08c.183.528.442 1.023.776 1.46.757.99 1.894 1.54 2.894 1.54s2.137-.55 2.894-1.54a.75.75 0 00-1.192-.91c-.512.67-1.135.95-1.702.95s-1.19-.28-1.702-.95a3.505 3.505 0 01-.343-.55h1.795a.75.75 0 000-1.5H8.026a4.835 4.835 0 010-1h2.224a.75.75 0 000-1.5H8.455c.098-.195.212-.38.343-.55z' />
                 </svg>
                 Giảm giá xu ({order.coinsUsed} xu)
@@ -434,9 +434,9 @@ export default function OrderDetail() {
             </div>
           )}
           <div className='border-t-2 border-dashed border-gray-200 pt-3 dark:border-slate-600'>
-            <div className='flex justify-between items-center'>
-              <span className='font-semibold text-gray-900 dark:text-gray-100 text-base'>Tổng tiền</span>
-              <span className='text-2xl font-bold bg-gradient-to-r from-orange to-rose-500 bg-clip-text text-transparent'>
+            <div className='flex items-center justify-between'>
+              <span className='text-base font-semibold text-gray-900 dark:text-gray-100'>Tổng tiền</span>
+              <span className='bg-linear-to-r from-orange to-rose-500 bg-clip-text text-2xl font-bold text-transparent'>
                 ₫{formatCurrency(order.total)}
               </span>
             </div>
@@ -449,11 +449,11 @@ export default function OrderDetail() {
         variants={sectionItemVariants}
         whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
         transition={{ duration: ANIMATION_DURATION.fast }}
-        className='rounded-xl bg-white p-5 shadow-sm transition-all duration-200 dark:bg-slate-800 dark:border dark:border-slate-700'
+        className='rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
       >
-        <h2 className='mb-4 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2.5'>
-          <span className='inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md shadow-indigo-200/40 dark:shadow-indigo-800/30'>
-            <svg className='w-4 h-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+        <h2 className='mb-4 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
+          <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-indigo-500 to-violet-600 shadow-md shadow-indigo-200/40 dark:shadow-indigo-800/30'>
+            <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -466,7 +466,7 @@ export default function OrderDetail() {
         <div className='grid gap-4 text-sm md:grid-cols-2'>
           <div className='flex items-center gap-2'>
             <svg
-              className='w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0'
+              className='h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -486,7 +486,7 @@ export default function OrderDetail() {
           {order.note && (
             <div className='flex items-start gap-2'>
               <svg
-                className='w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5'
+                className='mt-0.5 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -509,7 +509,7 @@ export default function OrderDetail() {
 
       {/* Actions */}
       {canCancel && (
-        <motion.div variants={sectionItemVariants} className='flex flex-col sm:flex-row justify-end gap-3'>
+        <motion.div variants={sectionItemVariants} className='flex flex-col justify-end gap-3 sm:flex-row'>
           <motion.div
             whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
@@ -518,7 +518,7 @@ export default function OrderDetail() {
             <Button
               onClick={() => setShowCancelModal(true)}
               aria-label='Hủy đơn hàng'
-              className='rounded-xl border-2 border-red-400/80 bg-white px-6 py-2.5 text-red-500 font-medium transition-all duration-200 hover:bg-red-50 hover:border-red-500 hover:shadow-md hover:shadow-red-100/50 dark:bg-slate-800 dark:border-red-500/40 dark:text-red-400 dark:hover:bg-red-950/20 dark:hover:border-red-400 dark:hover:shadow-red-900/20 cursor-pointer'
+              className='cursor-pointer rounded-xl border-2 border-red-400/80 bg-white px-6 py-2.5 font-medium text-red-500 transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:shadow-md hover:shadow-red-100/50 dark:border-red-500/40 dark:bg-slate-800 dark:text-red-400 dark:hover:border-red-400 dark:hover:bg-red-950/20 dark:hover:shadow-red-900/20'
             >
               Hủy đơn hàng
             </Button>
@@ -552,12 +552,12 @@ function OrderItems({ order, shouldReduceMotion }: { order: Order; shouldReduceM
       variants={shouldReduceMotion ? reducedMotionVariants : sectionVariants}
       whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
       transition={{ duration: ANIMATION_DURATION.fast }}
-      className='relative rounded-xl bg-white p-5 shadow-sm transition-all duration-200 dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
+      className='relative overflow-hidden rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
     >
-      <div className='absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange via-amber-500 to-yellow-400' />
-      <h2 className='mb-4 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2.5'>
-        <span className='inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-orange to-amber-600 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
-          <svg className='w-4 h-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+      <div className='absolute top-0 right-0 left-0 h-0.5 bg-linear-to-r from-orange via-amber-500 to-yellow-400' />
+      <h2 className='mb-4 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
+        <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-orange to-amber-600 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
+          <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
@@ -584,26 +584,26 @@ function OrderItems({ order, shouldReduceMotion }: { order: Order; shouldReduceM
                   }
             }
             transition={{ duration: ANIMATION_DURATION.fast }}
-            className='flex gap-3 sm:gap-4 rounded-xl bg-gray-50/50 dark:bg-slate-700/30 p-2.5 sm:p-3 transition-all duration-200 border border-gray-100 dark:border-slate-600/50 hover:border-orange/20 dark:hover:border-orange-500/20'
+            className='flex gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-2.5 transition-all duration-200 hover:border-orange/20 sm:gap-4 sm:p-3 dark:border-slate-600/50 dark:bg-slate-700/30 dark:hover:border-orange-500/20'
           >
-            <div className='h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm'>
+            <div className='h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 shadow-xs sm:h-24 sm:w-24 sm:rounded-xl dark:border-slate-600'>
               <ImageWithFallback
                 src={item.product?.image || ''}
                 alt={item.product?.name || 'Product'}
                 className='h-full w-full object-cover'
               />
             </div>
-            <div className='flex-1 min-w-0 flex flex-col justify-between'>
+            <div className='flex min-w-0 flex-1 flex-col justify-between'>
               <div>
                 <Link
                   to={`/${item.product?.name?.replace(/\s+/g, '-')}-i-${item.product?._id}`}
-                  className='text-sm sm:text-base font-medium text-gray-900 transition-colors duration-200 hover:text-orange dark:text-gray-100 dark:hover:text-orange-400 line-clamp-2 leading-snug'
+                  className='line-clamp-2 text-sm leading-snug font-medium text-gray-900 transition-colors duration-200 hover:text-orange sm:text-base dark:text-gray-100 dark:hover:text-orange-400'
                 >
                   {item.product?.name || 'Sản phẩm'}
                 </Link>
-                <p className='mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1'>
+                <p className='mt-1 flex items-center gap-1 text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
                   <svg
-                    className='w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0'
+                    className='h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5'
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
@@ -618,20 +618,20 @@ function OrderItems({ order, shouldReduceMotion }: { order: Order; shouldReduceM
                   x{item.buyCount}
                 </p>
               </div>
-              <div className='mt-1.5 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2'>
+              <div className='mt-1.5 flex flex-col gap-1 sm:mt-2 sm:flex-row sm:items-center sm:gap-2'>
                 <div className='flex items-center gap-2'>
                   {item.priceBeforeDiscount > item.price && (
                     <span className='text-xs text-gray-400 line-through dark:text-gray-500'>
                       ₫{formatCurrency(item.priceBeforeDiscount)}
                     </span>
                   )}
-                  <span className='text-sm sm:text-base font-semibold text-orange dark:text-orange-400'>
+                  <span className='text-sm font-semibold text-orange sm:text-base dark:text-orange-400'>
                     ₫{formatCurrency(item.price)}
                   </span>
                 </div>
                 <div className='flex items-baseline gap-1.5 sm:ml-auto'>
                   <span className='text-xs text-gray-400 dark:text-gray-500'>Thành tiền:</span>
-                  <span className='font-bold text-orange dark:text-orange-400 text-sm sm:text-base'>
+                  <span className='text-sm font-bold text-orange sm:text-base dark:text-orange-400'>
                     ₫{formatCurrency(item.price * item.buyCount)}
                   </span>
                 </div>
@@ -667,7 +667,7 @@ function CancelOrderModal({
       initial='hidden'
       animate='visible'
       exit='exit'
-      className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm'
+      className='fixed inset-0 z-9999 flex items-center justify-center bg-black/60 backdrop-blur-xs'
       onClick={onClose}
     >
       <motion.div
@@ -676,30 +676,30 @@ function CancelOrderModal({
         animate='visible'
         exit='exit'
         onClick={(e) => e.stopPropagation()}
-        className='relative mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-800 dark:border dark:border-slate-700 overflow-hidden'
+        className='relative mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl dark:border dark:border-slate-700 dark:bg-slate-800'
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className='absolute top-4 right-4 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-slate-700 transition-colors duration-200 cursor-pointer'
+          className='absolute top-4 right-4 cursor-pointer rounded-full p-1 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
           aria-label='Đóng modal'
         >
-          <svg className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+          <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
             <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>
         <div className='mb-4'>
           <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
-          <p className='text-sm text-gray-500 dark:text-gray-400 mt-1'>Hành động này không thể hoàn tác</p>
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Hành động này không thể hoàn tác</p>
         </div>
-        <p className='text-sm text-gray-600 dark:text-gray-300 mb-4'>
+        <p className='mb-4 text-sm text-gray-600 dark:text-gray-300'>
           Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.
         </p>
         <textarea
           value={cancelReason}
           onChange={(e) => setCancelReason(e.target.value)}
           placeholder='Lý do hủy đơn (không bắt buộc)'
-          className='w-full rounded-xl border border-gray-200 p-3 text-sm transition-all duration-200 focus:border-orange focus:outline-none focus:ring-2 focus:ring-orange/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-orange-400 resize-none'
+          className='w-full resize-none rounded-xl border border-gray-200 p-3 text-sm transition-all duration-200 focus:border-orange focus:ring-2 focus:ring-orange/20 focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-orange-400'
           rows={3}
         />
         <div className='mt-5 flex justify-end gap-3'>
@@ -710,7 +710,7 @@ function CancelOrderModal({
           >
             <Button
               onClick={onClose}
-              className='rounded-xl border border-gray-200 px-5 py-2.5 text-gray-700 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 cursor-pointer'
+              className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
             >
               Đóng
             </Button>
@@ -723,7 +723,7 @@ function CancelOrderModal({
             <Button
               onClick={onConfirm}
               disabled={isPending}
-              className='rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-5 py-2.5 text-white font-medium transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
+              className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 font-medium text-white transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-red-900/30'
             >
               {isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
             </Button>

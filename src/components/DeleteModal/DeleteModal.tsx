@@ -49,13 +49,13 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
         role='alertdialog'
         aria-labelledby='delete-modal-title'
         aria-describedby='delete-modal-description'
-        className='modal-content relative z-50 h-full max-h-[317px] w-full max-w-[90vw] sm:max-w-[540px] rounded-xl bg-white dark:bg-slate-800 p-4 sm:p-5 shadow-lg'
+        className='modal-content relative z-50 h-full max-h-[317px] w-full max-w-[90vw] rounded-xl bg-white p-4 shadow-lg sm:max-w-[540px] sm:p-5 dark:bg-slate-800'
         animate={{ scale: open ? 1 : 0.9, opacity: open ? 1 : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
         <motion.div
           id='delete-modal-title'
-          className='mt-8 text-lg sm:text-[24px] text-orange dark:text-orange-400'
+          className='mt-8 text-lg text-orange sm:text-[24px] dark:text-orange-400'
           animate={open ? { x: [0, -5, 5, -5, 5, 0] } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
@@ -68,14 +68,14 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
           <Button
             variant='primary'
             onClick={handleDelete}
-            className='h-[40px] min-w-[70px] max-w-[220px] flex-grow rounded border px-5 text-[14px] shadow-sm outline-none'
+            className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm border px-5 text-[14px] shadow-xs outline-hidden'
           >
             Có
           </Button>
           <Button
             variant='secondary'
             onClick={handleCancel}
-            className='h-[40px] min-w-[70px] max-w-[220px] flex-grow rounded border border-gray-300 dark:border-slate-600 px-5 text-[14px] text-black dark:text-gray-200 shadow-sm'
+            className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm border border-gray-300 px-5 text-[14px] text-black shadow-xs dark:border-slate-600 dark:text-gray-200'
           >
             Không
           </Button>

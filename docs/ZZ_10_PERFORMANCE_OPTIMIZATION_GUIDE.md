@@ -294,14 +294,14 @@ const ProductItem = React.memo(({ product }: { product: any }) => {
     <Link
       key={product._id}
       to={`${path.products}${generateNameId({ name: product.name, id: product._id })}`}
-      className='flex items-center py-2 hover:bg-gray-50 rounded px-2 -mx-2 transition-colors'
+      className='flex items-center py-2 hover:bg-gray-50 rounded-sm px-2 -mx-2 transition-colors'
       onClick={onHide}
     >
-      <div className='flex-shrink-0 w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-3'>
+      <div className='shrink-0 w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-3'>
         <img
           src={imageUrl}
           alt={product.name}
-          className='w-full h-full object-cover rounded border border-gray-200 bg-gray-100'
+          className='w-full h-full object-cover rounded-sm border border-gray-200 bg-gray-100'
           onError={(e) => handleImageError(e, product._id)}
           loading='lazy' // Native lazy loading
         />

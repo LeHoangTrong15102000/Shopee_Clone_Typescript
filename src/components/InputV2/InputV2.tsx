@@ -23,8 +23,8 @@ function InputV2<
     type,
     onChange,
     className,
-    classNameInput = 'w-full rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 md:p-3 text-sm md:text-base shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500',
-    classNameError = 'mt-1 min-h-[1.25rem] text-sm text-red-600 dark:text-red-400',
+    classNameInput = 'w-full rounded-xs border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 md:p-3 text-sm md:text-base shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:text-gray-100 dark:placeholder-gray-500',
+    classNameError = 'mt-1 min-h-5 text-sm text-red-600 dark:text-red-400',
     value = '',
     ...rest
   } = props

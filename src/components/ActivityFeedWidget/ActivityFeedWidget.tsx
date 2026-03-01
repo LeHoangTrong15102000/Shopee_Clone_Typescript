@@ -81,14 +81,14 @@ export default function ActivityFeedWidget({ latestActivity, className }: Activi
   return (
     <div
       className={classNames(
-        'flex items-center gap-2 rounded-lg bg-white dark:bg-slate-800 shadow-md border border-gray-100 dark:border-slate-700 px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm animate-fade-in',
+        'flex animate-fade-in items-center gap-2 rounded-lg border border-gray-100 bg-white px-2 py-1.5 text-xs shadow-md sm:px-3 sm:py-2 sm:text-sm dark:border-slate-700 dark:bg-slate-800',
         className
       )}
     >
       <span className='text-base sm:text-lg'>{currentActivity.type === 'purchase' ? '🛒' : '⭐'}</span>
-      <div className='flex-1 min-w-0'>
-        <p className='text-gray-700 dark:text-gray-200 truncate'>{currentActivity.message}</p>
-        <p className='text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs'>{timeAgo}</p>
+      <div className='min-w-0 flex-1'>
+        <p className='truncate text-gray-700 dark:text-gray-200'>{currentActivity.message}</p>
+        <p className='text-[10px] text-gray-400 sm:text-xs dark:text-gray-500'>{timeAgo}</p>
       </div>
     </div>
   )

@@ -105,7 +105,7 @@ export default function OptimizedImage({
 
   const renderSkeleton = () =>
     showSkeleton && isLoading ? (
-      <div className='absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-slate-700' aria-hidden='true' />
+      <div className='absolute inset-0 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' aria-hidden='true' />
     ) : null
 
   const renderImage = (additionalClasses = '') => (

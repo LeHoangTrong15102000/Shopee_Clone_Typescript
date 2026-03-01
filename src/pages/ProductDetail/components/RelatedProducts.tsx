@@ -37,7 +37,7 @@ const RelatedProducts = ({ categoryId, reducedMotion }: RelatedProductsProps) =>
       viewport={{ once: true, amount: 0.1 }}
     >
       <div className='container'>
-        <div className='uppercase text-gray-400 dark:text-gray-500'>Có thể bạn cũng thích</div>
+        <div className='text-gray-400 uppercase dark:text-gray-500'>Có thể bạn cũng thích</div>
         {productsData && (
           <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
             {productsData.data.data.products.map((product) => (

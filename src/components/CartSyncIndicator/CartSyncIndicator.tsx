@@ -28,7 +28,7 @@ export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, classN
     return (
       <div
         className={classNames(
-          'inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 animate-pulse',
+          'inline-flex animate-pulse items-center gap-1 text-xs text-gray-500 dark:text-gray-400',
           className
         )}
       >
@@ -40,7 +40,7 @@ export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, classN
 
   if (showSynced) {
     return (
-      <div className={classNames('inline-flex items-center gap-1 text-xs text-green-600 animate-fade-in', className)}>
+      <div className={classNames('inline-flex animate-fade-in items-center gap-1 text-xs text-green-600', className)}>
         <span>✓</span>
         <span>Đã đồng bộ</span>
       </div>

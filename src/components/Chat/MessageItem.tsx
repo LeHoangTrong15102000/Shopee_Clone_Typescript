@@ -38,7 +38,7 @@ export default function MessageItem({ message, isSent }: MessageItemProps) {
     <div className={classNames('flex', isSent ? 'justify-end' : 'justify-start')}>
       <div className={classNames('flex max-w-[75%] gap-2', isSent ? 'flex-row-reverse' : 'flex-row')}>
         {!isSent && (
-          <div className='flex-shrink-0'>
+          <div className='shrink-0'>
             {message.sender.avatar ? (
               <img
                 src={message.sender.avatar}
@@ -46,7 +46,7 @@ export default function MessageItem({ message, isSent }: MessageItemProps) {
                 className='h-8 w-8 rounded-full object-cover'
               />
             ) : (
-              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 dark:bg-slate-600 text-xs font-medium text-gray-600 dark:text-gray-300'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-xs font-medium text-gray-600 dark:bg-slate-600 dark:text-gray-300'>
                 {message.sender.name.charAt(0).toUpperCase()}
               </div>
             )}
@@ -61,7 +61,7 @@ export default function MessageItem({ message, isSent }: MessageItemProps) {
               'rounded-lg px-3 py-2 text-sm',
               isSent
                 ? 'rounded-br-sm bg-orange text-white'
-                : 'rounded-bl-sm bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100'
+                : 'rounded-bl-sm bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-gray-100'
             )}
           >
             {message.content}

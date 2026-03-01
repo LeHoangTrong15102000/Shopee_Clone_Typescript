@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import LiveOrderTracker from 'src/components/LiveOrderTracker'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
@@ -40,7 +40,7 @@ const ReorderButton = ({ purchase, reducedMotion }: ReorderButtonProps) => {
       aria-label='Mua lại sản phẩm này'
       aria-busy={addToCartMutation.isPending}
       className={classNames(
-        'flex items-center gap-1.5 rounded px-4 py-2 text-sm font-medium text-white transition-colors',
+        'flex items-center gap-1.5 rounded-sm px-4 py-2 text-sm font-medium text-white transition-colors',
         'bg-[#ee4d2d] hover:bg-[#d73211]',
         {
           'cursor-not-allowed opacity-70': addToCartMutation.isPending
@@ -100,26 +100,26 @@ const isActiveOrder = (orderStatus: number) => {
 const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, onReviewClick }: PurchaseItemProps) => {
   return (
     <motion.div key={purchase._id} variants={reducedMotion ? undefined : staggerItem}>
-      <div className='mt-4 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-6 text-gray-800 dark:text-gray-200 shadow-sm'>
+      <div className='mt-4 rounded-lg border border-gray-200 bg-white p-6 text-gray-800 shadow-xs dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200'>
         {/* Link dẫn dến sản phẩm */}
         <Link
           to={`${path.home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
           className='flex flex-col sm:flex-row'
         >
-          <div className='flex-shrink-0'>
+          <div className='shrink-0'>
             <img
               src={purchase.product.image}
-              className='h-20 w-20 border border-gray-200 dark:border-slate-600 object-cover'
+              className='h-20 w-20 border border-gray-200 object-cover dark:border-slate-600'
               alt={purchase.product.name}
             />
           </div>
-          <div className='ml-4 flex-grow overflow-hidden'>
+          <div className='ml-4 grow overflow-hidden'>
             <div className='truncate dark:text-gray-100'>{purchase.product.name}</div>
             <div className='mt-3 dark:text-gray-300'>x{purchase.buy_count}</div>
           </div>
           {/* giá tiền */}
-          <div className='mt-2 sm:mt-0 sm:ml-3 flex flex-shrink-0 items-center'>
-            <span className='truncate text-black/25 dark:text-gray-500 line-through'>
+          <div className='mt-2 flex shrink-0 items-center sm:mt-0 sm:ml-3'>
+            <span className='truncate text-black/25 line-through dark:text-gray-500'>
               ₫{formatCurrency(purchase.product.price_before_discount)}
             </span>
             <span className='ml-1 truncate text-orange dark:text-orange-400'>
@@ -128,11 +128,11 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
           </div>
         </Link>
         {/* Status và Review Actions */}
-        <div className='mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2'>
+        <div className='mt-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center'>
           <div className='flex items-center'>
             {/* Hoàn thành - Delivered */}
             {purchase.status === purchasesStatus.delivered && (
-              <span className='inline-flex items-center rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-3 py-1.5 text-sm font-medium text-green-600 shadow-sm ring-1 ring-green-200/50'>
+              <span className='inline-flex items-center rounded-full bg-linear-to-r from-green-50 to-emerald-50 px-3 py-1.5 text-sm font-medium text-green-600 shadow-xs ring-1 ring-green-200/50'>
                 Hoàn thành
               </span>
             )}
@@ -140,7 +140,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.waitForConfirmation && (
               <span
                 className={classNames(
-                  'inline-flex items-center rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
+                  'inline-flex items-center rounded-full bg-linear-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-xs ring-1 ring-orange-200/50',
                   { 'animate-[status-pulse_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
@@ -151,7 +151,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.waitForGetting && (
               <span
                 className={classNames(
-                  'inline-flex items-center rounded-full bg-gradient-to-r from-blue-50 to-sky-50 px-3 py-1.5 text-sm font-medium text-blue-600 shadow-sm ring-1 ring-blue-200/50',
+                  'inline-flex items-center rounded-full bg-linear-to-r from-blue-50 to-sky-50 px-3 py-1.5 text-sm font-medium text-blue-600 shadow-xs ring-1 ring-blue-200/50',
                   { 'animate-[status-pulse-blue_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
@@ -162,7 +162,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.inProgress && (
               <span
                 className={classNames(
-                  'inline-flex items-center rounded-full bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-sm ring-1 ring-orange-200/50',
+                  'inline-flex items-center rounded-full bg-linear-to-r from-orange-50 to-amber-50 px-3 py-1.5 text-sm font-medium text-[#ee4d2d] shadow-xs ring-1 ring-orange-200/50',
                   { 'animate-[status-pulse_2s_ease-in-out_infinite]': !reducedMotion }
                 )}
               >
@@ -171,7 +171,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             )}
             {/* Đã hủy - Cancelled */}
             {purchase.status === purchasesStatus.cancelled && (
-              <span className='inline-flex items-center rounded-full bg-gradient-to-r from-red-50 to-rose-50 px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm ring-1 ring-red-200/50'>
+              <span className='inline-flex items-center rounded-full bg-linear-to-r from-red-50 to-rose-50 px-3 py-1.5 text-sm font-medium text-red-600 shadow-xs ring-1 ring-red-200/50'>
                 Đã hủy
               </span>
             )}
@@ -183,7 +183,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
               <button
                 type='button'
                 onClick={() => onToggleTracking(purchase._id)}
-                className='flex items-center gap-1.5 rounded-lg bg-white dark:bg-slate-700 px-4 py-2 text-sm font-medium text-orange dark:text-orange-400 shadow-md border border-gray-200 dark:border-slate-600 hover:border-orange/30 dark:hover:border-orange-400/30 transition-colors'
+                className='flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-orange shadow-md transition-colors hover:border-orange/30 dark:border-slate-600 dark:bg-slate-700 dark:text-orange-400 dark:hover:border-orange-400/30'
               >
                 {/* Truck icon - filled with primary color */}
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='h-4 w-4'>
@@ -212,12 +212,12 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
             {purchase.status === purchasesStatus.delivered && (
               <button
                 onClick={() => onReviewClick(purchase)}
-                className='px-4 py-2 text-[#ee4d2d] dark:text-orange-400 border border-[#ee4d2d] dark:border-orange-400 rounded hover:bg-orange-50 dark:hover:bg-orange-400/10 transition-colors'
+                className='rounded-sm border border-[#ee4d2d] px-4 py-2 text-[#ee4d2d] transition-colors hover:bg-orange-50 dark:border-orange-400 dark:text-orange-400 dark:hover:bg-orange-400/10'
               >
                 Đánh Giá Sản Phẩm
               </button>
             )}
-            <button className='px-4 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors'>
+            <button className='rounded-sm border border-gray-300 px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'>
               Xem Đánh Giá Shop
             </button>
           </div>
@@ -233,7 +233,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
               transition={{ duration: ANIMATION_DURATION.normal }}
               className='overflow-hidden'
             >
-              <div className='mt-4 border-t border-gray-100 dark:border-slate-600 pt-4'>
+              <div className='mt-4 border-t border-gray-100 pt-4 dark:border-slate-600'>
                 <LiveOrderTracker
                   orderId={purchase._id}
                   initialStatus={purchase.status}
@@ -246,7 +246,7 @@ const PurchaseItem = ({ purchase, reducedMotion, isExpanded, onToggleTracking, o
       </div>
 
       {/* Thành tiền */}
-      <div className='flex items-center justify-end rounded bg-neutral-50 dark:bg-slate-900 p-6'>
+      <div className='flex items-center justify-end rounded-sm bg-neutral-50 p-6 dark:bg-slate-900'>
         <div className='flex items-center'>
           <span className='mr-1'>
             <svg width={16} height={17} viewBox='0 0 253 263' fill='none' xmlns='http://www.w3.org/2000/svg'>

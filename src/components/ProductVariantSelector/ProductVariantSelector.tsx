@@ -71,7 +71,7 @@ export default function ProductVariantSelector({
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
-                className={classNames('relative h-11 w-11 overflow-hidden rounded border-2 transition-all', {
+                className={classNames('relative h-11 w-11 overflow-hidden rounded-sm border-2 transition-all', {
                   'border-orange': isSelected,
                   'border-gray-300 dark:border-gray-600': !isSelected && isAvailable,
                   'cursor-not-allowed border-gray-200 opacity-50 dark:border-gray-700': !isAvailable
@@ -89,14 +89,14 @@ export default function ProductVariantSelector({
                   />
                 )}
                 {isSelected && (
-                  <div className='absolute bottom-0 right-0'>
+                  <div className='absolute right-0 bottom-0'>
                     <svg className='h-4 w-4 text-orange' fill='currentColor' viewBox='0 0 20 20'>
                       <path d='M0 11l2-2 5 5L18 3l2 2L7 18z' />
                     </svg>
                   </div>
                 )}
               </button>
-              <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100'>
+              <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
                 {option.name}
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function ProductVariantSelector({
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
-                className={classNames('min-w-[50px] min-h-[44px] rounded border px-3 py-2 text-sm transition-all', {
+                className={classNames('min-h-[44px] min-w-[50px] rounded-sm border px-3 py-2 text-sm transition-all', {
                   'border-orange bg-orange/10 text-orange': isSelected,
                   'border-gray-300 bg-white text-gray-700 hover:border-orange dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300':
                     !isSelected && isAvailable,
@@ -132,7 +132,7 @@ export default function ProductVariantSelector({
               >
                 {option.name}
               </button>
-              <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100'>
+              <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
                 {option.name}
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
@@ -48,17 +48,17 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
       tabIndex={0}
       role='link'
       aria-label={`${product.name} - ₫${formatCurrency(product.price)}`}
-      className='flex bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-shadow overflow-hidden cursor-pointer relative focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
+      className='relative flex cursor-pointer overflow-hidden rounded-lg bg-white shadow-xs transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange dark:bg-slate-800 dark:shadow-slate-900/20'
       whileHover={hoverAnimation}
     >
       {/* Product Image - Left side */}
-      <div className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex-shrink-0 relative'>
+      <div className='relative h-32 w-32 shrink-0 sm:h-40 sm:w-40 md:h-48 md:w-48'>
         <OptimizedImage
           src={product.image}
           alt={product.name}
           aspectRatio='1:1'
           loading='lazy'
-          className='w-full h-full object-cover'
+          className='h-full w-full object-cover'
           showSkeleton={true}
           blurPlaceholder={true}
         />
@@ -69,27 +69,27 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
       </div>
 
       {/* Product Info - Right side */}
-      <div className='flex-1 p-3 sm:p-4 flex flex-col justify-between min-w-0'>
+      <div className='flex min-w-0 flex-1 flex-col justify-between p-3 sm:p-4'>
         {/* Product Name */}
         <div>
-          <h3 className='text-sm sm:text-base font-medium line-clamp-2 text-gray-800 dark:text-gray-200 mb-2'>
+          <h3 className='mb-2 line-clamp-2 text-sm font-medium text-gray-800 sm:text-base dark:text-gray-200'>
             {product.name}
           </h3>
 
           {/* Price Section */}
-          <div className='flex items-center gap-2 mb-2'>
+          <div className='mb-2 flex items-center gap-2'>
             {product.price_before_discount > product.price && (
-              <span className='text-gray-400 dark:text-gray-500 line-through text-xs sm:text-sm'>
+              <span className='text-xs text-gray-400 line-through sm:text-sm dark:text-gray-500'>
                 <span>₫</span>
                 {formatCurrency(product.price_before_discount)}
               </span>
             )}
-            <span className='text-[#ee4d2d] dark:text-orange-400 font-semibold text-sm sm:text-lg'>
+            <span className='text-sm font-semibold text-[#ee4d2d] sm:text-lg dark:text-orange-400'>
               <span className='text-xs sm:text-sm'>₫</span>
               {formatCurrency(product.price)}
             </span>
             {product.price_before_discount > product.price && (
-              <span className='bg-[#ee4d2d] dark:bg-orange-500 text-white text-xs px-1 py-0.5 rounded'>
+              <span className='rounded-sm bg-[#ee4d2d] px-1 py-0.5 text-xs text-white dark:bg-orange-500'>
                 -{Math.round(((product.price_before_discount - product.price) / product.price_before_discount) * 100)}%
               </span>
             )}
@@ -97,25 +97,20 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
         </div>
 
         {/* Rating and Sold */}
-        <div className='flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4'>
+        <div className='flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4'>
           <div className='flex items-center gap-1'>
             <ProductRating rating={product.rating} />
             <span className='text-xs text-gray-500 dark:text-gray-400'>({product.rating.toFixed(1)})</span>
           </div>
-          <div className='text-xs sm:text-sm text-gray-500 dark:text-gray-400'>
+          <div className='text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
             <span>Đã bán </span>
             <span className='font-medium'>{formatNumberToSocialStyle(product.sold)}</span>
           </div>
         </div>
 
         {/* Location */}
-        <div className='mt-2 flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400'>
-          <svg
-            className='w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
+        <div className='mt-2 flex items-center text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
+          <svg className='mr-1 h-3 w-3 shrink-0 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path
               strokeLinecap='round'
               strokeLinejoin='round'

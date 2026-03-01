@@ -164,19 +164,19 @@ export default function OrderSearchFilter({
   const hasAnyFilter = activeFilterCount > 0
 
   return (
-    <div className={classNames('bg-white dark:bg-slate-800 rounded-sm shadow-sm p-4', className)}>
+    <div className={classNames('rounded-xs bg-white p-4 shadow-xs dark:bg-slate-800', className)}>
       {/* Search Input Row */}
-      <div className='flex flex-col sm:flex-row gap-3'>
+      <div className='flex flex-col gap-3 sm:flex-row'>
         {/* Search Input */}
         <div className='relative flex-1'>
-          <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='w-5 h-5 text-gray-400 dark:text-gray-500'
+              className='h-5 w-5 text-gray-400 dark:text-gray-500'
               aria-hidden='true'
             >
               <path
@@ -191,14 +191,14 @@ export default function OrderSearchFilter({
             value={inputValue}
             onChange={handleInputChange}
             placeholder='Tìm kiếm đơn hàng theo tên sản phẩm...'
-            className='w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-slate-600 rounded-sm bg-gray-50 dark:bg-slate-900 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:bg-white dark:focus:bg-slate-800 transition-colors'
+            className='w-full rounded-xs border border-gray-300 bg-gray-50 py-2.5 pr-10 pl-10 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:bg-white focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:focus:bg-slate-800'
             aria-label='Tìm kiếm đơn hàng'
           />
           {inputValue && (
             <button
               type='button'
               onClick={handleClearSearch}
-              className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors'
+              className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
               aria-label='Xóa tìm kiếm'
             >
               <svg
@@ -207,7 +207,7 @@ export default function OrderSearchFilter({
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='w-5 h-5'
+                className='h-5 w-5'
                 aria-hidden='true'
               >
                 <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
@@ -221,10 +221,10 @@ export default function OrderSearchFilter({
           type='button'
           onClick={toggleFilterPanel}
           className={classNames(
-            'relative flex items-center gap-2 px-4 py-2.5 border rounded-sm text-sm font-medium transition-colors',
+            'relative flex items-center gap-2 rounded-xs border px-4 py-2.5 text-sm font-medium transition-colors',
             {
-              'border-[#ee4d2d] text-[#ee4d2d] bg-[#ee4d2d]/5 dark:bg-[#ee4d2d]/10': isFilterPanelOpen || hasAnyFilter,
-              'border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-slate-500':
+              'border-[#ee4d2d] bg-[#ee4d2d]/5 text-[#ee4d2d] dark:bg-[#ee4d2d]/10': isFilterPanelOpen || hasAnyFilter,
+              'border-gray-300 text-gray-600 hover:border-gray-400 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500':
                 !isFilterPanelOpen && !hasAnyFilter
             }
           )}
@@ -237,7 +237,7 @@ export default function OrderSearchFilter({
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='w-5 h-5'
+            className='h-5 w-5'
             aria-hidden='true'
           >
             <path
@@ -248,7 +248,7 @@ export default function OrderSearchFilter({
           </svg>
           <span>Bộ lọc</span>
           {activeFilterCount > 0 && (
-            <span className='absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-[#ee4d2d] text-white text-xs font-bold rounded-full'>
+            <span className='absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#ee4d2d] text-xs font-bold text-white'>
               {activeFilterCount}
             </span>
           )}
@@ -258,7 +258,7 @@ export default function OrderSearchFilter({
             viewBox='0 0 24 24'
             strokeWidth={2}
             stroke='currentColor'
-            className={classNames('w-4 h-4 transition-transform', {
+            className={classNames('h-4 w-4 transition-transform', {
               'rotate-180': isFilterPanelOpen
             })}
             aria-hidden='true'
@@ -278,11 +278,11 @@ export default function OrderSearchFilter({
             exit='exit'
             className='overflow-hidden'
           >
-            <div className='mt-4 p-4 border border-gray-200 dark:border-slate-700 rounded-sm bg-gray-50/50 dark:bg-slate-900/50'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='mt-4 rounded-xs border border-gray-200 bg-gray-50/50 p-4 dark:border-slate-700 dark:bg-slate-900/50'>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 {/* Date Range Filter */}
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
                     Khoảng thời gian
                   </label>
                   <div className='flex items-center gap-2'>
@@ -291,7 +291,7 @@ export default function OrderSearchFilter({
                         type='date'
                         value={dateFrom}
                         onChange={handleDateFromChange}
-                        className='w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-sm text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] transition-colors'
+                        className='w-full rounded-xs border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
                         aria-label='Từ ngày'
                       />
                     </div>
@@ -301,7 +301,7 @@ export default function OrderSearchFilter({
                         type='date'
                         value={dateTo}
                         onChange={handleDateToChange}
-                        className='w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-sm text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] transition-colors'
+                        className='w-full rounded-xs border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
                         aria-label='Đến ngày'
                       />
                     </div>
@@ -310,10 +310,10 @@ export default function OrderSearchFilter({
 
                 {/* Price Range Filter */}
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>Khoảng giá</label>
+                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Khoảng giá</label>
                   <div className='flex items-center gap-2'>
-                    <div className='flex-1 relative'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>
+                    <div className='relative flex-1'>
+                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-400 dark:text-gray-500'>
                         ₫
                       </span>
                       <input
@@ -322,13 +322,13 @@ export default function OrderSearchFilter({
                         onChange={handlePriceMinChange}
                         placeholder='Từ'
                         min='0'
-                        className='w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-sm text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] transition-colors'
+                        className='w-full rounded-xs border border-gray-300 bg-white py-2 pr-3 pl-7 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
                         aria-label='Giá tối thiểu'
                       />
                     </div>
                     <span className='text-gray-400 dark:text-gray-500'>-</span>
-                    <div className='flex-1 relative'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500 text-sm'>
+                    <div className='relative flex-1'>
+                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-400 dark:text-gray-500'>
                         ₫
                       </span>
                       <input
@@ -337,7 +337,7 @@ export default function OrderSearchFilter({
                         onChange={handlePriceMaxChange}
                         placeholder='Đến'
                         min='0'
-                        className='w-full pl-7 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-sm text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] transition-colors'
+                        className='w-full rounded-xs border border-gray-300 bg-white py-2 pr-3 pl-7 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
                         aria-label='Giá tối đa'
                       />
                     </div>
@@ -350,8 +350,8 @@ export default function OrderSearchFilter({
       </AnimatePresence>
 
       {/* Active Filters & Results Count */}
-      <div className='mt-3 flex items-center justify-between flex-wrap gap-2'>
-        <div className='flex items-center gap-2 flex-wrap'>
+      <div className='mt-3 flex flex-wrap items-center justify-between gap-2'>
+        <div className='flex flex-wrap items-center gap-2'>
           {totalResults !== undefined && (
             <span className='text-sm text-gray-600 dark:text-gray-300'>Tìm thấy {totalResults} đơn hàng</span>
           )}
@@ -365,13 +365,13 @@ export default function OrderSearchFilter({
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                className='inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-50 text-[#ee4d2d] rounded-full text-xs font-medium'
+                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
               >
                 <span className='max-w-[150px] truncate'>"{searchQuery}"</span>
                 <button
                   type='button'
                   onClick={handleClearSearch}
-                  className='hover:bg-[#ee4d2d]/20 rounded-full p-0.5 transition-colors'
+                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
                   aria-label='Xóa bộ lọc tìm kiếm'
                 >
                   <svg
@@ -380,7 +380,7 @@ export default function OrderSearchFilter({
                     viewBox='0 0 24 24'
                     strokeWidth={2}
                     stroke='currentColor'
-                    className='w-3 h-3'
+                    className='h-3 w-3'
                     aria-hidden='true'
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
@@ -396,7 +396,7 @@ export default function OrderSearchFilter({
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                className='inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-50 text-[#ee4d2d] rounded-full text-xs font-medium'
+                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -404,7 +404,7 @@ export default function OrderSearchFilter({
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='w-3 h-3'
+                  className='h-3 w-3'
                   aria-hidden='true'
                 >
                   <path
@@ -419,7 +419,7 @@ export default function OrderSearchFilter({
                 <button
                   type='button'
                   onClick={handleClearDateRange}
-                  className='hover:bg-[#ee4d2d]/20 rounded-full p-0.5 transition-colors'
+                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
                   aria-label='Xóa bộ lọc ngày'
                 >
                   <svg
@@ -428,7 +428,7 @@ export default function OrderSearchFilter({
                     viewBox='0 0 24 24'
                     strokeWidth={2}
                     stroke='currentColor'
-                    className='w-3 h-3'
+                    className='h-3 w-3'
                     aria-hidden='true'
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
@@ -444,7 +444,7 @@ export default function OrderSearchFilter({
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                className='inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-50 text-[#ee4d2d] rounded-full text-xs font-medium'
+                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -452,7 +452,7 @@ export default function OrderSearchFilter({
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='w-3 h-3'
+                  className='h-3 w-3'
                   aria-hidden='true'
                 >
                   <path
@@ -467,7 +467,7 @@ export default function OrderSearchFilter({
                 <button
                   type='button'
                   onClick={handleClearPriceRange}
-                  className='hover:bg-[#ee4d2d]/20 rounded-full p-0.5 transition-colors'
+                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
                   aria-label='Xóa bộ lọc giá'
                 >
                   <svg
@@ -476,7 +476,7 @@ export default function OrderSearchFilter({
                     viewBox='0 0 24 24'
                     strokeWidth={2}
                     stroke='currentColor'
-                    className='w-3 h-3'
+                    className='h-3 w-3'
                     aria-hidden='true'
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
@@ -492,7 +492,7 @@ export default function OrderSearchFilter({
           <button
             type='button'
             onClick={handleClearAllFilters}
-            className='text-sm text-[#ee4d2d] hover:text-[#d73211] font-medium underline transition-colors'
+            className='text-sm font-medium text-[#ee4d2d] underline transition-colors hover:text-[#d73211]'
           >
             Xóa tất cả bộ lọc
           </button>

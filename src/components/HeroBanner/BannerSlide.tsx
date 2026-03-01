@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import type { BannerSlide as BannerSlideType } from './types'
 
 interface Props {
@@ -10,7 +10,7 @@ const BannerSlide = ({ slide, isActive }: Props) => {
   return (
     <Link
       to={slide.link}
-      className={`relative flex-shrink-0 w-full h-full block transition-all duration-500 ${
+      className={`relative block h-full w-full shrink-0 transition-all duration-500 ${
         isActive ? 'opacity-100' : 'opacity-90'
       }`}
       style={{ backgroundColor: slide.backgroundColor }}
@@ -25,20 +25,17 @@ const BannerSlide = ({ slide, isActive }: Props) => {
         }}
       >
         {/* Gradient Overlay */}
-        <div className='absolute inset-0 bg-gradient-to-r from-black/30 to-transparent'></div>
+        <div className='absolute inset-0 bg-linear-to-r from-black/30 to-transparent'></div>
       </div>
 
       {/* Content */}
-      <div className='relative z-10 flex items-center h-full px-8 md:px-12'>
-        <div className='text-white max-w-md'>
-          <h2 className='text-2xl md:text-3xl font-bold mb-2 leading-tight drop-shadow-lg'>{slide.title}</h2>
-          <p className='text-sm md:text-base mb-4 leading-relaxed drop-shadow-md opacity-90'>{slide.subtitle}</p>
-          <button
-            className='inline-flex items-center px-6 py-2 bg-white text-gray-900 font-medium rounded-full 
-            hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg'
-          >
+      <div className='relative z-10 flex h-full items-center px-8 md:px-12'>
+        <div className='max-w-md text-white'>
+          <h2 className='mb-2 text-2xl leading-tight font-bold drop-shadow-lg md:text-3xl'>{slide.title}</h2>
+          <p className='mb-4 text-sm leading-relaxed opacity-90 drop-shadow-md md:text-base'>{slide.subtitle}</p>
+          <button className='inline-flex transform items-center rounded-full bg-white px-6 py-2 font-medium text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100'>
             <span>Mua ngay</span>
-            <svg className='w-4 h-4 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <svg className='ml-2 h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
             </svg>
           </button>
@@ -46,8 +43,8 @@ const BannerSlide = ({ slide, isActive }: Props) => {
       </div>
 
       {/* Decorative Elements */}
-      <div className='absolute top-4 right-4 w-16 h-16 bg-white/10 rounded-full blur-sm'></div>
-      <div className='absolute bottom-8 right-8 w-24 h-24 bg-white/5 rounded-full blur-md'></div>
+      <div className='absolute top-4 right-4 h-16 w-16 rounded-full bg-white/10 blur-xs'></div>
+      <div className='absolute right-8 bottom-8 h-24 w-24 rounded-full bg-white/5 blur-md'></div>
     </Link>
   )
 }

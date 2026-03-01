@@ -137,15 +137,15 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
   )
 
   return (
-    <div className='flex-1 min-w-0 relative' ref={searchContainerRef}>
+    <div className='relative min-w-0 flex-1' ref={searchContainerRef}>
       <form onSubmit={handleFormSubmit}>
-        <div className='flex rounded-sm bg-white dark:bg-slate-800 p-1'>
+        <div className='flex rounded-xs bg-white p-1 dark:bg-slate-800'>
           <input
             ref={inputRef}
             id='main-search-input'
             value={searchValue}
             type='text'
-            className='flex-grow border-none bg-transparent px-2 py-2 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-[rgba(0,0,0,.95)] dark:text-gray-100 outline-none dark:placeholder-gray-500'
+            className='grow border-none bg-transparent px-2 py-2 text-xs text-[rgba(0,0,0,.95)] outline-hidden sm:px-3 sm:py-2.5 sm:text-sm dark:text-gray-100 dark:placeholder-gray-500'
             placeholder='Tìm kiếm sản phẩm'
             onChange={handleChangeInput}
             onFocus={handleFocusInput}
@@ -153,7 +153,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
           />
           <button
             type='submit'
-            className='flex-shrink-0 rounded-sm bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-2 px-4 sm:py-2.5 sm:px-5 md:px-6 hover:opacity-90'
+            className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] px-4 py-2 hover:opacity-90 sm:px-5 sm:py-2.5 md:px-6'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'

@@ -78,7 +78,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
 
   return (
     <motion.div
-      className={`relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${className}`}
+      className={`relative ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
       onClick={() => !disabled && onChange?.(!checked)}
       onKeyDown={(e) => {
         if (disabled) return
@@ -102,22 +102,19 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
       transition={{ duration: 0.1 }}
     >
       <motion.div
-        className={`
-          ${sizeClasses[size]}
-          border-2 rounded-[3px] overflow-hidden
-        `}
+        className={` ${sizeClasses[size]} overflow-hidden rounded-[3px] border-2`}
         variants={boxVariants}
         animate={checked ? 'checked' : 'unchecked'}
         whileHover={!checked ? { borderColor: '#ee4d2d' } : {}}
       >
         <motion.div
-          className='w-full h-full flex items-center justify-center'
+          className='flex h-full w-full items-center justify-center'
           initial={false}
           animate={checked ? { scale: 1 } : { scale: 0 }}
           transition={{ duration: 0.2, delay: checked ? 0.1 : 0 }}
         >
           <motion.svg
-            className='w-4/5 h-4/5 text-white'
+            className='h-4/5 w-4/5 text-white'
             fill='none'
             viewBox='0 0 24 24'
             strokeWidth={2.5}

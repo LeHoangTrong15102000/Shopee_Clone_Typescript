@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import QuantityController from 'src/components/QuantityController'
@@ -98,7 +98,7 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
       {/* Quantity Selector */}
       <motion.div variants={reducedMotion ? undefined : staggerItem}>
         <div className='mt-8 flex items-center'>
-          <div className='capitalize text-gray-500/80 dark:text-gray-400'>Số lượng</div>
+          <div className='text-gray-500/80 capitalize dark:text-gray-400'>Số lượng</div>
           <QuantityController
             max={product?.quantity}
             value={buyCount}
@@ -117,18 +117,18 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
           {/* Add to Cart Button */}
           <motion.button
             onClick={isAuthenticated ? addToCart : handleLoginRedirect}
-            className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize shadow-sm hover:bg-orange/5'
+            className='flex h-12 items-center justify-center rounded-xs border border-orange bg-orange/10 px-5 capitalize shadow-xs hover:bg-orange/5'
             whileHover={reducedMotion ? undefined : { scale: 1.02 }}
             whileTap={reducedMotion ? undefined : { scale: 0.98 }}
           >
             <CartIcon />
-            <span className='hidden sm:inline text-orange dark:text-orange-400'>thêm vào giỏ hàng</span>
-            <span className='sm:hidden text-orange dark:text-orange-400'>Thêm</span>
+            <span className='hidden text-orange sm:inline dark:text-orange-400'>thêm vào giỏ hàng</span>
+            <span className='text-orange sm:hidden dark:text-orange-400'>Thêm</span>
           </motion.button>
           {/* Buy Now Button */}
           <motion.button
             onClick={isAuthenticated ? handleBuyNow : handleLoginRedirect}
-            className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-4 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+            className='ml-4 flex h-12 min-w-20 items-center justify-center rounded-xs bg-orange px-4 text-white capitalize shadow-xs outline-hidden hover:bg-orange/90'
             whileHover={reducedMotion ? undefined : { scale: 1.03 }}
             whileTap={reducedMotion ? undefined : { scale: 0.97 }}
           >

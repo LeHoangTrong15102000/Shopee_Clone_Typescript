@@ -63,7 +63,7 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
       tabIndex={0}
       title={isComparing ? 'Xóa khỏi so sánh' : 'Thêm vào so sánh'}
       className={classNames(
-        'flex items-center justify-center rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2 dark:focus:ring-offset-slate-900',
+        'flex items-center justify-center rounded-full bg-white/80 shadow-xs transition-all duration-200 hover:bg-white focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900',
         sizeClasses[size],
         className
       )}

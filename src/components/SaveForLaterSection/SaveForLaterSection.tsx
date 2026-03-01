@@ -1,5 +1,5 @@
 import { memo, useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { differenceInDays } from 'date-fns'
 import { SavedItem } from 'src/hooks/useSaveForLater'
@@ -90,13 +90,13 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
 
   if (savedItems.length === 0) {
     return (
-      <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mt-6'>
+      <div className='mt-6 rounded-lg bg-white p-6 shadow-xs dark:bg-slate-800'>
         <div className='flex items-center gap-2 text-gray-500 dark:text-gray-400'>
-          <BookmarkIcon className='w-5 h-5' />
+          <BookmarkIcon className='h-5 w-5' />
           <span className='font-medium'>Đã lưu để mua sau</span>
         </div>
         <div className='flex flex-col items-center justify-center py-8 text-gray-400 dark:text-gray-500'>
-          <BookmarkIcon className='w-12 h-12 mb-3 opacity-50' />
+          <BookmarkIcon className='mb-3 h-12 w-12 opacity-50' />
           <p>Chưa có sản phẩm nào được lưu</p>
         </div>
       </div>
@@ -104,14 +104,14 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
   }
 
   return (
-    <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mt-6'>
+    <div className='mt-6 rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800'>
       {/* Header */}
-      <div className='flex items-center justify-between mb-4'>
+      <div className='mb-4 flex items-center justify-between'>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className='flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-[#ee4d2d] transition-colors'
+          className='flex items-center gap-2 text-gray-700 transition-colors hover:text-[#ee4d2d] dark:text-gray-200'
         >
-          <BookmarkIcon className='w-5 h-5 text-[#ee4d2d]' />
+          <BookmarkIcon className='h-5 w-5 text-[#ee4d2d]' />
           <span className='font-medium'>Đã lưu để mua sau ({savedItems.length})</span>
           <motion.svg
             xmlns='http://www.w3.org/2000/svg'
@@ -119,7 +119,7 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
             viewBox='0 0 24 24'
             strokeWidth={2}
             stroke='currentColor'
-            className='w-4 h-4'
+            className='h-4 w-4'
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
           >
@@ -129,7 +129,7 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
         {savedItems.length > 0 && (
           <button
             onClick={onClear}
-            className='text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors'
+            className='text-sm text-gray-500 transition-colors hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400'
           >
             Xóa tất cả
           </button>
@@ -155,36 +155,36 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
                   animate='visible'
                   exit='exit'
                   layout
-                  className='flex gap-3 p-3 border border-gray-100 dark:border-slate-700 rounded-lg hover:border-gray-200 dark:hover:border-slate-600 transition-colors'
+                  className='flex gap-3 rounded-lg border border-gray-100 p-3 transition-colors hover:border-gray-200 dark:border-slate-700 dark:hover:border-slate-600'
                 >
                   {/* Product Image */}
                   <Link
                     to={`${path.home}${generateNameId({ name: item.product.name, id: item.product._id })}`}
-                    className='h-20 w-20 flex-shrink-0'
+                    className='h-20 w-20 shrink-0'
                   >
                     <ImageWithFallback
                       src={item.product.image}
                       alt={item.product.name}
-                      className='h-full w-full object-cover rounded'
+                      className='h-full w-full rounded-sm object-cover'
                       loading='lazy'
                     />
                   </Link>
 
                   {/* Product Details */}
-                  <div className='flex-1 min-w-0'>
+                  <div className='min-w-0 flex-1'>
                     <Link
                       to={`${path.home}${generateNameId({ name: item.product.name, id: item.product._id })}`}
-                      className='line-clamp-2 text-sm text-gray-800 dark:text-gray-200 hover:text-[#ee4d2d] transition-colors'
+                      className='line-clamp-2 text-sm text-gray-800 transition-colors hover:text-[#ee4d2d] dark:text-gray-200'
                     >
                       {item.product.name}
                     </Link>
 
                     {/* Price */}
                     <div className='mt-1 flex items-center gap-2 text-sm'>
-                      <span className='text-gray-400 dark:text-gray-500 line-through'>
+                      <span className='text-gray-400 line-through dark:text-gray-500'>
                         ₫{formatCurrency(item.product.price_before_discount)}
                       </span>
-                      <span className='text-[#ee4d2d] font-medium'>₫{formatCurrency(item.product.price)}</span>
+                      <span className='font-medium text-[#ee4d2d]'>₫{formatCurrency(item.product.price)}</span>
                     </div>
 
                     {/* Saved time */}
@@ -196,7 +196,7 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
                     <div className='mt-2 flex items-center gap-3'>
                       <motion.button
                         onClick={() => onMoveToCart(item)}
-                        className='px-3 py-1.5 text-sm bg-[#ee4d2d] text-white rounded hover:bg-[#d73211] transition-colors'
+                        className='rounded-sm bg-[#ee4d2d] px-3 py-1.5 text-sm text-white transition-colors hover:bg-[#d73211]'
                         whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                         whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                       >
@@ -204,7 +204,7 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
                       </motion.button>
                       <button
                         onClick={() => onRemove(item.product._id)}
-                        className='text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors'
+                        className='text-sm text-gray-500 transition-colors hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400'
                       >
                         Xóa
                       </button>

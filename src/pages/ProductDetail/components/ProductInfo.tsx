@@ -38,7 +38,7 @@ const ProductInfo = ({
     >
       {/* Title */}
       <motion.div variants={reducedMotion ? undefined : staggerItem}>
-        <h1 className='text-xl font-medium capitalize text-gray-900 dark:text-gray-100'>{product?.name}</h1>
+        <h1 className='text-xl font-medium text-gray-900 capitalize dark:text-gray-100'>{product?.name}</h1>
       </motion.div>
       {/* Viewer count badge - real-time */}
       <motion.div variants={reducedMotion ? undefined : staggerItem}>
@@ -56,19 +56,19 @@ const ProductInfo = ({
               nonActiveClassname='h-4 w-4 fill-current text-gray-300 dark:text-gray-600'
             />
           </div>
-          <div className='mx-4 h-7 w-[1px] bg-gray-300/80 dark:bg-slate-600'></div>
+          <div className='mx-4 h-7 w-px bg-gray-300/80 dark:bg-slate-600'></div>
           {/* Reviews */}
           <div className='flex items-center'>
-            <span className='mr-1 border-b border-b-black/90 dark:border-b-gray-300 text-black/90 dark:text-gray-200'>
+            <span className='mr-1 border-b border-b-black/90 text-black/90 dark:border-b-gray-300 dark:text-gray-200'>
               3k
             </span>
-            <span className='text-sm capitalize text-black/60 dark:text-gray-400'>Đánh giá</span>
+            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>Đánh giá</span>
           </div>
-          <div className='mx-4 h-7 w-[1px] bg-gray-300/80 dark:bg-slate-600'></div>
+          <div className='mx-4 h-7 w-px bg-gray-300/80 dark:bg-slate-600'></div>
           {/* Sold */}
           <div className='flex items-center'>
             <span className='mr-1 text-black/90 dark:text-gray-200'>{formatNumberToSocialStyle(product.sold)}</span>
-            <span className='text-sm capitalize text-black/60 dark:text-gray-400'>Đã bán</span>
+            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>Đã bán</span>
           </div>
           {/* Share & Report */}
           <div className='ml-auto flex items-center gap-3'>
@@ -78,7 +78,7 @@ const ProductInfo = ({
               description={product.description?.slice(0, 150)}
               image={product.image}
             />
-            <button className='text-sm text-black/60 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 transition-colors'>
+            <button className='text-sm text-black/60 transition-colors hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'>
               Tố cáo
             </button>
           </div>
@@ -89,10 +89,10 @@ const ProductInfo = ({
         <div className='mt-3 bg-[#fafafa] dark:bg-slate-700'>
           <div className='flex flex-col items-start justify-center px-4 py-3 md:px-5 md:py-4'>
             <div className='flex items-center'>
-              <div className='flex min-h-[1.875rem] w-full flex-wrap items-center'>
+              <div className='flex min-h-7.5 w-full flex-wrap items-center'>
                 {/* Original Price */}
                 <div
-                  className='mr-3 text-sm md:text-base text-[#929292] dark:text-gray-400 line-through'
+                  className='mr-3 text-sm text-[#929292] line-through md:text-base dark:text-gray-400'
                   aria-label={`Giá gốc ${formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)} đồng`}
                 >
                   ₫{formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)}
@@ -107,7 +107,7 @@ const ProductInfo = ({
                     priceBeforeDiscount={livePriceBeforeDiscount ?? product?.price_before_discount}
                     className='text-xl md:text-[1.875rem]'
                   />
-                  <div className='ml-4 rounded bg-orange py-0.5 px-1 text-xs font-semibold uppercase text-white'>
+                  <div className='ml-4 rounded-sm bg-orange px-1 py-0.5 text-xs font-semibold text-white uppercase'>
                     {rateSale(livePrice ?? product?.price, livePriceBeforeDiscount ?? product?.price_before_discount)}{' '}
                     giảm
                   </div>

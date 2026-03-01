@@ -22,7 +22,7 @@ export default function InventoryAlertBadge({ alerts, unreadCount, onClear, clas
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='h-5 w-5 sm:h-6 sm:w-6 text-orange'
+            className='h-5 w-5 text-orange sm:h-6 sm:w-6'
           >
             <path
               strokeLinecap='round'
@@ -31,7 +31,7 @@ export default function InventoryAlertBadge({ alerts, unreadCount, onClear, clas
             />
           </svg>
           {unreadCount > 0 && (
-            <span className='absolute -right-2 -top-2 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-red-500 text-[10px] sm:text-xs font-bold text-white'>
+            <span className='absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white sm:h-5 sm:w-5 sm:text-xs'>
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
@@ -40,9 +40,9 @@ export default function InventoryAlertBadge({ alerts, unreadCount, onClear, clas
 
       {/* Alert dropdown (shown on hover/click) */}
       {alerts.length > 0 && (
-        <div className='absolute right-0 top-full z-50 mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg dark:shadow-slate-900/50'>
-          <div className='flex items-center justify-between border-b border-gray-100 dark:border-slate-700 px-3 py-2 sm:px-4'>
-            <span className='text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200'>Cảnh báo tồn kho</span>
+        <div className='absolute top-full right-0 z-50 mt-2 w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-lg sm:w-80 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'>
+          <div className='flex items-center justify-between border-b border-gray-100 px-3 py-2 sm:px-4 dark:border-slate-700'>
+            <span className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-200'>Cảnh báo tồn kho</span>
             {onClear && (
               <button
                 onClick={onClear}
@@ -57,7 +57,7 @@ export default function InventoryAlertBadge({ alerts, unreadCount, onClear, clas
               <div
                 key={`${alert.product_id}-${index}`}
                 className={classNames(
-                  'border-b border-gray-50 dark:border-slate-700 px-3 py-2 sm:px-4 sm:py-3 last:border-b-0',
+                  'border-b border-gray-50 px-3 py-2 last:border-b-0 sm:px-4 sm:py-3 dark:border-slate-700',
                   alert.severity === 'critical' ? 'bg-red-50 dark:bg-red-900/30' : 'bg-yellow-50 dark:bg-yellow-900/30'
                 )}
               >

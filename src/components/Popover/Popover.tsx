@@ -121,7 +121,7 @@ const Popover = ({
               {enableArrow && (
                 <span
                   ref={arrowRef}
-                  className='absolute z-[1] translate-y-[-95%] border-[11px] border-x-transparent border-t-transparent border-b-white dark:border-b-slate-800'
+                  className='absolute z-1 translate-y-[-95%] border-11 border-x-transparent border-t-transparent border-b-white dark:border-b-slate-800'
                   style={{
                     left: middlewareData.arrow?.x,
                     top: middlewareData.arrow?.y
@@ -129,7 +129,7 @@ const Popover = ({
                 ></span>
               )}
               {/* Render popover */}
-              {/* <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
+              {/* <div className='relative rounded-xs border border-gray-200 bg-white shadow-md'>
                 <div className='flex flex-col py-2 px-3'>
                   <button className='py-2 px-2 hover:text-orange'>Tiếng Việt</button>
                   <button className='py-2 px-2 hover:text-orange'>English</button>

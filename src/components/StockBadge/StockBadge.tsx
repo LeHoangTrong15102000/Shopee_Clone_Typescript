@@ -49,7 +49,7 @@ const STOCK_CONFIG: Record<Exclude<StockStatus, 'normal'>, StockConfig> = {
     bg: 'bg-yellow-100 dark:bg-yellow-900/30',
     text: 'text-yellow-600 dark:text-yellow-400',
     border: 'border-yellow-200 dark:border-yellow-800',
-    icon: '⏳',
+    icon: '',
     shouldPulse: false
   }
 }
@@ -91,7 +91,7 @@ export default function StockBadge({ availableStock, requestedQuantity, classNam
         className
       )}
     >
-      <span className='text-[10px]'>{config.icon}</span>
+      {config.icon && <span className='text-[10px]'>{config.icon}</span>}
       <span>{label}</span>
     </span>
   )

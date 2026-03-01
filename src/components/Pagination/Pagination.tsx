@@ -1,7 +1,7 @@
 // Sử dụng thuật toán range 2 để tạo ra pagination cho app
 
 import classNames from 'classnames'
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router'
 import path from 'src/constant/path'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 
@@ -33,7 +33,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
         dotBefore = true
         return (
           <span
-            className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300'
+            className='flex items-center justify-center border border-gray-200 bg-white px-2 py-2 text-sm shadow-xs md:px-3 md:py-3 md:text-base dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300'
             key={index}
           >
             ...
@@ -47,7 +47,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
         dotAfter = true
         return (
           <span
-            className='flex items-center justify-center border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-2 md:px-3 md:py-3 text-sm md:text-base shadow-sm dark:text-gray-300'
+            className='flex items-center justify-center border border-gray-200 bg-white px-2 py-2 text-sm shadow-xs md:px-3 md:py-3 md:text-base dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300'
             key={index}
           >
             ...
@@ -85,10 +85,10 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
             aria-label={`Trang ${pageNumber}`}
             aria-current={pageNumber === safePage ? 'page' : undefined}
             className={classNames(
-              'flex cursor-pointer items-center justify-center px-2 py-2 text-sm md:px-4 md:py-3 md:text-[18px] transition-all duration-150',
+              'flex cursor-pointer items-center justify-center px-2 py-2 text-sm transition-all duration-150 md:px-4 md:py-3 md:text-[18px]',
               {
-                'bg-orange dark:bg-orange-500 text-white hover:bg-orange': pageNumber === safePage,
-                'border-transparent text-black/50 dark:text-gray-400 hover:text-orange dark:hover:text-orange-400 hover:scale-110 active:scale-95':
+                'bg-orange text-white hover:bg-orange dark:bg-orange-500': pageNumber === safePage,
+                'border-transparent text-black/50 hover:scale-110 hover:text-orange active:scale-95 dark:text-gray-400 dark:hover:text-orange-400':
                   pageNumber !== safePage
               }
             )}
@@ -109,7 +109,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
         <span
           aria-label='Trang trước'
           aria-disabled='true'
-          className='flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 md:px-4 md:py-3 opacity-40 transition-opacity duration-150'
+          className='flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 opacity-40 transition-opacity duration-150 md:px-4 md:py-3'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -131,7 +131,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
               page: (safePage - 1).toString()
             }).toString()
           }}
-          className='flex cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 md:px-4 md:py-3 transition-all duration-150 hover:bg-black/5 dark:hover:bg-white/10 active:scale-95'
+          className='flex cursor-pointer items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 transition-all duration-150 hover:bg-black/5 active:scale-95 md:px-4 md:py-3 dark:hover:bg-white/10'
           aria-label='Go to previous page'
         >
           <svg
@@ -152,7 +152,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
         <span
           aria-label='Trang sau'
           aria-disabled='true'
-          className='flex cursor-not-allowed items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 md:px-4 md:py-3 opacity-40 transition-opacity duration-150'
+          className='flex cursor-not-allowed items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 opacity-40 transition-opacity duration-150 md:px-4 md:py-3'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -174,7 +174,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
               page: (safePage + 1).toString()
             }).toString()
           }}
-          className='flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 md:px-4 md:py-3 transition-all duration-150 hover:bg-black/5 dark:hover:bg-white/10 active:scale-95'
+          className='flex cursor-pointer items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 transition-all duration-150 hover:bg-black/5 active:scale-95 md:px-4 md:py-3 dark:hover:bg-white/10'
           aria-label='Go to next page'
         >
           <svg

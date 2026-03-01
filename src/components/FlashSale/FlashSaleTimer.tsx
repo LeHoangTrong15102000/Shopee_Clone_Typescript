@@ -20,7 +20,7 @@ const FlipDigit = ({ value }: { value: string }) => (
   <AnimatePresence mode='popLayout'>
     <motion.span
       key={value}
-      className='inline-block min-w-[1.5rem] rounded bg-white dark:bg-slate-800 px-1 text-center text-sm font-bold text-orange dark:text-orange-400'
+      className='inline-block min-w-6 rounded-sm bg-white px-1 text-center text-sm font-bold text-orange dark:bg-slate-800 dark:text-orange-400'
       initial={{ opacity: 0.6, scale: 0.8, y: -4 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0.6, scale: 0.8, y: 4 }}
@@ -102,7 +102,7 @@ const FlashSaleTimer = ({
   if (isEnded) {
     return (
       <div
-        className={`flex items-center space-x-2 text-white bg-gray-500 dark:bg-gray-600 px-3 py-1 rounded ${className}`}
+        className={`flex items-center space-x-2 rounded-sm bg-gray-500 px-3 py-1 text-white dark:bg-gray-600 ${className}`}
       >
         <span className='text-sm font-medium'>Đã kết thúc</span>
       </div>
@@ -110,9 +110,9 @@ const FlashSaleTimer = ({
   }
 
   return (
-    <div className={`flex items-center space-x-2 text-white bg-orange px-3 py-1 rounded ${className}`}>
+    <div className={`flex items-center space-x-2 rounded-sm bg-orange px-3 py-1 text-white ${className}`}>
       {isServerSynced && (
-        <span className='mr-1 rounded bg-yellow-400 px-1 py-0.5 text-xs font-bold text-yellow-900'>⚡ Live</span>
+        <span className='mr-1 rounded-sm bg-yellow-400 px-1 py-0.5 text-xs font-bold text-yellow-900'>⚡ Live</span>
       )}
       <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
         <path

@@ -19,7 +19,7 @@ export default function OrderStatusBadge({ status, className, size = 'md' }: Ord
   return (
     <span
       className={classNames(
-        'inline-flex items-center font-medium rounded-full border',
+        'inline-flex items-center rounded-full border font-medium',
         config.bgColor.light,
         `dark:${config.bgColor.dark}`,
         config.color.light,

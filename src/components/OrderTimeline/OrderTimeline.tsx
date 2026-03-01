@@ -126,7 +126,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
     return (
       <div className={classNames('relative', className)}>
         <motion.div
-          className='flex items-center gap-4 rounded-xl border border-red-200 dark:border-red-800 bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 p-4'
+          className='flex items-center gap-4 rounded-xl border border-red-200 bg-linear-to-r from-red-50 to-rose-50 p-4 dark:border-red-800 dark:from-red-900/30 dark:to-rose-900/30'
           initial={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
           animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
           transition={{ duration: ANIMATION_DURATION.normal }}
@@ -159,7 +159,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
     <div className={classNames('relative', className)}>
       {/* Progress bar background */}
       {visibleSteps.length > 0 && (
-        <div className='absolute left-[23px] top-6 h-[calc(100%-48px)] w-1 rounded-full bg-gray-100 dark:bg-slate-700 md:left-[27px]' />
+        <div className='absolute top-6 left-[23px] h-[calc(100%-48px)] w-1 rounded-full bg-gray-100 md:left-[27px] dark:bg-slate-700' />
       )}
 
       <AnimatePresence>
@@ -182,10 +182,10 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
               {!isLast && (
                 <motion.div
                   className={classNames(
-                    'absolute left-[23px] top-12 h-[calc(100%-24px)] w-1 origin-top rounded-full md:left-[27px]',
+                    'absolute top-12 left-[23px] h-[calc(100%-24px)] w-1 origin-top rounded-full md:left-[27px]',
                     {
-                      'bg-gradient-to-b from-green-500 to-green-400': isCompleted,
-                      'bg-gradient-to-b from-[#ee4d2d] to-orange-300': isCurrent
+                      'bg-linear-to-b from-green-500 to-green-400': isCompleted,
+                      'bg-linear-to-b from-[#ee4d2d] to-orange-300': isCurrent
                     }
                   )}
                   variants={reducedMotion ? undefined : lineVariants}
@@ -197,7 +197,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
               {/* Step circle - border only style without animation */}
               <div
                 className={classNames(
-                  'relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 bg-white dark:bg-slate-800 md:h-14 md:w-14',
+                  'relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 bg-white md:h-14 md:w-14 dark:bg-slate-800',
                   {
                     'border-green-500 text-green-500': isCompleted,
                     'border-[#ee4d2d] text-[#ee4d2d]': isCurrent
@@ -231,7 +231,7 @@ export default function OrderTimeline({ orderId: _orderId, currentStatus, classN
                     {step.label}
                   </span>
                   {isCurrent && (
-                    <span className='rounded-full bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 text-xs font-medium text-[#ee4d2d]'>
+                    <span className='rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-[#ee4d2d] dark:bg-orange-900/30'>
                       Hiện tại
                     </span>
                   )}

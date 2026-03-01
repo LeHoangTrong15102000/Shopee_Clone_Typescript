@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -115,7 +115,7 @@ const Register = () => {
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <motion.form
-              className='rounded bg-white dark:bg-slate-800 p-10 shadow-sm dark:shadow-slate-900/50'
+              className='rounded-sm bg-white p-10 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               onSubmit={onSubmit}
               noValidate
               variants={reducedMotion ? undefined : containerVariants}
@@ -129,7 +129,7 @@ const Register = () => {
                 <Input
                   className='relative mt-6'
                   classNameInput={classNames(
-                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
                       'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
                         errors.email && errors.email.message
@@ -148,7 +148,7 @@ const Register = () => {
                 <Input
                   className='relative mt-2'
                   classNameInput={classNames(
-                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
                       'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
                         errors.password && errors.password.message
@@ -168,7 +168,7 @@ const Register = () => {
                 <Input
                   className='relative mt-2'
                   classNameInput={classNames(
-                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
                       'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
                         errors.confirm_password && errors.confirm_password.message
@@ -191,7 +191,7 @@ const Register = () => {
                     isLoading={registerAccountMutation.isPending}
                     disabled={registerAccountMutation.isPending}
                     type='submit'
-                    className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                    className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-sm text-white uppercase hover:bg-red-600'
                   >
                     đăng ký
                   </Button>

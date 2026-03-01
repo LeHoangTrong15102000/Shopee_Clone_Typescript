@@ -13,7 +13,7 @@ import { useQueryInvalidation } from '../../useQueryInvalidation'
 export const useOptimisticUpdateQuantity = () => {
   const queryClient = useQueryClient()
   const { setExtendedPurchases } = useContext(AppContext)
-  const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
+  const { invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
     mutationFn: purchaseApi.updatePurchase,
@@ -77,26 +77,15 @@ export const useOptimisticUpdateQuantity = () => {
       logOptimisticError('Update quantity', err, context)
     },
 
-    onSuccess: (data, variables) => {
-      // Update với data từ server nếu khác với optimistic update
-      const updatedPurchase = data.data.data
-
-      setExtendedPurchases(
-        produce((draft) => {
-          const item = draft.find((p) => p.product._id === variables.product_id)
-          if (item) {
-            item.buy_count = updatedPurchase.buy_count
-            item.disabled = false
-          }
-        })
-      )
+    onSuccess: (_data, _variables) => {
+      // Optimistic update đã xử lý UI rồi — không cần setExtendedPurchases lại
+      // Server data sẽ được sync qua onSettled invalidation
     },
 
     onSettled: (_data, _error, variables) => {
-      // Invalidate cart để sync với server
-      invalidateCart()
-
-      // Invalidate product detail để update stock
+      // Chỉ invalidate product detail (stock info) — KHÔNG invalidate cart
+      // vì optimistic update đã cập nhật đúng buy_count rồi.
+      // invalidateCart() ở đây gây re-fetch → useEffect → setExtendedPurchases → re-render thừa
       if (variables.product_id) {
         invalidateProductDetail(variables.product_id)
       }

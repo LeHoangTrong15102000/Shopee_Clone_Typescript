@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import Popover from 'src/components/Popover'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import noproduct from 'src/assets/images/img-product-incart.png'
@@ -14,7 +14,7 @@ interface CartDropdownProps {
 
 const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) => {
   return (
-    <div className='flex-shrink-0 md:col-span-1 flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3'>
+    <div className='flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:col-span-1 md:gap-3'>
       {/* Wishlist Icon */}
       <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label='Danh sách yêu thích'>
         <svg
@@ -37,29 +37,29 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
         <Popover
           className=''
           renderPopover={
-            <div className='relative max-w-[280px] md:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md'>
+            <div className='relative max-w-[280px] rounded-xs border border-gray-200 bg-white text-sm shadow-md md:max-w-[400px] dark:border-slate-700 dark:bg-slate-800'>
               {purchasesInCart && purchasesInCart.length > 0 ? (
                 <div className='p-[10px]'>
-                  <div className='capitalize text-[rgba(0,0,0,.26)] dark:text-gray-400'>sản phẩm mới thêm</div>
+                  <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>sản phẩm mới thêm</div>
                   <div className='mt-5'>
                     {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase) => (
                       <Link
                         to={`/${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
-                        className='mt-2 flex py-2 hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer transition-colors'
+                        className='mt-2 flex cursor-pointer py-2 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700'
                         key={purchase._id}
                       >
-                        <div className='flex-shrink-0'>
+                        <div className='shrink-0'>
                           <img
                             src={purchase.product.image}
                             alt={purchase.product.name}
                             className='h-11 w-11 object-cover'
                           />
                         </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
+                        <div className='ml-2 grow overflow-hidden'>
                           <div className='truncate text-xs md:text-sm dark:text-gray-200'>{purchase.product.name}</div>
                         </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-[#ee4d2d] text-xs md:text-sm'>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-xs text-[#ee4d2d] md:text-sm'>
                             ₫{formatCurrency(purchase.product.price)}
                           </span>
                         </div>
@@ -73,16 +73,16 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
                     </div>
                     <Link
                       to={path.cart}
-                      className='rounded-sm bg-[#ee4d2d] px-4 py-2 capitalize text-white text-xs md:text-sm hover:bg-opacity-90'
+                      className='hover:bg-opacity-90 rounded-xs bg-[#ee4d2d] px-4 py-2 text-xs text-white capitalize md:text-sm'
                     >
                       xem giỏ hàng
                     </Link>
                   </div>
                 </div>
               ) : (
-                <div className='flex h-[200px] md:h-[250px] w-[280px] md:w-[400px] flex-grow flex-col items-center justify-center p-2'>
+                <div className='flex h-[200px] w-[280px] grow flex-col items-center justify-center p-2 md:h-[250px] md:w-[400px]'>
                   <img src={noproduct} alt='no purchase' className='h-16 w-16 md:h-24 md:w-24' />
-                  <span className='mt-5 capitalize text-black/80 dark:text-gray-300 text-xs md:text-sm'>
+                  <span className='mt-5 text-xs text-black/80 capitalize md:text-sm dark:text-gray-300'>
                     Chưa có sản phẩm
                   </span>
                 </div>
@@ -106,7 +106,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
               />
             </svg>
             {purchasesInCart && purchasesInCart?.length > 0 && (
-              <span className='absolute top-[-0.3rem] right-[-0.6rem] md:top-[-0.4rem] md:right-[-0.8rem] min-w-[0.5rem] md:min-w-[0.6875rem] rounded-[2.75rem] border-[0.125rem] border-[#ee4d2d] bg-white px-[0.25rem] md:px-[0.37rem] text-[11px] md:text-[13px] text-[#ee4d2d]'>
+              <span className='absolute top-[-0.3rem] right-[-0.6rem] min-w-2 rounded-[2.75rem] border-[0.125rem] border-[#ee4d2d] bg-white px-1 text-[11px] text-[#ee4d2d] md:top-[-0.4rem] md:right-[-0.8rem] md:min-w-2.75 md:px-[0.37rem] md:text-[13px]'>
                 {purchasesInCart?.length}
               </span>
             )}

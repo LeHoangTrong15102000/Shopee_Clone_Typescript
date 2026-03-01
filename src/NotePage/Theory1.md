@@ -230,7 +230,7 @@ const Cart = () => {
         <div className="overflow-auto">
           <div className="min-w-[1000px]">
             {/* Header Grid */}
-            <div className="grid grid-cols-12 rounded-sm bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow">
+            <div className="grid grid-cols-12 rounded-xs bg-white py-5 px-9 text-sm capitalize text-gray-500 shadow-sm">
               <div className="col-span-6">Sản phẩm</div>
               <div className="col-span-2">Đơn giá</div>
               <div className="col-span-2">Số lượng</div>
@@ -246,9 +246,9 @@ const Cart = () => {
         </div>
 
         {/* Sticky Summary */}
-        <div className="sticky bottom-0 z-10 mt-8 flex flex-col rounded-sm border border-gray-100 bg-white p-5 shadow sm:flex-row sm:items-center">
+        <div className="sticky bottom-0 z-10 mt-8 flex flex-col rounded-xs border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center">
           <div className="flex items-center">
-            <div className="flex flex-shrink-0 items-center justify-center pr-3">
+            <div className="flex shrink-0 items-center justify-center pr-3">
               <input
                 type="checkbox"
                 className="h-5 w-5"
@@ -526,7 +526,7 @@ const CartHeader = () => {
               <svg className="mr-4 h-8 w-8 lg:h-11 lg:w-11" viewBox="0 0 192 65">
                 {/* Logo SVG */}
               </svg>
-              <div className="mx-4 h-6 w-[1px] bg-orange-300 lg:h-8" />
+              <div className="mx-4 h-6 w-px bg-orange-300 lg:h-8" />
               <div className="capitalize text-orange-300 lg:text-xl">Giỏ hàng</div>
             </Link>
           </nav>
@@ -761,7 +761,7 @@ const HistoryPurchases = () => {
     <div>
       <div className="overflow-x-auto">
         <div className="min-w-[700px]">
-          <div className="rounded-t-sm shadow-sm">
+          <div className="rounded-t-sm shadow-xs">
             {purchaseStatuses.map((item) => (
               <Link
                 key={item.status}
@@ -788,7 +788,7 @@ const HistoryPurchases = () => {
 
       <div>
         {purchasesData?.data.data.map((purchase) => (
-          <div key={purchase._id} className="mt-4 rounded-sm border-black/10 bg-white p-6 text-gray-800 shadow-sm">
+          <div key={purchase._id} className="mt-4 rounded-xs border-black/10 bg-white p-6 text-gray-800 shadow-xs">
             {/* Purchase item display */}
           </div>
         ))}

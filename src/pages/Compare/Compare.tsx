@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import ComparisonTable from 'src/components/ComparisonTable'
 import RecentlyViewed from 'src/components/RecentlyViewed'
 import { useProductComparison } from 'src/hooks/useProductComparison'
@@ -21,7 +21,7 @@ const Compare = () => {
   }
 
   return (
-    <div className='bg-gray-100 dark:bg-slate-900 py-4 sm:py-6 min-h-screen'>
+    <div className='min-h-screen bg-gray-100 py-4 sm:py-6 dark:bg-slate-900'>
       <Helmet>
         <title>So sánh sản phẩm | Shopee Clone</title>
         <meta name='description' content='So sánh các sản phẩm để tìm ra lựa chọn tốt nhất cho bạn' />
@@ -29,13 +29,13 @@ const Compare = () => {
 
       <div className='container'>
         {/* Header */}
-        <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/50 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6'>
+        <div className='mb-4 rounded-lg bg-white p-3 shadow-xs sm:mb-6 sm:p-4 md:p-6 dark:bg-slate-800 dark:shadow-slate-900/50'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100'>
+              <h1 className='text-lg font-bold text-gray-800 sm:text-xl md:text-2xl dark:text-gray-100'>
                 So sánh sản phẩm
               </h1>
-              <p className='text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1'>
+              <p className='mt-1 text-sm text-gray-500 sm:text-base dark:text-gray-400'>
                 {compareList.length > 0
                   ? `Đang so sánh ${compareList.length} sản phẩm`
                   : 'Thêm sản phẩm để bắt đầu so sánh'}
@@ -44,7 +44,7 @@ const Compare = () => {
             {compareList.length > 0 && (
               <Link
                 to={path.products}
-                className='px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base border border-orange dark:border-orange-400 text-orange dark:text-orange-400 rounded hover:bg-orange/5 dark:hover:bg-orange-400/10 transition-colors'
+                className='rounded-sm border border-orange px-3 py-1.5 text-sm text-orange transition-colors hover:bg-orange/5 sm:px-4 sm:py-2 sm:text-base dark:border-orange-400 dark:text-orange-400 dark:hover:bg-orange-400/10'
               >
                 + Thêm sản phẩm
               </Link>
@@ -53,13 +53,13 @@ const Compare = () => {
         </div>
 
         {/* Comparison Table */}
-        <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/50 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6'>
+        <div className='mb-4 rounded-lg bg-white p-3 shadow-xs sm:mb-6 sm:p-4 md:p-6 dark:bg-slate-800 dark:shadow-slate-900/50'>
           <ComparisonTable onAddToCart={handleAddToCart} />
         </div>
 
         {/* Recently Viewed Products */}
-        <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-900/50 p-3 sm:p-4 md:p-6'>
-          <h2 className='text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4'>
+        <div className='rounded-lg bg-white p-3 shadow-xs sm:p-4 md:p-6 dark:bg-slate-800 dark:shadow-slate-900/50'>
+          <h2 className='mb-4 text-base font-semibold text-gray-800 sm:text-lg dark:text-gray-100'>
             Sản phẩm đã xem gần đây
           </h2>
           <RecentlyViewed products={recentlyViewed} maxItems={10} onRemove={removeProduct} onClearAll={clearAll} />

@@ -30,17 +30,17 @@ const PriceDisplay = ({
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       {hasDiscount && (
-        <span className={`text-gray-400 dark:text-gray-500 line-through ${sizes.original}`}>
+        <span className={`text-gray-400 line-through dark:text-gray-500 ${sizes.original}`}>
           {currencySymbol}
           {formatCurrency(originalPrice)}
         </span>
       )}
-      <span className={`text-[#ee4d2d] font-semibold ${sizes.price}`}>
+      <span className={`font-semibold text-[#ee4d2d] ${sizes.price}`}>
         <span className={sizes.original}>{currencySymbol}</span>
         {formatCurrency(price)}
       </span>
       {hasDiscount && showDiscount && discountPercent > 0 && (
-        <span className={`bg-[#ee4d2d] text-white rounded ${sizes.badge}`}>-{discountPercent}%</span>
+        <span className={`rounded-sm bg-[#ee4d2d] text-white ${sizes.badge}`}>-{discountPercent}%</span>
       )}
     </div>
   )

@@ -24,7 +24,7 @@ export default function PriceDropBadge({ originalPrice, currentPrice, className 
   const badgeContent = (
     <span
       className={classNames(
-        'inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 px-2 py-0.5 text-xs font-semibold text-green-700 dark:text-green-400',
+        'inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-900/30 dark:text-green-400',
         className
       )}
       aria-label={`Giá đã giảm ${discountPercentage} phần trăm`}

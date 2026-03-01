@@ -3,7 +3,7 @@ import SkeletonBase from './SkeletonBase'
 export default function ProductCardSkeleton() {
   return (
     <div
-      className='overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm min-h-[280px]'
+      className='min-h-[280px] overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800'
       role='status'
       aria-busy='true'
       aria-label='Đang tải sản phẩm'
@@ -17,7 +17,7 @@ export default function ProductCardSkeleton() {
       <div className='overflow-hidden p-2'>
         {/* Title - 2 lines */}
         <div className='min-h-[1.9rem]'>
-          <SkeletonBase className='h-3 w-full mb-1' />
+          <SkeletonBase className='mb-1 h-3 w-full' />
           <SkeletonBase className='h-3 w-3/4' />
         </div>
 

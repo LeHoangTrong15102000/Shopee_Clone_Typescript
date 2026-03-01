@@ -15,7 +15,7 @@ const RatingStars = () => {
           <li className='min-h-[44px] py-1 pl-2' key={index}>
             {/* Thường là những sự kiện như onClick thì Eslint nó bắt các thẻ để click nên là button,... */}
             <div
-              className='flex cursor-pointer items-center rounded-md px-2 py-1 text-sm transition-colors duration-150 hover:bg-orange-50 dark:hover:bg-slate-700 dark:text-gray-300'
+              className='flex cursor-pointer items-center rounded-md px-2 py-1 text-sm transition-colors duration-150 hover:bg-orange-50 dark:text-gray-300 dark:hover:bg-slate-700'
               onClick={() => handleFilterStar(5 - index)}
               onKeyDown={(e: React.KeyboardEvent) => {
                 if (e.key === 'Enter' || e.key === ' ') {

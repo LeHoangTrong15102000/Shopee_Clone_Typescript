@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Order } from 'src/types/checkout.type'
 import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
@@ -79,10 +79,10 @@ const OrderCard = memo(function OrderCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className='group rounded-xl bg-white dark:bg-slate-800 shadow-md hover:shadow-xl border border-gray-200/80 dark:border-slate-700 overflow-hidden transition-all duration-300'
+      className='group overflow-hidden rounded-xl border border-gray-200/80 bg-white shadow-md transition-all duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800'
     >
       {/* Header */}
-      <div className='flex items-center justify-between border-b border-gray-100 dark:border-slate-700 px-4 py-3 bg-gradient-to-r from-gray-50/80 via-white to-gray-50/80 dark:from-slate-800/80 dark:via-slate-800 dark:to-slate-800/80'>
+      <div className='flex items-center justify-between border-b border-gray-100 bg-linear-to-r from-gray-50/80 via-white to-gray-50/80 px-4 py-3 dark:border-slate-700 dark:from-slate-800/80 dark:via-slate-800 dark:to-slate-800/80'>
         <div className='flex items-center gap-3'>
           <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-orange/10 dark:bg-orange-900/30'>
             <svg
@@ -100,14 +100,14 @@ const OrderCard = memo(function OrderCard({
             </svg>
           </div>
           <div>
-            <span className='font-semibold text-sm text-gray-900 dark:text-gray-100'>
+            <span className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
               {order._id.slice(-8).toUpperCase()}
             </span>
             <p className='text-xs text-gray-400 dark:text-gray-500'>{formatDate(order.createdAt)}</p>
           </div>
         </div>
         <span
-          className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold border ${status.color} ${status.bgColor} ${status.borderColor}`}
+          className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold ${status.color} ${status.bgColor} ${status.borderColor}`}
         >
           {status.label}
         </span>
@@ -121,14 +121,14 @@ const OrderCard = memo(function OrderCard({
               key={index}
               className='flex gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50/80 dark:hover:bg-slate-700/40'
             >
-              <div className='h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm'>
+              <div className='h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-slate-600'>
                 <ImageWithFallback
                   src={item.product?.image || ''}
                   alt={item.product?.name || 'Product'}
                   className='h-full w-full object-cover'
                 />
               </div>
-              <div className='flex-1 min-w-0'>
+              <div className='min-w-0 flex-1'>
                 <p className='truncate text-sm font-medium text-gray-900 dark:text-gray-100'>
                   {item.product?.name || 'Sản phẩm'}
                 </p>
@@ -141,7 +141,7 @@ const OrderCard = memo(function OrderCard({
           ))}
 
           {order.items.length > 2 && (
-            <p className='text-xs text-gray-400 dark:text-gray-500 text-center py-1'>
+            <p className='py-1 text-center text-xs text-gray-400 dark:text-gray-500'>
               và {order.items.length - 2} sản phẩm khác
             </p>
           )}
@@ -168,13 +168,13 @@ const OrderCard = memo(function OrderCard({
         </div>
 
         {/* Actions */}
-        <div className='mt-3 flex items-center justify-between gap-3 pt-3 border-t border-gray-100 dark:border-slate-700'>
+        <div className='mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3 dark:border-slate-700'>
           <div className='flex items-center gap-2'>
             {isTrackable && onToggleTracking && (
               <button
                 type='button'
                 onClick={() => onToggleTracking(order._id)}
-                className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-500 transition-all'
+                className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -203,14 +203,14 @@ const OrderCard = memo(function OrderCard({
           <div className='flex items-center gap-2'>
             <Link
               to={`/user/order/${order._id}?status=${orderStatusToNumber(order.status)}`}
-              className='text-xs font-medium text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors'
+              className='text-xs font-medium text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
             >
               Chi tiết →
             </Link>
             {canCancel && (
               <Button
                 onClick={handleCancel}
-                className='rounded-lg border border-red-200 dark:border-red-800/50 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-medium text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors'
+                className='rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:bg-red-50 dark:border-red-800/50 dark:bg-slate-700 dark:text-red-400 dark:hover:bg-red-900/20'
               >
                 Hủy đơn
               </Button>
@@ -218,7 +218,7 @@ const OrderCard = memo(function OrderCard({
             {canReorder && (
               <Button
                 onClick={handleReorder}
-                className='rounded-lg bg-gradient-to-r from-orange to-orange-500 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:shadow-md transition-all'
+                className='rounded-lg bg-linear-to-r from-orange to-orange-500 px-3 py-1.5 text-xs font-medium text-white shadow-xs transition-all hover:shadow-md'
               >
                 Mua lại
               </Button>
@@ -236,7 +236,7 @@ const OrderCard = memo(function OrderCard({
               transition={{ duration: 0.3 }}
               className='overflow-hidden'
             >
-              <div className='mt-3 border-t border-gray-100 dark:border-slate-700 pt-3'>{trackingContent}</div>
+              <div className='mt-3 border-t border-gray-100 pt-3 dark:border-slate-700'>{trackingContent}</div>
             </motion.div>
           )}
         </AnimatePresence>

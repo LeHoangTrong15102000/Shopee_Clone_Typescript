@@ -60,19 +60,19 @@ export default function MyVouchers() {
 
   return (
     <div className='space-y-4'>
-      <div className='rounded-lg bg-white p-4 shadow-sm dark:bg-slate-800'>
+      <div className='rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800'>
         <h1 className='text-xl font-bold text-gray-900 dark:text-gray-100'>Kho Voucher</h1>
         <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Quản lý các voucher của bạn</p>
       </div>
 
-      <div className='rounded-lg bg-white shadow-sm dark:bg-slate-800'>
+      <div className='rounded-lg bg-white shadow-xs dark:bg-slate-800'>
         <div className='flex flex-wrap gap-2 border-b p-3 dark:border-slate-600'>
           {categoryTabs.map((tab) => (
             <button
               key={tab.category}
               onClick={() => setActiveCategory(tab.category)}
               className={classNames(
-                'rounded-full px-3 py-1 text-xs sm:px-4 sm:py-1.5 sm:text-sm font-medium transition-colors',
+                'rounded-full px-3 py-1 text-xs font-medium transition-colors sm:px-4 sm:py-1.5 sm:text-sm',
                 {
                   'bg-[#ee4d2d] text-white': activeCategory === tab.category,
                   'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-700':
@@ -91,7 +91,7 @@ export default function MyVouchers() {
               key={tab.status}
               onClick={() => setActiveStatus(tab.status)}
               className={classNames(
-                'relative flex-shrink-0 px-3 py-3 text-xs sm:px-6 sm:py-4 sm:text-sm font-medium transition-colors',
+                'relative shrink-0 px-3 py-3 text-xs font-medium transition-colors sm:px-6 sm:py-4 sm:text-sm',
                 activeStatus === tab.status
                   ? 'text-[#ee4d2d] dark:text-orange-400'
                   : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -101,7 +101,7 @@ export default function MyVouchers() {
               {activeStatus === tab.status && (
                 <motion.div
                   layoutId='activeVoucherTab'
-                  className='absolute bottom-0 left-0 right-0 h-0.5 bg-[#ee4d2d] dark:bg-orange-400'
+                  className='absolute right-0 bottom-0 left-0 h-0.5 bg-[#ee4d2d] dark:bg-orange-400'
                 />
               )}
             </button>
@@ -113,12 +113,12 @@ export default function MyVouchers() {
         {isLoading ? (
           <div className='space-y-3'>
             {[1, 2, 3].map((i) => (
-              <div key={i} className='animate-pulse rounded-lg bg-white p-4 shadow-sm dark:bg-slate-800'>
+              <div key={i} className='animate-pulse rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800'>
                 <div className='flex gap-4'>
-                  <div className='h-20 w-20 rounded bg-gray-200 dark:bg-slate-600' />
+                  <div className='h-20 w-20 rounded-sm bg-gray-200 dark:bg-slate-600' />
                   <div className='flex-1 space-y-2'>
-                    <div className='h-4 w-3/4 rounded bg-gray-200 dark:bg-slate-600' />
-                    <div className='h-3 w-1/2 rounded bg-gray-200 dark:bg-slate-600' />
+                    <div className='h-4 w-3/4 rounded-sm bg-gray-200 dark:bg-slate-600' />
+                    <div className='h-3 w-1/2 rounded-sm bg-gray-200 dark:bg-slate-600' />
                   </div>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function MyVouchers() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className='flex flex-col items-center justify-center rounded-lg bg-white py-16 shadow-sm dark:bg-slate-800'
+            className='flex flex-col items-center justify-center rounded-lg bg-white py-16 shadow-xs dark:bg-slate-800'
           >
             <div className='text-6xl'>🎫</div>
             <p className='mt-4 text-gray-500 dark:text-gray-400'>Chưa có voucher nào</p>

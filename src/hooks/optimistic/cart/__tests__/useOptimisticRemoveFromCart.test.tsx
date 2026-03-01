@@ -75,7 +75,7 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: ReturnType<typeof vi.fn>
+let mockSetExtendedPurchases: any
 let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
@@ -148,7 +148,7 @@ describe('useOptimisticRemoveFromCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1'])
+      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1'], expect.anything())
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })

@@ -81,7 +81,7 @@ export default function ErrorFallback({
 
       {/* Error Details (Development Mode) */}
       {isDevelopment && error && (
-        <details className='mb-4 w-full max-w-md rounded-md bg-gray-100 dark:bg-slate-700 p-3'>
+        <details className='mb-4 w-full max-w-md rounded-md bg-gray-100 p-3 dark:bg-slate-700'>
           <summary className='cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-200'>
             Chi tiết lỗi (Dev)
           </summary>
@@ -90,7 +90,7 @@ export default function ErrorFallback({
               {error.name}: {error.message}
             </p>
             {error.stack && (
-              <pre className='mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-xs text-gray-600 dark:text-gray-300'>
+              <pre className='mt-2 max-h-32 overflow-auto text-xs whitespace-pre-wrap text-gray-600 dark:text-gray-300'>
                 {error.stack}
               </pre>
             )}
@@ -103,7 +103,7 @@ export default function ErrorFallback({
         <button
           onClick={handleRetry}
           disabled={isRetrying}
-          className='flex items-center gap-2 rounded-sm bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
+          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
         >
           {isRetrying ? (
             <>

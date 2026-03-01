@@ -1,5 +1,5 @@
 import { screen, waitFor, render, type waitForOptions } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { HelmetProvider } from 'react-helmet-async'
 import App from 'src/App'
 import userEvent from '@testing-library/user-event'

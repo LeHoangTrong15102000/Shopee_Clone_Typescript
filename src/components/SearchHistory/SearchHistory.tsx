@@ -26,13 +26,13 @@ const SearchHistory = memo(function SearchHistory({
   )
 
   return (
-    <div className='absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-600 z-50 overflow-hidden'>
+    <div className='absolute top-full right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800'>
       {/* Search History Section */}
       {history.length > 0 && (
-        <div className='p-3 border-b border-gray-100 dark:border-slate-600'>
-          <div className='flex items-center justify-between mb-2'>
+        <div className='border-b border-gray-100 p-3 dark:border-slate-600'>
+          <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
-            <button onClick={onClearAll} className='text-xs text-blue-500 hover:text-blue-600 transition-colors'>
+            <button onClick={onClearAll} className='text-xs text-blue-500 transition-colors hover:text-blue-600'>
               Xóa tất cả
             </button>
           </div>
@@ -43,11 +43,11 @@ const SearchHistory = memo(function SearchHistory({
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                className='flex items-center justify-between py-2 px-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded cursor-pointer group'
+                className='group flex cursor-pointer items-center justify-between rounded-sm px-2 py-2 hover:bg-gray-50 dark:hover:bg-slate-700'
                 onClick={() => onSelect(item.query)}
               >
                 <div className='flex items-center gap-2'>
-                  <svg className='w-4 h-4 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <svg className='h-4 w-4 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path
                       strokeLinecap='round'
                       strokeLinejoin='round'
@@ -59,10 +59,10 @@ const SearchHistory = memo(function SearchHistory({
                 </div>
                 <button
                   onClick={(e) => handleRemove(e, item.query)}
-                  className='opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all p-1'
+                  className='p-1 text-gray-400 opacity-0 transition-all group-hover:opacity-100 hover:text-red-500'
                   aria-label={`Xóa "${item.query}" khỏi lịch sử`}
                 >
-                  <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                   </svg>
                 </button>
@@ -74,8 +74,8 @@ const SearchHistory = memo(function SearchHistory({
 
       {/* Trending Searches Section */}
       <div className='p-3'>
-        <div className='flex items-center gap-2 mb-2'>
-          <svg className='w-4 h-4 text-orange dark:text-orange-400' fill='currentColor' viewBox='0 0 24 24'>
+        <div className='mb-2 flex items-center gap-2'>
+          <svg className='h-4 w-4 text-orange dark:text-orange-400' fill='currentColor' viewBox='0 0 24 24'>
             <path d='M17.56 21a1 1 0 01-.46-.11L12 18.22l-5.1 2.67a1 1 0 01-1.45-1.06l1-5.63-4.12-4a1 1 0 01-.25-1 1 1 0 01.81-.68l5.7-.83 2.51-5.13a1 1 0 011.8 0l2.54 5.12 5.7.83a1 1 0 01.81.68 1 1 0 01-.25 1l-4.12 4 1 5.63a1 1 0 01-.4 1 1 1 0 01-.62.21z' />
           </svg>
           <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Tìm kiếm phổ biến</span>
@@ -85,7 +85,7 @@ const SearchHistory = memo(function SearchHistory({
             <button
               key={term}
               onClick={() => onSelect(term)}
-              className='px-3 py-1.5 bg-gray-100 dark:bg-slate-900 hover:bg-orange hover:text-white text-sm text-gray-600 dark:text-gray-400 rounded-full transition-colors'
+              className='rounded-full bg-gray-100 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-orange hover:text-white dark:bg-slate-900 dark:text-gray-400'
             >
               {term}
             </button>

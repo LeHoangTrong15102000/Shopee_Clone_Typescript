@@ -278,24 +278,24 @@ const AddressBook = () => {
 
   if (isLoading) {
     return (
-      <div className='rounded-md bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'>
+      <div className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
         <div className='flex h-64 items-center justify-center'>
-          <div className='h-8 w-8 animate-spin rounded-full border-4 border-orange dark:border-orange-400 border-t-transparent'></div>
+          <div className='h-8 w-8 animate-spin rounded-full border-4 border-orange border-t-transparent dark:border-orange-400'></div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className='rounded-md bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'>
+    <div className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
       <Helmet>
         <title>Địa chỉ của tôi | Shopee Clone</title>
         <meta name='description' content='Quản lý địa chỉ giao hàng của bạn' />
       </Helmet>
       {/* Header */}
-      <div className='flex flex-col gap-4 border-b border-b-gray-100 dark:border-b-slate-600 py-6 sm:flex-row sm:items-center sm:justify-between'>
+      <div className='flex flex-col gap-4 border-b border-b-gray-100 py-6 sm:flex-row sm:items-center sm:justify-between dark:border-b-slate-600'>
         <div className='text-center sm:text-left'>
-          <h1 className='text-lg font-medium capitalize text-gray-700 dark:text-gray-200'>Địa chỉ của tôi</h1>
+          <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>Địa chỉ của tôi</h1>
           <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
             Quản lý địa chỉ giao hàng của bạn ({rawAddresses.length} địa chỉ)
           </div>
@@ -309,8 +309,8 @@ const AddressBook = () => {
               }}
               className={`group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl px-3 text-xs font-medium transition-all duration-300 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm ${
                 isSelectionMode
-                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange/25'
-                  : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30'
+                  ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange/25'
+                  : 'bg-linear-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30'
               }`}
             >
               <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -326,9 +326,9 @@ const AddressBook = () => {
           )}
           <button
             onClick={handleAddNew}
-            className='group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 via-orange-500 to-orange-600 px-3 text-xs font-medium text-white shadow-lg shadow-orange/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange/40 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm'
+            className='group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-3 text-xs font-medium text-white shadow-lg shadow-orange/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange/40 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm'
           >
-            <span className='absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-600 to-orange-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+            <span className='absolute inset-0 bg-linear-to-r from-orange-600 via-orange-600 to-orange-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
             <svg
               className='relative z-10 h-4 w-4 transition-transform duration-300 group-hover:rotate-90'
               fill='none'
@@ -348,7 +348,7 @@ const AddressBook = () => {
           {/* Search Box */}
           <div className='relative'>
             <svg
-              className='absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400'
+              className='absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -365,12 +365,12 @@ const AddressBook = () => {
               placeholder='Tìm kiếm theo tên, số điện thoại, địa chỉ...'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-slate-600 py-2.5 pl-10 pr-4 text-sm transition-colors focus:border-orange dark:focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange/30 dark:focus:ring-orange-400/30 dark:bg-slate-900 dark:text-gray-100'
+              className='w-full rounded-lg border border-gray-300 py-2.5 pr-4 pl-10 text-sm transition-colors focus:border-orange focus:ring-1 focus:ring-orange/30 focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:focus:border-orange-400 dark:focus:ring-orange-400/30'
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+                className='absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
               >
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
@@ -391,8 +391,8 @@ const AddressBook = () => {
                   onClick={() => setFilterType(type)}
                   className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                     isActive
-                      ? 'bg-orange dark:bg-orange-400 text-white shadow-md'
-                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+                      ? 'bg-orange text-white shadow-md dark:bg-orange-400'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
                   }`}
                 >
                   {config && <span className={isActive ? 'text-white' : ''}>{config.icon}</span>}
@@ -414,7 +414,7 @@ const AddressBook = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className='flex flex-col gap-3 rounded-lg bg-orange/5 dark:bg-orange-400/10 p-3 sm:flex-row sm:items-center sm:justify-between'
+                className='flex flex-col gap-3 rounded-lg bg-orange/5 p-3 sm:flex-row sm:items-center sm:justify-between dark:bg-orange-400/10'
               >
                 <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
                   <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300'>
@@ -430,7 +430,7 @@ const AddressBook = () => {
                       Chọn tất cả
                     </span>
                   </div>
-                  <span className='text-xs text-gray-500 dark:text-gray-400 sm:text-sm'>
+                  <span className='text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
                     Đã chọn {selectedIds.size} địa chỉ
                   </span>
                 </div>
@@ -558,7 +558,7 @@ const AddressBook = () => {
                     modifiers={[restrictToWindowEdges]}
                   >
                     {activeAddress && (
-                      <div className='rotate-2 scale-105 shadow-2xl'>
+                      <div className='scale-105 rotate-2 shadow-2xl'>
                         <AddressCard
                           address={activeAddress}
                           onEdit={handleEdit}
@@ -664,29 +664,29 @@ const AddressCard = ({
       whileHover={{ y: -2 }}
       className={`group relative h-full overflow-hidden rounded-xl border p-3 transition-all duration-200 sm:p-5 ${
         isSelected
-          ? 'border-orange dark:border-orange-400 bg-orange/5 dark:bg-orange-400/10 ring-2 ring-orange/20 dark:ring-orange-400/20'
+          ? 'border-orange bg-orange/5 ring-2 ring-orange/20 dark:border-orange-400 dark:bg-orange-400/10 dark:ring-orange-400/20'
           : isDefault
-            ? 'border-orange dark:border-orange-400 bg-gradient-to-br from-orange/5 to-orange/10 dark:from-orange-400/10 dark:to-orange-400/20 shadow-md'
-            : 'border-gray-200 dark:border-slate-600 bg-gradient-to-br from-white via-gray-50/50 to-blue-50/30 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700 shadow-sm hover:border-blue-200 dark:hover:border-slate-500 hover:shadow-lg hover:from-white hover:via-blue-50/30 hover:to-indigo-50/30 dark:hover:from-slate-700 dark:hover:via-slate-700 dark:hover:to-slate-600'
+            ? 'border-orange bg-linear-to-br from-orange/5 to-orange/10 shadow-md dark:border-orange-400 dark:from-orange-400/10 dark:to-orange-400/20'
+            : 'border-gray-200 bg-linear-to-br from-white via-gray-50/50 to-blue-50/30 shadow-xs hover:border-blue-200 hover:from-white hover:via-blue-50/30 hover:to-indigo-50/30 hover:shadow-lg dark:border-slate-600 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700 dark:hover:border-slate-500 dark:hover:from-slate-700 dark:hover:via-slate-700 dark:hover:to-slate-600'
       }`}
     >
       {/* Selection Checkbox */}
       {isSelectionMode && !isDefault && (
-        <div className='absolute left-3 top-3 z-10' onClick={(e) => e.stopPropagation()}>
+        <div className='absolute top-3 left-3 z-10' onClick={(e) => e.stopPropagation()}>
           <ShopeeCheckbox checked={!!isSelected} onChange={() => onToggleSelect?.(address._id)} size='sm' />
         </div>
       )}
 
       {/* Default badge ribbon */}
       {isDefault && (
-        <div className='absolute -right-8 top-3 rotate-45 bg-orange px-10 py-1 text-xs font-medium text-white shadow-sm'>
+        <div className='absolute top-3 -right-8 rotate-45 bg-orange px-10 py-1 text-xs font-medium text-white shadow-xs'>
           Mặc định
         </div>
       )}
 
       {/* Drag handle indicator */}
       {!isSelectionMode && !isDefault && (
-        <div className='absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100'>
+        <div className='absolute top-3 right-3 opacity-0 transition-opacity group-hover:opacity-100'>
           <svg className='h-5 w-5 text-gray-400 dark:text-gray-500' fill='currentColor' viewBox='0 0 20 20'>
             <path d='M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z' />
           </svg>
@@ -697,10 +697,10 @@ const AddressCard = ({
       <div className={`flex items-start gap-3 sm:gap-4 ${isSelectionMode && !isDefault ? 'ml-8' : ''}`}>
         {/* Address Type Icon */}
         <div
-          className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-colors sm:h-12 sm:w-12 ${
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors sm:h-12 sm:w-12 ${
             isDefault
-              ? 'bg-orange dark:bg-orange-400 text-white'
-              : `${typeColors.bg} ${typeColors.text} group-hover:bg-orange/10 dark:group-hover:bg-orange-400/20 group-hover:text-orange dark:group-hover:text-orange-400`
+              ? 'bg-orange text-white dark:bg-orange-400'
+              : `${typeColors.bg} ${typeColors.text} group-hover:bg-orange/10 group-hover:text-orange dark:group-hover:bg-orange-400/20 dark:group-hover:text-orange-400`
           }`}
         >
           {typeInfo.icon}
@@ -709,11 +709,11 @@ const AddressCard = ({
         <div className='min-w-0 flex-1'>
           {/* Name and Phone */}
           <div className='flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2'>
-            <h3 className='min-w-0 truncate text-sm font-semibold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent sm:text-base'>
+            <h3 className='min-w-0 truncate bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text text-sm font-semibold text-transparent sm:text-base dark:from-gray-100 dark:to-gray-300'>
               {address.fullName}
             </h3>
-            <span className='hidden flex-shrink-0 text-gray-300 dark:text-gray-500 sm:inline'>|</span>
-            <span className='flex flex-shrink-0 items-center gap-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm'>
+            <span className='hidden shrink-0 text-gray-300 sm:inline dark:text-gray-500'>|</span>
+            <span className='flex shrink-0 items-center gap-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400'>
               <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path
                   strokeLinecap='round'
@@ -727,7 +727,7 @@ const AddressCard = ({
           </div>
 
           {/* Address */}
-          <p className='mt-1.5 line-clamp-2 text-xs leading-relaxed text-gray-700 dark:text-gray-300 sm:mt-2 sm:text-sm'>
+          <p className='mt-1.5 line-clamp-2 text-xs leading-relaxed text-gray-700 sm:mt-2 sm:text-sm dark:text-gray-300'>
             {formatAddress(address)}
           </p>
 
@@ -759,12 +759,12 @@ const AddressCard = ({
 
       {/* Action buttons */}
       {!isSelectionMode && (
-        <div className='mt-3 flex flex-col gap-2 border-t border-gray-100 dark:border-slate-600 pt-3 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:pt-4'>
+        <div className='mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:pt-4 dark:border-slate-600'>
           <div className='flex items-center gap-2'>
             {!isDefault && (
               <button
                 onClick={() => onSetDefault(address._id)}
-                className='inline-flex items-center gap-1 rounded-lg border border-orange/30 dark:border-orange-400/30 bg-orange/5 dark:bg-orange-400/10 px-2.5 py-1.5 text-xs font-medium text-orange dark:text-orange-400 transition-all hover:border-orange dark:hover:border-orange-400 hover:bg-orange dark:hover:bg-orange-400 hover:!text-white dark:hover:!text-white sm:gap-1.5 sm:px-3 sm:text-sm'
+                className='inline-flex items-center gap-1 rounded-lg border border-orange/30 bg-orange/5 px-2.5 py-1.5 text-xs font-medium text-orange transition-all hover:border-orange hover:bg-orange hover:text-white! sm:gap-1.5 sm:px-3 sm:text-sm dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-400 dark:hover:border-orange-400 dark:hover:bg-orange-400 dark:hover:text-white!'
               >
                 <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
@@ -777,7 +777,7 @@ const AddressCard = ({
           <div className='flex items-center gap-2'>
             <button
               onClick={() => onEdit(address)}
-              className='inline-flex items-center gap-1 rounded-lg bg-gray-100 dark:bg-slate-700 px-2.5 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors hover:bg-gray-200 dark:hover:bg-slate-600 sm:gap-1.5 sm:px-3 sm:text-sm'
+              className='inline-flex items-center gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 sm:gap-1.5 sm:px-3 sm:text-sm dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
             >
               <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path
@@ -792,7 +792,7 @@ const AddressCard = ({
             {!isDefault && (
               <button
                 onClick={() => onDelete(address._id)}
-                className='inline-flex items-center gap-1 rounded-lg bg-red-50 dark:bg-red-900/30 px-2.5 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-100 dark:hover:bg-red-900/50 sm:gap-1.5 sm:px-3 sm:text-sm'
+                className='inline-flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-100 sm:gap-1.5 sm:px-3 sm:text-sm dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50'
               >
                 <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path
@@ -861,7 +861,7 @@ const EmptyState = ({ onAddNew }: EmptyStateProps) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className='flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-slate-600 bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 py-16'
+      className='flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-linear-to-b from-gray-50 to-white py-16 dark:border-slate-600 dark:from-slate-900 dark:to-slate-800'
     >
       {/* Animated location icon */}
       <motion.div
@@ -890,7 +890,7 @@ const EmptyState = ({ onAddNew }: EmptyStateProps) => {
         <motion.div
           animate={{ y: [0, -5, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className='absolute -right-2 -top-2 h-4 w-4 rounded-full bg-orange/30 dark:bg-orange-400/40'
+          className='absolute -top-2 -right-2 h-4 w-4 rounded-full bg-orange/30 dark:bg-orange-400/40'
         />
         <motion.div
           animate={{ y: [0, 5, 0] }}
@@ -953,7 +953,7 @@ const EmptyState = ({ onAddNew }: EmptyStateProps) => {
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
         <Button
           onClick={onAddNew}
-          className='mt-8 flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange to-orange/90 dark:from-orange-400 dark:to-orange-500 px-8 text-sm font-medium text-white shadow-lg shadow-orange/30 dark:shadow-orange-400/30 transition-all hover:shadow-xl hover:shadow-orange/40 dark:hover:shadow-orange-400/40'
+          className='mt-8 flex h-12 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-orange to-orange/90 px-8 text-sm font-medium text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 dark:from-orange-400 dark:to-orange-500 dark:shadow-orange-400/30 dark:hover:shadow-orange-400/40'
         >
           <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
@@ -992,7 +992,7 @@ const DeleteConfirmModal = ({
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
-        className='w-full max-w-sm rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl'
+        className='w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800'
         onClick={(e) => e.stopPropagation()}
       >
         <div className='mb-4 flex items-center justify-center'>
@@ -1017,7 +1017,7 @@ const DeleteConfirmModal = ({
         <div className='flex gap-3'>
           <Button
             onClick={onCancel}
-            className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600'
+            className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
           >
             Hủy
           </Button>
@@ -1046,7 +1046,7 @@ const NoResultsState = ({ searchQuery, filterType, onClear }: NoResultsStateProp
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className='flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 py-12'
+      className='flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 py-12 dark:border-slate-600 dark:bg-slate-900'
     >
       <div className='flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700'>
         <svg className='h-8 w-8 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -1066,7 +1066,7 @@ const NoResultsState = ({ searchQuery, filterType, onClear }: NoResultsStateProp
       </p>
       <Button
         onClick={onClear}
-        className='mt-4 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600'
+        className='mt-4 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
       >
         Xóa bộ lọc
       </Button>

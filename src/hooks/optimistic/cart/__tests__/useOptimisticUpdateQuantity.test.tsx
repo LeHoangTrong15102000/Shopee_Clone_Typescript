@@ -78,7 +78,7 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: ReturnType<typeof vi.fn>
+let mockSetExtendedPurchases: any
 let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
@@ -153,10 +153,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 5
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 5
+        },
+        expect.anything()
+      )
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
@@ -479,10 +482,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 5
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 5
+        },
+        expect.anything()
+      )
     })
   })
 
@@ -637,10 +643,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 0
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 0
+        },
+        expect.anything()
+      )
     })
 
     test('should handle quantity exceeding stock', async () => {
@@ -779,10 +788,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 9999
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 9999
+        },
+        expect.anything()
+      )
     })
 
     test('should handle network timeout', async () => {

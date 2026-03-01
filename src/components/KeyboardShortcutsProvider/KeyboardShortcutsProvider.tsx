@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useKeyboardShortcuts, { Shortcut, SequenceShortcut } from 'src/hooks/useKeyboardShortcuts'
 import KeyboardShortcutsModal from 'src/components/KeyboardShortcutsModal'
 import path from 'src/constant/path'

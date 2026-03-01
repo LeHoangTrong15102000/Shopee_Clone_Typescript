@@ -6,7 +6,7 @@ const { heroui } = require('@heroui/react')
 /**
  * Elevation System:
  * Level 0: No shadow (flat elements)
- * Level 1: shadow-sm (cards, list items)
+ * Level 1: shadow-xs (cards, list items)
  * Level 2: shadow-md (dropdowns, popovers)
  * Level 3: shadow-lg (modals, drawers)
  * Level 4: shadow-xl (critical overlays)
@@ -57,28 +57,28 @@ module.exports = {
         'dark-text-secondary': '#a1a1aa',
         // Semantic tokens from CSS variables
         input: {
-          bg: 'rgb(var(--color-input-bg) / <alpha-value>)',
-          border: 'rgb(var(--color-input-border) / <alpha-value>)',
-          text: 'rgb(var(--color-input-text) / <alpha-value>)',
-          placeholder: 'rgb(var(--color-input-placeholder) / <alpha-value>)'
+          bg: 'rgb(var(--color-input-bg))',
+          border: 'rgb(var(--color-input-border))',
+          text: 'rgb(var(--color-input-text))',
+          placeholder: 'rgb(var(--color-input-placeholder))'
         },
         modal: {
-          bg: 'rgb(var(--color-modal-bg) / <alpha-value>)',
-          overlay: 'rgb(var(--color-modal-overlay) / <alpha-value>)',
-          border: 'rgb(var(--color-modal-border) / <alpha-value>)'
+          bg: 'rgb(var(--color-modal-bg))',
+          overlay: 'rgb(var(--color-modal-overlay))',
+          border: 'rgb(var(--color-modal-border))'
         },
         card: {
-          bg: 'rgb(var(--color-card-bg) / <alpha-value>)',
-          border: 'rgb(var(--color-card-border) / <alpha-value>)',
-          hover: 'rgb(var(--color-card-hover) / <alpha-value>)'
+          bg: 'rgb(var(--color-card-bg))',
+          border: 'rgb(var(--color-card-border))',
+          hover: 'rgb(var(--color-card-hover))'
         },
         tooltip: {
-          bg: 'rgb(var(--color-tooltip-bg) / <alpha-value>)',
-          text: 'rgb(var(--color-tooltip-text) / <alpha-value>)'
+          bg: 'rgb(var(--color-tooltip-bg))',
+          text: 'rgb(var(--color-tooltip-text))'
         },
         badge: {
-          bg: 'rgb(var(--color-badge-bg) / <alpha-value>)',
-          text: 'rgb(var(--color-badge-text) / <alpha-value>)'
+          bg: 'rgb(var(--color-badge-bg))',
+          text: 'rgb(var(--color-badge-text))'
         }
       },
 

@@ -89,15 +89,15 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
   if (isLoading) {
     return (
-      <div className='bg-white dark:bg-slate-800 p-4 md:p-8 shadow rounded'>
+      <div className='rounded-sm bg-white p-4 shadow-sm md:p-8 dark:bg-slate-800'>
         <div className='animate-pulse'>
-          <div className='h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-4'></div>
+          <div className='mb-4 h-6 w-1/3 rounded-sm bg-gray-200 dark:bg-slate-700'></div>
           <div className='space-y-4'>
             {[1, 2, 3].map((i) => (
-              <div key={i} className='border-b dark:border-slate-700 pb-4'>
-                <div className='h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/4 mb-2'></div>
-                <div className='h-3 bg-gray-200 dark:bg-slate-700 rounded w-full mb-2'></div>
-                <div className='h-3 bg-gray-200 dark:bg-slate-700 rounded w-3/4'></div>
+              <div key={i} className='border-b pb-4 dark:border-slate-700'>
+                <div className='mb-2 h-4 w-1/4 rounded-sm bg-gray-200 dark:bg-slate-700'></div>
+                <div className='mb-2 h-3 w-full rounded-sm bg-gray-200 dark:bg-slate-700'></div>
+                <div className='h-3 w-3/4 rounded-sm bg-gray-200 dark:bg-slate-700'></div>
               </div>
             ))}
           </div>
@@ -107,37 +107,37 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
   }
 
   return (
-    <div className='bg-white dark:bg-slate-800 p-4 md:p-8 shadow rounded'>
+    <div className='rounded-sm bg-white p-4 shadow-sm md:p-8 dark:bg-slate-800'>
       {/* Header */}
-      <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6'>ĐÁNH GIÁ SẢN PHẨM</h2>
+      <h2 className='mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200'>ĐÁNH GIÁ SẢN PHẨM</h2>
 
       {/* Stats Overview */}
       {stats && (
-        <div className='bg-red-50 dark:bg-red-900/20 p-6 rounded-lg mb-6'>
+        <div className='mb-6 rounded-lg bg-red-50 p-6 dark:bg-red-900/20'>
           <div className='flex items-center space-x-8'>
             {/* Average Rating */}
             <div className='text-center'>
-              <div className='text-3xl font-bold text-red-500 mb-1'>{stats.average_rating}/5</div>
+              <div className='mb-1 text-3xl font-bold text-red-500'>{stats.average_rating}/5</div>
               <ProductRating
                 rating={stats.average_rating}
                 activeClassname='h-5 w-5 fill-red-500 text-red-500'
                 nonActiveClassname='h-5 w-5 fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
               />
-              <div className='text-sm text-gray-600 dark:text-gray-400 mt-1'>{stats.total_reviews} đánh giá</div>
+              <div className='mt-1 text-sm text-gray-600 dark:text-gray-400'>{stats.total_reviews} đánh giá</div>
             </div>
 
             {/* Rating Breakdown */}
             <div className='flex-1'>
               {[5, 4, 3, 2, 1].map((star) => (
-                <div key={star} className='flex items-center mb-1'>
-                  <span className='text-sm w-8 dark:text-gray-300'>{star}</span>
-                  <svg className='w-4 h-4 text-yellow-400 fill-current mx-1' viewBox='0 0 20 20'>
+                <div key={star} className='mb-1 flex items-center'>
+                  <span className='w-8 text-sm dark:text-gray-300'>{star}</span>
+                  <svg className='mx-1 h-4 w-4 fill-current text-yellow-400' viewBox='0 0 20 20'>
                     <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
                   </svg>
-                  <div className='flex-1 mx-2'>
-                    <div className='bg-gray-200 dark:bg-slate-700 rounded-full h-2'>
+                  <div className='mx-2 flex-1'>
+                    <div className='h-2 rounded-full bg-gray-200 dark:bg-slate-700'>
                       <div
-                        className='bg-red-500 h-2 rounded-full'
+                        className='h-2 rounded-full bg-red-500'
                         style={{
                           width:
                             stats.total_reviews > 0
@@ -147,7 +147,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
                       ></div>
                     </div>
                   </div>
-                  <span className='text-sm text-gray-600 dark:text-gray-400 w-8'>
+                  <span className='w-8 text-sm text-gray-600 dark:text-gray-400'>
                     {stats.rating_breakdown[star as keyof typeof stats.rating_breakdown]}
                   </span>
                 </div>
@@ -158,12 +158,12 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
       )}
 
       {/* Filters */}
-      <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 border-b dark:border-slate-700 pb-4 gap-3'>
-        <div className='flex items-center flex-wrap gap-2'>
+      <div className='mb-6 flex flex-col items-start justify-between gap-3 border-b pb-4 sm:flex-row sm:items-center dark:border-slate-700'>
+        <div className='flex flex-wrap items-center gap-2'>
           <span className='text-sm font-medium dark:text-gray-300'>Lọc theo:</span>
           <button
             onClick={() => setRatingFilter(undefined)}
-            className={`px-3 py-1 text-sm rounded ${!ratingFilter ? 'bg-red-500 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'}`}
+            className={`rounded-sm px-3 py-1 text-sm ${!ratingFilter ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
           >
             Tất Cả
           </button>
@@ -171,10 +171,10 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
             <button
               key={rating}
               onClick={() => setRatingFilter(rating)}
-              className={`px-3 py-1 text-sm rounded flex items-center ${ratingFilter === rating ? 'bg-red-500 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'}`}
+              className={`flex items-center rounded-sm px-3 py-1 text-sm ${ratingFilter === rating ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
             >
               {rating}{' '}
-              <svg className='w-3 h-3 ml-1 fill-current' viewBox='0 0 20 20'>
+              <svg className='ml-1 h-3 w-3 fill-current' viewBox='0 0 20 20'>
                 <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
               </svg>
             </button>
@@ -184,7 +184,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as any)}
-          className='px-3 py-1 border border-gray-300 dark:border-slate-600 rounded text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100'
+          className='rounded-sm border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
         >
           <option value='newest'>Mới nhất</option>
           <option value='oldest'>Cũ nhất</option>
@@ -215,16 +215,16 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
       {/* Pagination */}
       {pagination && pagination.total_pages > 1 && (
-        <div className='flex justify-center mt-8'>
+        <div className='mt-8 flex justify-center'>
           <div className='flex space-x-2'>
             {Array.from({ length: pagination.total_pages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-2 text-sm rounded ${
+                className={`rounded px-3 py-2 text-sm ${
                   page === currentPage
                     ? 'bg-red-500 text-white'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
                 }`}
               >
                 {page}
@@ -273,12 +273,12 @@ const ReviewItem = ({
   const comments = commentsData?.data.data.comments || []
 
   return (
-    <div className='border-b border-gray-200 dark:border-slate-700 pb-6'>
+    <div className='border-b border-gray-200 pb-6 dark:border-slate-700'>
       {/* User Info */}
       <div className='flex items-start space-x-4'>
-        <div className='w-10 h-10 bg-gray-300 dark:bg-slate-600 rounded-full flex items-center justify-center'>
+        <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 dark:bg-slate-600'>
           {review.user.avatar ? (
-            <img src={review.user.avatar} alt={review.user.name} className='w-10 h-10 rounded-full object-cover' />
+            <img src={review.user.avatar} alt={review.user.name} className='h-10 w-10 rounded-full object-cover' />
           ) : (
             <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>
               {review.user.name?.charAt(0).toUpperCase()}
@@ -288,7 +288,7 @@ const ReviewItem = ({
 
         <div className='flex-1'>
           {/* User Name & Rating */}
-          <div className='flex items-center space-x-2 mb-1'>
+          <div className='mb-1 flex items-center space-x-2'>
             <span className='font-medium text-gray-800 dark:text-gray-200'>{review.user.name}</span>
             <ProductRating
               rating={review.rating}
@@ -298,22 +298,22 @@ const ReviewItem = ({
           </div>
 
           {/* Time */}
-          <div className='text-sm text-gray-500 dark:text-gray-400 mb-2'>
+          <div className='mb-2 text-sm text-gray-500 dark:text-gray-400'>
             {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: vi })}
           </div>
 
           {/* Comment */}
-          <div className='text-gray-700 dark:text-gray-300 mb-3'>{review.comment}</div>
+          <div className='mb-3 text-gray-700 dark:text-gray-300'>{review.comment}</div>
 
           {/* Images */}
           {review.images && review.images.length > 0 && (
-            <div className='flex space-x-2 mb-3'>
+            <div className='mb-3 flex space-x-2'>
               {review.images.map((image, index) => (
                 <img
                   key={index}
                   src={image}
                   alt='Review'
-                  className='w-20 h-20 object-cover rounded border dark:border-slate-600'
+                  className='h-20 w-20 rounded-sm border object-cover dark:border-slate-600'
                 />
               ))}
             </div>
@@ -325,7 +325,7 @@ const ReviewItem = ({
               onClick={() => onLike(review._id)}
               className={`flex items-center space-x-1 ${review.is_liked ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'} hover:text-red-500`}
             >
-              <svg className='w-4 h-4 fill-current' viewBox='0 0 20 20'>
+              <svg className='h-4 w-4 fill-current' viewBox='0 0 20 20'>
                 <path d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' />
               </svg>
               <span>Hữu ích ({review.helpful_count})</span>
@@ -333,14 +333,14 @@ const ReviewItem = ({
 
             <button
               onClick={() => onToggleComments(review._id)}
-              className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               Bình luận ({review.comments_count || comments.length})
             </button>
 
             <button
               onClick={() => onReply()}
-              className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               Trả lời
             </button>
@@ -348,7 +348,7 @@ const ReviewItem = ({
 
           {/* Comments Section */}
           {isCommentsExpanded && (
-            <div className='mt-4 pl-4 border-l-2 border-gray-200 dark:border-slate-600'>
+            <div className='mt-4 border-l-2 border-gray-200 pl-4 dark:border-slate-600'>
               {comments.map((comment: ReviewComment) => (
                 <CommentItem
                   key={comment._id}
@@ -369,20 +369,20 @@ const ReviewItem = ({
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     placeholder='Viết bình luận...'
-                    className='w-full p-3 border border-gray-300 dark:border-slate-600 rounded-md resize-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100'
+                    className='w-full resize-none rounded-md border border-gray-300 bg-white p-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                     rows={3}
                   />
-                  <div className='flex justify-end space-x-2 mt-2'>
+                  <div className='mt-2 flex justify-end space-x-2'>
                     <button
                       onClick={() => onReply()}
-                      className='px-4 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded hover:bg-gray-50 dark:hover:bg-slate-700'
+                      className='rounded-sm border border-gray-300 px-4 py-2 text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                     >
                       Hủy
                     </button>
                     <button
                       onClick={() => onCommentSubmit(review._id)}
                       disabled={isSubmittingComment || !commentText.trim()}
-                      className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed'
+                      className='rounded-sm bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                     >
                       {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
                     </button>
@@ -420,9 +420,9 @@ const CommentItem = ({
   return (
     <div className='mb-4'>
       <div className='flex items-start space-x-3'>
-        <div className='w-8 h-8 bg-gray-300 dark:bg-slate-600 rounded-full flex items-center justify-center'>
+        <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 dark:bg-slate-600'>
           {comment.user.avatar ? (
-            <img src={comment.user.avatar} alt={comment.user.name} className='w-8 h-8 rounded-full object-cover' />
+            <img src={comment.user.avatar} alt={comment.user.name} className='h-8 w-8 rounded-full object-cover' />
           ) : (
             <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>
               {comment.user.name?.charAt(0).toUpperCase()}
@@ -431,12 +431,12 @@ const CommentItem = ({
         </div>
 
         <div className='flex-1'>
-          <div className='bg-gray-100 dark:bg-slate-700 rounded-lg p-3'>
-            <div className='font-medium text-sm text-gray-800 dark:text-gray-200 mb-1'>{comment.user.name}</div>
+          <div className='rounded-lg bg-gray-100 p-3 dark:bg-slate-700'>
+            <div className='mb-1 text-sm font-medium text-gray-800 dark:text-gray-200'>{comment.user.name}</div>
             <div className='text-sm text-gray-700 dark:text-gray-300'>{comment.content}</div>
           </div>
 
-          <div className='flex items-center space-x-4 mt-1 text-xs text-gray-500 dark:text-gray-400'>
+          <div className='mt-1 flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400'>
             <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: vi })}</span>
             <button onClick={() => onReply(comment._id)} className='hover:text-gray-700 dark:hover:text-gray-300'>
               Trả lời
@@ -450,20 +450,20 @@ const CommentItem = ({
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 placeholder={`Trả lời ${comment.user.name}...`}
-                className='w-full p-2 border border-gray-300 dark:border-slate-600 rounded-md resize-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100'
+                className='w-full resize-none rounded-md border border-gray-300 bg-white p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                 rows={2}
               />
-              <div className='flex justify-end space-x-2 mt-2'>
+              <div className='mt-2 flex justify-end space-x-2'>
                 <button
                   onClick={() => onReply()}
-                  className='px-3 py-1 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded hover:bg-gray-50 dark:hover:bg-slate-700'
+                  className='rounded-sm border border-gray-300 px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                 >
                   Hủy
                 </button>
                 <button
                   onClick={() => onCommentSubmit(comment.review, comment._id)}
                   disabled={isSubmittingComment || !commentText.trim()}
-                  className='px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='rounded-sm bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                 >
                   {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
                 </button>
@@ -473,7 +473,7 @@ const CommentItem = ({
 
           {/* Nested Replies */}
           {comment.replies && comment.replies.length > 0 && (
-            <div className='mt-3 pl-4 border-l border-gray-200 dark:border-slate-600'>
+            <div className='mt-3 border-l border-gray-200 pl-4 dark:border-slate-600'>
               {comment.replies.map((reply) => (
                 <CommentItem
                   key={reply._id}

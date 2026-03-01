@@ -75,7 +75,7 @@ export default function FlashSaleUrgency({
   const shouldPulse = ['critical', 'low', 'ending_soon'].includes(urgencyLevel) && !prefersReducedMotion
   const isInactive = urgencyLevel === 'ended' || urgencyLevel === 'out_of_stock'
 
-  const progressBarFill = isInactive ? 'bg-gray-400 dark:bg-gray-600' : 'bg-gradient-to-r from-[#ee4d2d] to-[#ff6633]'
+  const progressBarFill = isInactive ? 'bg-gray-400 dark:bg-gray-600' : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6633]'
 
   const urgencyTextColor = useMemo(() => {
     switch (urgencyLevel) {
@@ -104,7 +104,7 @@ export default function FlashSaleUrgency({
           transition={{ duration: 0.5, ease: 'easeOut' }}
         />
         {/* Sold percentage text */}
-        <span className='absolute inset-0 flex items-center justify-center text-xs font-semibold text-white drop-shadow-sm'>
+        <span className='absolute inset-0 flex items-center justify-center text-xs font-semibold text-white drop-shadow-xs'>
           Đã bán {soldPercentage}%
         </span>
       </div>

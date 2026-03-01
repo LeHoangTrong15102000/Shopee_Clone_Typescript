@@ -45,15 +45,15 @@ export default function PWAInstallPrompt() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className='fixed bottom-0 left-0 right-0 z-50 p-4 md:bottom-4 md:left-4 md:right-auto md:w-96'
+          className='fixed right-0 bottom-0 left-0 z-50 p-4 md:right-auto md:bottom-4 md:left-4 md:w-96'
           initial='hidden'
           animate='visible'
           exit='exit'
           variants={prefersReducedMotion ? undefined : slideUpVariants}
           transition={prefersReducedMotion ? { duration: 0 } : { type: 'spring', damping: 25, stiffness: 300 }}
         >
-          <div className='flex items-center gap-3 rounded-lg bg-white dark:bg-slate-800 p-4 shadow-lg ring-1 ring-gray-200 dark:ring-slate-600'>
-            <div className='flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-orange'>
+          <div className='flex items-center gap-3 rounded-lg bg-white p-4 shadow-lg ring-1 ring-gray-200 dark:bg-slate-800 dark:ring-slate-600'>
+            <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-orange'>
               <svg className='h-7 w-7 text-white' viewBox='0 0 24 24' fill='currentColor'>
                 <path d='M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z' />
               </svg>
@@ -64,12 +64,12 @@ export default function PWAInstallPrompt() {
               <p className='text-xs text-gray-500 dark:text-gray-400'>Cài đặt ứng dụng để trải nghiệm tốt hơn</p>
             </div>
 
-            <div className='flex flex-shrink-0 flex-col gap-2'>
+            <div className='flex shrink-0 flex-col gap-2'>
               <Button
                 variant='primary'
                 size='sm'
                 onClick={handleInstall}
-                className='rounded px-3 py-1.5 text-xs font-medium'
+                className='rounded-sm px-3 py-1.5 text-xs font-medium'
               >
                 Cài đặt
               </Button>
@@ -77,7 +77,7 @@ export default function PWAInstallPrompt() {
                 variant='ghost'
                 size='sm'
                 onClick={handleDismiss}
-                className='rounded px-3 py-1.5 text-xs font-medium'
+                className='rounded-sm px-3 py-1.5 text-xs font-medium'
               >
                 Để sau
               </Button>

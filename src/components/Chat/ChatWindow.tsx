@@ -55,7 +55,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
     return (
       <button
         onClick={handleToggle}
-        className='fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-transform hover:scale-105 hover:bg-[#d73211]'
+        className='fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-orange shadow-lg transition-transform hover:scale-105 hover:bg-[#d73211] sm:right-6 sm:bottom-6 sm:h-14 sm:w-14'
       >
         <svg className='h-6 w-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path
@@ -70,7 +70,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
   }
 
   return (
-    <div className='fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-50 flex h-[100dvh] w-full sm:h-[480px] sm:w-[350px] flex-col overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-2xl'>
+    <div className='fixed right-0 bottom-0 z-50 flex h-dvh w-full flex-col overflow-hidden rounded-lg bg-white shadow-2xl sm:right-6 sm:bottom-6 sm:h-[480px] sm:w-[350px] dark:bg-slate-800'>
       <div className='flex items-center justify-between bg-orange px-4 py-3 text-white'>
         <div className='flex items-center gap-3'>
           <div className='flex h-9 w-9 items-center justify-center rounded-full bg-white/20'>
@@ -79,7 +79,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             </svg>
           </div>
           <div>
-            <h3 className='text-xs sm:text-sm font-medium'>{sellerName}</h3>
+            <h3 className='text-xs font-medium sm:text-sm'>{sellerName}</h3>
             <div className='flex items-center gap-1.5'>
               <span className={classNames('h-2 w-2 rounded-full', getStatusColor())} />
               <span className='text-xs text-white/80'>{getConnectionStatus()}</span>
@@ -87,12 +87,16 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
           </div>
         </div>
         <div className='flex items-center gap-1'>
-          <button onClick={handleToggle} className='rounded p-1.5 transition-colors hover:bg-white/20' title='Thu nhỏ'>
+          <button
+            onClick={handleToggle}
+            className='rounded-sm p-1.5 transition-colors hover:bg-white/20'
+            title='Thu nhỏ'
+          >
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M18 12H6' />
             </svg>
           </button>
-          <button onClick={handleClose} className='rounded p-1.5 transition-colors hover:bg-white/20' title='Đóng'>
+          <button onClick={handleClose} className='rounded-sm p-1.5 transition-colors hover:bg-white/20' title='Đóng'>
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
             </svg>

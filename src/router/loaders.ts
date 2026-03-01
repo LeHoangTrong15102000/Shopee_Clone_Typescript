@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { LoaderFunction } from 'react-router-dom'
+import { LoaderFunction } from 'react-router'
 
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'

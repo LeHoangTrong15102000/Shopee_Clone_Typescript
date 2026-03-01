@@ -128,7 +128,7 @@ describe('QuantityController Component Unit Tests', () => {
         expect(defaultProps.onFocusOut).toHaveBeenCalledTimes(1)
       })
 
-      test('should handle focus and blur events', async () => {
+      test('should handle focus and blur-sm events', async () => {
         const user = userEvent.setup()
 
         render(<QuantityController {...defaultProps} />)

@@ -3,7 +3,7 @@ import DailyCheckIn from 'src/components/DailyCheckIn'
 
 // SVG Icon Components for reward tiers
 const BronzeShieldIcon = () => (
-  <svg viewBox='0 0 24 24' fill='none' className='w-8 h-8 text-amber-600 dark:text-amber-400 mx-auto'>
+  <svg viewBox='0 0 24 24' fill='none' className='mx-auto h-8 w-8 text-amber-600 dark:text-amber-400'>
     <path d='M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z' fill='currentColor' opacity='0.15' />
     <path
       d='M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z'
@@ -17,7 +17,7 @@ const BronzeShieldIcon = () => (
 )
 
 const SilverStarIcon = () => (
-  <svg viewBox='0 0 24 24' fill='none' className='w-8 h-8 text-slate-500 dark:text-slate-300 mx-auto'>
+  <svg viewBox='0 0 24 24' fill='none' className='mx-auto h-8 w-8 text-slate-500 dark:text-slate-300'>
     <path
       d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'
       fill='currentColor'
@@ -34,7 +34,7 @@ const SilverStarIcon = () => (
 )
 
 const GoldTrophyIcon = () => (
-  <svg viewBox='0 0 24 24' fill='none' className='w-8 h-8 text-yellow-500 dark:text-yellow-400 mx-auto'>
+  <svg viewBox='0 0 24 24' fill='none' className='mx-auto h-8 w-8 text-yellow-500 dark:text-yellow-400'>
     <path d='M6 2h12v6a6 6 0 01-12 0V2z' fill='currentColor' opacity='0.15' />
     <path d='M6 2h12v6a6 6 0 01-12 0V2z' stroke='currentColor' strokeWidth='1.5' />
     <path d='M12 14v3' stroke='currentColor' strokeWidth='1.5' />
@@ -46,7 +46,7 @@ const GoldTrophyIcon = () => (
 )
 
 const DiamondCrownIcon = () => (
-  <svg viewBox='0 0 24 24' fill='none' className='w-8 h-8 text-violet-500 dark:text-violet-400 mx-auto'>
+  <svg viewBox='0 0 24 24' fill='none' className='mx-auto h-8 w-8 text-violet-500 dark:text-violet-400'>
     <path d='M2 8l4-4 6 4 6-4 4 4-4 12H6L2 8z' fill='currentColor' opacity='0.15' />
     <path
       d='M2 8l4-4 6 4 6-4 4 4-4 12H6L2 8z'
@@ -60,7 +60,7 @@ const DiamondCrownIcon = () => (
 )
 
 const LightbulbIcon = () => (
-  <svg viewBox='0 0 24 24' fill='none' className='w-5 h-5 text-amber-500 dark:text-amber-400 inline-block mr-1'>
+  <svg viewBox='0 0 24 24' fill='none' className='mr-1 inline-block h-5 w-5 text-amber-500 dark:text-amber-400'>
     <path
       d='M9 21h6M12 3a6 6 0 00-4 10.47V17a1 1 0 001 1h6a1 1 0 001-1v-3.53A6 6 0 0012 3z'
       stroke='currentColor'
@@ -74,14 +74,14 @@ const LightbulbIcon = () => (
 
 export default function DailyCheckInPage() {
   return (
-    <div className='rounded-sm bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'>
+    <div className='rounded-xs bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
       <Helmet>
         <title>Điểm danh hàng ngày | Shopee Clone</title>
         <meta name='description' content='Điểm danh hàng ngày để nhận xu và phần thưởng' />
       </Helmet>
 
-      <div className='border-b border-b-gray-200 dark:border-b-slate-700 py-6'>
-        <h1 className='text-lg font-medium capitalize text-gray-900 dark:text-gray-100'>Điểm danh hàng ngày</h1>
+      <div className='border-b border-b-gray-200 py-6 dark:border-b-slate-700'>
+        <h1 className='text-lg font-medium text-gray-900 capitalize dark:text-gray-100'>Điểm danh hàng ngày</h1>
         <div className='mt-1 text-sm text-gray-700 dark:text-gray-300'>
           Điểm danh mỗi ngày để nhận xu và phần thưởng hấp dẫn
         </div>
@@ -92,36 +92,36 @@ export default function DailyCheckInPage() {
 
         {/* Rewards Info */}
         <div className='mt-8 w-full max-w-2xl'>
-          <h2 className='text-base font-medium text-gray-900 dark:text-gray-100 mb-4'>
+          <h2 className='mb-4 text-base font-medium text-gray-900 dark:text-gray-100'>
             Phần thưởng theo chuỗi điểm danh
           </h2>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-            <div className='relative overflow-hidden bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 text-center transition-all duration-300'>
-              <div className='absolute inset-0 bg-gradient-to-br from-amber-100/50 to-transparent dark:from-amber-800/10' />
+          <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
+            <div className='relative overflow-hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-center transition-all duration-300 dark:border-amber-700/50 dark:bg-amber-950/30'>
+              <div className='absolute inset-0 bg-linear-to-br from-amber-100/50 to-transparent dark:from-amber-800/10' />
               <div className='relative mb-2'>
                 <BronzeShieldIcon />
               </div>
               <div className='relative font-semibold text-gray-900 dark:text-gray-100'>3 ngày</div>
               <div className='relative text-sm font-bold text-amber-600 dark:text-amber-400'>x1.5 xu</div>
             </div>
-            <div className='relative overflow-hidden bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600/50 rounded-xl p-4 text-center transition-all duration-300'>
-              <div className='absolute inset-0 bg-gradient-to-br from-slate-100/50 to-transparent dark:from-slate-600/10' />
+            <div className='relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-4 text-center transition-all duration-300 dark:border-slate-600/50 dark:bg-slate-700/50'>
+              <div className='absolute inset-0 bg-linear-to-br from-slate-100/50 to-transparent dark:from-slate-600/10' />
               <div className='relative mb-2'>
                 <SilverStarIcon />
               </div>
               <div className='relative font-semibold text-gray-900 dark:text-gray-100'>7 ngày</div>
               <div className='relative text-sm font-bold text-slate-500 dark:text-slate-300'>x2 xu</div>
             </div>
-            <div className='relative overflow-hidden bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-700/50 rounded-xl p-4 text-center transition-all duration-300'>
-              <div className='absolute inset-0 bg-gradient-to-br from-yellow-100/50 to-transparent dark:from-yellow-800/10' />
+            <div className='relative overflow-hidden rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-center transition-all duration-300 dark:border-yellow-700/50 dark:bg-yellow-950/30'>
+              <div className='absolute inset-0 bg-linear-to-br from-yellow-100/50 to-transparent dark:from-yellow-800/10' />
               <div className='relative mb-2'>
                 <GoldTrophyIcon />
               </div>
               <div className='relative font-semibold text-gray-900 dark:text-gray-100'>14 ngày</div>
               <div className='relative text-sm font-bold text-yellow-500 dark:text-yellow-400'>x2.5 xu</div>
             </div>
-            <div className='relative overflow-hidden bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-500/30 rounded-xl p-4 text-center transition-all duration-300 shadow-md shadow-violet-100 dark:shadow-violet-900/30'>
-              <div className='absolute inset-0 bg-gradient-to-br from-violet-100/60 via-transparent to-purple-100/40 dark:from-violet-800/15 dark:to-purple-800/10' />
+            <div className='relative overflow-hidden rounded-xl border border-violet-200 bg-violet-50 p-4 text-center shadow-md shadow-violet-100 transition-all duration-300 dark:border-violet-500/30 dark:bg-violet-950/30 dark:shadow-violet-900/30'>
+              <div className='absolute inset-0 bg-linear-to-br from-violet-100/60 via-transparent to-purple-100/40 dark:from-violet-800/15 dark:to-purple-800/10' />
               <div className='relative mb-2'>
                 <DiamondCrownIcon />
               </div>
@@ -132,11 +132,11 @@ export default function DailyCheckInPage() {
         </div>
 
         {/* Tips */}
-        <div className='mt-8 w-full max-w-2xl bg-orange-50 dark:bg-slate-700 rounded-lg p-4'>
-          <h3 className='font-medium text-gray-900 dark:text-gray-100 mb-2 flex items-center'>
+        <div className='mt-8 w-full max-w-2xl rounded-lg bg-orange-50 p-4 dark:bg-slate-700'>
+          <h3 className='mb-2 flex items-center font-medium text-gray-900 dark:text-gray-100'>
             <LightbulbIcon /> Mẹo nhỏ
           </h3>
-          <ul className='text-sm text-gray-600 dark:text-gray-300 space-y-1'>
+          <ul className='space-y-1 text-sm text-gray-600 dark:text-gray-300'>
             <li>• Điểm danh liên tục để nhận thưởng cao hơn</li>
             <li>• Chuỗi điểm danh sẽ bị reset nếu bạn bỏ lỡ 1 ngày</li>
             <li>• Xu có thể dùng để đổi voucher giảm giá</li>

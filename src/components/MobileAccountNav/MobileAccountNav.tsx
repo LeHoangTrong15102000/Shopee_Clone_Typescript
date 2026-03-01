@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
@@ -31,7 +31,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -51,7 +51,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -71,7 +71,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -91,7 +91,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -111,7 +111,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -131,7 +131,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -151,7 +151,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path strokeLinecap='round' strokeLinejoin='round' d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z' />
         <path
@@ -172,7 +172,7 @@ const mobileNavItems = [
         viewBox='0 0 24 24'
         strokeWidth={1.5}
         stroke='currentColor'
-        className='w-5 h-5'
+        className='h-5 w-5'
       >
         <path
           strokeLinecap='round'
@@ -237,7 +237,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
   }, [])
 
   return (
-    <div ref={dropdownRef} className={classNames('md:hidden bg-white dark:bg-slate-800 relative', className)}>
+    <div ref={dropdownRef} className={classNames('relative bg-white md:hidden dark:bg-slate-800', className)}>
       {/* Dropdown trigger button */}
       <button
         type='button'
@@ -245,14 +245,14 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
         aria-expanded={isOpen}
         aria-haspopup='listbox'
         aria-label='Menu tài khoản'
-        className='w-full flex items-center justify-between px-3 py-2.5 text-left'
+        className='flex w-full items-center justify-between px-3 py-2.5 text-left'
       >
         <div className='flex items-center gap-2'>
           <span className='text-[#ee4d2d] dark:text-orange-400'>{activeItem.icon}</span>
           <span className='text-sm font-medium text-gray-900 dark:text-gray-100'>{activeItem.label}</span>
         </div>
         <ChevronDownIcon
-          className={classNames('w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform', {
+          className={classNames('h-4 w-4 text-gray-400 transition-transform dark:text-gray-500', {
             'rotate-180': isOpen,
             'duration-200': !reducedMotion
           })}
@@ -269,7 +269,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
             transition={reducedMotion ? { duration: 0 } : { duration: 0.12 }}
             role='listbox'
             aria-label='Chọn trang tài khoản'
-            className='absolute left-0 right-0 top-full z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 shadow-lg rounded-b-lg overflow-hidden mt-px'
+            className='absolute top-full right-0 left-0 z-50 mt-px overflow-hidden rounded-b-lg border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800'
           >
             {mobileNavItems.map((item) => {
               const isActive = location.pathname === item.to
@@ -280,14 +280,14 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
                   role='option'
                   aria-selected={isActive}
                   onClick={() => handleSelect(item.to)}
-                  className={classNames('w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors', {
-                    'bg-orange-50 dark:bg-orange-900/20 text-[#ee4d2d] dark:text-orange-400': isActive,
-                    'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700': !isActive
+                  className={classNames('flex w-full items-center gap-2.5 px-3 py-2 text-sm transition-colors', {
+                    'bg-orange-50 text-[#ee4d2d] dark:bg-orange-900/20 dark:text-orange-400': isActive,
+                    'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700': !isActive
                   })}
                 >
                   <span
                     className={classNames(
-                      'flex-shrink-0',
+                      'shrink-0',
                       isActive ? 'text-[#ee4d2d] dark:text-orange-400' : 'text-gray-400 dark:text-gray-500'
                     )}
                   >

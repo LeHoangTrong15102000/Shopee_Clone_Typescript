@@ -112,7 +112,7 @@ const HistoryPurchases = () => {
             ) : (
               <motion.div
                 key='empty-state'
-                className='mt-4 flex flex-col items-center justify-center rounded-sm bg-white dark:bg-slate-800 p-12 text-black/60 dark:text-gray-400 shadow-sm'
+                className='mt-4 flex flex-col items-center justify-center rounded-xs bg-white p-12 text-black/60 shadow-xs dark:bg-slate-800 dark:text-gray-400'
                 initial={reducedMotion ? undefined : { opacity: 0, y: 10 }}
                 animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
@@ -140,7 +140,7 @@ const HistoryPurchases = () => {
                     <button
                       type='button'
                       onClick={clearAllFilters}
-                      className='mt-3 text-sm text-[#ee4d2d] dark:text-orange-400 hover:text-[#d73211] dark:hover:text-orange-300 font-medium underline transition-colors'
+                      className='mt-3 text-sm font-medium text-[#ee4d2d] underline transition-colors hover:text-[#d73211] dark:text-orange-400 dark:hover:text-orange-300'
                     >
                       Xóa tất cả bộ lọc
                     </button>

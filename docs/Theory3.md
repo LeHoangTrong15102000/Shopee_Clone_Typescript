@@ -71,20 +71,20 @@
 
       {/*  onSubmit={onSubmitSearch} */}
             <!-- <form className=' col-span-9'>
-              <div className='flex rounded-sm bg-white p-1'>
+              <div className='flex rounded-xs bg-white p-1'>
                 <input
                   ref={inputRef}
                   value={searchValue}
                   onChange={handleChangeInput}
                   type='text'
-                  className='flex-grow border-none bg-transparent px-3 py-2 text-sm text-[rgba(0,0,0,.95)] outline-none'
+                  className='grow border-none bg-transparent px-3 py-2 text-sm text-[rgba(0,0,0,.95)] outline-hidden'
                   placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
                   {...register('name')}
                 /> -->
 
                 <button
                   type='submit'
-                  className='flex-shrink-0 rounded-sm bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-2 px-6 hover:opacity-90'
+                  className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] py-2 px-6 hover:opacity-90'
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'

@@ -187,14 +187,14 @@ const Notifications = () => {
   // Loading skeleton
   if (isLoading) {
     return (
-      <div className='rounded-lg bg-white p-4 shadow md:p-6 dark:bg-slate-800'>
+      <div className='rounded-lg bg-white p-4 shadow-sm md:p-6 dark:bg-slate-800'>
         <div className='mb-6 flex items-center justify-between'>
-          <div className='h-8 w-32 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
-          <div className='h-8 w-40 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
+          <div className='h-8 w-32 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
+          <div className='h-8 w-40 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
         </div>
-        <div className='mb-6 flex gap-4 overflow-x-auto scrollbar-hide'>
+        <div className='mb-6 scrollbar-hide flex gap-4 overflow-x-auto'>
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className='h-8 w-20 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
+            <div key={i} className='h-8 w-20 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
           ))}
         </div>
         <div className='space-y-4'>
@@ -202,9 +202,9 @@ const Notifications = () => {
             <div key={i} className='flex gap-3 rounded-lg border p-4 dark:border-slate-600'>
               <div className='h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-slate-600' />
               <div className='flex-1 space-y-2'>
-                <div className='h-4 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
-                <div className='h-3 w-full animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
-                <div className='h-3 w-1/4 animate-pulse rounded bg-gray-200 dark:bg-slate-600' />
+                <div className='h-4 w-3/4 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
+                <div className='h-3 w-full animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
+                <div className='h-3 w-1/4 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-600' />
               </div>
             </div>
           ))}
@@ -215,7 +215,7 @@ const Notifications = () => {
 
   return (
     <motion.div
-      className='rounded-lg bg-white p-4 shadow md:p-6 dark:bg-slate-800'
+      className='rounded-lg bg-white p-4 shadow-sm md:p-6 dark:bg-slate-800'
       initial={reducedMotion ? undefined : { opacity: 0, y: 15 }}
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -293,13 +293,13 @@ const Notifications = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className='mb-6 flex gap-1 overflow-x-auto scrollbar-hide border-b border-gray-200 pb-px md:gap-2 dark:border-slate-600'>
+      <div className='mb-6 scrollbar-hide flex gap-1 overflow-x-auto border-b border-gray-200 pb-px md:gap-2 dark:border-slate-600'>
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.key}
             type='button'
             onClick={() => setActiveTab(tab.key)}
-            className={`whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors ${
+            className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
               activeTab === tab.key
                 ? 'border-b-2 border-[#ee4d2d] text-[#ee4d2d] dark:border-orange-400 dark:text-orange-400'
                 : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -379,7 +379,7 @@ const Notifications = () => {
                   }
                 >
                   {/* Icon */}
-                  <div className='flex-shrink-0'>{getNotificationIcon(notification.type)}</div>
+                  <div className='shrink-0'>{getNotificationIcon(notification.type)}</div>
 
                   {/* Content */}
                   <div className='min-w-0 flex-1'>
@@ -390,7 +390,7 @@ const Notifications = () => {
                         {notification.title}
                       </h3>
                       {!notification.isRead && (
-                        <span className='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-[#ee4d2d] dark:bg-orange-400' />
+                        <span className='mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ee4d2d] dark:bg-orange-400' />
                       )}
                     </div>
                     <p className='mt-1 line-clamp-2 text-sm text-gray-500 dark:text-gray-400'>{notification.content}</p>

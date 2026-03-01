@@ -148,7 +148,7 @@ const BankLogo = memo(function BankLogo({ bank, size = 'md' }: { bank: BankInfo;
 
   return (
     <div
-      className={`flex items-center justify-center rounded-xl bg-gradient-to-br ${gradientMap[bank.id]} ${sizeClasses[size]} font-bold text-white shadow-md`}
+      className={`flex items-center justify-center rounded-xl bg-linear-to-br ${gradientMap[bank.id]} ${sizeClasses[size]} font-bold text-white shadow-md`}
     >
       {bank.shortName}
     </div>
@@ -202,7 +202,7 @@ const BankDropdown = memo(function BankDropdown({
       <button
         type='button'
         onClick={onToggle}
-        className='flex w-full items-center justify-between rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-left transition-all hover:border-blue-300 focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-400'
+        className='flex w-full items-center justify-between rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-left transition-all hover:border-blue-300 focus:border-blue-500 focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-400'
       >
         {selectedBank ? (
           <div className='flex items-center gap-3'>
@@ -238,7 +238,7 @@ const BankDropdown = memo(function BankDropdown({
             <div className='border-b border-gray-100 p-3 dark:border-slate-700'>
               <div className='relative'>
                 <svg
-                  className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500'
+                  className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -255,7 +255,7 @@ const BankDropdown = memo(function BankDropdown({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder='Tìm ngân hàng...'
-                  className='w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200'
+                  className='w-full rounded-lg border border-gray-200 py-2 pr-4 pl-10 text-sm focus:border-blue-500 focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200'
                   autoFocus
                 />
               </div>
@@ -338,7 +338,7 @@ const VietQRCode = memo(function VietQRCode({
           </g>
         </svg>
         <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='rounded-lg bg-white p-1 shadow-sm'>
+          <div className='rounded-lg bg-white p-1 shadow-xs'>
             <BankLogo bank={bank} size='sm' />
           </div>
         </div>
@@ -405,7 +405,7 @@ const AccountInfoCard = memo(function AccountInfoCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl ${bank.bgColor} p-4 shadow-sm`}
+      className={`rounded-xl ${bank.bgColor} p-4 shadow-xs`}
     >
       <h4 className={`mb-4 font-semibold ${bank.color}`}>Thông tin chuyển khoản</h4>
       <div className='space-y-3'>
@@ -503,19 +503,19 @@ const CountdownTimer = memo(function CountdownTimer({
         {!isExpired && (
           <div className='flex items-center gap-1 font-mono text-lg font-bold'>
             <span
-              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+              className={`rounded-sm px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
             >
               {hours.toString().padStart(2, '0')}
             </span>
             <span className={isWarning ? 'text-orange-600' : 'text-blue-600'}>:</span>
             <span
-              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+              className={`rounded-sm px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
             >
               {minutes.toString().padStart(2, '0')}
             </span>
             <span className={isWarning ? 'text-orange-600' : 'text-blue-600'}>:</span>
             <span
-              className={`rounded px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
+              className={`rounded-sm px-2 py-1 ${isWarning ? 'bg-orange-200 text-orange-800' : 'bg-blue-200 text-blue-800'}`}
             >
               {secs.toString().padStart(2, '0')}
             </span>

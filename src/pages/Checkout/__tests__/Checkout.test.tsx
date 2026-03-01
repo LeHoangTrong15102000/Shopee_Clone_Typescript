@@ -1,7 +1,7 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppContext, getInitialAppContext } from 'src/contexts/app.context'
 import Checkout from '../Checkout'
@@ -31,8 +31,8 @@ vi.mock('framer-motion', () => ({
 
 // Mock navigate
 const mockNavigate = vi.fn()
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom')
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router')
   return {
     ...actual,
     useNavigate: () => mockNavigate
@@ -125,7 +125,7 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 
 let queryClient: QueryClient
 let mockExtendedPurchases: ExtendedPurchase[]
-let mockSetExtendedPurchases: ReturnType<typeof vi.fn>
+let mockSetExtendedPurchases: any
 
 const createWrapper = (initialPurchases: ExtendedPurchase[] = []) => {
   return ({ children }: { children: React.ReactNode }) => {

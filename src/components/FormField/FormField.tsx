@@ -19,7 +19,7 @@ const FormField = ({ label, error, required, className = '', children, htmlFor }
         </label>
       )}
       {children}
-      {error && <p className='mt-1 min-h-[1.25rem] text-sm text-red-600 dark:text-red-400'>{error}</p>}
+      {error && <p className='mt-1 min-h-5 text-sm text-red-600 dark:text-red-400'>{error}</p>}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { staggerContainer, staggerItem, STAGGER_DELAY, ANIMATION_DURATION } from 'src/styles/animations'
@@ -26,13 +26,13 @@ const NotFound = () => {
       animate={reducedMotion ? undefined : 'visible'}
     >
       <motion.h1
-        className='text-6xl sm:text-7xl md:text-9xl font-extrabold tracking-widest text-black/90 dark:text-gray-100'
+        className='text-6xl font-extrabold tracking-widest text-black/90 sm:text-7xl md:text-9xl dark:text-gray-100'
         variants={reducedMotion ? undefined : floatingVariants}
       >
         404
       </motion.h1>
       <motion.div
-        className='absolute rotate-12 rounded bg-orange px-2 text-sm text-white'
+        className='absolute rotate-12 rounded-sm bg-orange px-2 text-sm text-white'
         variants={reducedMotion ? undefined : staggerItem}
       >
         Page Not Found
@@ -40,9 +40,9 @@ const NotFound = () => {
       <motion.div className='mt-5' variants={reducedMotion ? undefined : staggerItem}>
         <Link
           to={path.home} // cho redirect về Home
-          className='active:text-orange-500 group relative inline-block text-sm font-medium text-orange dark:text-orange-400 focus:outline-none focus:ring'
+          className='group relative inline-block text-sm font-medium text-orange focus:ring-3 focus:outline-hidden active:text-orange-500 dark:text-orange-400'
         >
-          <span className='absolute inset-0 translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] transition-transform group-hover:translate-y-0 group-hover:translate-x-0' />
+          <span className='absolute inset-0 translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] transition-transform group-hover:translate-x-0 group-hover:translate-y-0' />
           <span className='relative block border border-current bg-orange px-8 py-3'>
             <span className='text-white'>Go Home</span>
           </span>

@@ -70,7 +70,7 @@ export default function EmptyState({ icon, title, description, action, className
         {action && (
           <button
             onClick={action.onClick}
-            className='flex items-center gap-2 rounded-sm bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
+            className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
           >
             {action.label}
           </button>
@@ -129,7 +129,7 @@ export default function EmptyState({ icon, title, description, action, className
       {action && (
         <motion.button
           onClick={action.onClick}
-          className='flex items-center gap-2 rounded-sm bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
+          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
           initial={{ opacity: 0, y: 10 }}
           animate={{
             opacity: 1,

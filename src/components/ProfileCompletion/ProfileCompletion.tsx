@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { User } from 'src/types/user.type'
@@ -14,7 +14,7 @@ interface ProfileCompletionProps {
 // Shimmer effect component for incomplete fields
 const ShimmerEffect = () => (
   <motion.div
-    className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent'
+    className='absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent'
     animate={{ translateX: ['100%', '-100%'] }}
     transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: 'linear' }}
     aria-hidden='true'
@@ -59,7 +59,7 @@ interface GoldenSparkleProps {
 
 const GoldenSparkle = ({ delay, x, y, size = 6 }: GoldenSparkleProps) => (
   <motion.div
-    className='absolute rounded-full bg-gradient-to-r from-yellow-300 to-amber-400'
+    className='absolute rounded-full bg-linear-to-r from-yellow-300 to-amber-400'
     style={{ left: x, top: y, width: size, height: size }}
     animate={{
       opacity: [0, 1, 0],
@@ -227,7 +227,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
   if (compact) {
     return (
       <div className={`mt-4 px-2 ${className}`}>
-        <div className='text-sm font-medium text-gray-600 dark:text-gray-300 mb-2'>
+        <div className='mb-2 text-sm font-medium text-gray-600 dark:text-gray-300'>
           {percentage === 100 ? (
             <span className='flex items-center gap-1 text-green-600 dark:text-green-400'>
               <svg
@@ -251,7 +251,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
           )}
         </div>
         <div
-          className='h-2 w-full rounded-full bg-gray-200 dark:bg-slate-700 overflow-hidden'
+          className='h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700'
           role='progressbar'
           aria-valuenow={percentage}
           aria-valuemin={0}
@@ -259,7 +259,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
           aria-label={`Tiến độ hoàn thành hồ sơ: ${percentage}%`}
         >
           <motion.div
-            className='h-full rounded-full bg-gradient-to-r from-[#ee4d2d] to-[#ff6633]'
+            className='h-full rounded-full bg-linear-to-r from-[#ee4d2d] to-[#ff6633]'
             initial={reducedMotion ? { width: `${percentage}%` } : { width: 0 }}
             animate={{ width: `${percentage}%` }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -271,9 +271,9 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
 
   // Full version - Enhanced UI
   return (
-    <div className={`relative mt-6 overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-lg ${className}`}>
+    <div className={`relative mt-6 overflow-hidden rounded-2xl bg-white shadow-lg dark:bg-slate-800 ${className}`}>
       {/* Header with gradient */}
-      <div className='relative bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-6 py-5'>
+      <div className='relative bg-linear-to-r from-orange-500 via-orange-400 to-amber-400 px-6 py-5'>
         {/* Decorative pattern overlay */}
         <div className='absolute inset-0 opacity-20'>
           <div
@@ -297,7 +297,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
             <motion.div
               initial={reducedMotion ? { scale: 1 } : { scale: 0 }}
               animate={{ scale: 1 }}
-              className='flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm'
+              className='flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs'
               aria-hidden='true'
             >
               <svg
@@ -320,17 +320,17 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
       </div>
 
       <div className='p-6'>
-        <div className='flex flex-col sm:flex-row items-center gap-8'>
+        <div className='flex flex-col items-center gap-8 sm:flex-row'>
           {/* Circular Progress Ring */}
           <div
-            className='relative flex-shrink-0'
+            className='relative shrink-0'
             role='progressbar'
             aria-valuenow={percentage}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-label={`Tiến độ hoàn thành hồ sơ: ${percentage}%`}
           >
-            <svg width='120' height='120' className='transform -rotate-90' aria-hidden='true'>
+            <svg width='120' height='120' className='-rotate-90 transform' aria-hidden='true'>
               {/* Background circle */}
               <circle
                 cx='60'
@@ -386,27 +386,26 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
               >
                 {percentage}%
               </motion.span>
-              <span className='text-[10px] font-medium mt-0.5' style={{ color: statusColor.from, opacity: 0.75 }}>
+              <span className='mt-0.5 text-[10px] font-medium' style={{ color: statusColor.from, opacity: 0.75 }}>
                 hoàn thành
               </span>
             </div>
           </div>
 
           {/* Field list - Enhanced with gradients and animations */}
-          <div className='flex-grow w-full'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+          <div className='w-full grow'>
+            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               {PROFILE_FIELDS.map((field, index) => {
                 const isComplete = completedFields.some((f) => f.key === field.key)
                 const IconComponent = ProfileIcons[field.key]
                 return (
                   <motion.div
                     key={field.key}
-                    className={`relative flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-300 cursor-default
-                      ${
-                        isComplete
-                          ? 'bg-gradient-to-br from-emerald-50 via-emerald-50 to-teal-50 dark:from-emerald-900/40 dark:via-emerald-900/30 dark:to-teal-900/40 border border-emerald-200/60 dark:border-emerald-700/50 shadow-sm hover:shadow-md hover:shadow-emerald-100/50 dark:hover:shadow-emerald-900/30'
-                          : 'bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-900/40 dark:via-amber-900/30 dark:to-yellow-900/40 border border-orange-200/60 dark:border-orange-700/50 shadow-sm hover:shadow-md hover:shadow-orange-100/50 dark:hover:shadow-orange-900/30'
-                      }`}
+                    className={`relative flex cursor-default items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-300 ${
+                      isComplete
+                        ? 'border border-emerald-200/60 bg-linear-to-br from-emerald-50 via-emerald-50 to-teal-50 shadow-xs hover:shadow-md hover:shadow-emerald-100/50 dark:border-emerald-700/50 dark:from-emerald-900/40 dark:via-emerald-900/30 dark:to-teal-900/40 dark:hover:shadow-emerald-900/30'
+                        : 'border border-orange-200/60 bg-linear-to-br from-orange-50 via-amber-50 to-yellow-50 shadow-xs hover:shadow-md hover:shadow-orange-100/50 dark:border-orange-700/50 dark:from-orange-900/40 dark:via-amber-900/30 dark:to-yellow-900/40 dark:hover:shadow-orange-900/30'
+                    }`}
                     initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.4, delay: 0.08 * index, ease: 'easeOut' }}
@@ -417,7 +416,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
 
                     {/* Floating particles for visual interest */}
                     {!isComplete && !reducedMotion && (
-                      <div className='absolute inset-0 pointer-events-none'>
+                      <div className='pointer-events-none absolute inset-0'>
                         <FloatingParticle delay={index * 0.3} size={4} color='bg-orange-300/40' />
                         <FloatingParticle delay={index * 0.3 + 0.5} size={3} color='bg-amber-300/40' />
                       </div>
@@ -425,22 +424,20 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
 
                     {/* Icon container with gradient background */}
                     <motion.div
-                      className={`relative flex h-9 w-9 items-center justify-center rounded-xl flex-shrink-0 shadow-sm
-                        ${
-                          isComplete
-                            ? 'bg-gradient-to-br from-emerald-400 to-teal-500 dark:from-emerald-500 dark:to-teal-600'
-                            : 'bg-gradient-to-br from-orange-400 to-amber-500 dark:from-orange-500 dark:to-amber-600'
-                        }`}
+                      className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-xs ${
+                        isComplete
+                          ? 'bg-linear-to-br from-emerald-400 to-teal-500 dark:from-emerald-500 dark:to-teal-600'
+                          : 'bg-linear-to-br from-orange-400 to-amber-500 dark:from-orange-500 dark:to-amber-600'
+                      }`}
                       whileHover={reducedMotion ? {} : { rotate: [0, -5, 5, 0] }}
                       transition={{ duration: 0.4 }}
                     >
-                      {IconComponent(`h-4 w-4 text-white drop-shadow-sm`)}
+                      {IconComponent(`h-4 w-4 text-white drop-shadow-xs`)}
                     </motion.div>
 
                     {/* Label with enhanced typography */}
                     <span
-                      className={`flex-1 text-sm font-semibold whitespace-nowrap
-                      ${isComplete ? 'text-emerald-700 dark:text-emerald-200' : 'text-gray-700 dark:text-gray-200'}`}
+                      className={`flex-1 text-sm font-semibold whitespace-nowrap ${isComplete ? 'text-emerald-700 dark:text-emerald-200' : 'text-gray-700 dark:text-gray-200'}`}
                     >
                       {field.label}
                     </span>
@@ -448,14 +445,14 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
                     {/* Status indicator */}
                     {isComplete ? (
                       <motion.div
-                        className='flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex-shrink-0 shadow-md'
+                        className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-teal-500 shadow-md'
                         aria-label='Đã hoàn thành'
                         initial={reducedMotion ? {} : { scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 500, damping: 25, delay: 0.1 * index }}
                       >
                         <svg
-                          className='h-3.5 w-3.5 text-white drop-shadow-sm'
+                          className='h-3.5 w-3.5 text-white drop-shadow-xs'
                           fill='none'
                           viewBox='0 0 24 24'
                           stroke='currentColor'
@@ -468,7 +465,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
                     ) : (
                       <Link
                         to={path.profile}
-                        className='relative flex items-center gap-1 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-2.5 py-1 text-xs font-semibold text-white transition-all duration-300 hover:from-orange-600 hover:to-amber-600 hover:shadow-lg hover:shadow-orange-200/50 dark:hover:shadow-orange-900/30 flex-shrink-0 overflow-hidden group'
+                        className='group relative flex shrink-0 items-center gap-1 overflow-hidden rounded-full bg-linear-to-r from-orange-500 to-amber-500 px-2.5 py-1 text-xs font-semibold text-white transition-all duration-300 hover:from-orange-600 hover:to-amber-600 hover:shadow-lg hover:shadow-orange-200/50 dark:hover:shadow-orange-900/30'
                       >
                         <span className='relative z-10'>Cập nhật</span>
                         <svg
@@ -482,7 +479,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
                         </svg>
                         {/* Button shine effect */}
                         <motion.div
-                          className='absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full'
+                          className='absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent'
                           animate={{ translateX: ['100%', '-100%'] }}
                           transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
                           aria-hidden='true'
@@ -498,12 +495,12 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
           {/* Benefits panel - Shows when profile is incomplete */}
           {percentage < 100 && (
             <motion.div
-              className='hidden lg:flex flex-col gap-3 w-48 flex-shrink-0'
+              className='hidden w-48 shrink-0 flex-col gap-3 lg:flex'
               initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <h4 className='text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+              <h4 className='text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400'>
                 Lợi ích khi hoàn thành
               </h4>
               {[
@@ -573,17 +570,17 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
               ].map((item, i) => (
                 <motion.div
                   key={item.id}
-                  className='flex items-start gap-2.5 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 dark:from-slate-700/50 dark:to-slate-800/50 p-3 border border-gray-100 dark:border-slate-700/50'
+                  className='flex items-start gap-2.5 rounded-xl border border-gray-100 bg-linear-to-br from-gray-50 to-slate-50 p-3 dark:border-slate-700/50 dark:from-slate-700/50 dark:to-slate-800/50'
                   initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
                 >
-                  <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-amber-500 flex-shrink-0'>
+                  <div className='flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-orange-400 to-amber-500'>
                     {item.icon}
                   </div>
                   <div>
                     <p className='text-xs font-semibold text-gray-700 dark:text-gray-200'>{item.title}</p>
-                    <p className='text-[10px] text-gray-500 dark:text-gray-400 mt-0.5 leading-tight'>{item.desc}</p>
+                    <p className='mt-0.5 text-[10px] leading-tight text-gray-500 dark:text-gray-400'>{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -593,13 +590,13 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
           {/* Congratulatory panel - Shows when profile is 100% complete */}
           {percentage === 100 && (
             <motion.div
-              className='hidden lg:flex flex-col items-center justify-center gap-3 w-48 flex-shrink-0 rounded-2xl bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/30 dark:via-yellow-900/30 dark:to-orange-900/30 p-5 border border-amber-200/50 dark:border-amber-700/40'
+              className='hidden w-48 shrink-0 flex-col items-center justify-center gap-3 rounded-2xl border border-amber-200/50 bg-linear-to-br from-amber-50 via-yellow-50 to-orange-50 p-5 lg:flex dark:border-amber-700/40 dark:from-amber-900/30 dark:via-yellow-900/30 dark:to-orange-900/30'
               initial={reducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.4, type: 'spring', stiffness: 200 }}
             >
               <motion.div
-                className='flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-100/50 dark:shadow-amber-900/30'
+                className='flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-100/50 dark:shadow-amber-900/30'
                 animate={reducedMotion ? {} : { scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
@@ -620,12 +617,12 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
               </motion.div>
               <div className='text-center'>
                 <p className='text-sm font-bold text-amber-700 dark:text-amber-300'>Xuất sắc!</p>
-                <p className='text-[11px] text-amber-600/80 dark:text-amber-400/80 mt-1 leading-relaxed'>
+                <p className='mt-1 text-[11px] leading-relaxed text-amber-600/80 dark:text-amber-400/80'>
                   Hồ sơ hoàn chỉnh giúp bạn nhận được nhiều ưu đãi hơn
                 </p>
               </div>
-              <div className='flex items-center gap-1.5 rounded-full bg-amber-100 dark:bg-amber-800/40 px-3 py-1.5 border border-amber-200/50 dark:border-amber-600/30'>
-                <div className='h-2 w-2 rounded-full bg-amber-500 animate-pulse' aria-hidden='true' />
+              <div className='flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-amber-100 px-3 py-1.5 dark:border-amber-600/30 dark:bg-amber-800/40'>
+                <div className='h-2 w-2 animate-pulse rounded-full bg-amber-500' aria-hidden='true' />
                 <span className='text-[10px] font-semibold text-amber-700 dark:text-amber-300'>Đã xác minh</span>
               </div>
             </motion.div>
@@ -638,11 +635,11 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
             initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: reducedMotion ? 0 : 0.5 }}
-            className='mt-6 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 px-5 py-4 border border-blue-100/50 dark:border-blue-800/50 shadow-sm'
+            className='mt-6 flex items-center gap-3 rounded-2xl border border-blue-100/50 bg-linear-to-r from-blue-50 via-indigo-50 to-purple-50 px-5 py-4 shadow-xs dark:border-blue-800/50 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30'
             role='alert'
           >
             <motion.div
-              className='flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md flex-shrink-0'
+              className='flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-blue-400 to-indigo-500 shadow-md'
               animate={reducedMotion ? {} : { rotate: [0, 5, -5, 0] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
             >
@@ -663,13 +660,13 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
             </motion.div>
             <div className='flex-1'>
               <p className='text-sm font-semibold text-blue-700 dark:text-blue-200'>Mẹo nhỏ</p>
-              <p className='text-xs text-blue-600/80 dark:text-blue-300/80 mt-0.5'>
+              <p className='mt-0.5 text-xs text-blue-600/80 dark:text-blue-300/80'>
                 Hoàn thành hồ sơ để nhận ưu đãi và bảo mật tài khoản tốt hơn!
               </p>
             </div>
             <Link
               to={path.profile}
-              className='flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-300 hover:from-blue-600 hover:to-indigo-600 hover:shadow-lg hover:shadow-blue-200/50 dark:hover:shadow-blue-900/30 flex-shrink-0'
+              className='flex shrink-0 items-center gap-1 rounded-full bg-linear-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-300 hover:from-blue-600 hover:to-indigo-600 hover:shadow-lg hover:shadow-blue-200/50 dark:hover:shadow-blue-900/30'
             >
               Hoàn thành ngay
               <svg className='h-3 w-3' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>

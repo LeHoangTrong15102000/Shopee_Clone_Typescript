@@ -74,17 +74,17 @@ function ShippingEstimate({
   )
 
   return (
-    <div className={classNames('rounded-sm bg-gray-50 p-3 sm:p-4 dark:bg-slate-900', className)}>
+    <div className={classNames('rounded-xs bg-gray-50 p-3 sm:p-4 dark:bg-slate-900', className)}>
       {/* Header */}
       <div className='mb-3 flex items-center gap-2'>
         <svg className='h-5 w-5 text-[#ee4d2d]' fill='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
           <path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' />
         </svg>
-        <span className='text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300'>Vận chuyển</span>
+        <span className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300'>Vận chuyển</span>
       </div>
 
       {/* Product Location */}
-      <div className='mb-3 flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
+      <div className='mb-3 flex items-center gap-2 text-xs text-gray-600 sm:text-sm dark:text-gray-400'>
         <span>Từ:</span>
         <span className='font-medium'>{productLocation}</span>
       </div>
@@ -104,7 +104,7 @@ function ShippingEstimate({
                 onChange={(e) => handleAddressChange(e.target.value)}
                 onBlur={() => setIsEditingAddress(false)}
                 onKeyDown={(e) => e.key === 'Enter' && setIsEditingAddress(false)}
-                className='rounded border border-gray-300 px-2 py-1.5 text-xs sm:text-sm focus:border-[#ee4d2d] focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200'
+                className='rounded-sm border border-gray-300 px-2 py-1.5 text-xs focus:border-[#ee4d2d] focus:outline-hidden sm:text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200'
                 placeholder='Nhập địa chỉ giao hàng'
                 aria-label='Địa chỉ giao hàng'
                 autoFocus
@@ -125,7 +125,7 @@ function ShippingEstimate({
 
       {/* Shipping Options */}
       <div className='space-y-2'>
-        <span id='shipping-options-label' className='text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300'>
+        <span id='shipping-options-label' className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300'>
           Phương thức vận chuyển:
         </span>
         <div role='radiogroup' aria-labelledby='shipping-options-label' className='space-y-2'>
@@ -136,7 +136,7 @@ function ShippingEstimate({
               <label
                 key={option.id}
                 className={classNames(
-                  'flex cursor-pointer items-center justify-between rounded-md border p-2 sm:p-3 transition-all',
+                  'flex cursor-pointer items-center justify-between rounded-md border p-2 transition-all sm:p-3',
                   isSelected
                     ? 'border-[#ee4d2d] bg-[#fff5f5] dark:bg-[#ee4d2d]/10'
                     : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
@@ -154,11 +154,11 @@ function ShippingEstimate({
                   />
                   <div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200'>
+                      <span className='text-sm font-medium text-gray-800 sm:text-base dark:text-gray-200'>
                         {option.name}
                       </span>
                       {option.id === 'instant' && (
-                        <span className='rounded bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>Nhanh nhất</span>
+                        <span className='rounded-sm bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>Nhanh nhất</span>
                       )}
                     </div>
                     <span id={deliveryDateId} className='text-xs text-gray-500 dark:text-gray-400'>
@@ -166,7 +166,7 @@ function ShippingEstimate({
                     </span>
                   </div>
                 </div>
-                <span className='text-xs sm:text-sm font-medium text-[#ee4d2d]'>₫{formatCurrency(option.price)}</span>
+                <span className='text-xs font-medium text-[#ee4d2d] sm:text-sm'>₫{formatCurrency(option.price)}</span>
               </label>
             )
           })}

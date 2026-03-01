@@ -36,10 +36,10 @@ const CartSummaryBar = ({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-sm border border-[rgba(0,0,0,.08)] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 sm:px-9 py-5 shadow dark:shadow-slate-900/50 sm:flex-row sm:items-center'
+      className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-xs border border-[rgba(0,0,0,.08)] bg-white px-4 py-5 shadow-sm sm:flex-row sm:items-center sm:px-9 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
     >
       <div className='flex items-center'>
-        <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+        <div className='flex shrink-0 items-center justify-center pr-3'>
           <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
         </div>
         <Button
@@ -58,14 +58,14 @@ const CartSummaryBar = ({
         </Button>
       </div>
 
-      <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center md:flex-row md:items-center gap-4'>
+      <div className='mt-5 flex flex-col gap-4 sm:mt-0 sm:ml-auto sm:flex-row sm:items-center md:flex-row md:items-center'>
         <div className='flex flex-col justify-end'>
-          <div className='flex items-center flex-wrap sm:justify-end md:justify-end'>
+          <div className='flex flex-wrap items-center sm:justify-end md:justify-end'>
             <div className='text-gray-700 dark:text-gray-200'>
               Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
             </div>
             <motion.div
-              className='ml-2 text-2xl text-[#ee4d2d] font-medium'
+              className='ml-2 text-2xl font-medium text-[#ee4d2d]'
               key={totalCheckedPurchasePrice}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
@@ -77,8 +77,8 @@ const CartSummaryBar = ({
             {checkedPurchaseCount > 0 && (
               <Tooltip
                 content={
-                  <div className='bg-white dark:bg-slate-800 p-4 w-full max-w-[90vw] sm:w-96 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg dark:shadow-slate-900/50'>
-                    <div className='text-sm font-medium text-gray-700 dark:text-gray-200 mb-3 border-b border-gray-200 dark:border-slate-700 pb-2'>
+                  <div className='w-full max-w-[90vw] rounded-lg border border-gray-200 bg-white p-4 shadow-lg sm:w-96 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'>
+                    <div className='mb-3 border-b border-gray-200 pb-2 text-sm font-medium text-gray-700 dark:border-slate-700 dark:text-gray-200'>
                       Chi tiết khuyến mãi
                     </div>
                     <div className='space-y-2'>
@@ -100,10 +100,10 @@ const CartSummaryBar = ({
                         <span className='text-gray-600 dark:text-gray-300'>Tiết kiệm</span>
                         <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
-                      <hr className='border-gray-200 dark:border-slate-700 my-2' />
+                      <hr className='my-2 border-gray-200 dark:border-slate-700' />
                       <div className='flex justify-between text-sm'>
                         <span className='text-gray-600 dark:text-gray-300'>Tổng số tiền</span>
-                        <span className='text-gray-900 dark:text-gray-100 font-medium'>
+                        <span className='font-medium text-gray-900 dark:text-gray-100'>
                           ₫{formatCurrency(totalCheckedPurchasePrice)}
                         </span>
                       </div>
@@ -121,7 +121,7 @@ const CartSummaryBar = ({
                 }}
               >
                 <motion.button
-                  className='ml-2 text-gray-600 dark:text-gray-400 hover:text-[#ee4d2d] transition-colors group'
+                  className='group ml-2 text-gray-600 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   transition={{ duration: 0.1 }}
@@ -146,7 +146,7 @@ const CartSummaryBar = ({
           <div className='flex items-center text-sm sm:justify-end md:justify-end'>
             <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
             <motion.div
-              className='ml-7 text-[#ee4d2d] relative overflow-hidden'
+              className='relative ml-7 overflow-hidden text-[#ee4d2d]'
               key={totalCheckedPurchaseSavingPrice}
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -155,7 +155,7 @@ const CartSummaryBar = ({
               ₫{formatCurrency(animatedSavingsPrice)}
               {totalCheckedPurchaseSavingPrice > 0 && (
                 <motion.div
-                  className='absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent'
+                  className='absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent'
                   animate={{ x: ['-100%', '200%'] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
                 />
@@ -184,7 +184,7 @@ const CartSummaryBar = ({
             onClick={handleBuyPurchases}
             disabled={checkedPurchaseCount === 0}
             type='button'
-            className='mt-5 flex h-10 w-full sm:w-52 md:w-52 items-center justify-center bg-red-500 text-center text-sm capitalize text-white hover:bg-red-600 sm:ml-0 sm:mt-0 md:ml-0 md:mt-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+            className='mt-5 flex h-10 w-full items-center justify-center bg-red-500 text-center text-sm text-white capitalize transition-all hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:mt-0 sm:ml-0 sm:w-52 md:mt-0 md:ml-0 md:w-52'
           >
             Thanh toán ({checkedPurchaseCount})
           </Button>

@@ -62,11 +62,11 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
   }
 
   return (
-    <motion.div className='text-center py-12 px-4' variants={containerVariants} initial='hidden' animate='visible'>
+    <motion.div className='px-4 py-12 text-center' variants={containerVariants} initial='hidden' animate='visible'>
       {/* Icon */}
-      <motion.div className='mx-auto w-24 h-24 mb-6' variants={itemVariants}>
+      <motion.div className='mx-auto mb-6 h-24 w-24' variants={itemVariants}>
         <svg
-          className='w-full h-full text-gray-300 dark:text-gray-600'
+          className='h-full w-full text-gray-300 dark:text-gray-600'
           fill='none'
           stroke='currentColor'
           viewBox='0 0 24 24'
@@ -81,17 +81,17 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
       </motion.div>
 
       {/* Main message */}
-      <motion.h3 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2' variants={itemVariants}>
+      <motion.h3 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300' variants={itemVariants}>
         Không tìm thấy kết quả cho '{searchTerm}'
       </motion.h3>
 
       {/* Suggestions section */}
-      <motion.div className='mt-6 max-w-md mx-auto' variants={listVariants}>
-        <p className='text-gray-600 dark:text-gray-300 font-medium mb-3'>Bạn có thể thử:</p>
-        <ul className='text-left text-gray-500 dark:text-gray-400 space-y-2 mb-6'>
+      <motion.div className='mx-auto mt-6 max-w-md' variants={listVariants}>
+        <p className='mb-3 font-medium text-gray-600 dark:text-gray-300'>Bạn có thể thử:</p>
+        <ul className='mb-6 space-y-2 text-left text-gray-500 dark:text-gray-400'>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
-              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              className='h-4 w-4 shrink-0 text-[#ee4d2d] dark:text-orange-400'
               fill='currentColor'
               viewBox='0 0 20 20'
             >
@@ -105,7 +105,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
-              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              className='h-4 w-4 shrink-0 text-[#ee4d2d] dark:text-orange-400'
               fill='currentColor'
               viewBox='0 0 20 20'
             >
@@ -119,7 +119,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
-              className='w-4 h-4 text-[#ee4d2d] dark:text-orange-400 flex-shrink-0'
+              className='h-4 w-4 shrink-0 text-[#ee4d2d] dark:text-orange-400'
               fill='currentColor'
               viewBox='0 0 20 20'
             >
@@ -136,7 +136,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
 
       {/* Popular search terms */}
       <motion.div className='mt-8' variants={listVariants}>
-        <p className='text-gray-600 dark:text-gray-300 font-medium mb-4'>Tìm kiếm phổ biến:</p>
+        <p className='mb-4 font-medium text-gray-600 dark:text-gray-300'>Tìm kiếm phổ biến:</p>
         <div className='flex flex-wrap justify-center gap-2'>
           {popularSearchTerms.map((term, index) => (
             <motion.button
@@ -144,7 +144,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
               variants={listItemVariants}
               custom={index}
               onClick={() => onPopularSearch?.(term)}
-              className='px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-[#ee4d2d] dark:hover:bg-orange-500 hover:text-white text-sm text-gray-600 dark:text-gray-300 rounded-full transition-colors duration-200'
+              className='rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:bg-[#ee4d2d] hover:text-white dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-orange-500'
             >
               {term}
             </motion.button>

@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from 'src/App'
 import './index.css'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProvider } from './contexts/app.context'
 import { ThemeProvider } from './contexts/theme.context'
@@ -11,7 +11,7 @@ import 'src/i18n/i18n'
 import { HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from './components/ErrorBoundary'
 import { HeroUIProvider } from '@heroui/system'
-import { NuqsAdapter } from 'nuqs/adapters/react-router/v6'
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v7'
 
 // Lazy load ReactQueryDevtools - chỉ load trong development
 const ReactQueryDevtools = lazy(() =>

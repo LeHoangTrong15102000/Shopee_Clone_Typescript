@@ -95,7 +95,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
             key={activeImage}
             src={mainImageError ? FALLBACK_IMAGE : activeImage}
             alt={product?.name}
-            className='pointer-events-none absolute top-0 left-0 h-full w-full cursor-pointer bg-white dark:bg-slate-700 object-cover'
+            className='pointer-events-none absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover dark:bg-slate-700'
             ref={imageRef}
             onError={() => setMainImageError(true)}
             variants={reducedMotion ? undefined : imageCrossfade}
@@ -107,7 +107,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
       </div>
       {/* Image Slider */}
       <motion.div
-        className='relative mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1'
+        className='relative mt-4 grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5'
         variants={reducedMotion ? undefined : staggerContainer(STAGGER_DELAY.fast)}
         initial={reducedMotion ? undefined : 'hidden'}
         animate={reducedMotion ? undefined : 'visible'}
@@ -118,7 +118,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
       >
         <button
           onClick={handlePrevSlider}
-          className='absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+          className='absolute top-1/2 left-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -148,7 +148,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
               <ImageWithFallback
                 src={img}
                 alt='anhSlider'
-                className='absolute top-0 left-0 h-full w-full cursor-pointer bg-white dark:bg-slate-700 object-cover'
+                className='absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover dark:bg-slate-700'
               />
               {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
             </motion.div>
@@ -156,7 +156,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
         })}
         <button
           onClick={handleNextSlider}
-          className='absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
+          className='absolute top-1/2 right-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { pageTransition, pageTransitionReduced } from 'src/styles/animations'
 

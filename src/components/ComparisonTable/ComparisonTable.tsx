@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import { Product } from 'src/types/product.type'
@@ -73,7 +73,7 @@ interface BestBadgeProps {
 
 const BestBadge = ({ label, reduceMotion }: BestBadgeProps) => {
   const badgeContent = (
-    <span className='inline-flex items-center gap-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full ml-1'>
+    <span className='ml-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-1.5 py-0.5 text-xs text-green-700 dark:bg-green-900/30 dark:text-green-400'>
       ⭐ {label}
     </span>
   )
@@ -84,7 +84,7 @@ const BestBadge = ({ label, reduceMotion }: BestBadgeProps) => {
 
   return (
     <motion.span
-      className='inline-flex items-center gap-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full ml-1'
+      className='ml-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-1.5 py-0.5 text-xs text-green-700 dark:bg-green-900/30 dark:text-green-400'
       animate={{ scale: [1, 1.05, 1] }}
       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
     >
@@ -152,7 +152,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
 
   if (compareList.length === 0) {
     return (
-      <div className={classNames('text-center py-12', className)} role='region' aria-label='Bảng so sánh sản phẩm'>
+      <div className={classNames('py-12 text-center', className)} role='region' aria-label='Bảng so sánh sản phẩm'>
         <svg
           className='mx-auto h-16 w-16 text-gray-400 dark:text-gray-500'
           fill='none'
@@ -181,7 +181,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
     <div className={classNames('overflow-x-auto', className)} role='region' aria-label='Bảng so sánh sản phẩm'>
       {/* Comparison Summary */}
       {comparisonSummary && comparisonSummary.length > 0 && (
-        <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-3 mb-4 text-sm'>
+        <div className='mb-4 rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm dark:border-blue-800 dark:bg-blue-900/20'>
           <span className='font-medium text-gray-700 dark:text-gray-200'>Tóm tắt so sánh: </span>
           {comparisonSummary.map((item, index) => (
             <span key={index}>
@@ -193,10 +193,10 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
         </div>
       )}
 
-      <div className='flex justify-end mb-4'>
+      <div className='mb-4 flex justify-end'>
         <button
           onClick={clearCompare}
-          className='text-sm text-gray-500 dark:text-gray-400 hover:text-orange transition-colors'
+          className='text-sm text-gray-500 transition-colors hover:text-orange dark:text-gray-400'
           aria-label='Xóa tất cả sản phẩm khỏi bảng so sánh'
         >
           Xóa tất cả
@@ -204,13 +204,13 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
       </div>
 
       {/* Mobile card layout */}
-      <div className='md:hidden space-y-4'>
+      <div className='space-y-4 md:hidden'>
         {compareList.map((product) => (
           <div
             key={product._id}
-            className='rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm'
+            className='rounded-lg border border-gray-200 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800'
           >
-            <div className='flex items-center justify-between mb-3'>
+            <div className='mb-3 flex items-center justify-between'>
               <Link
                 to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                 className='flex items-center gap-3'
@@ -218,17 +218,17 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 <img
                   src={product.image}
                   alt={`Hình ảnh sản phẩm ${product.name}`}
-                  className='w-16 h-16 object-cover rounded-lg'
+                  className='h-16 w-16 rounded-lg object-cover'
                 />
-                <span className='text-sm font-medium line-clamp-2 dark:text-gray-200'>{product.name}</span>
+                <span className='line-clamp-2 text-sm font-medium dark:text-gray-200'>{product.name}</span>
               </Link>
               <button
                 onClick={() => removeFromCompare(product._id)}
-                className='p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0'
+                className='shrink-0 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700'
                 aria-label={`Xóa ${product.name} khỏi so sánh`}
               >
                 <svg
-                  className='w-4 h-4 text-gray-400 dark:text-gray-500'
+                  className='h-4 w-4 text-gray-400 dark:text-gray-500'
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -240,7 +240,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
             <div className='space-y-2 text-sm'>
               <div className='flex justify-between'>
                 <span className='text-gray-500 dark:text-gray-400'>Giá</span>
-                <span className='text-orange font-medium'>₫{formatCurrency(product.price)}</span>
+                <span className='font-medium text-orange'>₫{formatCurrency(product.price)}</span>
               </div>
               <div className='flex justify-between'>
                 <span className='text-gray-500 dark:text-gray-400'>Đánh giá</span>
@@ -256,12 +256,12 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
       </div>
 
       {/* Desktop table layout */}
-      <table className='hidden md:table w-full border-collapse' role='table' aria-label='So sánh sản phẩm'>
-        <thead className='sticky top-0 bg-white dark:bg-slate-800 z-10'>
+      <table className='hidden w-full border-collapse md:table' role='table' aria-label='So sánh sản phẩm'>
+        <thead className='sticky top-0 z-10 bg-white dark:bg-slate-800'>
           <tr role='row'>
             <th
               scope='col'
-              className='p-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 w-32'
+              className='w-32 border-b p-3 text-left text-sm font-medium text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='columnheader'
             >
               Thuộc tính
@@ -270,16 +270,16 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               <th
                 key={product._id}
                 scope='col'
-                className='relative p-3 text-center border-b dark:border-slate-700 min-w-[200px]'
+                className='relative min-w-[200px] border-b p-3 text-center dark:border-slate-700'
                 role='columnheader'
               >
                 <button
                   onClick={() => removeFromCompare(product._id)}
-                  className='absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors'
+                  className='absolute top-2 right-2 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700'
                   aria-label={`Xóa ${product.name} khỏi so sánh`}
                 >
                   <svg
-                    className='w-4 h-4 text-gray-400 dark:text-gray-500'
+                    className='h-4 w-4 text-gray-400 dark:text-gray-500'
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
@@ -296,13 +296,13 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Hình ảnh
             </th>
             {compareList.map((product) => (
-              <td key={product._id} className='p-3 text-center border-b dark:border-slate-700' role='cell'>
+              <td key={product._id} className='border-b p-3 text-center dark:border-slate-700' role='cell'>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
                   aria-label={`Xem chi tiết sản phẩm ${product.name}`}
@@ -310,7 +310,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                   <img
                     src={product.image}
                     alt={`Hình ảnh sản phẩm ${product.name}`}
-                    className='w-24 h-24 object-cover mx-auto rounded-lg hover:opacity-80 transition-opacity'
+                    className='mx-auto h-24 w-24 rounded-lg object-cover transition-opacity hover:opacity-80'
                   />
                 </Link>
               </td>
@@ -319,16 +319,16 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Tên sản phẩm
             </th>
             {compareList.map((product) => (
-              <td key={product._id} className='p-3 text-center border-b dark:border-slate-700' role='cell'>
+              <td key={product._id} className='border-b p-3 text-center dark:border-slate-700' role='cell'>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-orange line-clamp-2'
+                  className='line-clamp-2 text-sm font-medium text-gray-800 hover:text-orange dark:text-gray-200'
                   aria-label={`Xem chi tiết sản phẩm ${product.name}`}
                 >
                   {product.name}
@@ -339,7 +339,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Giá
@@ -349,12 +349,12 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               return (
                 <td
                   key={product._id}
-                  className={classNames('p-3 text-center border-b dark:border-slate-700', {
+                  className={classNames('border-b p-3 text-center dark:border-slate-700', {
                     'bg-green-50 dark:bg-green-900/20': isBest
                   })}
                   role='cell'
                 >
-                  <span className='text-orange font-semibold'>₫{formatCurrency(product.price)}</span>
+                  <span className='font-semibold text-orange'>₫{formatCurrency(product.price)}</span>
                   {isBest && <BestBadge label='Giá tốt nhất' reduceMotion={reduceMotion} />}
                 </td>
               )
@@ -363,14 +363,14 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Giá gốc
             </th>
             {compareList.map((product) => (
-              <td key={product._id} className='p-3 text-center border-b dark:border-slate-700' role='cell'>
-                <span className='text-gray-400 dark:text-gray-500 line-through text-sm'>
+              <td key={product._id} className='border-b p-3 text-center dark:border-slate-700' role='cell'>
+                <span className='text-sm text-gray-400 line-through dark:text-gray-500'>
                   ₫{formatCurrency(product.price_before_discount)}
                 </span>
               </td>
@@ -379,7 +379,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Giảm giá
@@ -390,14 +390,14 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               return (
                 <td
                   key={product._id}
-                  className={classNames('p-3 text-center border-b dark:border-slate-700', {
+                  className={classNames('border-b p-3 text-center dark:border-slate-700', {
                     'bg-green-50 dark:bg-green-900/20': isBest
                   })}
                   role='cell'
                 >
                   {discount > 0 ? (
                     <>
-                      <span className='text-red-500 dark:text-red-400 font-medium'>-{discount}%</span>
+                      <span className='font-medium text-red-500 dark:text-red-400'>-{discount}%</span>
                       {isBest && <BestBadge label='Giảm nhiều nhất' reduceMotion={reduceMotion} />}
                     </>
                   ) : (
@@ -410,7 +410,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Đánh giá
@@ -420,12 +420,12 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               return (
                 <td
                   key={product._id}
-                  className={classNames('p-3 border-b dark:border-slate-700', {
+                  className={classNames('border-b p-3 dark:border-slate-700', {
                     'bg-green-50 dark:bg-green-900/20': isBest
                   })}
                   role='cell'
                 >
-                  <div className='flex items-center justify-center gap-1 flex-wrap'>
+                  <div className='flex flex-wrap items-center justify-center gap-1'>
                     <ProductRating rating={product.rating} />
                     <span className='text-sm text-gray-500 dark:text-gray-400'>({product.rating})</span>
                     {isBest && <BestBadge label='Đánh giá cao nhất' reduceMotion={reduceMotion} />}
@@ -437,7 +437,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Đã bán
@@ -447,7 +447,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               return (
                 <td
                   key={product._id}
-                  className={classNames('p-3 text-center border-b dark:border-slate-700', {
+                  className={classNames('border-b p-3 text-center dark:border-slate-700', {
                     'bg-green-50 dark:bg-green-900/20': isBest
                   })}
                   role='cell'
@@ -463,7 +463,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Tồn kho
@@ -473,7 +473,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               return (
                 <td
                   key={product._id}
-                  className={classNames('p-3 text-center border-b dark:border-slate-700', {
+                  className={classNames('border-b p-3 text-center dark:border-slate-700', {
                     'bg-green-50 dark:bg-green-900/20': isBest
                   })}
                   role='cell'
@@ -489,13 +489,13 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
           <tr role='row'>
             <th
               scope='row'
-              className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+              className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
               role='rowheader'
             >
               Danh mục
             </th>
             {compareList.map((product) => (
-              <td key={product._id} className='p-3 text-center border-b dark:border-slate-700' role='cell'>
+              <td key={product._id} className='border-b p-3 text-center dark:border-slate-700' role='cell'>
                 <span className='text-sm text-gray-700 dark:text-gray-300'>{product.category?.name || '-'}</span>
               </td>
             ))}
@@ -505,7 +505,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
             <tr role='row'>
               <th
                 scope='row'
-                className='p-3 text-sm text-gray-600 dark:text-gray-300 border-b dark:border-slate-700 text-left font-normal'
+                className='border-b p-3 text-left text-sm font-normal text-gray-600 dark:border-slate-700 dark:text-gray-300'
                 role='rowheader'
               >
                 Đề xuất
@@ -515,19 +515,19 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 return (
                   <td
                     key={product._id}
-                    className={classNames('p-3 text-center border-b dark:border-slate-700', {
+                    className={classNames('border-b p-3 text-center dark:border-slate-700', {
                       'bg-orange-50 dark:bg-orange-900/20': isRecommended
                     })}
                     role='cell'
                   >
                     {isRecommended ? (
                       reduceMotion ? (
-                        <span className='bg-orange text-white px-3 py-1 rounded-full text-sm font-medium'>
+                        <span className='rounded-full bg-orange px-3 py-1 text-sm font-medium text-white'>
                           ⭐ Đề xuất
                         </span>
                       ) : (
                         <motion.span
-                          className='inline-block bg-orange text-white px-3 py-1 rounded-full text-sm font-medium'
+                          className='inline-block rounded-full bg-orange px-3 py-1 text-sm font-medium text-white'
                           animate={{ scale: [1, 1.05, 1] }}
                           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                         >
@@ -549,14 +549,14 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 <div className='flex flex-col gap-2'>
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className='w-full py-2 px-4 bg-orange text-white text-sm rounded hover:bg-[#d73211] transition-colors'
+                    className='w-full rounded-sm bg-orange px-4 py-2 text-sm text-white transition-colors hover:bg-[#d73211]'
                     aria-label={`Thêm ${product.name} vào giỏ hàng`}
                   >
                     Thêm vào giỏ
                   </button>
                   <button
                     onClick={() => removeFromCompare(product._id)}
-                    className='w-full py-2 px-4 border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 text-sm rounded hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors'
+                    className='w-full rounded-sm border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                     aria-label={`Xóa ${product.name} khỏi bảng so sánh`}
                   >
                     Xóa khỏi so sánh

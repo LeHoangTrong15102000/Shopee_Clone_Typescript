@@ -44,7 +44,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
             key={method._id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`cursor-pointer rounded-lg border-2 p-3 md:p-4 transition-all bg-white dark:bg-slate-800 ${
+            className={`cursor-pointer rounded-lg border-2 bg-white p-3 transition-all md:p-4 dark:bg-slate-800 ${
               !method.isAvailable
                 ? 'cursor-not-allowed border-gray-200 bg-gray-50 opacity-50 dark:border-slate-700 dark:bg-slate-900'
                 : selectedMethodType === method.type
@@ -76,7 +76,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
               </div>
 
               {!method.isAvailable && (
-                <span className='ml-auto rounded bg-gray-200 px-2 py-1 text-xs text-gray-600 dark:bg-slate-700 dark:text-gray-400'>
+                <span className='ml-auto rounded-sm bg-gray-200 px-2 py-1 text-xs text-gray-600 dark:bg-slate-700 dark:text-gray-400'>
                   Không khả dụng
                 </span>
               )}
@@ -113,17 +113,17 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className='rounded-xl bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4 ring-1 ring-purple-100 dark:from-purple-900/30 dark:via-slate-800 dark:to-pink-900/30 dark:ring-purple-800'
+          className='rounded-xl bg-linear-to-br from-purple-50 via-white to-pink-50 p-4 ring-1 ring-purple-100 dark:from-purple-900/30 dark:via-slate-800 dark:to-pink-900/30 dark:ring-purple-800'
         >
           <h4 className='font-medium text-purple-900 dark:text-purple-300'>Chọn ví điện tử</h4>
           <div className='mt-3 flex gap-3'>
-            <button className='flex-1 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-500/40'>
+            <button className='flex-1 rounded-xl bg-linear-to-r from-pink-500 to-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-500/40'>
               MoMo
             </button>
-            <button className='flex-1 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40'>
+            <button className='flex-1 rounded-xl bg-linear-to-r from-blue-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40'>
               ZaloPay
             </button>
-            <button className='flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-600/40'>
+            <button className='flex-1 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-600/40'>
               VNPay
             </button>
           </div>

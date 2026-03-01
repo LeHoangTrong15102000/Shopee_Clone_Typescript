@@ -69,7 +69,7 @@ const SellerFollowButton = memo(function SellerFollowButton({
       onClick={handleClick}
       whileTap={{ scale: 0.95 }}
       className={classNames(
-        'inline-flex items-center justify-center gap-1.5 rounded-sm font-medium transition-colors',
+        'inline-flex items-center justify-center gap-1.5 rounded-xs font-medium transition-colors',
         sizeClasses[size],
         variantClasses[variant],
         className

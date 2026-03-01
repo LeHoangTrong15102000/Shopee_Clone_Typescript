@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import categoryApi from 'src/apis/category.api'
@@ -128,7 +128,7 @@ const ProductList = () => {
   // Loading state - hiển thị loader khi lần đầu load
   if (isLoading && !productsData) {
     return (
-      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
         <div className='container'>
           <Loader />
         </div>
@@ -139,14 +139,14 @@ const ProductList = () => {
   // Error state
   if (error && !productsData) {
     return (
-      <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+      <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
         <div className='container'>
-          <div className='text-center py-12'>
-            <h2 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          <div className='py-12 text-center'>
+            <h2 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300'>
               Có lỗi xảy ra khi tải danh sách sản phẩm
             </h2>
-            <p className='text-gray-500 dark:text-gray-400 mb-4'>Vui lòng thử lại sau</p>
-            <Button variant='primary' onClick={() => window.location.reload()} className='px-6 py-2 rounded-sm'>
+            <p className='mb-4 text-gray-500 dark:text-gray-400'>Vui lòng thử lại sau</p>
+            <Button variant='primary' onClick={() => window.location.reload()} className='rounded-xs px-6 py-2'>
               Thử lại
             </Button>
           </div>
@@ -163,7 +163,7 @@ const ProductList = () => {
   const currentCategory = filters.category ? categories.find((cat) => cat._id === filters.category) : null
 
   return (
-    <div className='bg-[#f5f5f5] dark:bg-slate-900 py-6'>
+    <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
       <Helmet>
         <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : 'Tất cả sản phẩm | Shopee Clone'}</title>
         <meta name='description' content='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng' />
@@ -177,10 +177,10 @@ const ProductList = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className='fixed top-20 right-4 z-50 bg-white dark:bg-slate-800 shadow-lg rounded-lg p-3 border border-gray-200 dark:border-slate-700'
+              className='fixed top-20 right-4 z-50 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800'
             >
               <div className='flex items-center space-x-2'>
-                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-orange'></div>
+                <div className='h-4 w-4 animate-spin rounded-full border-b-2 border-orange'></div>
                 <span className='text-sm text-gray-600 dark:text-gray-300'>Đang cập nhật...</span>
               </div>
             </motion.div>
@@ -190,7 +190,7 @@ const ProductList = () => {
         {products.length > 0 && (
           <div className='grid grid-cols-12 gap-6'>
             {/* Desktop: AsideFilter - ẩn trên mobile */}
-            <div className='hidden md:block md:col-span-3'>
+            <div className='hidden md:col-span-3 md:block'>
               <AsideFilter categories={categories} />
             </div>
 
@@ -200,7 +200,7 @@ const ProductList = () => {
                 <Button
                   variant='secondary'
                   onClick={() => setIsFilterDrawerOpen(true)}
-                  className='flex items-center justify-center w-full gap-2 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2'
+                  className='flex w-full items-center justify-center gap-2 rounded-xs shadow-xs focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden'
                   ariaLabel='Mở bộ lọc sản phẩm'
                 >
                   <svg
@@ -251,7 +251,7 @@ const ProductList = () => {
                   >
                     {products.map((product) => (
                       <div
-                        className='col-span-1 transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50'
+                        className='col-span-1 transition-transform duration-200 hover:-translate-y-0.25 hover:shadow-md dark:hover:shadow-slate-900/50'
                         key={product._id}
                       >
                         <Product product={product} />
@@ -271,7 +271,7 @@ const ProductList = () => {
                   >
                     {products.map((product) => (
                       <div
-                        className='transition-transform duration-200 hover:translate-y-[-0.0625rem] hover:shadow-md dark:hover:shadow-slate-900/50'
+                        className='transition-transform duration-200 hover:-translate-y-0.25 hover:shadow-md dark:hover:shadow-slate-900/50'
                         key={product._id}
                       >
                         <ProductListItem product={product} />
@@ -304,10 +304,10 @@ const ProductList = () => {
               }}
             />
           ) : (
-            <div className='text-center py-16'>
-              <div className='mx-auto w-24 h-24 mb-4'>
+            <div className='py-16 text-center'>
+              <div className='mx-auto mb-4 h-24 w-24'>
                 <svg
-                  className='w-full h-full text-gray-300 dark:text-gray-600'
+                  className='h-full w-full text-gray-300 dark:text-gray-600'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -320,10 +320,10 @@ const ProductList = () => {
                   />
                 </svg>
               </div>
-              <h3 className='text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2'>
+              <h3 className='mb-2 text-xl font-semibold text-gray-600 dark:text-gray-300'>
                 Không tìm thấy sản phẩm nào
               </h3>
-              <p className='text-gray-500 dark:text-gray-400 mb-6'>
+              <p className='mb-6 text-gray-500 dark:text-gray-400'>
                 Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn
               </p>
               <Button
@@ -334,7 +334,7 @@ const ProductList = () => {
                     search: ''
                   })
                 }}
-                className='px-6 py-3 rounded-sm'
+                className='rounded-xs px-6 py-3'
               >
                 Xem tất cả sản phẩm
               </Button>

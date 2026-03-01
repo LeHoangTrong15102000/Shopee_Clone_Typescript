@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 import Button from 'src/components/Button'
 import SaveForLaterSection from 'src/components/SaveForLaterSection'
@@ -45,7 +45,7 @@ const EmptyCartState = ({
       transition={{ duration: 0.5 }}
       className='flex flex-col items-center justify-center py-20'
     >
-      <div className='text-center relative'>
+      <div className='relative text-center'>
         <Sparkle delay={0} x={-15} y={10} />
         <Sparkle delay={0.5} x={130} y={15} />
         <Sparkle delay={1.0} x={10} y={100} />
@@ -56,7 +56,7 @@ const EmptyCartState = ({
         <motion.img
           src={noproduct}
           alt='noproduct'
-          className='h-[120px] w-[120px] mx-auto opacity-60'
+          className='mx-auto h-[120px] w-[120px] opacity-60'
           animate={{
             y: [0, -10, 0],
             rotate: [0, -5, 5, 0]
@@ -90,14 +90,14 @@ const EmptyCartState = ({
           }}
           style={{ borderRadius: '4px' }}
         >
-          <Button className='flex h-10 w-full sm:w-[168px] items-center justify-center rounded bg-red-500 text-center text-sm uppercase text-white transition-all hover:bg-red-600 sm:mt-0'>
+          <Button className='flex h-10 w-full items-center justify-center rounded-sm bg-red-500 text-center text-sm text-white uppercase transition-all hover:bg-red-600 sm:mt-0 sm:w-[168px]'>
             Mua ngay
           </Button>
         </motion.div>
       </Link>
 
       {savedItems.length > 0 && (
-        <div className='w-full max-w-2xl mt-8'>
+        <div className='mt-8 w-full max-w-2xl'>
           <SaveForLaterSection
             savedItems={savedItems}
             onMoveToCart={handleMoveToCart}

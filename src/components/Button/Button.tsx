@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { buttonHover } from 'src/styles/animations/variants'
@@ -50,7 +50,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
 
   const getClassName = (addOpacityTransition = false) => {
     const classes: string[] = [
-      'outline-none focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
+      'outline-hidden focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
     ]
     if (variant) {
       classes.push(variantClasses[variant])

@@ -110,7 +110,7 @@ export default function LiveOrderTracker({
   return (
     <motion.div
       className={classNames(
-        'overflow-hidden rounded-xl border border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm',
+        'overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs dark:border-slate-700 dark:bg-slate-800',
         className
       )}
       variants={reducedMotion ? undefined : containerVariants}
@@ -122,17 +122,17 @@ export default function LiveOrderTracker({
         className={classNames(
           'relative px-4 py-4 md:px-6',
           isDelivered
-            ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+            ? 'bg-linear-to-r from-green-500 to-emerald-500'
             : isCancelled
-              ? 'bg-gradient-to-r from-red-500 to-rose-500'
-              : 'bg-gradient-to-r from-[#ee4d2d] to-[#ff6b4a]'
+              ? 'bg-linear-to-r from-red-500 to-rose-500'
+              : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a]'
         )}
         variants={reducedMotion ? undefined : itemVariants}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             {/* Tracking Icon */}
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-xs'>
               <svg
                 className={classNames(
                   'h-5 w-5',
@@ -159,7 +159,7 @@ export default function LiveOrderTracker({
           {/* Live Badge */}
           {isSubscribed && !isDelivered && !isCancelled && (
             <motion.div
-              className='flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm'
+              className='flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 backdrop-blur-xs'
               initial={reducedMotion ? undefined : { opacity: 0, scale: 0.8 }}
               animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
               transition={{ duration: ANIMATION_DURATION.normal }}
@@ -174,7 +174,7 @@ export default function LiveOrderTracker({
 
           {/* Delivered Badge */}
           {isDelivered && (
-            <div className='flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm'>
+            <div className='flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 backdrop-blur-xs'>
               <svg className='h-4 w-4 text-white' fill='currentColor' viewBox='0 0 20 20'>
                 <path
                   fillRule='evenodd'
@@ -192,10 +192,10 @@ export default function LiveOrderTracker({
       <div className='p-4 md:p-6'>
         {/* Carrier Info */}
         <motion.div
-          className='mb-4 flex items-center gap-3 rounded-lg bg-gray-50 dark:bg-slate-700 p-3'
+          className='mb-4 flex items-center gap-3 rounded-lg bg-gray-50 p-3 dark:bg-slate-700'
           variants={reducedMotion ? undefined : itemVariants}
         >
-          <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white dark:bg-slate-600 shadow-sm'>
+          <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-xs dark:bg-slate-600'>
             <svg
               className='h-5 w-5 text-[#ee4d2d]'
               fill='none'
@@ -224,7 +224,7 @@ export default function LiveOrderTracker({
         <AnimatePresence>
           {estimatedDelivery && (
             <motion.div
-              className='mb-4 overflow-hidden rounded-lg border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50'
+              className='mb-4 overflow-hidden rounded-lg border border-orange-200 bg-linear-to-r from-orange-50 to-amber-50'
               initial={reducedMotion ? undefined : { opacity: 0, height: 0 }}
               animate={reducedMotion ? undefined : { opacity: 1, height: 'auto' }}
               exit={reducedMotion ? undefined : { opacity: 0, height: 0 }}
@@ -263,7 +263,7 @@ export default function LiveOrderTracker({
         {/* Last update info */}
         {lastUpdate && (
           <motion.div
-            className='mt-4 flex items-center justify-end gap-2 border-t border-gray-100 dark:border-slate-700 pt-3'
+            className='mt-4 flex items-center justify-end gap-2 border-t border-gray-100 pt-3 dark:border-slate-700'
             variants={reducedMotion ? undefined : itemVariants}
           >
             <svg

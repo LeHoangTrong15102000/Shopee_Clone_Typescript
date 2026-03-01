@@ -101,19 +101,19 @@ const ChangePassword = () => {
 
   return (
     <motion.div
-      className='rounded-md bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'
+      className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'
       initial={reducedMotion ? undefined : { opacity: 0, y: 15 }}
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       {/* Tiêu đề */}
       <motion.div
-        className='border-b border-b-gray-100 dark:border-b-slate-600 py-6 text-center sm:text-left'
+        className='border-b border-b-gray-100 py-6 text-center sm:text-left dark:border-b-slate-600'
         initial={reducedMotion ? undefined : { opacity: 0, x: -10 }}
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <div className='flex items-center justify-center sm:justify-start gap-3'>
+        <div className='flex items-center justify-center gap-3 sm:justify-start'>
           {/* Shield Lock Icon */}
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-orange/10 dark:bg-orange-400/10'>
             <svg
@@ -132,20 +132,20 @@ const ChangePassword = () => {
             </svg>
           </div>
           <div>
-            <h1 className='text-lg font-medium capitalize text-gray-700 dark:text-gray-200'>Đổi mật khẩu</h1>
-            <div className='mt-[0.1875rem] text-[.875rem] text-gray-500 dark:text-gray-400'>
+            <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>Đổi mật khẩu</h1>
+            <div className='mt-0.75 text-[.875rem] text-gray-500 dark:text-gray-400'>
               Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác
             </div>
           </div>
         </div>
         {/* Gradient accent line */}
-        <div className='mt-4 h-0.5 bg-gradient-to-r from-orange/60 via-orange/20 to-transparent dark:from-orange-400/50 dark:via-orange-400/10 dark:to-transparent' />
+        <div className='mt-4 h-0.5 bg-linear-to-r from-orange/60 via-orange/20 to-transparent dark:from-orange-400/50 dark:via-orange-400/10 dark:to-transparent' />
       </motion.div>
       {/* Form mật khẩu */}
       <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
         {/* Left: Form fields */}
         <motion.div
-          className='mt-6 flex-grow md:mt-0 md:pr-12'
+          className='mt-6 grow md:mt-0 md:pr-12'
           initial={reducedMotion ? undefined : { opacity: 0, y: 10 }}
           animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
@@ -158,7 +158,7 @@ const ChangePassword = () => {
             animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.15 }}
           >
-            <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+            <div className='truncate pt-3 text-gray-500 capitalize sm:w-[30%] sm:text-right dark:text-gray-400'>
               <span className='inline-flex items-center gap-1.5'>
                 <svg
                   className='h-4 w-4 text-gray-400 dark:text-gray-500'
@@ -184,7 +184,7 @@ const ChangePassword = () => {
                 type='password'
                 errorMessage={errors.password?.message}
                 autoComplete='on'
-                classNameInput='w-full rounded-sm border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
+                classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
               />
             </div>
@@ -196,7 +196,7 @@ const ChangePassword = () => {
             animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.25 }}
           >
-            <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+            <div className='truncate pt-3 text-gray-500 capitalize sm:w-[30%] sm:text-right dark:text-gray-400'>
               <span className='inline-flex items-center gap-1.5'>
                 <svg
                   className='h-4 w-4 text-gray-400 dark:text-gray-500'
@@ -222,7 +222,7 @@ const ChangePassword = () => {
                 type='password'
                 errorMessage={errors.new_password?.message}
                 autoComplete='on'
-                classNameInput='w-full rounded-sm border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
+                classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
               />
             </div>
@@ -234,7 +234,7 @@ const ChangePassword = () => {
             animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.35 }}
           >
-            <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+            <div className='truncate pt-3 text-gray-500 capitalize sm:w-[30%] sm:text-right dark:text-gray-400'>
               <span className='inline-flex items-center gap-1.5'>
                 <svg
                   className='h-4 w-4 text-gray-400 dark:text-gray-500'
@@ -260,7 +260,7 @@ const ChangePassword = () => {
                 type='password'
                 errorMessage={errors.confirm_password?.message}
                 autoComplete='on'
-                classNameInput='w-full rounded-sm border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
+                classNameInput='w-full rounded-xs border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-gray-500 dark:focus:border-gray-400 dark:bg-slate-900 dark:text-gray-100'
                 className='relative'
               />
               <PasswordStrengthMeter password={watchedNewPassword ?? ''} className='mt-2' />
@@ -274,13 +274,13 @@ const ChangePassword = () => {
             transition={{ duration: 0.3, delay: 0.45 }}
           >
             <div className='truncate pt-3 capitalize sm:w-[30%] sm:text-right' />
-            <div className='w-[100%] sm:w-[70%] sm:pl-5'>
+            <div className='w-full sm:w-[70%] sm:pl-5'>
               <Button
                 type='submit'
                 variant='primary'
                 size='md'
                 isLoading={updateProfileMutation.isPending}
-                className='flex h-11 min-w-[140px] items-center justify-center rounded-md px-8 text-sm font-medium shadow-sm hover:shadow-md transition-shadow'
+                className='flex h-11 min-w-[140px] items-center justify-center rounded-md px-8 text-sm font-medium shadow-xs transition-shadow hover:shadow-md'
               >
                 {updateProfileMutation.isPending ? 'Đang xử lý...' : 'Xác Nhận'}
               </Button>
@@ -290,13 +290,13 @@ const ChangePassword = () => {
 
         {/* Right: Security Tips Card */}
         <motion.div
-          className='md:w-[320px] flex-shrink-0 mb-6 md:mb-0'
+          className='mb-6 shrink-0 md:mb-0 md:w-[320px]'
           initial={reducedMotion ? undefined : { opacity: 0, x: 10 }}
           animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <div className='rounded-lg border border-blue-100 dark:border-slate-600 bg-blue-50/50 dark:bg-slate-700/50 p-5'>
-            <div className='flex items-center gap-2 mb-3'>
+          <div className='rounded-lg border border-blue-100 bg-blue-50/50 p-5 dark:border-slate-600 dark:bg-slate-700/50'>
+            <div className='mb-3 flex items-center gap-2'>
               <svg
                 className='h-5 w-5 text-blue-500 dark:text-blue-400'
                 viewBox='0 0 24 24'
@@ -322,7 +322,7 @@ const ChangePassword = () => {
                 >
                   {req.check ? (
                     <svg
-                      className='h-3.5 w-3.5 text-green-500 dark:text-green-400 flex-shrink-0'
+                      className='h-3.5 w-3.5 shrink-0 text-green-500 dark:text-green-400'
                       viewBox='0 0 24 24'
                       fill='none'
                       stroke='currentColor'
@@ -333,7 +333,7 @@ const ChangePassword = () => {
                     </svg>
                   ) : (
                     <svg
-                      className='h-3.5 w-3.5 text-gray-300 dark:text-gray-500 flex-shrink-0'
+                      className='h-3.5 w-3.5 shrink-0 text-gray-300 dark:text-gray-500'
                       viewBox='0 0 24 24'
                       fill='none'
                       stroke='currentColor'
@@ -343,15 +343,15 @@ const ChangePassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v12m6-6H6' />
                     </svg>
                   )}
-                  <span className={req.check ? 'text-green-600 dark:text-green-400 line-through opacity-70' : ''}>
+                  <span className={req.check ? 'text-green-600 line-through opacity-70 dark:text-green-400' : ''}>
                     {req.label}
                   </span>
                 </li>
               ))}
             </ul>
             {/* Security tip */}
-            <div className='mt-4 pt-3 border-t border-blue-100 dark:border-slate-600'>
-              <p className='text-xs text-gray-500 dark:text-gray-400 italic'>
+            <div className='mt-4 border-t border-blue-100 pt-3 dark:border-slate-600'>
+              <p className='text-xs text-gray-500 italic dark:text-gray-400'>
                 💡 Mẹo: Sử dụng mật khẩu khác nhau cho mỗi tài khoản để tăng cường bảo mật.
               </p>
             </div>

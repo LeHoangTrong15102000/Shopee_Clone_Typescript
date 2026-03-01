@@ -122,11 +122,11 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
   if (isLoading) {
     return (
       <div
-        className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}
+        className={`rounded-lg border border-gray-200 bg-white p-3 sm:p-4 dark:border-slate-700 dark:bg-slate-800 ${className}`}
       >
         <div className='animate-pulse'>
-          <div className='mb-4 h-6 w-32 rounded bg-gray-200 dark:bg-slate-700'></div>
-          <div className='h-40 rounded bg-gray-200 dark:bg-slate-700'></div>
+          <div className='mb-4 h-6 w-32 rounded-sm bg-gray-200 dark:bg-slate-700'></div>
+          <div className='h-40 rounded-sm bg-gray-200 dark:bg-slate-700'></div>
         </div>
       </div>
     )
@@ -134,10 +134,10 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
 
   return (
     <div
-      className={`rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-4 ${className}`}
+      className={`rounded-lg border border-gray-200 bg-white p-3 sm:p-4 dark:border-slate-700 dark:bg-slate-800 ${className}`}
     >
       <div className='mb-4 flex items-center justify-between'>
-        <h3 className='text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200'>Lịch sử giá</h3>
+        <h3 className='text-base font-semibold text-gray-800 sm:text-lg dark:text-gray-200'>Lịch sử giá</h3>
         <div className='flex gap-1' role='group' aria-label='Chọn khoảng thời gian'>
           {TIME_RANGE_OPTIONS.map((option) => (
             <button
@@ -145,10 +145,10 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
               onClick={() => setSelectedDays(option.value)}
               aria-label={`Xem lịch sử giá ${option.label}`}
               aria-pressed={selectedDays === option.value}
-              className={`rounded px-2 py-1 text-xs sm:px-3 sm:text-sm transition-colors ${
+              className={`rounded px-2 py-1 text-xs transition-colors sm:px-3 sm:text-sm ${
                 selectedDays === option.value
                   ? 'bg-orange text-white'
-                  : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
               }`}
             >
               {option.label}
@@ -172,7 +172,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
               <span className={`text-sm font-medium ${trendConfig.color}`}>{trendConfig.label}</span>
             </div>
             {discountFromHighest > 0 && (
-              <div className='rounded-full bg-green-50 dark:bg-green-900/30 px-3 py-1'>
+              <div className='rounded-full bg-green-50 px-3 py-1 dark:bg-green-900/30'>
                 <span className='text-sm font-medium text-green-600 dark:text-green-400'>
                   Giảm {discountFromHighest}% so với giá cao nhất
                 </span>
@@ -188,7 +188,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
               </p>
               <svg
                 viewBox='0 0 100 100'
-                className='h-28 sm:h-40 w-full'
+                className='h-28 w-full sm:h-40'
                 preserveAspectRatio='none'
                 role='img'
                 aria-label={`Biểu đồ lịch sử giá sản phẩm trong ${selectedDays} ngày`}
@@ -232,7 +232,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
 
               {hoveredPoint && (
                 <div
-                  className='pointer-events-none absolute left-1/2 top-0 z-10 -translate-x-1/2 rounded bg-gray-800 px-3 py-2 text-sm text-white shadow-lg'
+                  className='pointer-events-none absolute top-0 left-1/2 z-10 -translate-x-1/2 rounded-sm bg-gray-800 px-3 py-2 text-sm text-white shadow-lg'
                   role='tooltip'
                   aria-live='polite'
                 >
@@ -248,7 +248,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
             </div>
           )}
 
-          <div className='border-t border-gray-100 dark:border-slate-700 pt-4'>
+          <div className='border-t border-gray-100 pt-4 dark:border-slate-700'>
             {!showAlertForm ? (
               <button
                 onClick={() => setShowAlertForm(true)}
@@ -278,7 +278,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     onChange={(e) => setTargetPrice(e.target.value)}
                     placeholder='Nhập giá mục tiêu'
                     aria-describedby='target-price-description'
-                    className='flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-orange focus:outline-none'
+                    className='flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                   />
                   <span className='text-sm text-gray-500 dark:text-gray-400' aria-hidden='true'>
                     ₫
@@ -297,7 +297,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                   <button
                     onClick={handleCancelAlert}
                     aria-label='Hủy tạo thông báo'
-                    className='rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
+                    className='rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                   >
                     Hủy
                   </button>

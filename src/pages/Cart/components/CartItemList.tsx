@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { memo } from 'react'
+import { Link } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
 import ImageWithFallback from 'src/components/ImageWithFallback'
@@ -46,13 +47,13 @@ const CartItemList = ({
       {/* Desktop Layout - Table view (lg and above) */}
       <div className='hidden lg:block'>
         {/* Tiêu đề của các sản phẩm trong cart */}
-        <div className='my-2 grid grid-cols-12 rounded-md bg-white dark:bg-slate-800 px-9 py-5 text-sm capitalize text-gray-500 dark:text-gray-300 shadow dark:shadow-slate-900/50'>
+        <div className='my-2 grid grid-cols-12 rounded-md bg-white px-9 py-5 text-sm text-gray-500 capitalize shadow-sm dark:bg-slate-800 dark:text-gray-300 dark:shadow-slate-900/50'>
           <div className='col-span-6'>
             <div className='flex items-center'>
-              <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+              <div className='flex shrink-0 items-center justify-center pr-3'>
                 <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
               </div>
-              <div className='flex flex-grow text-black dark:text-gray-100'>Sản phẩm</div>
+              <div className='flex grow text-black dark:text-gray-100'>Sản phẩm</div>
             </div>
           </div>
           <div className='col-span-6'>
@@ -73,11 +74,11 @@ const CartItemList = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className='mt-5 grid grid-cols-12 items-center rounded-sm border border-[rgba(0,0,0,.09)] dark:border-slate-700 bg-white dark:bg-slate-800 py-5 px-9 text-sm text-gray-500 dark:text-gray-300 first:mt-0 hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow'
+                className='mt-5 grid grid-cols-12 items-center rounded-xs border border-[rgba(0,0,0,.09)] bg-white px-9 py-5 text-sm text-gray-500 transition-shadow first:mt-0 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300 dark:hover:shadow-slate-900/50'
               >
                 <div className='col-span-6'>
                   <div className='flex items-center'>
-                    <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+                    <div className='flex shrink-0 items-center justify-center pr-3'>
                       <ShopeeCheckbox
                         checked={purchase.isChecked}
                         onChange={(checked) => {
@@ -86,29 +87,29 @@ const CartItemList = ({
                         size='md'
                       />
                     </div>
-                    <div className='flex-grow'>
+                    <div className='grow'>
                       <div className='flex items-center'>
                         <Link
                           to={`${path.home}${generateNameId({
                             name: purchase.product.name,
                             id: purchase.product._id
                           })}`}
-                          className='h-20 w-20 flex-shrink-0'
+                          className='h-20 w-20 shrink-0'
                         >
                           <ImageWithFallback
                             src={purchase.product.image}
                             alt={purchase.product.name}
-                            className='h-full w-full object-cover rounded'
+                            className='h-full w-full rounded-sm object-cover'
                             loading='lazy'
                           />
                         </Link>
-                        <div className='flex-grow px-2 pb-2 pt-1'>
+                        <div className='grow px-2 pt-1 pb-2'>
                           <Link
                             to={`${path.home}${generateNameId({
                               name: purchase.product.name,
                               id: purchase.product._id
                             })}`}
-                            className='line-clamp-2 text-gray-800 dark:text-gray-100 hover:text-[#ee4d2d] transition-colors'
+                            className='line-clamp-2 text-gray-800 transition-colors hover:text-[#ee4d2d] dark:text-gray-100'
                           >
                             {purchase.product.name}
                           </Link>
@@ -138,7 +139,7 @@ const CartItemList = ({
                   <div className='grid grid-cols-5 items-center'>
                     <div className='col-span-2'>
                       <div className='flex items-center justify-center text-[15px]'>
-                        <span className='mr-2 text-gray-500 dark:text-gray-400 line-through'>
+                        <span className='mr-2 text-gray-500 line-through dark:text-gray-400'>
                           ₫{formatCurrency(purchase.product.price_before_discount)}
                         </span>
                         <span className='text-black/90 dark:text-gray-100'>
@@ -173,7 +174,7 @@ const CartItemList = ({
                     </div>
                     <div className='col-span-1'>
                       <motion.span
-                        className='flex items-center justify-center text-[15px] text-[#ee4d2d] font-medium'
+                        className='flex items-center justify-center text-[15px] font-medium text-[#ee4d2d]'
                         key={purchase.buy_count}
                         initial={{ scale: 0.9, opacity: 0.7 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -185,7 +186,7 @@ const CartItemList = ({
                     <div className='col-span-1 flex flex-col items-center justify-center gap-1'>
                       <motion.button
                         onClick={handleSaveForLater(index)}
-                        className='text-sm text-blue-500 dark:text-blue-400 transition-colors hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1'
+                        className='flex items-center gap-1 text-sm text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         title='Lưu để mua sau'
@@ -196,7 +197,7 @@ const CartItemList = ({
                           viewBox='0 0 24 24'
                           strokeWidth={1.5}
                           stroke='currentColor'
-                          className='w-4 h-4'
+                          className='h-4 w-4'
                         >
                           <path
                             strokeLinecap='round'
@@ -208,7 +209,7 @@ const CartItemList = ({
                       </motion.button>
                       <motion.button
                         onClick={handleDelete(index)}
-                        className='bg-none text-black/90 dark:text-gray-200 transition-colors hover:text-[#ee4d2d] hover:font-medium'
+                        className='bg-none text-black/90 transition-colors hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
@@ -225,11 +226,11 @@ const CartItemList = ({
 
       {/* Mobile Layout - Card view (below lg) */}
       <div className='block lg:hidden'>
-        <div className='my-2 flex items-center rounded-md bg-white dark:bg-slate-800 px-4 py-4 text-sm shadow dark:shadow-slate-900/50'>
-          <div className='flex flex-shrink-0 items-center justify-center pr-3'>
+        <div className='my-2 flex items-center rounded-md bg-white px-4 py-4 text-sm shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
+          <div className='flex shrink-0 items-center justify-center pr-3'>
             <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
           </div>
-          <span className='text-black dark:text-gray-100 font-medium'>Chọn tất cả ({extendedPurchases.length})</span>
+          <span className='font-medium text-black dark:text-gray-100'>Chọn tất cả ({extendedPurchases.length})</span>
         </div>
 
         {extendedPurchases.length > 0 && (
@@ -240,10 +241,10 @@ const CartItemList = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className='bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm dark:shadow-slate-900/50'
+                className='rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               >
                 <div className='flex gap-3'>
-                  <div className='flex flex-shrink-0 items-start pt-1'>
+                  <div className='flex shrink-0 items-start pt-1'>
                     <ShopeeCheckbox
                       checked={purchase.isChecked}
                       onChange={(checked) => {
@@ -258,23 +259,23 @@ const CartItemList = ({
                       name: purchase.product.name,
                       id: purchase.product._id
                     })}`}
-                    className='h-20 w-20 flex-shrink-0'
+                    className='h-20 w-20 shrink-0'
                   >
                     <ImageWithFallback
                       src={purchase.product.image}
                       alt={purchase.product.name}
-                      className='h-full w-full object-cover rounded'
+                      className='h-full w-full rounded-sm object-cover'
                       loading='lazy'
                     />
                   </Link>
 
-                  <div className='flex-1 min-w-0'>
+                  <div className='min-w-0 flex-1'>
                     <Link
                       to={`${path.home}${generateNameId({
                         name: purchase.product.name,
                         id: purchase.product._id
                       })}`}
-                      className='line-clamp-2 text-sm text-gray-800 dark:text-gray-100 hover:text-[#ee4d2d] transition-colors'
+                      className='line-clamp-2 text-sm text-gray-800 transition-colors hover:text-[#ee4d2d] dark:text-gray-100'
                     >
                       {purchase.product.name}
                     </Link>
@@ -296,10 +297,10 @@ const CartItemList = ({
                     </AnimatePresence>
 
                     <div className='mt-2 flex items-center gap-2 text-sm'>
-                      <span className='text-gray-400 dark:text-gray-500 line-through'>
+                      <span className='text-gray-400 line-through dark:text-gray-500'>
                         ₫{formatCurrency(purchase.product.price_before_discount)}
                       </span>
-                      <span className='text-[#ee4d2d] font-medium'>₫{formatCurrency(purchase.product.price)}</span>
+                      <span className='font-medium text-[#ee4d2d]'>₫{formatCurrency(purchase.product.price)}</span>
                     </div>
 
                     <div className='mt-3 flex items-center gap-2'>
@@ -330,7 +331,7 @@ const CartItemList = ({
                       <div className='ml-auto flex items-center gap-1'>
                         <motion.button
                           onClick={handleSaveForLater(index)}
-                          className='text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-1.5'
+                          className='p-1.5 text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                           aria-label='Lưu để mua sau'
                           whileHover={{ scale: 1.15 }}
                           whileTap={{ scale: 0.9 }}
@@ -342,7 +343,7 @@ const CartItemList = ({
                             viewBox='0 0 24 24'
                             strokeWidth={1.5}
                             stroke='currentColor'
-                            className='w-5 h-5'
+                            className='h-5 w-5'
                           >
                             <path
                               strokeLinecap='round'
@@ -354,7 +355,7 @@ const CartItemList = ({
 
                         <motion.button
                           onClick={handleDelete(index)}
-                          className='text-gray-500 dark:text-gray-400 hover:text-[#ee4d2d] transition-colors p-1.5'
+                          className='p-1.5 text-gray-500 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
                           aria-label='Xóa sản phẩm'
                           whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
                           whileTap={{ scale: 0.9 }}
@@ -366,7 +367,7 @@ const CartItemList = ({
                             viewBox='0 0 24 24'
                             strokeWidth={1.5}
                             stroke='currentColor'
-                            className='w-5 h-5'
+                            className='h-5 w-5'
                           >
                             <path
                               strokeLinecap='round'
@@ -379,9 +380,9 @@ const CartItemList = ({
                     </div>
 
                     <div className='mt-2 flex items-center justify-end'>
-                      <span className='text-sm text-gray-500 dark:text-gray-400 mr-2'>Tổng:</span>
+                      <span className='mr-2 text-sm text-gray-500 dark:text-gray-400'>Tổng:</span>
                       <motion.span
-                        className='text-[#ee4d2d] font-medium'
+                        className='font-medium text-[#ee4d2d]'
                         key={purchase.buy_count}
                         initial={{ scale: 0.9, opacity: 0.7 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -401,4 +402,4 @@ const CartItemList = ({
   )
 }
 
-export default CartItemList
+export default memo(CartItemList)

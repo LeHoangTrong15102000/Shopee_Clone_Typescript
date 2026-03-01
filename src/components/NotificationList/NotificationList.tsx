@@ -57,7 +57,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
         role='status'
         aria-busy='true'
         aria-label='Đang tải thông báo'
-        className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+        className={`relative max-w-[calc(100vw-2rem)] rounded-xs border border-gray-200 bg-white text-sm shadow-md before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""] sm:max-w-[400px] dark:border-slate-700 dark:bg-slate-800 ${className}`}
       >
         <div className='flex h-[250px] w-full items-center justify-center'>
           <div className='text-sm text-gray-500 dark:text-gray-400'>Đang tải thông báo...</div>
@@ -71,7 +71,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
       <div
         role='region'
         aria-label='Danh sách thông báo trống'
-        className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+        className={`relative max-w-[calc(100vw-2rem)] rounded-xs border border-gray-200 bg-white text-sm shadow-md before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""] sm:max-w-[400px] dark:border-slate-700 dark:bg-slate-800 ${className}`}
       >
         <div className='flex h-[250px] w-full flex-col items-center justify-center p-2'>
           <svg
@@ -92,11 +92,11 @@ const NotificationList = ({ className }: NotificationListProps) => {
     <div
       role='region'
       aria-label='Danh sách thông báo'
-      className={`relative max-w-[calc(100vw-2rem)] sm:max-w-[400px] rounded-sm border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm shadow-md before:absolute before:left-0 before:top-0 before:h-[15px] before:w-full before:translate-y-[-100%] before:bg-transparent before:content-[""] ${className}`}
+      className={`relative max-w-[calc(100vw-2rem)] rounded-xs border border-gray-200 bg-white text-sm shadow-md before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""] sm:max-w-[400px] dark:border-slate-700 dark:bg-slate-800 ${className}`}
     >
-      <div className='py-[10px] pl-[10px] pr-[15px]'>
+      <div className='py-[10px] pr-[15px] pl-[10px]'>
         <div className='flex items-center justify-between'>
-          <div className='capitalize text-[rgba(0,0,0,.26)] dark:text-gray-400'>Thông báo mới nhận</div>
+          <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>Thông báo mới nhận</div>
           <span aria-live='polite' aria-atomic='true' className='sr-only'>
             {unreadCount > 0 ? `Bạn có ${unreadCount} thông báo chưa đọc` : 'Không có thông báo chưa đọc'}
           </span>
@@ -115,9 +115,9 @@ const NotificationList = ({ className }: NotificationListProps) => {
               role='listitem'
               tabIndex={0}
               aria-label={`${getNotificationTypeLabel(notification.type)}: ${notification.title}. ${notification.isRead ? 'Đã đọc' : 'Chưa đọc'}. ${formatTimeAgo(notification.createdAt)}`}
-              className={`mt-2 flex cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-slate-700 hover:shadow-sm animate-fade-in focus:outline-none focus:ring-2 focus:ring-orange focus:ring-inset ${
+              className={`mt-2 flex animate-fade-in cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 hover:shadow-xs focus:ring-2 focus:ring-orange focus:outline-hidden focus:ring-inset dark:hover:bg-slate-700 ${
                 !notification.isRead
-                  ? 'bg-[#fff5f5] dark:bg-slate-700/50 border-l-2 border-orange'
+                  ? 'border-l-2 border-orange bg-[#fff5f5] dark:bg-slate-700/50'
                   : 'hover:scale-[1.01]'
               }`}
               onClick={() =>
@@ -126,9 +126,9 @@ const NotificationList = ({ className }: NotificationListProps) => {
               onKeyDown={(e) => handleNotificationKeyDown(e, notification._id, notification.isRead)}
             >
               {/* Icon */}
-              <div className='flex-shrink-0' aria-hidden='true'>
+              <div className='shrink-0' aria-hidden='true'>
                 <div
-                  className={`h-[2.5rem] w-[2.5rem] rounded-full flex items-center justify-center ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-full ${
                     notification.type === 'order'
                       ? 'bg-green-100 dark:bg-green-900/30'
                       : notification.type === 'promotion'
@@ -174,7 +174,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
               </div>
 
               {/* Content */}
-              <div className='ml-2 flex-grow overflow-hidden'>
+              <div className='ml-2 grow overflow-hidden'>
                 <div className='flex items-start justify-between'>
                   <div
                     className={`truncate text-sm ${!notification.isRead ? 'font-medium text-black dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}
@@ -182,10 +182,10 @@ const NotificationList = ({ className }: NotificationListProps) => {
                     {notification.title}
                   </div>
                   {!notification.isRead && (
-                    <div className='ml-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange' aria-hidden='true'></div>
+                    <div className='ml-2 h-2 w-2 shrink-0 rounded-full bg-orange' aria-hidden='true'></div>
                   )}
                 </div>
-                <div className='mt-1 text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>{notification.content}</div>
+                <div className='mt-1 line-clamp-2 text-xs text-gray-500 dark:text-gray-400'>{notification.content}</div>
                 <div className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
                   {formatTimeAgo(notification.createdAt)}
                 </div>
@@ -205,7 +205,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
                 disabled={markAllAsReadMutation.isPending}
                 aria-label={`Đánh dấu tất cả ${unreadCount} thông báo là đã đọc`}
                 aria-busy={markAllAsReadMutation.isPending}
-                className='text-orange hover:text-orange/80 disabled:opacity-50 transition-colors focus:outline-none focus:underline'
+                className='text-orange transition-colors hover:text-orange/80 focus:underline focus:outline-hidden disabled:opacity-50'
                 title='Đánh dấu tất cả thông báo là đã đọc'
               >
                 {markAllAsReadMutation.isPending ? 'Đang xử lý...' : 'Đánh dấu đã đọc tất cả'}
@@ -219,7 +219,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
           <button
             type='button'
             aria-label='Xem tất cả thông báo'
-            className='rounded-sm bg-orange px-4 py-2 text-xs capitalize text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2'
+            className='hover:bg-opacity-90 rounded-xs bg-orange px-4 py-2 text-xs text-white capitalize focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden'
           >
             Xem tất cả
           </button>

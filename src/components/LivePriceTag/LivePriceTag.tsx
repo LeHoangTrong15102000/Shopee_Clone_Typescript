@@ -50,7 +50,7 @@ export default function LivePriceTag({
       {hasChanged && (
         <span
           className={classNames(
-            'ml-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium text-white animate-bounce',
+            'ml-2 inline-block animate-bounce rounded-full px-2 py-0.5 text-xs font-medium text-white',
             priceDecreased ? 'bg-green-500' : 'bg-red-500'
           )}
         >

@@ -140,14 +140,14 @@ const ConfirmDialog = ({
           />
 
           {/* Dialog container */}
-          <div className='pointer-events-none fixed inset-0 z-[51] flex items-center justify-center'>
+          <div className='pointer-events-none fixed inset-0 z-51 flex items-center justify-center'>
             <motion.div
               {...animationProps}
               role='dialog'
               aria-modal='true'
               aria-labelledby='confirm-dialog-title'
               aria-describedby='confirm-dialog-message'
-              className='pointer-events-auto mx-4 w-full max-w-md rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl'
+              className='pointer-events-auto mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800'
               onClick={(e) => e.stopPropagation()}
             >
               {/* Icon */}

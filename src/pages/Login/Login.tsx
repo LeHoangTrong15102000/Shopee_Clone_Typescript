@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -126,7 +126,7 @@ const Login = () => {
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='mt-10 lg:col-span-2 lg:col-start-4'>
             <motion.form
-              className='rounded bg-white dark:bg-slate-800 p-10 shadow-sm dark:shadow-slate-900/50'
+              className='rounded-sm bg-white p-10 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               onSubmit={onSubmit}
               noValidate
               variants={reducedMotion ? undefined : containerVariants}
@@ -142,7 +142,7 @@ const Login = () => {
                 <Input
                   className='relative mt-6'
                   classNameInput={classNames(
-                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
                       'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
                         errors.email && errors.email.message
@@ -161,7 +161,7 @@ const Login = () => {
                 <Input<FormData>
                   className='relative mt-2'
                   classNameInput={classNames(
-                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-sm dark:shadow-slate-900/30 outline-none focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
                       'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
                         errors.password && errors.password.message
@@ -185,7 +185,7 @@ const Login = () => {
                     isLoading={loginAccountMutation.isPending}
                     disabled={loginAccountMutation.isPending}
                     type='submit'
-                    className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'
+                    className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm text-white uppercase hover:bg-red-600'
                   >
                     đăng nhập
                   </Button>
@@ -196,7 +196,7 @@ const Login = () => {
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-4 flex items-center gap-3'>
                   <div className='h-px flex-1 bg-gray-200 dark:bg-slate-600' />
-                  <span className='text-sm text-gray-400 dark:text-gray-500 select-none'>HOẶC</span>
+                  <span className='text-sm text-gray-400 select-none dark:text-gray-500'>HOẶC</span>
                   <div className='h-px flex-1 bg-gray-200 dark:bg-slate-600' />
                 </div>
               </motion.div>
@@ -208,7 +208,7 @@ const Login = () => {
                   disabled
                   whileHover={reducedMotion ? undefined : { scale: 1.01 }}
                   whileTap={reducedMotion ? undefined : { scale: 0.99 }}
-                  className='mt-4 flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 py-3 px-4 text-sm text-gray-700 dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-50 dark:hover:bg-slate-600 disabled:cursor-not-allowed disabled:opacity-70'
+                  className='mt-4 flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 shadow-xs transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
                 >
                   <svg viewBox='0 0 24 24' className='h-5 w-5' aria-hidden='true'>
                     <path

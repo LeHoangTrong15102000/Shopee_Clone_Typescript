@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Button from 'src/components/Button'
@@ -64,7 +64,7 @@ const AsideFilter = ({ categories }: Props) => {
 
   return (
     <div
-      className='py-4 px-3 text-black/80 dark:text-gray-200 bg-white dark:bg-slate-800 rounded-sm shadow-sm dark:shadow-slate-900/20'
+      className='rounded-xs bg-white px-3 py-4 text-black/80 shadow-xs dark:bg-slate-800 dark:text-gray-200 dark:shadow-slate-900/20'
       role='navigation'
       aria-label='Bộ lọc sản phẩm'
     >
@@ -90,7 +90,7 @@ const AsideFilter = ({ categories }: Props) => {
         </svg>
         <span className='capitalize'>{t('aside filter.all categories')}</span>
       </Link>
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
       <ul>
         {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id
@@ -148,7 +148,7 @@ const AsideFilter = ({ categories }: Props) => {
         </svg>
         <span className=''>{t('aside filter.search filter')}</span>
       </Link>
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
       {/* Filter theo khoảng giá */}
       <div className='my-4'>
         <div className='capitalize dark:text-gray-200'>Khoảng giá</div>
@@ -164,7 +164,7 @@ const AsideFilter = ({ categories }: Props) => {
                     className='grow'
                     classNameError='hidden'
                     placeholder='₫ TỪ'
-                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
+                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                     // onChange={(event) => field.onChange(event)} // onChange trong field có nhận vào cái event
                     {...field}
                     onChange={(event) => {
@@ -181,7 +181,7 @@ const AsideFilter = ({ categories }: Props) => {
               }}
             />
             {/* shrink-0 cho nó đừng có bị co lại */}
-            <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
+            <div className='mx-2.5 shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
             {/* <InputV2
               control={control}
               name='price_max'
@@ -189,7 +189,7 @@ const AsideFilter = ({ categories }: Props) => {
               className='grow'
               classNameError='hidden'
               placeholder='₫ ĐẾN'
-              classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 focus:border-gray-500 focus:shadow-sm'
+              classNameInput='px-1 py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 focus:border-gray-500 focus:shadow-xs'
               maxValue={'50000000'}
               onChange={() => {
                 trigger('price_min')
@@ -205,7 +205,7 @@ const AsideFilter = ({ categories }: Props) => {
                     className='grow'
                     classNameError='hidden'
                     placeholder='₫ ĐẾN'
-                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
+                    classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                     maxValue={'50000000'}
                     {...field}
                     onChange={(event) => {
@@ -217,30 +217,30 @@ const AsideFilter = ({ categories }: Props) => {
               }}
             />
           </div>
-          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>
+          <div className='mt-1 min-h-5 text-center text-sm text-red-600 dark:text-red-400'>
             {errors.price_min?.message}
           </div>
           <Button
             aria-label='Áp dụng bộ lọc giá'
-            className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
+            className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
           >
             áp dụng
           </Button>
-          <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+          <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
         </form>
         {/* Đánh giá */}
         <div className='my-4'>
-          <div className=' capitalize dark:text-gray-200'>đánh giá</div>
+          <div className='capitalize dark:text-gray-200'>đánh giá</div>
         </div>
       </div>
       {/* Sao đánh giá sản phẩm */}
       <RatingStars />
       {/* Button Xóa tất cả filter */}
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
       <Button
         onClick={handleRemoveAsideFilter}
         aria-label='Xóa tất cả bộ lọc'
-        className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
+        className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
       >
         xóa tất cả
       </Button>

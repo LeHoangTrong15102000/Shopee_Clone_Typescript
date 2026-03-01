@@ -1,5 +1,5 @@
 import { Fragment, memo, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
@@ -58,13 +58,13 @@ const Product = ({ product }: Props) => {
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`cursor-pointer h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
+          className={`h-full cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange ${isPrefetched ? 'ring-1 ring-orange-200' : ''}`}
           whileHover={{
             y: -5,
             transition: { duration: 0.2 }
           }}
         >
-          <div className='overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-shadow h-full'>
+          <div className='h-full overflow-hidden rounded-lg bg-white shadow-xs transition-shadow hover:shadow-md dark:bg-slate-800 dark:shadow-slate-900/20'>
             {/* Ảnh sản phẩm */}
             <motion.div
               className='relative w-full overflow-hidden'
@@ -76,7 +76,7 @@ const Product = ({ product }: Props) => {
                 alt={product.name}
                 aspectRatio='1:1'
                 loading='lazy'
-                className='rounded-tl-sm rounded-tr-sm bg-white dark:bg-slate-700 transition-transform duration-300 hover:scale-110'
+                className='rounded-tl-sm rounded-tr-sm bg-white transition-transform duration-300 hover:scale-110 dark:bg-slate-700'
                 showSkeleton={true}
                 blurPlaceholder={true}
               />
@@ -87,14 +87,14 @@ const Product = ({ product }: Props) => {
             </motion.div>
             {/* Thông tin sản phẩm */}
             <div className='overflow-hidden p-2'>
-              <div className='min-h-[1.9rem] text-xs sm:text-sm line-clamp-2 dark:text-gray-200'>{product.name}</div>
+              <div className='line-clamp-2 min-h-[1.9rem] text-xs sm:text-sm dark:text-gray-200'>{product.name}</div>
               {/* price */}
               <div
                 className='mt-3 flex items-center'
                 aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng, giá khuyến mãi ${formatCurrency(product.price)} đồng`}
               >
                 <div
-                  className='max-w-[50%] truncate text-gray-500 dark:text-gray-400 line-through'
+                  className='max-w-[50%] truncate text-gray-500 line-through dark:text-gray-400'
                   aria-label={`Giá gốc ${formatCurrency(product.price_before_discount)} đồng`}
                 >
                   <span className='text-xs'>₫</span>
@@ -122,7 +122,7 @@ const Product = ({ product }: Props) => {
             {/* Đia điểm bán */}
             <div className='p-2'>
               <div className='flex items-center justify-start'>
-                <span className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>{product.location}</span>
+                <span className='text-xs text-gray-600 sm:text-sm dark:text-gray-400'>{product.location}</span>
               </div>
             </div>
           </div>

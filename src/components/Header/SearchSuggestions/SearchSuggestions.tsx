@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -205,27 +205,27 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       <Link
         key={product._id}
         to={`${path.products}${generateNameId({ name: product.name, id: product._id })}`}
-        className='flex items-center py-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded px-2 -mx-2 transition-colors'
+        className='-mx-2 flex items-center rounded-sm px-2 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
         onClick={onHide}
       >
-        <div className='flex-shrink-0 w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-3'>
+        <div className='mr-2 h-8 w-8 shrink-0 md:mr-3 md:h-10 md:w-10'>
           <img
             src={imageUrl}
             alt={product.name}
-            className='w-full h-full object-cover rounded border border-gray-200 dark:border-slate-600 bg-gray-100 dark:bg-slate-700'
+            className='h-full w-full rounded-sm border border-gray-200 bg-gray-100 object-cover dark:border-slate-600 dark:bg-slate-700'
             onError={(e) => handleImageError(e, product._id)}
             loading='lazy'
           />
         </div>
-        <div className='flex-1 min-w-0'>
-          <div className='text-xs md:text-sm text-gray-900 dark:text-gray-100 truncate font-medium leading-tight'>
+        <div className='min-w-0 flex-1'>
+          <div className='truncate text-xs leading-tight font-medium text-gray-900 md:text-sm dark:text-gray-100'>
             {product.name}
           </div>
-          <div className='text-xs text-orange font-semibold'>₫{product.price.toLocaleString('vi-VN')}</div>
+          <div className='text-xs font-semibold text-orange'>₫{product.price.toLocaleString('vi-VN')}</div>
         </div>
-        <div className='flex-shrink-0'>
+        <div className='shrink-0'>
           <svg
-            className='w-3 h-3 md:w-4 md:h-4 text-gray-400 dark:text-gray-500'
+            className='h-3 w-3 text-gray-400 md:h-4 md:w-4 dark:text-gray-500'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -243,10 +243,10 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
   const showLoading = isFetching && (debouncedSearchValue?.length ?? 0) > 1
 
   return (
-    <div className='absolute top-full left-0 right-0 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg z-50 max-h-[60vh] sm:max-h-96 overflow-y-auto'>
+    <div className='absolute top-full right-0 left-0 z-50 max-h-[60vh] overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg sm:max-h-96 dark:border-slate-700 dark:bg-slate-800'>
       {showLoading && (
         <div className='flex items-center justify-center py-4'>
-          <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-orange'></div>
+          <div className='h-5 w-5 animate-spin rounded-full border-b-2 border-orange'></div>
           <span className='ml-2 text-sm text-gray-600 dark:text-gray-400'>Đang tìm kiếm...</span>
         </div>
       )}
@@ -256,7 +256,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* Search Suggestions */}
           {suggestions.length > 0 && (
             <div className='border-b border-gray-100 dark:border-slate-700'>
-              <div className='px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
+              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
                 Gợi ý tìm kiếm
               </div>
               {suggestions.slice(0, 5).map((suggestion, index) => (
@@ -273,7 +273,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* Product Results */}
           {products.length > 0 && (
             <div>
-              <div className='px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
+              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
                 Sản phẩm ({products.length > 5 ? '5+' : products.length})
               </div>
               <div className='px-4 pb-2'>
@@ -288,7 +288,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {suggestions.length === 0 && products.length === 0 && !showLoading && (
             <div className='px-4 py-6 text-center text-gray-500 dark:text-gray-400'>
               <svg
-                className='mx-auto h-8 w-8 text-gray-400 dark:text-gray-500 mb-2'
+                className='mx-auto mb-2 h-8 w-8 text-gray-400 dark:text-gray-500'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -309,8 +309,8 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       {/* Search History - Hiển thị khi không có search value */}
       {!debouncedSearchValue && searchHistory.length > 0 && (
         <div>
-          <div className='px-4 py-2 flex items-center justify-between'>
-            <span className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
+          <div className='flex items-center justify-between px-4 py-2'>
+            <span className='text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
               Lịch sử tìm kiếm
             </span>
             <button

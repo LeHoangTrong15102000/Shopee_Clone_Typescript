@@ -87,7 +87,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
       </div>
 
       {addresses.length === 0 ? (
-        <div className='rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600 p-8 text-center'>
+        <div className='rounded-lg border-2 border-dashed border-gray-300 p-8 text-center dark:border-slate-600'>
           <svg
             className='mx-auto h-12 w-12 text-gray-400 dark:text-gray-500'
             fill='none'
@@ -117,7 +117,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
               className={`relative cursor-pointer rounded-lg border-2 p-4 transition-all ${
                 selectedAddressId === address._id
                   ? 'border-orange bg-orange/5 dark:bg-orange/10'
-                  : 'border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500'
+                  : 'border-gray-200 hover:border-gray-300 dark:border-slate-600 dark:hover:border-slate-500'
               }`}
               onClick={() => onSelect(address)}
               role='button'
@@ -126,14 +126,14 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
               onKeyDown={(e) => e.key === 'Enter' && onSelect(address)}
             >
               {address.isDefault && (
-                <span className='absolute right-2 top-2 rounded bg-orange/10 px-2 py-0.5 text-xs text-orange'>
+                <span className='absolute top-2 right-2 rounded-sm bg-orange/10 px-2 py-0.5 text-xs text-orange'>
                   Mặc định
                 </span>
               )}
 
               <div className='flex items-start gap-3'>
                 <div
-                  className={`mt-1 h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                  className={`mt-1 flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                     selectedAddressId === address._id ? 'border-orange' : 'border-gray-300 dark:border-slate-500'
                   }`}
                 >
@@ -156,7 +156,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                         e.stopPropagation()
                         handleEdit(address)
                       }}
-                      className='text-sm text-blue-600 dark:text-blue-400 hover:underline'
+                      className='text-sm text-blue-600 hover:underline dark:text-blue-400'
                     >
                       Sửa
                     </button>
@@ -167,7 +167,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                             e.stopPropagation()
                             setDefaultMutation.mutate(address._id)
                           }}
-                          className='text-sm text-gray-600 dark:text-gray-300 hover:underline'
+                          className='text-sm text-gray-600 hover:underline dark:text-gray-300'
                         >
                           Đặt mặc định
                         </button>
@@ -176,7 +176,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                             e.stopPropagation()
                             deleteMutation.mutate(address._id)
                           }}
-                          className='text-sm text-red-600 dark:text-red-400 hover:underline'
+                          className='text-sm text-red-600 hover:underline dark:text-red-400'
                         >
                           Xóa
                         </button>

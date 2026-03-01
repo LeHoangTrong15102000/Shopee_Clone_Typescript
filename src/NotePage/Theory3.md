@@ -37,7 +37,7 @@ export default function NotFound() {
         <div className='text-xl md:text-3xl lg:text-5xl text-gray-600 mt-8'>Trang bạn tìm kiếm không tồn tại.</div>
         <Link
           to={path.home}
-          className='flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 mt-12 rounded transition duration-150 mx-auto w-fit'
+          className='flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 mt-12 rounded-sm transition duration-150 mx-auto w-fit'
           title='Về trang chủ'
         >
           <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
@@ -569,14 +569,14 @@ export default function AsideFilter() {
   const { t } = useTranslation('home')
 
   return (
-    <div className='bg-white p-4 rounded-sm shadow'>
+    <div className='bg-white p-4 rounded-xs shadow-sm'>
       <div className='flex items-center border-b border-gray-300 pb-3'>
         <svg className='w-3 h-3 fill-current'>{/* Icon */}</svg>
         <span className='text-sm font-bold uppercase ml-2'>{t('filter.aside filter')}</span>
       </div>
 
       {/* Price Range */}
-      <div className='bg-gray-300 h-[1px] my-4' />
+      <div className='bg-gray-300 h-px my-4' />
       <div className='text-sm'>
         <div>{t('filter.price range')}</div>
 
@@ -613,7 +613,7 @@ export default function Header() {
   return (
     <Popover
       renderPopover={
-        <div className='bg-white border border-gray-200 rounded-sm shadow-md'>
+        <div className='bg-white border border-gray-200 rounded-xs shadow-md'>
           <button className='py-2 px-3 hover:text-orange' onClick={() => changeLanguage('vi')}>
             Tiếng Việt
           </button>
@@ -751,7 +751,7 @@ export default function Header() {
       interactive
       visible={shouldShowResults}
       render={(attrs) => (
-        <div className='bg-white border border-gray-200 rounded-sm shadow-lg py-2' {...attrs}>
+        <div className='bg-white border border-gray-200 rounded-xs shadow-lg py-2' {...attrs}>
           {searchResults.map((product) => (
             <Link
               key={product._id}
@@ -759,7 +759,7 @@ export default function Header() {
               className='flex items-center py-2 px-4 hover:bg-gray-100'
               onClick={() => setShowResults(false)}
             >
-              <img src={product.image} alt={product.name} className='w-10 h-10 object-cover rounded' />
+              <img src={product.image} alt={product.name} className='w-10 h-10 object-cover rounded-sm' />
               <span className='ml-3 text-sm text-gray-700 truncate'>{product.name}</span>
             </Link>
           ))}
@@ -768,16 +768,16 @@ export default function Header() {
       onClickOutside={() => setShowResults(false)}
     >
       <form className='col-span-9' onSubmit={handleSubmit}>
-        <div className='flex rounded-sm bg-white p-1'>
+        <div className='flex rounded-xs bg-white p-1'>
           <input
             type='text'
-            className='flex-grow border-none bg-transparent px-3 py-2 text-sm outline-none'
+            className='grow border-none bg-transparent px-3 py-2 text-sm outline-hidden'
             placeholder='Tìm kiếm sản phẩm...'
             value={searchValue}
             onChange={handleChangeInput}
             onFocus={() => setShowResults(true)}
           />
-          <button type='submit' className='flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90'>
+          <button type='submit' className='shrink-0 rounded-xs bg-orange py-2 px-6 hover:opacity-90'>
             <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path
                 strokeLinecap='round'

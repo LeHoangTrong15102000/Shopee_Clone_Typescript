@@ -593,7 +593,7 @@ const renderPagination = () => {
     if (!dotBefore) {
       dotBefore = true;
       return (
-        <span key={index} className="mx-2 cursor-default rounded border bg-white px-3 py-2 shadow-sm">
+        <span key={index} className="mx-2 cursor-default rounded-sm border bg-white px-3 py-2 shadow-xs">
           ...
         </span>
       );
@@ -1101,7 +1101,7 @@ const QuantityController = ({
       <InputNumber
         className=""
         classNameError="hidden"
-        classNameInput="h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none"
+        classNameInput="h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-hidden"
         onChange={handleChange}
         onBlur={(event) => {
           onFocusOut && onFocusOut(Number(event.target.value));

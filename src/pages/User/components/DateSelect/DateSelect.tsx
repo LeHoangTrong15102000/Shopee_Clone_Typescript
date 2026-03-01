@@ -45,7 +45,7 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
 
   return (
     <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-      <div className='text-[rgba(85,85,85, .6)] dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right'>
+      <div className='text-[rgba(85,85,85, .6)] truncate pt-3 capitalize sm:w-[30%] sm:text-right dark:text-gray-400'>
         Ngày sinh
       </div>
       <div className='sm:w-[70%] sm:pl-5'>
@@ -53,7 +53,7 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           <select
             onChange={handleChange}
             name='date'
-            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
+            className='h-10 w-full cursor-pointer rounded-xs border border-black/10 bg-white px-3 transition-colors hover:border-[#ee4d2d] sm:w-[30%] dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100 dark:hover:border-orange-400'
             value={value?.getDate() || date.date}
           >
             <option disabled>Ngày</option>
@@ -67,7 +67,7 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           <select
             onChange={handleChange}
             name='month'
-            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
+            className='h-10 w-full cursor-pointer rounded-xs border border-black/10 bg-white px-3 transition-colors hover:border-[#ee4d2d] sm:w-[30%] dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100 dark:hover:border-orange-400'
             value={value?.getMonth() || date.month}
           >
             <option disabled>Tháng</option>
@@ -80,7 +80,7 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           <select
             onChange={handleChange}
             name='year'
-            className='h-10 w-full sm:w-[30%] cursor-pointer rounded-sm border border-black/10 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 px-3 hover:border-[#ee4d2d] dark:hover:border-orange-400 transition-colors'
+            className='h-10 w-full cursor-pointer rounded-xs border border-black/10 bg-white px-3 transition-colors hover:border-[#ee4d2d] sm:w-[30%] dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100 dark:hover:border-orange-400'
             value={value?.getFullYear() || date.year}
           >
             <option disabled>Năm</option>
@@ -92,7 +92,7 @@ const DateSelect = ({ onChange, value, errorMessage }: Props) => {
           </select>
         </div>
         {/* Thẻ div show lỗi */}
-        <div className='mt-1 min-h-[1.25rem] text-sm text-red-600'>{errorMessage}</div>
+        <div className='mt-1 min-h-5 text-sm text-red-600'>{errorMessage}</div>
       </div>
     </div>
   )

@@ -47,7 +47,7 @@ const WALLETS: WalletInfo[] = [
     id: 'vnpay',
     name: 'VNPay',
     color: 'text-red-600',
-    bgColor: 'bg-gradient-to-r from-red-50 to-blue-50',
+    bgColor: 'bg-linear-to-r from-red-50 to-blue-50',
     borderColor: 'border-red-500',
     balance: 3200000,
     isLinked: false,
@@ -95,7 +95,7 @@ const WalletLogo = memo(function WalletLogo({ wallet }: { wallet: WalletType }) 
 
   return (
     <div
-      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${config.gradient} shadow-lg`}
+      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${config.gradient} shadow-lg`}
     >
       <span className='text-xl font-bold text-white'>{config.text}</span>
     </div>
@@ -141,7 +141,7 @@ const WalletCard = memo(function WalletCard({
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className='absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500'
+          className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500'
         >
           <svg className='h-4 w-4 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
@@ -213,7 +213,7 @@ const QRCodePlaceholder = memo(function QRCodePlaceholder({ walletName }: { wall
         </g>
       </svg>
       <div className='absolute inset-0 flex items-center justify-center'>
-        <div className='rounded-lg bg-white p-1 shadow-sm dark:bg-slate-700'>
+        <div className='rounded-lg bg-white p-1 shadow-xs dark:bg-slate-700'>
           <span className='text-xs font-bold text-gray-800 dark:text-gray-200'>{walletName}</span>
         </div>
       </div>
@@ -229,7 +229,7 @@ const CountdownTimer = memo(function CountdownTimer({ seconds, isExpired }: { se
     <div className='flex flex-col items-center gap-2'>
       <div className='relative h-2 w-32 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700'>
         <motion.div
-          className={`absolute left-0 top-0 h-full ${isWarning ? 'bg-red-500' : 'bg-green-500'}`}
+          className={`absolute top-0 left-0 h-full ${isWarning ? 'bg-red-500' : 'bg-green-500'}`}
           initial={{ width: '100%' }}
           animate={{ width: `${progressPercent}%` }}
           transition={{ duration: 0.5 }}
@@ -389,7 +389,7 @@ const QRDisplayView = memo(function QRDisplayView({
             className={`flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-white ${
               isExpired
                 ? 'cursor-not-allowed bg-gray-400'
-                : `bg-gradient-to-r ${
+                : `bg-linear-to-r ${
                     wallet.id === 'momo'
                       ? 'from-pink-500 to-pink-600'
                       : wallet.id === 'zalopay'

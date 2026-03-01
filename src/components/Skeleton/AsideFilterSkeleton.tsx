@@ -2,13 +2,13 @@ import SkeletonBase from './SkeletonBase'
 
 export default function AsideFilterSkeleton() {
   return (
-    <div className='py-4 min-h-[500px]' role='status' aria-busy='true' aria-label='Đang tải bộ lọc'>
+    <div className='min-h-[500px] py-4' role='status' aria-busy='true' aria-label='Đang tải bộ lọc'>
       {/* Categories title skeleton */}
       <div className='flex items-center'>
         <SkeletonBase className='mr-2 h-4 w-3' />
         <SkeletonBase className='h-5 w-32' />
       </div>
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
 
       {/* Categories list skeleton */}
       <ul>
@@ -26,20 +26,20 @@ export default function AsideFilterSkeleton() {
         <SkeletonBase className='mr-3 h-4 w-3' />
         <SkeletonBase className='h-5 w-28' />
       </div>
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
 
       {/* Price range skeleton */}
       <div className='my-4'>
-        <SkeletonBase className='h-4 w-20 mb-2' />
+        <SkeletonBase className='mb-2 h-4 w-20' />
         <div className='mt-2'>
           <div className='flex items-start'>
-            <SkeletonBase className='h-9 md:h-8 w-full rounded-sm' />
-            <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd] dark:text-slate-500'>--</div>
-            <SkeletonBase className='h-9 md:h-8 w-full rounded-sm' />
+            <SkeletonBase className='h-9 w-full rounded-xs md:h-8' />
+            <div className='mx-2.5 shrink-0 text-[#bdbdbd] dark:text-slate-500'>--</div>
+            <SkeletonBase className='h-9 w-full rounded-xs md:h-8' />
           </div>
-          <div className='mt-1 min-h-[1.25rem]'></div>
-          <SkeletonBase className='h-10 md:h-9 w-full rounded-sm' />
-          <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
+          <div className='mt-1 min-h-5'></div>
+          <SkeletonBase className='h-10 w-full rounded-xs md:h-9' />
+          <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
         </div>
 
         {/* Rating title skeleton */}
@@ -67,8 +67,8 @@ export default function AsideFilterSkeleton() {
       </div>
 
       {/* Button skeleton */}
-      <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600'></div>
-      <SkeletonBase className='h-9 w-full rounded-sm' />
+      <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
+      <SkeletonBase className='h-9 w-full rounded-xs' />
     </div>
   )
 }

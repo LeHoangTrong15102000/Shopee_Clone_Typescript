@@ -82,7 +82,7 @@ function ProductList() {
 
       {/* Badge hiển thị khi background refetch */}
       {isFetching && !isLoading && (
-        <div className="bg-blue-500 text-white px-2 py-1 rounded">
+        <div className="bg-blue-500 text-white px-2 py-1 rounded-sm">
           Đang cập nhật sản phẩm...
         </div>
       )}

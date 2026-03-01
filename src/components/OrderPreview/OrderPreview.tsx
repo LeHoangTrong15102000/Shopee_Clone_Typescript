@@ -45,7 +45,7 @@ const SectionWrapper = memo(function SectionWrapper({
   return (
     <motion.div
       variants={reducedMotion ? undefined : staggerItem}
-      className={`rounded-xl border border-gray-100/50 dark:border-slate-700 p-4 shadow-md md:p-6 ${gradient || 'bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'}`}
+      className={`rounded-xl border border-gray-100/50 p-4 shadow-md md:p-6 dark:border-slate-700 ${gradient || 'bg-linear-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'}`}
     >
       <h3 className='mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100'>{title}</h3>
       {children}
@@ -98,11 +98,11 @@ const OrderPreview = memo(function OrderPreview({
       <SectionWrapper
         title='Địa chỉ giao hàng'
         reducedMotion={reducedMotion}
-        gradient='bg-gradient-to-br from-white via-orange-50/20 to-amber-50/10 dark:from-slate-800 dark:via-orange-900/10 dark:to-amber-900/5'
+        gradient='bg-linear-to-br from-white via-orange-50/20 to-amber-50/10 dark:from-slate-800 dark:via-orange-900/10 dark:to-amber-900/5'
       >
         {selectedAddress ? (
           <div className='flex items-start gap-3'>
-            <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange to-amber-500 shadow-md shadow-orange/30'>
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-orange to-amber-500 shadow-md shadow-orange/30'>
               <svg className='h-5 w-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                 <path
                   strokeLinecap='round'
@@ -124,7 +124,7 @@ const OrderPreview = memo(function OrderPreview({
                 <span className='text-gray-400 dark:text-gray-500'>|</span>
                 <span className='text-gray-600 dark:text-gray-300'>{selectedAddress.phone}</span>
                 {selectedAddress.isDefault && (
-                  <span className='rounded-full bg-gradient-to-r from-orange to-amber-500 px-2.5 py-0.5 text-xs font-medium text-white shadow-sm'>
+                  <span className='rounded-full bg-linear-to-r from-orange to-amber-500 px-2.5 py-0.5 text-xs font-medium text-white shadow-xs'>
                     Mặc định
                   </span>
                 )}
@@ -143,21 +143,21 @@ const OrderPreview = memo(function OrderPreview({
       <SectionWrapper
         title={`Sản phẩm (${totalItemCount})`}
         reducedMotion={reducedMotion}
-        gradient='bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'
+        gradient='bg-linear-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50'
       >
         <div className='space-y-3'>
           {items.map((item) => (
             <div
               key={item._id}
-              className='flex gap-3 rounded-lg bg-gradient-to-r from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 p-3 border border-gray-100 dark:border-slate-700'
+              className='flex gap-3 rounded-lg border border-gray-100 bg-linear-to-r from-gray-50 to-white p-3 dark:border-slate-700 dark:from-slate-900 dark:to-slate-800'
             >
-              <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm'>
+              <div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-gray-200 shadow-xs dark:border-slate-600'>
                 <ImageWithFallback
                   src={item.product.image}
                   alt={item.product.name}
                   className='h-full w-full object-cover'
                 />
-                <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-orange to-amber-500 text-xs font-medium text-white shadow-sm'>
+                <span className='absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-linear-to-r from-orange to-amber-500 text-xs font-medium text-white shadow-xs'>
                   {item.buy_count}
                 </span>
               </div>
@@ -168,7 +168,7 @@ const OrderPreview = memo(function OrderPreview({
               <div className='text-right'>
                 <p className='text-sm font-bold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
                 {item.price_before_discount > item.price && (
-                  <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
+                  <p className='text-xs text-gray-400 line-through dark:text-gray-500'>
                     ₫{formatCurrency(item.price_before_discount * item.buy_count)}
                   </p>
                 )}
@@ -182,20 +182,20 @@ const OrderPreview = memo(function OrderPreview({
       <SectionWrapper
         title='Phương thức vận chuyển'
         reducedMotion={reducedMotion}
-        gradient='bg-gradient-to-br from-white via-green-50/20 to-emerald-50/10 dark:from-slate-800 dark:via-green-900/10 dark:to-emerald-900/5'
+        gradient='bg-linear-to-br from-white via-green-50/20 to-emerald-50/10 dark:from-slate-800 dark:via-green-900/10 dark:to-emerald-900/5'
       >
         {selectedShippingMethod ? (
           <div className='flex items-start gap-3'>
-            <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500 shadow-md shadow-green-500/30'>
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-green-500 to-emerald-500 shadow-md shadow-green-500/30'>
               <ShippingIcon type={selectedShippingMethod.icon} className='h-5 w-5 text-white' />
             </div>
             <div className='flex-1'>
               <p className='font-semibold text-gray-900 dark:text-gray-100'>{selectedShippingMethod.name}</p>
               <p className='mt-0.5 text-sm text-gray-600 dark:text-gray-300'>{selectedShippingMethod.description}</p>
               {estimatedDeliveryDate && (
-                <p className='mt-1 sm:mt-1.5 inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs sm:text-sm font-medium text-green-700 dark:text-green-400'>
+                <p className='mt-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 sm:mt-1.5 sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-sm dark:bg-green-900/30 dark:text-green-400'>
                   <svg
-                    className='h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0'
+                    className='h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4'
                     fill='none'
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
@@ -226,11 +226,11 @@ const OrderPreview = memo(function OrderPreview({
       <SectionWrapper
         title='Phương thức thanh toán'
         reducedMotion={reducedMotion}
-        gradient='bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/10 dark:from-slate-800 dark:via-blue-900/10 dark:to-indigo-900/5'
+        gradient='bg-linear-to-br from-white via-blue-50/20 to-indigo-50/10 dark:from-slate-800 dark:via-blue-900/10 dark:to-indigo-900/5'
       >
         {selectedPaymentMethod ? (
           <div className='flex items-center gap-3'>
-            <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 shadow-md shadow-blue-500/30 text-white'>
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-white shadow-md shadow-blue-500/30'>
               <PaymentIcon type={selectedPaymentMethod} className='h-5 w-5' />
             </div>
             <div className='flex-1'>
@@ -249,10 +249,10 @@ const OrderPreview = memo(function OrderPreview({
         <SectionWrapper
           title='Ghi chú đơn hàng'
           reducedMotion={reducedMotion}
-          gradient='bg-gradient-to-br from-white via-yellow-50/20 to-amber-50/10 dark:from-slate-800 dark:via-yellow-900/10 dark:to-amber-900/5'
+          gradient='bg-linear-to-br from-white via-yellow-50/20 to-amber-50/10 dark:from-slate-800 dark:via-yellow-900/10 dark:to-amber-900/5'
         >
           <div className='flex items-center gap-3'>
-            <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 shadow-md shadow-yellow-500/30'>
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-yellow-400 to-amber-500 shadow-md shadow-yellow-500/30'>
               <svg className='h-5 w-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                 <path
                   strokeLinecap='round'
@@ -271,7 +271,7 @@ const OrderPreview = memo(function OrderPreview({
       <SectionWrapper
         title='Tổng kết đơn hàng'
         reducedMotion={reducedMotion}
-        gradient='bg-gradient-to-br from-white via-orange-50/30 to-amber-50/20 dark:from-slate-800 dark:via-orange-900/20 dark:to-amber-900/10'
+        gradient='bg-linear-to-br from-white via-orange-50/30 to-amber-50/20 dark:from-slate-800 dark:via-orange-900/20 dark:to-amber-900/10'
       >
         <div className='space-y-3'>
           <div className='flex justify-between text-sm'>
@@ -297,14 +297,14 @@ const OrderPreview = memo(function OrderPreview({
           <div className='border-t-2 border-orange/20 pt-3'>
             <div className='flex items-center justify-between'>
               <span className='text-base font-semibold text-gray-900 dark:text-gray-100'>Tổng thanh toán</span>
-              <span className='text-2xl font-bold bg-gradient-to-r from-orange to-red-500 bg-clip-text text-transparent'>
+              <span className='bg-linear-to-r from-orange to-red-500 bg-clip-text text-2xl font-bold text-transparent'>
                 ₫{formatCurrency(Math.max(0, total))}
               </span>
             </div>
             {totalDiscount > 0 && (
               <p className='mt-1 text-right text-xs font-medium text-green-600'>
                 <svg
-                  className='h-4 w-4 inline-block mr-1'
+                  className='mr-1 inline-block h-4 w-4'
                   fill='none'
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
@@ -326,11 +326,11 @@ const OrderPreview = memo(function OrderPreview({
       {/* Action Buttons */}
       <motion.div
         variants={reducedMotion ? undefined : staggerItem}
-        className='flex flex-col gap-3 rounded-xl bg-gradient-to-br from-white to-gray-50/50 dark:from-slate-800 dark:to-slate-900/50 p-4 shadow-lg border border-gray-100/50 dark:border-slate-700 md:flex-row md:p-6'
+        className='flex flex-col gap-3 rounded-xl border border-gray-100/50 bg-linear-to-br from-white to-gray-50/50 p-4 shadow-lg md:flex-row md:p-6 dark:border-slate-700 dark:from-slate-800 dark:to-slate-900/50'
       >
         <Button
           onClick={onBack}
-          className='flex-1 rounded-xl border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 py-3 font-medium text-gray-700 dark:text-gray-200 transition-all hover:bg-gray-50 dark:hover:bg-slate-600 hover:border-gray-300 dark:hover:border-slate-500'
+          className='flex-1 rounded-xl border-2 border-gray-200 bg-white py-3 font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:border-slate-500 dark:hover:bg-slate-600'
         >
           <span className='flex items-center justify-center gap-2'>
             <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -343,7 +343,7 @@ const OrderPreview = memo(function OrderPreview({
           onClick={onPlaceOrder}
           disabled={isPlacingOrder}
           isLoading={isPlacingOrder}
-          className='flex-1 rounded-xl bg-gradient-to-r from-orange via-orange to-amber-500 py-3 font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none md:flex-[2]'
+          className='flex-1 rounded-xl bg-linear-to-r from-orange via-orange to-amber-500 py-3 font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none md:flex-2'
         >
           {isPlacingOrder ? 'Đang xử lý...' : 'Đặt hàng'}
         </Button>

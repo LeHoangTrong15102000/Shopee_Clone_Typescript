@@ -79,7 +79,7 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: ReturnType<typeof vi.fn>
+let mockSetExtendedPurchases: any
 let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
@@ -151,10 +151,13 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.addToCart).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 2
-      })
+      expect(purchaseApi.addToCart).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 2
+        },
+        expect.anything()
+      )
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
@@ -320,10 +323,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 5
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 5
+        },
+        expect.anything()
+      )
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
@@ -442,10 +448,13 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith({
-        product_id: 'product-1',
-        buy_count: 0
-      })
+      expect(purchaseApi.updatePurchase).toHaveBeenCalledWith(
+        {
+          product_id: 'product-1',
+          buy_count: 0
+        },
+        expect.anything()
+      )
     })
 
     test('should handle quantity exceeding stock', async () => {
@@ -532,7 +541,7 @@ describe('useOptimisticRemoveFromCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1'])
+      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1'], expect.anything())
       expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
@@ -661,7 +670,7 @@ describe('useOptimisticRemoveFromCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1', 'purchase-2'])
+      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1', 'purchase-2'], expect.anything())
     })
 
     test('should provide undo functionality via toast onClick', async () => {
@@ -752,7 +761,7 @@ describe('useOptimisticRemoveFromCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith([])
+      expect(purchaseApi.deletePurchase).toHaveBeenCalledWith([], expect.anything())
     })
   })
 })

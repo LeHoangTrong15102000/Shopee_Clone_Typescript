@@ -43,7 +43,7 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
           key={method._id}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`cursor-pointer rounded-lg border-2 p-3 md:p-4 transition-all bg-white dark:bg-slate-800 ${
+          className={`cursor-pointer rounded-lg border-2 bg-white p-3 transition-all md:p-4 dark:bg-slate-800 ${
             selectedMethodId === method._id
               ? 'border-orange'
               : 'border-gray-200 hover:border-gray-300 dark:border-slate-600 dark:hover:border-slate-500'
@@ -56,32 +56,32 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
         >
           <div className='flex items-center gap-2.5 sm:gap-4'>
             <div
-              className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 ${
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
                 selectedMethodId === method._id ? 'border-orange' : 'border-gray-300 dark:border-slate-500'
               }`}
             >
               {selectedMethodId === method._id && <div className='h-3 w-3 rounded-full bg-orange' />}
             </div>
 
-            <div className='flex-1 min-w-0'>
-              <div className='flex items-center gap-1.5 sm:gap-2 text-orange'>
-                <ShippingIcon type={method.icon} className='h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0' />
-                <span className='text-sm sm:text-base font-medium text-gray-900 dark:text-gray-100'>{method.name}</span>
+            <div className='min-w-0 flex-1'>
+              <div className='flex items-center gap-1.5 text-orange sm:gap-2'>
+                <ShippingIcon type={method.icon} className='h-5 w-5 shrink-0 sm:h-6 sm:w-6' />
+                <span className='text-sm font-medium text-gray-900 sm:text-base dark:text-gray-100'>{method.name}</span>
               </div>
-              <p className='mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 line-clamp-2'>
+              <p className='mt-0.5 line-clamp-2 text-xs text-gray-500 sm:mt-1 sm:text-sm dark:text-gray-400'>
                 {method.description}
               </p>
-              <p className='mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
+              <p className='mt-0.5 text-xs text-gray-600 sm:mt-1 sm:text-sm dark:text-gray-400'>
                 Thời gian: <span className='font-medium'>{method.estimatedDays}</span>
               </p>
               <motion.p
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className='mt-1 sm:mt-1.5 flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-medium text-green-600 dark:text-green-400'
+                className='mt-1 flex items-center gap-1 text-xs font-medium text-green-600 sm:mt-1.5 sm:gap-1.5 sm:text-sm dark:text-green-400'
               >
                 <svg
-                  className='h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0'
+                  className='h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4'
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -97,8 +97,8 @@ const ShippingMethodSelector = memo(function ShippingMethodSelector({
               </motion.p>
             </div>
 
-            <div className='text-right flex-shrink-0'>
-              <span className='text-sm sm:text-lg font-semibold text-orange'>₫{formatCurrency(method.price)}</span>
+            <div className='shrink-0 text-right'>
+              <span className='text-sm font-semibold text-orange sm:text-lg'>₫{formatCurrency(method.price)}</span>
             </div>
           </div>
         </motion.div>

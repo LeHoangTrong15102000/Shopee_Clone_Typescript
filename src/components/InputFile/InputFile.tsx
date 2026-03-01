@@ -46,7 +46,7 @@ const InputFile = ({ onChange }: Props) => {
       />
       <button
         type='button'
-        className='min-w-[70px] md:min-w-[90px] flex h-9 md:h-10 items-center justify-center rounded-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 md:px-5 capitalize text-xs md:text-sm text-[#555] dark:text-gray-300 outline-none hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors'
+        className='flex h-9 min-w-[70px] items-center justify-center rounded-xs border border-gray-300 bg-white px-4 text-xs text-[#555] capitalize outline-hidden transition-colors hover:bg-gray-50 md:h-10 md:min-w-[90px] md:px-5 md:text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
         onClick={handleUpload}
       >
         chọn ảnh

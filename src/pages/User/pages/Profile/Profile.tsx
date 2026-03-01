@@ -29,8 +29,8 @@ function Info() {
   return (
     <Fragment>
       {/* Tên */}
-      <div className='mt-3 sm:mt-6 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+      <div className='mt-3 flex flex-col flex-wrap sm:mt-6 sm:flex-row'>
+        <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
           Tên
         </div>
         <div className='sm:w-[70%] sm:pl-5'>
@@ -40,13 +40,13 @@ function Info() {
             placeholder='Tên'
             errorMessage={errors.name?.message}
             autoComplete='on'
-            classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
+            classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
           />
         </div>
       </div>
       {/* Số điện thoại */}
-      <div className='mt-1 sm:mt-2 flex flex-col flex-wrap sm:flex-row'>
-        <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+      <div className='mt-1 flex flex-col flex-wrap sm:mt-2 sm:flex-row'>
+        <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
           Số điện thoại
         </div>
         <div className='sm:w-[70%] sm:pl-5'>
@@ -60,7 +60,7 @@ function Info() {
                   className='grow'
                   placeholder='Số điện thoại'
                   errorMessage={errors.phone?.message}
-                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
+                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
                   {...field}
                   onChange={(event) => field.onChange(event)}
                 />
@@ -223,50 +223,50 @@ const Profile = () => {
 
   return (
     <motion.div
-      className='rounded-md bg-white dark:bg-slate-800 px-2 pb-10 shadow md:px-7 md:pb-20'
+      className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'
       initial={reducedMotion ? undefined : { opacity: 0, y: 15 }}
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       {/* Profile Completion Progress */}
-      <ProfileCompletion user={profile || null} className='mb-2 mt-2 sm:mb-6 sm:mt-6' />
+      <ProfileCompletion user={profile || null} className='mt-2 mb-2 sm:mt-6 sm:mb-6' />
 
       {/* Tiêu đề */}
       <motion.div
-        className='border-b border-b-gray-100 dark:border-b-slate-600 py-2 sm:py-6 text-center sm:text-left'
+        className='border-b border-b-gray-100 py-2 text-center sm:py-6 sm:text-left dark:border-b-slate-600'
         initial={reducedMotion ? undefined : { opacity: 0, x: -10 }}
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <h1 className='text-base sm:text-lg font-medium capitalize text-gray-700 dark:text-gray-200'>Hồ sơ của tôi</h1>
-        <div className='mt-[0.1875rem] text-xs sm:text-[.875rem] dark:text-gray-300'>
+        <h1 className='text-base font-medium text-gray-700 capitalize sm:text-lg dark:text-gray-200'>Hồ sơ của tôi</h1>
+        <div className='mt-0.75 text-xs sm:text-[.875rem] dark:text-gray-300'>
           Quản lý thông tin hồ sơ để bảo mật tài khoản
         </div>
       </motion.div>
       {/* Form và Avatar */}
       <FormProvider {...methods}>
-        <form className='mt-2 sm:mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
+        <form className='mt-2 flex flex-col-reverse sm:mt-8 md:flex-row md:items-start' onSubmit={onSubmit}>
           {/* Form */}
-          <div className='mt-2 sm:mt-6 flex-grow md:mt-0 md:pr-4 lg:pr-12'>
+          <div className='mt-2 grow sm:mt-6 md:mt-0 md:pr-4 lg:pr-12'>
             {/* flex-wrap đừng cho nó rớt ra bên ngoài */}
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+              <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
                 Email
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>
+                <div className='pt-1 text-sm text-gray-500 sm:pt-3 sm:text-base dark:text-gray-400'>
                   {profile?.email}
                 </div>
               </div>
             </div>
             {/* Tên đăng nhập */}
-            <div className='mt-1 sm:mt-4 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+            <div className='mt-1 flex flex-col flex-wrap sm:mt-4 sm:flex-row'>
+              <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
                 Tên đăng nhập
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
-                <div className='pt-1 sm:pt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400'>
+                <div className='pt-1 text-sm text-gray-500 sm:pt-3 sm:text-base dark:text-gray-400'>
                   {profile?.name}
                 </div>
               </div>
@@ -274,8 +274,8 @@ const Profile = () => {
             {/* Info thông tin người dùng */}
             <Info />
             {/* Địa chỉ */}
-            <div className='mt-1 sm:mt-2 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-1 sm:pt-3 text-sm sm:text-base capitalize sm:w-[30%] sm:text-right'>
+            <div className='mt-1 flex flex-col flex-wrap sm:mt-2 sm:flex-row'>
+              <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
                 Địa chỉ
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
@@ -285,7 +285,7 @@ const Profile = () => {
                   placeholder='Địa chỉ'
                   errorMessage={errors.address?.message}
                   autoComplete='on'
-                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-sm outline-none focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
+                  classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
                 />
               </div>
             </div>
@@ -308,12 +308,12 @@ const Profile = () => {
             />
 
             {/* button lưu thay đổi */}
-            <div className='mt-1 sm:mt-3 flex flex-col flex-wrap sm:flex-row'>
-              <div className='text-gray-500 dark:text-gray-400 truncate pt-3 capitalize sm:w-[30%] sm:text-right' />
-              <div className='w-[100%] sm:w-[70%] sm:pl-5'>
+            <div className='mt-1 flex flex-col flex-wrap sm:mt-3 sm:flex-row'>
+              <div className='truncate pt-3 text-gray-500 capitalize sm:w-[30%] sm:text-right dark:text-gray-400' />
+              <div className='w-full sm:w-[70%] sm:pl-5'>
                 <Button
                   type='submit'
-                  className='flex h-10 min-w-[100px] max-w-[220px] items-center justify-center rounded-lg bg-orange dark:bg-orange-400 px-5 text-center text-sm text-white hover:bg-orange/90 dark:hover:bg-orange-400/90'
+                  className='flex h-10 max-w-[220px] min-w-[100px] items-center justify-center rounded-lg bg-orange px-5 text-center text-sm text-white hover:bg-orange/90 dark:bg-orange-400 dark:hover:bg-orange-400/90'
                 >
                   Lưu
                 </Button>
@@ -322,7 +322,7 @@ const Profile = () => {
           </div>
           {/* Avatar */}
           <motion.div
-            className='flex items-center justify-center md:w-56 lg:w-72 md:border-l md:border-l-gray-100 dark:md:border-l-slate-600'
+            className='flex items-center justify-center md:w-56 md:border-l md:border-l-gray-100 lg:w-72 dark:md:border-l-slate-600'
             initial={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
             animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
@@ -330,7 +330,7 @@ const Profile = () => {
             {/* flex-col cho nó dàn hàng ngang */}
             <div className='flex flex-col items-center'>
               {/* Avatar */}
-              <div className='my-2 sm:my-5 h-20 w-20 sm:h-24 sm:w-24 md:h-[115px] md:w-[115px] flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
+              <div className='my-2 h-20 w-20 shrink-0 overflow-hidden rounded-full border border-black/10 sm:my-5 sm:h-24 sm:w-24 md:h-[115px] md:w-[115px]'>
                 <img
                   src={previewImage || getAvatarUrl(profileFromContext?.avatar)}
                   alt='Avatar'
@@ -340,8 +340,8 @@ const Profile = () => {
               {/* Input file */}
               <InputFile onChange={(value) => handleChangeFile(value)} />
               <div className='mt-1'>
-                <div className='text-xs sm:text-[0.875rem] text-gray-400'>Dung lượng file tối đa 1 MB</div>
-                <div className='text-xs sm:text-[0.875rem] text-gray-400'>Định dạng:.JPEG,.PNG</div>
+                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>Dung lượng file tối đa 1 MB</div>
+                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>Định dạng:.JPEG,.PNG</div>
                 <div></div>
               </div>
             </div>

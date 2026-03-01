@@ -1,5 +1,5 @@
 import { memo, useEffect, lazy, Suspense } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
 import PageTransition from 'src/components/PageTransition'

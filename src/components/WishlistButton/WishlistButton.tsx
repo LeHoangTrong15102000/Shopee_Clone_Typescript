@@ -62,16 +62,16 @@ export default function WishlistButton({ productId, productName, className, size
       aria-busy={isLoading}
       tabIndex={0}
       className={classNames(
-        'flex items-center justify-center rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2',
+        'flex items-center justify-center rounded-full bg-white/80 shadow-xs transition-all duration-200 hover:bg-white focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden dark:bg-slate-800/80 dark:hover:bg-slate-700',
         sizeClasses[size],
-        { 'opacity-50 cursor-not-allowed': isLoading },
+        { 'cursor-not-allowed opacity-50': isLoading },
         className
       )}
       title={isInWishlist ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
     >
       {isLoading ? (
         <svg
-          className='animate-spin h-4 w-4 text-orange dark:text-orange-400'
+          className='h-4 w-4 animate-spin text-orange dark:text-orange-400'
           fill='none'
           viewBox='0 0 24 24'
           aria-hidden='true'

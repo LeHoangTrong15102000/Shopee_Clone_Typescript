@@ -81,7 +81,7 @@ export default function LoyaltyPointsCard({
   return (
     <motion.div
       className={classNames(
-        'relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 p-4 shadow-lg',
+        'relative overflow-hidden rounded-xl bg-linear-to-br from-amber-400 via-orange-400 to-orange-500 p-4 shadow-lg',
         className
       )}
       initial={{ opacity: 0, y: 20 }}
@@ -89,17 +89,17 @@ export default function LoyaltyPointsCard({
       transition={{ duration: 0.4 }}
     >
       {/* Background decoration */}
-      <div className='absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10' />
+      <div className='absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10' />
       <div className='absolute -bottom-4 -left-4 h-24 w-24 rounded-full bg-white/10' />
 
       {/* Header */}
       <div className='relative flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <CoinIcon className='h-8 w-8 drop-shadow-md' />
-          <span className='text-lg font-bold text-white drop-shadow-sm'>Shopee Xu</span>
+          <span className='text-lg font-bold text-white drop-shadow-xs'>Shopee Xu</span>
         </div>
         <motion.button
-          className='rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30'
+          className='rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs transition-colors hover:bg-white/30'
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -145,7 +145,7 @@ export default function LoyaltyPointsCard({
         </div>
         <div className='mt-2 h-2 overflow-hidden rounded-full bg-white/30'>
           <motion.div
-            className='h-full rounded-full bg-gradient-to-r from-yellow-300 to-white'
+            className='h-full rounded-full bg-linear-to-r from-yellow-300 to-white'
             initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -161,12 +161,12 @@ export default function LoyaltyPointsCard({
       <AnimatePresence>
         {showExpiryWarning && (
           <motion.div
-            className='relative mt-3 flex items-center gap-2 rounded-lg bg-red-500/20 px-3 py-2 backdrop-blur-sm'
+            className='relative mt-3 flex items-center gap-2 rounded-lg bg-red-500/20 px-3 py-2 backdrop-blur-xs'
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <svg className='h-4 w-4 flex-shrink-0 text-yellow-200' fill='currentColor' viewBox='0 0 20 20'>
+            <svg className='h-4 w-4 shrink-0 text-yellow-200' fill='currentColor' viewBox='0 0 20 20'>
               <path
                 fillRule='evenodd'
                 d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'

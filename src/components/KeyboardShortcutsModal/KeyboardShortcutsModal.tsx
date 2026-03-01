@@ -128,7 +128,7 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm'
+          className='fixed inset-0 z-9999 flex items-center justify-center bg-black/50 backdrop-blur-xs'
           variants={backdropVariants}
           initial='hidden'
           animate='visible'
@@ -138,7 +138,7 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
         >
           <motion.div
             ref={modalRef}
-            className='relative max-h-[80vh] w-full max-w-lg overflow-auto rounded-lg bg-white dark:bg-slate-800 p-6 shadow-2xl'
+            className='relative max-h-[80vh] w-full max-w-lg overflow-auto rounded-lg bg-white p-6 shadow-2xl dark:bg-slate-800'
             variants={modalVariants}
             initial='hidden'
             animate='visible'
@@ -153,7 +153,7 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
               </h2>
               <button
                 onClick={onClose}
-                className='rounded-full p-1 text-gray-400 dark:text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-600 dark:hover:text-gray-300'
+                className='rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
                 aria-label='Đóng'
               >
                 <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -165,20 +165,20 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
             <div className='space-y-6'>
               {Object.entries(groupedShortcuts).map(([category, categoryShortcuts]) => (
                 <div key={category}>
-                  <h3 className='mb-3 text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                  <h3 className='mb-3 text-sm font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400'>
                     {category}
                   </h3>
                   <div className='space-y-2'>
                     {categoryShortcuts.map((shortcut, index) => (
                       <div
                         key={`${shortcut.key}-${index}`}
-                        className='flex items-center justify-between rounded-md bg-gray-50 dark:bg-slate-700 px-3 py-2'
+                        className='flex items-center justify-between rounded-md bg-gray-50 px-3 py-2 dark:bg-slate-700'
                       >
                         <span className='text-sm text-gray-700 dark:text-gray-200'>{shortcut.description}</span>
                         <div className='flex items-center gap-1'>
                           {formatKeyDisplay(shortcut).map((key, keyIndex, arr) => (
                             <span key={keyIndex} className='flex items-center gap-1'>
-                              <kbd className='inline-flex min-w-[28px] items-center justify-center rounded-md border border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-600 px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 shadow-sm'>
+                              <kbd className='inline-flex min-w-[28px] items-center justify-center rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-xs dark:border-slate-500 dark:bg-slate-600 dark:text-gray-200'>
                                 {key}
                               </kbd>
                               {/* Show "then" separator for sequence shortcuts */}

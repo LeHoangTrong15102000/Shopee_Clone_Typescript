@@ -121,18 +121,18 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
   return (
     <div
       className={classNames(
-        'bg-white dark:bg-slate-800 dark:border dark:border-slate-700 rounded-xl shadow-sm overflow-hidden',
+        'overflow-hidden rounded-xl bg-white shadow-xs dark:border dark:border-slate-700 dark:bg-slate-800',
         className
       )}
     >
       {/* Carrier Info Card */}
-      <div className='p-4 md:p-5 border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-gray-50 via-white to-gray-50/50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800'>
+      <div className='border-b border-gray-100 bg-linear-to-r from-gray-50 via-white to-gray-50/50 p-4 md:p-5 dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800'>
         <div className='flex items-center gap-3'>
           <div className='flex-1'>
             <h3 className='font-medium text-gray-900 dark:text-gray-100'>{getCarrierDisplayName(tracking.carrier)}</h3>
             <p className='text-sm text-gray-500 dark:text-gray-300'>
               Mã vận đơn:{' '}
-              <span className='font-semibold text-[#26aa99] dark:text-[#26aa99] bg-teal-50 dark:bg-teal-950/30 px-2 py-0.5 rounded-md text-xs'>
+              <span className='rounded-md bg-teal-50 px-2 py-0.5 text-xs font-semibold text-[#26aa99] dark:bg-teal-950/30 dark:text-[#26aa99]'>
                 {tracking.tracking_number}
               </span>
             </p>
@@ -141,10 +141,10 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
 
         {/* Estimated Delivery */}
         {!isCancelled && !isReturned && tracking.status !== 'delivered' && (
-          <div className='mt-3 p-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/30 rounded-lg'>
+          <div className='mt-3 rounded-lg border border-teal-100 bg-teal-50 p-3 dark:border-teal-800/30 dark:bg-teal-900/20'>
             <div className='flex items-center gap-2'>
               <svg
-                className='h-4 w-4 text-[#26aa99] dark:text-[#26aa99] flex-shrink-0'
+                className='h-4 w-4 shrink-0 text-[#26aa99] dark:text-[#26aa99]'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -167,27 +167,27 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
         )}
 
         {tracking.status === 'delivered' && (
-          <div className='mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg'>
-            <p className='text-sm text-green-700 dark:text-green-400 font-medium'>✓ Đơn hàng đã được giao thành công</p>
+          <div className='mt-3 rounded-lg bg-green-50 p-3 dark:bg-green-900/20'>
+            <p className='text-sm font-medium text-green-700 dark:text-green-400'>✓ Đơn hàng đã được giao thành công</p>
           </div>
         )}
 
         {isCancelled && (
-          <div className='mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg'>
-            <p className='text-sm text-red-700 dark:text-red-400 font-medium'>✕ Đơn hàng đã bị hủy</p>
+          <div className='mt-3 rounded-lg bg-red-50 p-3 dark:bg-red-900/20'>
+            <p className='text-sm font-medium text-red-700 dark:text-red-400'>✕ Đơn hàng đã bị hủy</p>
           </div>
         )}
 
         {isReturned && (
-          <div className='mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg'>
-            <p className='text-sm text-red-700 dark:text-red-400 font-medium'>↩ Đơn hàng đã được trả lại</p>
+          <div className='mt-3 rounded-lg bg-red-50 p-3 dark:bg-red-900/20'>
+            <p className='text-sm font-medium text-red-700 dark:text-red-400'>↩ Đơn hàng đã được trả lại</p>
           </div>
         )}
       </div>
 
       {/* Timeline - only shows events up to current status */}
       <div className='p-3 md:p-4'>
-        <h4 className='font-medium text-gray-900 dark:text-gray-100 mb-4'>Trạng thái đơn hàng</h4>
+        <h4 className='mb-4 font-medium text-gray-900 dark:text-gray-100'>Trạng thái đơn hàng</h4>
 
         <div className='relative'>
           {visibleTimeline.map((event, index) => {
@@ -202,7 +202,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 {/* Timeline Line */}
                 {!isLast && (
                   <div
-                    className={classNames('absolute left-[11px] top-6 w-0.5 h-full -translate-x-1/2', {
+                    className={classNames('absolute top-6 left-[11px] h-full w-0.5 -translate-x-1/2', {
                       'bg-[#26aa99] dark:bg-[#26aa99]': isCurrent && !isError,
                       'bg-gray-200 dark:bg-slate-600': !isCurrent && !isError,
                       'bg-red-500 dark:bg-red-400': isError
@@ -211,18 +211,18 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                 )}
 
                 {/* Timeline Node */}
-                <div className='relative z-10 flex-shrink-0'>
+                <div className='relative z-10 shrink-0'>
                   <div
-                    className={classNames('w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center', {
+                    className={classNames('flex h-5 w-5 items-center justify-center rounded-full md:h-6 md:w-6', {
                       'bg-gray-300 dark:bg-slate-500': isPassed && !isError,
-                      'bg-[#26aa99] dark:bg-[#26aa99] shadow-md shadow-[#26aa99]/30': isCurrent && !isError,
+                      'bg-[#26aa99] shadow-md shadow-[#26aa99]/30 dark:bg-[#26aa99]': isCurrent && !isError,
                       'bg-gray-200 dark:bg-slate-600': !isPassed && !isCurrent && !isError,
                       'bg-red-500 dark:bg-red-500': isError
                     })}
                   >
-                    {isPassed && !isError && <StatusIcon status={event.status} className='w-3 h-3 text-white' />}
-                    {isCurrent && !isError && <StatusIcon status={event.status} className='w-3 h-3 text-white' />}
-                    {isError && <StatusIcon status={event.status} className='w-3 h-3 text-white' />}
+                    {isPassed && !isError && <StatusIcon status={event.status} className='h-3 w-3 text-white' />}
+                    {isCurrent && !isError && <StatusIcon status={event.status} className='h-3 w-3 text-white' />}
+                    {isError && <StatusIcon status={event.status} className='h-3 w-3 text-white' />}
                   </div>
                 </div>
 
@@ -238,11 +238,11 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                   >
                     {ORDER_STATUS_CONFIG[event.status as OrderStatus]?.label ?? event.status}
                   </div>
-                  <p className='text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1'>{event.description}</p>
+                  <p className='mt-1 text-xs text-gray-600 md:text-sm dark:text-gray-300'>{event.description}</p>
                   {event.location && (
-                    <p className='text-xs text-gray-600 dark:text-gray-300 mt-1.5 flex items-center gap-1.5'>
-                      <span className='inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-400 dark:bg-slate-500 flex-shrink-0'>
-                        <svg className='w-2.5 h-2.5 text-white' fill='currentColor' viewBox='0 0 20 20'>
+                    <p className='mt-1.5 flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300'>
+                      <span className='inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gray-400 dark:bg-slate-500'>
+                        <svg className='h-2.5 w-2.5 text-white' fill='currentColor' viewBox='0 0 20 20'>
                           <path
                             fillRule='evenodd'
                             d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
@@ -253,7 +253,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                       {event.location}
                     </p>
                   )}
-                  <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>{formatDateTime(event.timestamp)}</p>
+                  <p className='mt-1 text-xs text-gray-500 dark:text-slate-400'>{formatDateTime(event.timestamp)}</p>
                 </div>
               </div>
             )
@@ -263,7 +263,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
 
       {/* Last Updated */}
       <div className='px-3 pb-3 md:px-4 md:pb-4'>
-        <p className='text-xs text-gray-500 dark:text-slate-400 text-right'>
+        <p className='text-right text-xs text-gray-500 dark:text-slate-400'>
           Cập nhật lần cuối: {formatDateTime(tracking.updatedAt)}
         </p>
       </div>

@@ -57,9 +57,9 @@ const OrderSummary = memo(function OrderSummary({
   const hiddenItemsCount = items.length - VISIBLE_ITEMS_COUNT
 
   return (
-    <div className='overflow-hidden rounded-xl border border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg'>
+    <div className='overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800'>
       {/* Header with item count badge */}
-      <div className='border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-orange/5 to-transparent px-6 py-4'>
+      <div className='border-b border-gray-100 bg-linear-to-r from-orange/5 to-transparent px-6 py-4 dark:border-slate-700'>
         <div className='flex items-center justify-between'>
           <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-100'>Đơn hàng của bạn</h3>
           <span className='inline-flex items-center gap-1 rounded-full bg-orange/10 px-3 py-1 text-sm font-medium text-orange'>
@@ -81,14 +81,14 @@ const OrderSummary = memo(function OrderSummary({
         <div className='space-y-3'>
           {/* Always-visible items */}
           {items.slice(0, VISIBLE_ITEMS_COUNT).map((item) => (
-            <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'>
-              <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
+            <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 p-3 dark:bg-slate-900'>
+              <div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
                 <ImageWithFallback
                   src={item.product.image}
                   alt={item.product.name}
                   className='h-full w-full object-cover'
                 />
-                <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
+                <span className='absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
                   {item.buy_count}
                 </span>
               </div>
@@ -99,7 +99,7 @@ const OrderSummary = memo(function OrderSummary({
               <div className='text-right'>
                 <p className='text-sm font-semibold text-orange'>₫{formatCurrency(item.price * item.buy_count)}</p>
                 {item.price_before_discount > item.price && (
-                  <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
+                  <p className='text-xs text-gray-400 line-through dark:text-gray-500'>
                     ₫{formatCurrency(item.price_before_discount * item.buy_count)}
                   </p>
                 )}
@@ -118,14 +118,14 @@ const OrderSummary = memo(function OrderSummary({
             >
               <div className='space-y-3'>
                 {items.slice(VISIBLE_ITEMS_COUNT).map((item) => (
-                  <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-3'>
-                    <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
+                  <div key={item._id} className='flex gap-3 rounded-lg bg-gray-50 p-3 dark:bg-slate-900'>
+                    <div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-slate-600'>
                       <ImageWithFallback
                         src={item.product.image}
                         alt={item.product.name}
                         className='h-full w-full object-cover'
                       />
-                      <span className='absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
+                      <span className='absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs font-medium text-white'>
                         {item.buy_count}
                       </span>
                     </div>
@@ -140,7 +140,7 @@ const OrderSummary = memo(function OrderSummary({
                         ₫{formatCurrency(item.price * item.buy_count)}
                       </p>
                       {item.price_before_discount > item.price && (
-                        <p className='text-xs text-gray-400 dark:text-gray-500 line-through'>
+                        <p className='text-xs text-gray-400 line-through dark:text-gray-500'>
                           ₫{formatCurrency(item.price_before_discount * item.buy_count)}
                         </p>
                       )}
@@ -156,7 +156,7 @@ const OrderSummary = memo(function OrderSummary({
             <button
               type='button'
               onClick={() => setIsExpanded(!isExpanded)}
-              className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 dark:border-slate-600 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange'
+              className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange dark:border-slate-600 dark:text-gray-300'
             >
               {isExpanded ? (
                 <>
@@ -209,7 +209,7 @@ const OrderSummary = memo(function OrderSummary({
               <button
                 type='button'
                 onClick={onRemoveVoucher}
-                className='rounded p-1 text-green-600 transition-colors hover:bg-green-100 hover:text-red-500'
+                className='rounded-sm p-1 text-green-600 transition-colors hover:bg-green-100 hover:text-red-500'
                 aria-label='Xóa mã giảm giá'
               >
                 <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -221,7 +221,7 @@ const OrderSummary = memo(function OrderSummary({
         )}
 
         {/* Price Breakdown Section */}
-        <div className='mt-6 space-y-3 rounded-lg bg-gray-50 dark:bg-slate-900 p-4'>
+        <div className='mt-6 space-y-3 rounded-lg bg-gray-50 p-4 dark:bg-slate-900'>
           <div className='flex justify-between text-sm'>
             <span className='text-gray-600 dark:text-gray-300'>Tạm tính</span>
             <span className='font-medium text-gray-900 dark:text-gray-100'>₫{formatCurrency(subtotal)}</span>
@@ -267,7 +267,7 @@ const OrderSummary = memo(function OrderSummary({
         </div>
 
         {/* Total Section */}
-        <div className='mt-4 rounded-lg border-2 border-orange/20 bg-gradient-to-r from-orange/5 to-orange/10 dark:from-orange/10 dark:to-orange/20 p-4'>
+        <div className='mt-4 rounded-lg border-2 border-orange/20 bg-linear-to-r from-orange/5 to-orange/10 p-4 dark:from-orange/10 dark:to-orange/20'>
           <div className='flex items-center justify-between'>
             <span className='text-base font-semibold text-gray-900 dark:text-gray-100'>Tổng thanh toán</span>
             <div className='text-right'>
@@ -282,7 +282,7 @@ const OrderSummary = memo(function OrderSummary({
               {totalDiscount > 0 && (
                 <p className='mt-1 text-xs font-medium text-green-600'>
                   <svg
-                    className='h-4 w-4 inline-block mr-1'
+                    className='mr-1 inline-block h-4 w-4'
                     fill='none'
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
@@ -309,14 +309,14 @@ const OrderSummary = memo(function OrderSummary({
             className='mt-4 rounded-lg border border-green-200 bg-green-50 p-4'
           >
             <div className='flex items-center gap-3'>
-              <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-white'>
+              <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-green-500 bg-white'>
                 <ShippingIcon type={shippingMethod.icon} className='h-5 w-5 text-green-500' />
               </div>
               <div className='flex-1'>
                 <p className='text-sm font-semibold text-green-800'>{shippingMethod.name}</p>
                 <p className='mt-0.5 text-sm font-medium text-green-600'>
                   <svg
-                    className='h-4 w-4 inline-block mr-1'
+                    className='mr-1 inline-block h-4 w-4'
                     fill='none'
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
@@ -342,7 +342,7 @@ const OrderSummary = memo(function OrderSummary({
           transition={{ delay: 0.3 }}
           className='mt-4 flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4'
         >
-          <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-emerald-500 bg-white'>
+          <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-emerald-500 bg-white'>
             <svg
               className='h-5 w-5 text-emerald-500'
               fill='none'

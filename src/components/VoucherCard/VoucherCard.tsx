@@ -90,7 +90,7 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
     <motion.div
       role='article'
       aria-label={`Voucher ${voucher.name} - Giảm ${discountDisplay}`}
-      className={classNames('relative flex overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-sm', {
+      className={classNames('relative flex overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800', {
         'opacity-60': isExpired
       })}
       whileHover={!isExpired ? { scale: 1.02, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' } : {}}
@@ -98,18 +98,18 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
       transition={{ duration: 0.2 }}
     >
       <div
-        className='absolute left-0 top-0 bottom-0 w-1 border-l-4 border-dashed border-[#ee4d2d]'
+        className='absolute top-0 bottom-0 left-0 w-1 border-l-4 border-dashed border-[#ee4d2d]'
         aria-hidden='true'
       />
 
       <div
-        className='flex w-20 sm:w-24 flex-shrink-0 flex-col items-center justify-center bg-gradient-to-br from-[#ee4d2d] to-[#ff6633] p-2 sm:p-3 text-white'
+        className='flex w-20 shrink-0 flex-col items-center justify-center bg-linear-to-br from-[#ee4d2d] to-[#ff6633] p-2 text-white sm:w-24 sm:p-3'
         aria-hidden='true'
       >
         <span className='text-xs font-medium uppercase'>
           {voucher.discount_type === 'percentage' ? 'Giảm' : 'Giảm'}
         </span>
-        <span className='text-lg sm:text-xl font-bold'>{discountDisplay}</span>
+        <span className='text-lg font-bold sm:text-xl'>{discountDisplay}</span>
         {voucher.discount_type === 'percentage' && voucher.max_discount && (
           <span className='mt-1 text-[10px] opacity-90'>Tối đa ₫{formatCurrency(voucher.max_discount)}</span>
         )}
@@ -117,7 +117,7 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
 
       <div className='flex flex-1 flex-col justify-between p-2 sm:p-3'>
         <div>
-          <h3 className='line-clamp-1 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100'>
+          <h3 className='line-clamp-1 text-xs font-medium text-gray-800 sm:text-sm dark:text-gray-100'>
             {voucher.name}
           </h3>
           <p className='mt-1 line-clamp-1 text-xs text-gray-500 dark:text-gray-400'>{voucher.description}</p>
@@ -149,10 +149,10 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
             disabled={isLoading || isExpired}
             aria-label={buttonAriaLabel}
             aria-disabled={isLoading || isExpired}
-            className={classNames('rounded px-3 py-1.5 sm:px-4 text-xs font-medium transition-colors', {
+            className={classNames('rounded-sm px-3 py-1.5 text-xs font-medium transition-colors sm:px-4', {
               'bg-[#ee4d2d] text-white hover:bg-[#d73211]': !isExpired && !isSaved,
               'border border-[#ee4d2d] text-[#ee4d2d] hover:bg-[#ee4d2d]/10': !isExpired && isSaved,
-              'cursor-not-allowed bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-gray-500': isExpired,
+              'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-700 dark:text-gray-500': isExpired,
               'cursor-not-allowed opacity-50': isLoading
             })}
             whileHover={!isExpired && !isLoading ? { scale: 1.05 } : {}}
@@ -168,7 +168,7 @@ function VoucherCard({ voucher, isSaved = false, onSave, onApply, isLoading = fa
           className='absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-slate-800/50'
           aria-hidden='true'
         >
-          <span className='rotate-[-15deg] rounded border-2 border-gray-400 dark:border-gray-500 px-3 py-1 text-sm font-bold uppercase text-gray-400 dark:text-gray-500'>
+          <span className='rotate-[-15deg] rounded-sm border-2 border-gray-400 px-3 py-1 text-sm font-bold text-gray-400 uppercase dark:border-gray-500 dark:text-gray-500'>
             Hết hạn
           </span>
         </div>

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useForm, Controller } from 'react-hook-form'
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import classNames from 'classnames'
@@ -89,7 +89,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className='fixed inset-0 z-[9998] bg-black md:hidden'
+            className='fixed inset-0 z-9998 bg-black md:hidden'
             onClick={onClose}
             aria-label='Close filter drawer'
           />
@@ -99,12 +99,12 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className='fixed top-0 left-0 z-[9999] h-full w-[280px] overflow-y-auto rounded-r-xl bg-white dark:bg-slate-800 shadow-lg md:hidden'
+            className='fixed top-0 left-0 z-9999 h-full w-[280px] overflow-y-auto rounded-r-xl bg-white shadow-lg md:hidden dark:bg-slate-800'
             role='dialog'
             aria-modal='true'
             aria-label='Filter drawer'
           >
-            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-4'>
+            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800'>
               <h2 className='text-lg font-semibold dark:text-gray-100'>{t('aside filter.search filter')}</h2>
               <button
                 onClick={onClose}
@@ -139,7 +139,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                 </svg>
                 <span className='capitalize'>{t('aside filter.all categories')}</span>
               </Link>
-              <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
+              <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
               <ul>
                 {categories.map((categoryItem) => {
                   const isActive = category === categoryItem._id
@@ -192,7 +192,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                 </svg>
                 <span>{t('aside filter.search filter')}</span>
               </Link>
-              <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
+              <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
               <div className='my-4'>
                 <div className='capitalize dark:text-gray-200'>Khoảng giá</div>
                 <form className='mt-2' onSubmit={onSubmit}>
@@ -206,7 +206,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           className='grow'
                           classNameError='hidden'
                           placeholder='₫ TỪ'
-                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
+                          classNameInput='px-1 py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                           {...field}
                           onChange={(event) => {
                             field.onChange(event)
@@ -215,7 +215,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                         />
                       )}
                     />
-                    <div className='mx-[0.625rem] shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
+                    <div className='mx-2.5 shrink-0 text-[#bdbdbd] dark:text-gray-500'>--</div>
                     <Controller
                       control={control}
                       name='price_max'
@@ -225,7 +225,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           className='grow'
                           classNameError='hidden'
                           placeholder='₫ ĐẾN'
-                          classNameInput='px-1 py-1 text-sm w-full outline-none border rounded-sm border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-sm'
+                          classNameInput='px-1 py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                           maxValue='50000000'
                           {...field}
                           onChange={(event) => {
@@ -236,23 +236,23 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                       )}
                     />
                   </div>
-                  <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600 dark:text-red-400'>
+                  <div className='mt-1 min-h-5 text-center text-sm text-red-600 dark:text-red-400'>
                     {errors.price_min?.message}
                   </div>
-                  <Button className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'>
+                  <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'>
                     áp dụng
                   </Button>
-                  <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
+                  <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
                 </form>
                 <div className='my-4'>
                   <div className='capitalize dark:text-gray-200'>đánh giá</div>
                 </div>
               </div>
               <RatingStars />
-              <div className='my-4 h-[1px] bg-gray-300 dark:bg-slate-600' />
+              <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
               <Button
                 onClick={handleRemoveAsideFilter}
-                className='flex w-full items-center justify-center bg-orange dark:bg-orange-500 p-2 text-sm uppercase text-white hover:bg-orange/80 dark:hover:bg-orange-400'
+                className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
               >
                 xóa tất cả
               </Button>

@@ -211,18 +211,18 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
         <>
           <motion.div
             {...backdropAnimationProps}
-            className='fixed inset-0 z-50 bg-black backdrop-blur-sm'
+            className='fixed inset-0 z-50 bg-black backdrop-blur-xs'
             onClick={!isProcessing ? onClose : undefined}
             aria-hidden='true'
           />
 
-          <div className='pointer-events-none fixed inset-0 z-[51] flex items-center justify-center p-4'>
+          <div className='pointer-events-none fixed inset-0 z-51 flex items-center justify-center p-4'>
             <motion.div
               {...animationProps}
               role='dialog'
               aria-modal='true'
               aria-labelledby='avatar-crop-title'
-              className='pointer-events-auto w-full max-w-md rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl'
+              className='pointer-events-auto w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800'
               onClick={(e) => e.stopPropagation()}
             >
               <h2
@@ -248,7 +248,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                     src={imageUrl}
                     alt='Preview'
                     onLoad={handleImageLoad}
-                    className='pointer-events-none absolute left-1/2 top-1/2 max-h-none max-w-none select-none'
+                    className='pointer-events-none absolute top-1/2 left-1/2 max-h-none max-w-none select-none'
                     style={{
                       transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) scale(${scale})`,
                       transformOrigin: 'center center'
@@ -292,7 +292,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                     step={0.1}
                     value={scale}
                     onChange={handleScaleChange}
-                    className='h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-slate-600 accent-[#ee4d2d]'
+                    className='h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 accent-[#ee4d2d] dark:bg-slate-600'
                   />
                   <svg
                     className='h-5 w-5 text-gray-500 dark:text-gray-400'

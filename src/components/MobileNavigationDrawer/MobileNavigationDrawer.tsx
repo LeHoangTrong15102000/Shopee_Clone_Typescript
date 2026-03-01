@@ -1,7 +1,7 @@
 import { useEffect, useRef, useContext } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
@@ -24,7 +24,7 @@ interface MobileNavigationDrawerProps {
 
 const ITEM =
   'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors'
-const DIVIDER = 'my-3 h-[1px] bg-gray-200 dark:bg-slate-600'
+const DIVIDER = 'my-3 h-px bg-gray-200 dark:bg-slate-600'
 const SECTION_TITLE = 'px-3 pb-1 text-xs font-semibold uppercase text-gray-400 dark:text-gray-500'
 
 const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps) => {
@@ -94,7 +94,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className='fixed inset-0 z-[9998] bg-black md:hidden'
+            className='fixed inset-0 z-9998 bg-black md:hidden'
             onClick={onClose}
             aria-label='Close navigation drawer'
           />
@@ -104,13 +104,13 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className='fixed top-0 left-0 z-[9999] h-full w-[280px] overflow-y-auto rounded-r-xl bg-white dark:bg-slate-800 shadow-lg md:hidden'
+            className='fixed top-0 left-0 z-9999 h-full w-[280px] overflow-y-auto rounded-r-xl bg-white shadow-lg md:hidden dark:bg-slate-800'
             role='dialog'
             aria-modal='true'
             aria-label='Navigation drawer'
           >
             {/* Header */}
-            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-4'>
+            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800'>
               <Link to={path.home} onClick={onClose} className='flex items-end gap-1'>
                 <svg viewBox='0 0 54 65' className='h-9 fill-orange dark:fill-orange-400'>
                   <g fillRule='evenodd'>
@@ -146,7 +146,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-5 w-5 flex-shrink-0'
+                    className='h-5 w-5 shrink-0'
                   >
                     <path
                       strokeLinecap='round'
@@ -158,7 +158,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 </button>
 
                 <button onClick={() => go(path.notifications)} className={ITEM}>
-                  <div className='relative flex-shrink-0'>
+                  <div className='relative shrink-0'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -181,7 +181,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                   </div>
                   <span>Thông báo</span>
                   {isAuthenticated && unreadCount > 0 && (
-                    <span className='ml-auto rounded-full bg-orange/10 dark:bg-orange/20 px-2 py-0.5 text-[10px] text-orange dark:text-orange-400 font-medium'>
+                    <span className='ml-auto rounded-full bg-orange/10 px-2 py-0.5 text-[10px] font-medium text-orange dark:bg-orange/20 dark:text-orange-400'>
                       {unreadCount} mới
                     </span>
                   )}
@@ -194,7 +194,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-5 w-5 flex-shrink-0'
+                    className='h-5 w-5 shrink-0'
                   >
                     <path
                       strokeLinecap='round'
@@ -212,7 +212,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-5 w-5 flex-shrink-0'
+                    className='h-5 w-5 shrink-0'
                   >
                     <path
                       strokeLinecap='round'
@@ -236,7 +236,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-5 w-5 flex-shrink-0'
+                    className='h-5 w-5 shrink-0'
                   >
                     <path
                       strokeLinecap='round'
@@ -262,7 +262,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       viewBox='0 0 24 24'
                       strokeWidth={1.5}
                       stroke='currentColor'
-                      className='h-5 w-5 flex-shrink-0'
+                      className='h-5 w-5 shrink-0'
                     >
                       <path
                         strokeLinecap='round'
@@ -284,7 +284,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       viewBox='0 0 24 24'
                       strokeWidth={1.5}
                       stroke='currentColor'
-                      className='h-5 w-5 flex-shrink-0'
+                      className='h-5 w-5 shrink-0'
                     >
                       <path
                         strokeLinecap='round'
@@ -297,13 +297,13 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                   <div className='flex gap-1'>
                     <button
                       onClick={() => handleTranslateLanguage('vi')}
-                      className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'Tiếng Việt' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}
+                      className={`rounded-sm px-2 py-1 text-xs transition-colors ${currentLanguage === 'Tiếng Việt' ? 'bg-orange text-white' : 'bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-300'}`}
                     >
                       VI
                     </button>
                     <button
                       onClick={() => handleTranslateLanguage('en')}
-                      className={`rounded px-2 py-1 text-xs transition-colors ${currentLanguage === 'English' ? 'bg-orange text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'}`}
+                      className={`rounded-sm px-2 py-1 text-xs transition-colors ${currentLanguage === 'English' ? 'bg-orange text-white' : 'bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-300'}`}
                     >
                       EN
                     </button>
@@ -320,7 +320,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='h-5 w-5 flex-shrink-0'
+                        className='h-5 w-5 shrink-0'
                       >
                         <path
                           strokeLinecap='round'
@@ -348,7 +348,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                 <div className='space-y-1'>
                   {/* User info */}
                   <div className='flex items-center gap-3 rounded-lg px-3 py-2.5'>
-                    <div className='h-8 w-8 flex-shrink-0'>
+                    <div className='h-8 w-8 shrink-0'>
                       <img
                         src={getAvatarUrl(profile?.avatar)}
                         alt='avatar'
@@ -366,7 +366,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       viewBox='0 0 24 24'
                       strokeWidth={1.5}
                       stroke='currentColor'
-                      className='h-5 w-5 flex-shrink-0'
+                      className='h-5 w-5 shrink-0'
                     >
                       <path
                         strokeLinecap='round'
@@ -383,7 +383,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       viewBox='0 0 24 24'
                       strokeWidth={1.5}
                       stroke='currentColor'
-                      className='h-5 w-5 flex-shrink-0'
+                      className='h-5 w-5 shrink-0'
                     >
                       <path
                         strokeLinecap='round'
@@ -395,7 +395,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                   </button>
                   <button
                     onClick={handleLogout}
-                    className={`${ITEM} text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20`}
+                    className={`${ITEM} text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20`}
                   >
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
@@ -403,7 +403,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       viewBox='0 0 24 24'
                       strokeWidth={1.5}
                       stroke='currentColor'
-                      className='h-5 w-5 flex-shrink-0'
+                      className='h-5 w-5 shrink-0'
                     >
                       <path
                         strokeLinecap='round'
@@ -419,14 +419,14 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                   <Link
                     to={path.login}
                     onClick={onClose}
-                    className='block w-full rounded-lg bg-orange py-2.5 text-center text-sm font-medium text-white hover:bg-orange/90 transition-colors'
+                    className='block w-full rounded-lg bg-orange py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-orange/90'
                   >
                     Đăng nhập
                   </Link>
                   <Link
                     to={path.register}
                     onClick={onClose}
-                    className='block w-full rounded-lg border border-orange py-2.5 text-center text-sm font-medium text-orange dark:text-orange-400 hover:bg-orange/5 dark:hover:bg-orange/10 transition-colors'
+                    className='block w-full rounded-lg border border-orange py-2.5 text-center text-sm font-medium text-orange transition-colors hover:bg-orange/5 dark:text-orange-400 dark:hover:bg-orange/10'
                   >
                     Đăng ký
                   </Link>

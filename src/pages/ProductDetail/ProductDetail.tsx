@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useContext, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 
 import productApi from 'src/apis/product.api'
 
@@ -124,14 +124,14 @@ const ProductDetail = () => {
   // Handle 404 case
   if (productDetailData?.status === HTTP_STATUS_CODE.NotFound) {
     return (
-      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+      <div className='bg-gray-200 py-6 dark:bg-slate-900'>
         <div className='container'>
-          <div className='text-center py-16'>
-            <h1 className='text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4'>Sản phẩm không tồn tại</h1>
-            <p className='text-gray-500 dark:text-gray-400 mb-6'>
+          <div className='py-16 text-center'>
+            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>Sản phẩm không tồn tại</h1>
+            <p className='mb-6 text-gray-500 dark:text-gray-400'>
               Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa
             </p>
-            <Button variant='primary' onClick={() => navigate(path.home)} className='px-6 py-3 rounded-sm'>
+            <Button variant='primary' onClick={() => navigate(path.home)} className='rounded-xs px-6 py-3'>
               Về trang chủ
             </Button>
           </div>
@@ -143,17 +143,17 @@ const ProductDetail = () => {
   // Loading state
   if (isLoading || !product) {
     return (
-      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+      <div className='bg-gray-200 py-6 dark:bg-slate-900'>
         <div className='container'>
-          <div className='grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-9'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-9'>
             {/* Product images skeleton */}
             <div className='col-span-12 md:col-span-5'>
-              <div className='relative w-full pt-[100%] bg-gray-300 dark:bg-slate-700 animate-pulse rounded'></div>
-              <div className='relative mt-3 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1'>
+              <div className='relative w-full animate-pulse rounded-sm bg-gray-300 pt-[100%] dark:bg-slate-700'></div>
+              <div className='relative mt-3 grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5'>
                 {[...Array(5)].map((_, index) => (
                   <div
                     key={index}
-                    className='relative w-full pt-[100%] bg-gray-300 dark:bg-slate-700 animate-pulse rounded'
+                    className='relative w-full animate-pulse rounded-sm bg-gray-300 pt-[100%] dark:bg-slate-700'
                   ></div>
                 ))}
               </div>
@@ -161,11 +161,11 @@ const ProductDetail = () => {
 
             {/* Product info skeleton */}
             <div className='col-span-7'>
-              <div className='h-8 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-4'></div>
-              <div className='h-6 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-4 w-3/4'></div>
-              <div className='h-8 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-6 w-1/2'></div>
-              <div className='h-20 bg-gray-300 dark:bg-slate-700 animate-pulse rounded mb-6'></div>
-              <div className='h-12 bg-gray-300 dark:bg-slate-700 animate-pulse rounded w-1/3'></div>
+              <div className='mb-4 h-8 animate-pulse rounded-sm bg-gray-300 dark:bg-slate-700'></div>
+              <div className='mb-4 h-6 w-3/4 animate-pulse rounded-sm bg-gray-300 dark:bg-slate-700'></div>
+              <div className='mb-6 h-8 w-1/2 animate-pulse rounded-sm bg-gray-300 dark:bg-slate-700'></div>
+              <div className='mb-6 h-20 animate-pulse rounded-sm bg-gray-300 dark:bg-slate-700'></div>
+              <div className='h-12 w-1/3 animate-pulse rounded-sm bg-gray-300 dark:bg-slate-700'></div>
             </div>
           </div>
         </div>
@@ -176,14 +176,14 @@ const ProductDetail = () => {
   // Error state
   if (error && !product) {
     return (
-      <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+      <div className='bg-gray-200 py-6 dark:bg-slate-900'>
         <div className='container'>
-          <div className='text-center py-16'>
-            <h1 className='text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4'>Có lỗi xảy ra</h1>
-            <p className='text-gray-500 dark:text-gray-400 mb-6'>
+          <div className='py-16 text-center'>
+            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>Có lỗi xảy ra</h1>
+            <p className='mb-6 text-gray-500 dark:text-gray-400'>
               Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.
             </p>
-            <Button variant='primary' onClick={() => window.location.reload()} className='px-6 py-3 rounded-sm'>
+            <Button variant='primary' onClick={() => window.location.reload()} className='rounded-xs px-6 py-3'>
               Thử lại
             </Button>
           </div>
@@ -195,7 +195,7 @@ const ProductDetail = () => {
   if (!product) return null
 
   return (
-    <div className='bg-gray-200 dark:bg-slate-900 py-6'>
+    <div className='bg-gray-200 py-6 dark:bg-slate-900'>
       <Helmet>
         <title>{product?.name} | Shopee Clone</title>
         <meta
@@ -229,7 +229,7 @@ const ProductDetail = () => {
       </Helmet>
       {/* Thông tin sản phẩm */}
       <div className='container'>
-        <div className='bg-white dark:bg-slate-800 p-4 shadow dark:shadow-slate-900/50'>
+        <div className='bg-white p-4 shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
           <div className='grid grid-cols-12 gap-2 lg:gap-9'>
             {/* Ảnh sản phẩm và slider */}
             <ProductImages product={product} reducedMotion={reducedMotion} />
@@ -260,25 +260,25 @@ const ProductDetail = () => {
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className='container'>
-          <div className='bg-white dark:bg-slate-800 p-4 shadow dark:shadow-slate-900/50 rounded-sm'>
+          <div className='rounded-xs bg-white p-4 shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
             <div className='flex items-center gap-4'>
               {/* Shop Avatar */}
-              <div className='flex-shrink-0'>
-                <div className='w-20 h-20 rounded-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-2 border-orange'>
-                  <svg className='w-10 h-10 text-gray-400 dark:text-gray-500' fill='currentColor' viewBox='0 0 24 24'>
+              <div className='shrink-0'>
+                <div className='flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-orange bg-gray-200 dark:bg-slate-700'>
+                  <svg className='h-10 w-10 text-gray-400 dark:text-gray-500' fill='currentColor' viewBox='0 0 24 24'>
                     <path d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' />
                   </svg>
                 </div>
               </div>
               {/* Shop Info */}
               <div className='flex-1'>
-                <h3 className='font-medium text-lg text-gray-900 dark:text-gray-100'>
+                <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
                   Shop {product.location || 'Shopee'}
                 </h3>
                 <OnlineIndicator isOnline={isSellerOnline} lastSeen={sellerLastSeen} size='sm' className='mt-1' />
-                <div className='flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400'>
+                <div className='mt-2 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400'>
                   <span className='flex items-center gap-1'>
-                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                       <path
                         strokeLinecap='round'
                         strokeLinejoin='round'
@@ -295,7 +295,7 @@ const ProductDetail = () => {
                     {product.location || 'Việt Nam'}
                   </span>
                   <span className='flex items-center gap-1'>
-                    <svg className='w-4 h-4 text-yellow-400 fill-current' viewBox='0 0 20 20'>
+                    <svg className='h-4 w-4 fill-current text-yellow-400' viewBox='0 0 20 20'>
                       <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
                     </svg>
                     {product.rating.toFixed(1)}
@@ -303,7 +303,7 @@ const ProductDetail = () => {
                 </div>
               </div>
               {/* Follow Button */}
-              <div className='flex-shrink-0'>
+              <div className='shrink-0'>
                 <SellerFollowButton
                   seller={{
                     _id: `shop_${product.category._id}`,
@@ -345,9 +345,9 @@ const ProductDetail = () => {
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className='container'>
-          <div className='bg-white dark:bg-slate-800 p-8 shadow dark:shadow-slate-900/50'>
+          <div className='bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
             {/* Title */}
-            <div className='rounded text-base md:text-lg font-medium uppercase text-[rgba(0,0,0,.87)] dark:text-gray-100'>
+            <div className='rounded-sm text-base font-medium text-[rgba(0,0,0,.87)] uppercase md:text-lg dark:text-gray-100'>
               Chi tiết sản phẩm
             </div>
             {/* Thông tin chi tiết sản phẩm */}

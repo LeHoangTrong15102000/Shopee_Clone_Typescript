@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { fadeIn } from 'src/styles/animations'
 
@@ -53,14 +53,14 @@ const Breadcrumb = ({ items, className = '' }: BreadcrumbProps) => {
                 {isLastItem || !item.to ? (
                   // Current page (last item) - no link
                   <span
-                    className='text-gray-800 dark:text-gray-200 font-medium'
+                    className='font-medium text-gray-800 dark:text-gray-200'
                     aria-current={isLastItem ? 'page' : undefined}
                   >
                     {item.label}
                   </span>
                 ) : (
                   // Link item
-                  <Link to={item.to} className='text-gray-500 dark:text-gray-400 hover:text-orange transition-colors'>
+                  <Link to={item.to} className='text-gray-500 transition-colors hover:text-orange dark:text-gray-400'>
                     {item.label}
                   </Link>
                 )}

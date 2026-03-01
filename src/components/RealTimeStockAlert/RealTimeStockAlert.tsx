@@ -124,10 +124,10 @@ export default function RealTimeStockAlert({ productIds, onStockChange }: RealTi
           <motion.div
             key={alert.id}
             {...animationProps}
-            className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-sm ${
+            className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-xs ${
               alert.severity === 'critical' || alert.newStock === 0
-                ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30'
-                : 'border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/30'
+                ? 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/30'
+                : 'border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-900/30'
             }`}
           >
             <span className='text-xl'>{alert.severity === 'critical' || alert.newStock === 0 ? '🚫' : '⚠️'}</span>
@@ -146,7 +146,7 @@ export default function RealTimeStockAlert({ productIds, onStockChange }: RealTi
             </div>
             <button
               onClick={() => setAlerts((prev) => prev.filter((a) => a.id !== alert.id))}
-              className='text-gray-400 hover:text-gray-600 transition-colors'
+              className='text-gray-400 transition-colors hover:text-gray-600'
               aria-label='Đóng thông báo'
             >
               <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -197,8 +197,8 @@ export function InlineStockAlert({
       <div
         className={`flex items-center gap-2 rounded px-2 py-1.5 text-xs ${
           isCritical
-            ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-            : 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
+            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+            : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
         }`}
       >
         <span>{isCritical ? '🚫' : '⚠️'}</span>

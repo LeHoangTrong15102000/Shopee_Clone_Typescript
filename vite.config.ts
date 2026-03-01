@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 import os from 'os'
@@ -14,7 +15,7 @@ export default defineConfig(({ mode }) => {
   const isTest = mode === 'test'
 
   const baseConfig = {
-    plugins: [react(), visualizer()] as any,
+    plugins: [tailwindcss(), react(), visualizer()] as any,
     // Base URL cho production deployment
     base: '/',
     server: {
@@ -66,7 +67,7 @@ export default defineConfig(({ mode }) => {
             'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
             'socket-vendor': ['socket.io-client'],
             'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-            'router-vendor': ['react-router-dom', 'nuqs'],
+            'router-vendor': ['react-router', 'nuqs'],
             'utils-vendor': ['classnames', 'immer', 'date-fns'],
             'i18n-vendor': ['i18next', 'react-i18next'],
             'sanitize-vendor': ['dompurify', 'html-to-text'],
@@ -92,15 +93,10 @@ export default defineConfig(({ mode }) => {
         testTimeout: process.env.CI ? 60000 : 60000,
         hookTimeout: process.env.CI ? 60000 : 60000,
         pool: 'forks',
-        poolOptions: {
-          forks: {
-            // Limit concurrent workers to prevent OOM - heavy integration tests render full App
-            minForks: 1,
-            maxForks: process.env.CI ? 1 : 2,
-            // Increase heap memory for worker processes (integration tests need ~4GB each)
-            execArgv: ['--max-old-space-size=8192']
-          }
-        },
+        // Vitest v4: poolOptions removed — use top-level options instead
+        maxWorkers: process.env.CI ? 1 : 2,
+        // Increase heap memory for worker processes (integration tests need ~4GB each)
+        execArgv: ['--max-old-space-size=8192'],
         include: [
           'src/**/*.test.{ts,tsx}', // Unit tests
           'test/**/*.test.{ts,tsx}' // Integration & E2E tests

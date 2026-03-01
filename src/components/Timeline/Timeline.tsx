@@ -46,16 +46,16 @@ const Step = ({ state, label, description, timestamp, icon, className }: StepPro
   return (
     <div className={classNames('flex items-start gap-3', className)}>
       <div className='flex flex-col items-center'>
-        <div className={classNames('h-3 w-3 rounded-full border-2 flex-shrink-0', styles.dot)}>
+        <div className={classNames('h-3 w-3 shrink-0 rounded-full border-2', styles.dot)}>
           {icon && state === 'completed' && (
-            <span className='flex h-full w-full items-center justify-center text-white text-[8px]'>✓</span>
+            <span className='flex h-full w-full items-center justify-center text-[8px] text-white'>✓</span>
           )}
         </div>
       </div>
       <div className='flex-1 pb-4'>
         <p className={classNames('text-sm', styles.label)}>{label}</p>
-        {description && <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>{description}</p>}
-        {timestamp && <p className='text-xs text-gray-400 dark:text-gray-500 mt-0.5'>{timestamp}</p>}
+        {description && <p className='mt-0.5 text-xs text-gray-500 dark:text-gray-400'>{description}</p>}
+        {timestamp && <p className='mt-0.5 text-xs text-gray-400 dark:text-gray-500'>{timestamp}</p>}
       </div>
     </div>
   )
@@ -63,7 +63,7 @@ const Step = ({ state, label, description, timestamp, icon, className }: StepPro
 
 const Line = ({ active = false, className }: LineProps) => (
   <div
-    className={classNames('ml-[5px] w-0.5 h-6', active ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-600', className)}
+    className={classNames('ml-[5px] h-6 w-0.5', active ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-600', className)}
   />
 )
 

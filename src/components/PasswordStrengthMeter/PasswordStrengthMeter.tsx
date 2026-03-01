@@ -63,7 +63,7 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
       aria-valuemax={4}
     >
       {/* Single continuous progress bar */}
-      <div className='mt-2 h-2 w-full rounded-full bg-gray-200 dark:bg-slate-600 overflow-hidden' aria-hidden='true'>
+      <div className='mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-600' aria-hidden='true'>
         {reducedMotion ? (
           <div
             className='h-full rounded-full'
@@ -88,7 +88,7 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
 
       {/* Strength label */}
       {currentLevel.label && (
-        <div className={`flex items-center justify-end gap-1 text-xs mt-1.5 ${currentLevel.textColor}`}>
+        <div className={`mt-1.5 flex items-center justify-end gap-1 text-xs ${currentLevel.textColor}`}>
           <span className={strength >= 4 ? 'font-semibold' : 'font-medium'}>{currentLevel.label}</span>
           {strength >= 4 &&
             (reducedMotion ? (
