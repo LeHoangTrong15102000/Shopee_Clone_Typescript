@@ -3,7 +3,7 @@
 import { screen, waitFor, fireEvent } from '@testing-library/react'
 import path from 'src/constant/path'
 import { renderWithRouter } from 'src/utils/testUtils'
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 // Helper để setup Login page cho mỗi test
 const setupLoginPage = async () => {
