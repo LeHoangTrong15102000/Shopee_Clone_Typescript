@@ -1,5 +1,27 @@
 import { Notification, NotificationResponse } from 'src/types/notification.type'
+import { SuccessResponseApi } from 'src/types/utils.type'
 import http from 'src/utils/http'
+
+// Response types for notification API
+interface NotificationListBackendResponse {
+  message: string
+  data: {
+    notifications: Record<string, unknown>[]
+    pagination?: { page: number; limit: number; total: number; total_pages: number }
+    unread_count?: number
+    unreadCount?: number
+  }
+}
+
+interface MarkAsReadBackendResponse {
+  message: string
+  data: Record<string, unknown>
+}
+
+interface UnreadCountBackendResponse {
+  message: string
+  data: { count?: number; unread_count?: number; unreadCount?: number }
+}
 
 // Mock data để fallback khi API chưa available
 const mockNotifications: NotificationResponse = {
@@ -74,27 +96,28 @@ const transformNotification = (backendNotification: Record<string, unknown>): No
   updatedAt: backendNotification.updatedAt as string
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const transformNotificationResponse = (backendResponse: any): NotificationResponse => ({
-  message: backendResponse.message,
-  data: {
-    notifications: backendResponse.data.notifications.map(transformNotification),
-    pagination: {
-      page: backendResponse.data.pagination?.page ?? 1,
-      limit: backendResponse.data.pagination?.limit ?? 10,
-      total: backendResponse.data.pagination?.total ?? 0,
-      total_pages: backendResponse.data.pagination?.total_pages ?? 1
-    },
-    unreadCount: backendResponse.data.unread_count ?? backendResponse.data.unreadCount ?? 0
+const transformNotificationResponse = (backendResponse: NotificationListBackendResponse): NotificationResponse => {
+  const data = backendResponse.data
+  return {
+    message: backendResponse.message,
+    data: {
+      notifications: data.notifications.map(transformNotification),
+      pagination: {
+        page: data.pagination?.page ?? 1,
+        limit: data.pagination?.limit ?? 10,
+        total: data.pagination?.total ?? 0,
+        total_pages: data.pagination?.total_pages ?? 1
+      },
+      unreadCount: (data.unread_count as number) ?? (data.unreadCount as number) ?? 0
+    }
   }
-})
+}
 
 const notificationApi = {
   // Lấy danh sách thông báo với fallback mock data
   getNotifications: async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const response = await http.get<any>('/notifications')
+      const response = await http.get<NotificationListBackendResponse>('/notifications')
       return { data: transformNotificationResponse(response.data) }
     } catch (_error) {
       // Fallback to mock data when API is not available
@@ -109,29 +132,25 @@ const notificationApi = {
 
   // Đánh dấu thông báo đã đọc
   markAsRead: async (notificationId: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await http.put<any>(`/notifications/${notificationId}/read`)
+    const response = await http.put<MarkAsReadBackendResponse>(`/notifications/${notificationId}/read`)
     return { data: { message: response.data.message, data: transformNotification(response.data.data) } }
   },
 
   // Đánh dấu tất cả thông báo đã đọc
   markAllAsRead: async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await http.put<any>('/notifications/read-all')
+    const response = await http.put<SuccessResponseApi<{ message: string }>>('/notifications/read-all')
     return { data: response.data }
   },
 
   // Xóa thông báo
   deleteNotification: async (notificationId: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await http.delete<any>(`/notifications/${notificationId}`)
+    const response = await http.delete<SuccessResponseApi<{ message: string }>>(`/notifications/${notificationId}`)
     return { data: response.data }
   },
 
   // Lấy số thông báo chưa đọc
   getUnreadCount: async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await http.get<any>('/notifications/unread-count')
+    const response = await http.get<SuccessResponseApi<UnreadCountBackendResponse['data']>>('/notifications/unread-count')
     return {
       data: {
         message: response.data.message,

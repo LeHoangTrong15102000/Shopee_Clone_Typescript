@@ -85,7 +85,7 @@ const CartItemList = ({
                       <ShopeeCheckbox
                         checked={purchase.isChecked}
                         onChange={(checked) => {
-                          handleChecked(index)({ target: { checked } } as any)
+                          handleChecked(index)({ target: { checked } } as React.ChangeEvent<HTMLInputElement>)
                         }}
                         size='md'
                       />
@@ -251,7 +251,7 @@ const CartItemList = ({
                     <ShopeeCheckbox
                       checked={purchase.isChecked}
                       onChange={(checked) => {
-                        handleChecked(index)({ target: { checked } } as any)
+                        handleChecked(index)({ target: { checked } } as React.ChangeEvent<HTMLInputElement>)
                       }}
                       size='md'
                     />

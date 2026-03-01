@@ -1,7 +1,9 @@
+import { QueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { Purchase } from 'src/types/purchases.type'
+import { Product } from 'src/types/product.type'
 import { purchasesStatus } from 'src/constant/purchase'
-import { ToastConfig } from './types'
+import { PurchasesQueryData, ToastConfig } from './types'
 
 // Toast configurations
 export const TOAST_CONFIG: Record<string, ToastConfig> = {
@@ -41,14 +43,17 @@ export const showInfoToast = (message: string, config?: Partial<ToastConfig>) =>
 }
 
 // Product data finder utility
-export const findProductInCache = (queryClient: any, productId: string) => {
+export const findProductInCache = (queryClient: QueryClient, productId: string): Product | null => {
   // Tìm trong products queries
   const allProductsQueries = queryClient.getQueriesData({ queryKey: ['products'] })
 
   for (const [, data] of allProductsQueries) {
     if (data && typeof data === 'object' && 'data' in data) {
-      const products = (data as any).data?.data?.products || []
-      const productData = products.find((p: any) => p._id === productId)
+      const nested = data as Record<string, unknown>
+      const inner = nested.data as Record<string, unknown> | undefined
+      const productsData = inner?.data as Record<string, unknown> | undefined
+      const products = (productsData?.products as Product[]) || []
+      const productData = products.find((p: Product) => p._id === productId)
       if (productData) return productData
     }
   }
@@ -57,7 +62,9 @@ export const findProductInCache = (queryClient: any, productId: string) => {
   const productDetailQueries = queryClient.getQueriesData({ queryKey: ['product'] })
   for (const [, data] of productDetailQueries) {
     if (data && typeof data === 'object' && 'data' in data) {
-      const product = (data as any).data?.data
+      const nested = data as Record<string, unknown>
+      const inner = nested.data as Record<string, unknown> | undefined
+      const product = inner?.data as Product | undefined
       if (product && product._id === productId) {
         return product
       }
@@ -69,7 +76,7 @@ export const findProductInCache = (queryClient: any, productId: string) => {
 
 // Optimistic purchase creator
 export const createOptimisticPurchase = (
-  productData: any,
+  productData: Product,
   buyCount: number,
   status = purchasesStatus.inCart
 ): Purchase => {
@@ -87,8 +94,12 @@ export const createOptimisticPurchase = (
 }
 
 // Cache update utilities
-export const updatePurchasesCache = (queryClient: any, queryKey: any[], updater: (oldData: any) => any) => {
-  queryClient.setQueryData(queryKey, (old: any) => {
+export const updatePurchasesCache = (
+  queryClient: QueryClient,
+  queryKey: readonly unknown[],
+  updater: (oldData: PurchasesQueryData) => PurchasesQueryData
+) => {
+  queryClient.setQueryData(queryKey, (old: PurchasesQueryData | undefined) => {
     if (!old) return old
     return updater(old)
   })
@@ -107,7 +118,7 @@ export const createExtendedPurchase = (
 }
 
 // Error logging utility
-export const logOptimisticError = (operation: string, error: any, context?: any) => {
+export const logOptimisticError = (operation: string, error: unknown, context?: unknown) => {
   console.error(`Optimistic ${operation} error:`, error)
   if (context) {
     console.error('Context:', context)

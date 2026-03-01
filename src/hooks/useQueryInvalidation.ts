@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, Query } from '@tanstack/react-query'
 import { QueryFilters, QueryPredicates } from '../utils/queryFilters'
 import { PurchaseListStatus } from '../types/purchases.type'
 
@@ -172,7 +172,7 @@ export const useQueryInvalidation = () => {
     /**
      * Selective invalidation - chỉ invalidate queries match với predicate
      */
-    invalidateByPredicate: (predicate: (query: any) => boolean) => {
+    invalidateByPredicate: (predicate: (query: Query) => boolean) => {
       queryClient.invalidateQueries({ predicate })
     },
 

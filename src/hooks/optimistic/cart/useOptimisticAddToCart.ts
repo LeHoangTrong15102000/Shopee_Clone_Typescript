@@ -4,7 +4,8 @@ import { useContext } from 'react'
 import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
 import { AppContext } from 'src/contexts/app.context'
-import { AddToCartPayload, AddToCartContext, QUERY_KEYS } from '../shared/types'
+import { Purchase } from 'src/types/purchases.type'
+import { AddToCartPayload, AddToCartContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
 import {
   findProductInCache,
   createOptimisticPurchase,
@@ -62,7 +63,7 @@ export const useOptimisticAddToCart = () => {
         showSuccessToast(TOAST_MESSAGES.ADD_TO_CART_SUCCESS)
       }
 
-      return { previousPurchases, optimisticPurchase: productData }
+      return { previousPurchases: previousPurchases as PurchasesQueryData | undefined, optimisticPurchase: productData ? createOptimisticPurchase(productData, newItem.buy_count, purchasesStatus.inCart) : undefined }
     },
 
     onError: (err, _newItem, context) => {
@@ -89,7 +90,7 @@ export const useOptimisticAddToCart = () => {
         ...old,
         data: {
           ...old.data,
-          data: old.data?.data?.map((item: any) => (item._id.startsWith('temp-') ? realPurchase : item)) || [
+          data: old.data?.data?.map((item: Purchase) => (item._id.startsWith('temp-') ? realPurchase : item)) || [
             realPurchase
           ]
         }

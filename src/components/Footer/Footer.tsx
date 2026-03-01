@@ -34,8 +34,7 @@ const Footer = () => {
         <motion.div
           variants={!disableAnimation ? sectionEntrance : undefined}
           initial={!disableAnimation ? 'hidden' : undefined}
-          whileInView={!disableAnimation ? 'visible' : undefined}
-          viewport={{ once: true, amount: 0.3 }}
+          animate={!disableAnimation ? 'visible' : undefined}
         >
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
             <div className='lg:col-span-1'>
@@ -57,8 +56,7 @@ const Footer = () => {
           className='py-10'
           variants={!disableAnimation ? staggerContainer(STAGGER_DELAY.slow) : undefined}
           initial={!disableAnimation ? 'hidden' : undefined}
-          whileInView={!disableAnimation ? 'visible' : undefined}
-          viewport={{ once: true, amount: 0.1 }}
+          animate={!disableAnimation ? 'visible' : undefined}
         >
           <div className='text-center'>
             {/* Policy Links */}

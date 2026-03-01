@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import ProductRating from 'src/components/ProductRating'
 import ShareButton from 'src/components/ShareButton'
 import ViewerCountBadge from 'src/components/ViewerCountBadge'
@@ -16,7 +16,7 @@ interface ProductInfoProps {
   previousPrice: number | null
   viewerCount: number
   isPopular: boolean
-  infoContainerVariants: any
+  infoContainerVariants: Variants
 }
 
 const ProductInfo = ({

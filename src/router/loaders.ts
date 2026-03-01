@@ -7,6 +7,7 @@ import purchasesApi from 'src/apis/purchases.api'
 import userApi from 'src/apis/user.api'
 import { purchasesStatus } from 'src/constant/purchase'
 import { ProductListConfig } from 'src/types/product.type'
+import { RetryError } from 'src/types/utils.type'
 import { QueryFilters } from 'src/utils/queryFilters'
 
 /**
@@ -18,7 +19,7 @@ const createPrefetchQueryClient = () => {
       queries: {
         staleTime: 5 * 60 * 1000, // 5 phút
         gcTime: 10 * 60 * 1000, // 10 phút
-        retry: (failureCount, error: any) => {
+        retry: (failureCount, error: RetryError) => {
           // Không retry trong prefetch nếu 404
           if (error?.response?.status === 404) return false
           return failureCount < 2 // Ít retry hơn để loader nhanh hơn
@@ -69,9 +70,10 @@ export const productDetailLoader: LoaderFunction = async ({ params, request }) =
     )
 
     await Promise.allSettled(prefetchPromises)
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Nếu critical data fail, redirect về 404
-    if (error?.response?.status === 404) {
+    const retryErr = error as RetryError
+    if (retryErr?.response?.status === 404) {
       throw new Response('Product not found', { status: 404 })
     }
 

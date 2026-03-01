@@ -166,8 +166,13 @@ export default function OrderDetail() {
     for (const entry of statusHistory) {
       timestamps[entry.status] = entry.updated_at
     }
+    // Fallback: if order is delivered but no delivered timestamp, use order.updatedAt
+    const effectiveStatus = currentStatus || order?.status
+    if (effectiveStatus === 'delivered' && !timestamps['delivered'] && order?.updatedAt) {
+      timestamps['delivered'] = order.updatedAt
+    }
     return timestamps
-  }, [tracking?.timeline, statusHistory])
+  }, [tracking?.timeline, statusHistory, currentStatus, order?.status, order?.updatedAt])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {

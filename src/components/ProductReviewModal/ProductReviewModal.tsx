@@ -48,8 +48,9 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
         queryClient.invalidateQueries({ queryKey: ['product-reviews'] })
         onClose()
       },
-      onError: (error: any) => {
-        toast.error(error?.response?.data?.message || 'Có lỗi xảy ra')
+      onError: (error) => {
+        const axiosError = error as Error & { response?: { data?: { message?: string } } }
+        toast.error(axiosError?.response?.data?.message || 'Có lỗi xảy ra')
       }
     })
   }

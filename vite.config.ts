@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vitest/config'
+import { defineConfig, type PluginOption } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
   const isTest = mode === 'test'
 
   const baseConfig = {
-    plugins: [tailwindcss(), react(), visualizer()] as any,
+    plugins: [tailwindcss(), react(), visualizer()] as PluginOption[],
     // Base URL cho production deployment
     base: '/',
     server: {

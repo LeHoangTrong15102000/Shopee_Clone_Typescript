@@ -183,7 +183,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as any)}
+          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
           className='rounded-sm border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
         >
           <option value='newest'>Mới nhất</option>

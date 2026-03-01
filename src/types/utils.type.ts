@@ -21,3 +21,12 @@ export type NoUndefinedField<T> = {
 }
 
 // Vế đầu tiên là loại bỏ `optional` attribute - Vế sau có nghĩa là loại bỏ đi giá trị null hoặc undefined của `value`
+
+// Error type for retry callbacks in React Query
+export interface RetryError {
+  name?: string
+  code?: string
+  response?: {
+    status: number
+  }
+}

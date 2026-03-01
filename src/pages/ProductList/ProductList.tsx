@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
+import { RetryError } from 'src/types/utils.type'
 import { useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -80,7 +81,7 @@ const ProductList = () => {
     },
     placeholderData: (previousData) => previousData, // Giữ data cũ khi loading
     staleTime: 3 * 60 * 1000, // 3 phút
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       // Không retry nếu request bị abort (do cancellation)
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
@@ -93,8 +94,6 @@ const ProductList = () => {
     }
   })
 
-  // console.log('ProductList - productsData:', productsData?.data.data) //  trả về cái mảng các phần tử trong đây
-
   /**
    * Query Categories với Query Cancellation
    * Cache lâu hơn vì categories ít thay đổi
@@ -106,7 +105,7 @@ const ProductList = () => {
       return categoryApi.getCategories({ signal })
     },
     staleTime: 15 * 60 * 1000, // Cache 15 phút vì categories ít thay đổi
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }

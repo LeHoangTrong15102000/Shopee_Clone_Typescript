@@ -148,11 +148,9 @@ export default function LiveOrderTracker({
       <motion.div
         className={classNames(
           'relative px-4 py-4 md:px-6',
-          isDelivered
-            ? 'bg-linear-to-r from-green-500 to-emerald-500'
-            : isCancelled
-              ? 'bg-linear-to-r from-red-500 to-rose-500'
-              : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a]'
+          isCancelled
+            ? 'bg-linear-to-r from-red-500 to-rose-500'
+            : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a]'
         )}
         variants={reducedMotion ? undefined : itemVariants}
       >
@@ -163,7 +161,7 @@ export default function LiveOrderTracker({
               <svg
                 className={classNames(
                   'h-5 w-5',
-                  isDelivered ? 'text-green-500' : isCancelled ? 'text-red-500' : 'text-[#ee4d2d]'
+                  isCancelled ? 'text-red-500' : 'text-[#ee4d2d]'
                 )}
                 fill='none'
                 viewBox='0 0 24 24'

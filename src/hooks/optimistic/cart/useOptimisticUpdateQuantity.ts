@@ -5,7 +5,7 @@ import { produce } from 'immer'
 import purchaseApi from 'src/apis/purchases.api'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchases.type'
-import { UpdateQuantityPayload, UpdateQuantityContext, QUERY_KEYS } from '../shared/types'
+import { UpdateQuantityPayload, UpdateQuantityContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
 import { updatePurchasesCache, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
 import { useQueryInvalidation } from '../../useQueryInvalidation'
@@ -48,7 +48,7 @@ export const useOptimisticUpdateQuantity = () => {
         })
       )
 
-      return { previousData, product_id }
+      return { previousData: previousData as PurchasesQueryData | undefined, product_id }
     },
 
     onError: (err, _variables, context) => {
@@ -62,7 +62,7 @@ export const useOptimisticUpdateQuantity = () => {
         produce((draft) => {
           const item = draft.find((p) => p.product._id === context?.product_id)
           if (item && context?.previousData) {
-            const originalItem = (context.previousData as any)?.data?.data?.find(
+            const originalItem = (context.previousData as PurchasesQueryData | undefined)?.data?.data?.find(
               (p: Purchase) => p.product._id === context.product_id
             )
             if (originalItem) {

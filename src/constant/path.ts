@@ -21,7 +21,6 @@ const path = {
   orderDetail: '/user/order/:orderId', // Chi tiết đơn hàng
   voucherCollection: '/vouchers', // Trang thu thập voucher
   dailyCheckIn: '/user/daily-checkin', // Trang điểm danh hàng ngày
-  followedShops: '/user/followed-shop', // Trang shop đang theo dõi
   notifications: '/user/notification' // Trang thông báo
 } as const
 

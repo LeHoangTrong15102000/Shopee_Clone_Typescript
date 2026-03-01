@@ -3,7 +3,7 @@ import { useContext } from 'react'
 
 import wishlistApi from 'src/apis/wishlist.api'
 import { AppContext } from 'src/contexts/app.context'
-import { WishlistContext, QUERY_KEYS } from '../shared/types'
+import { WishlistContext, WishlistCheckQueryData, WishlistCountQueryData, QUERY_KEYS } from '../shared/types'
 import { showSuccessToast, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
 
@@ -31,12 +31,12 @@ export const useOptimisticWishlist = (productId: string) => {
       const previousWishlistData = queryClient.getQueryData(QUERY_KEYS.WISHLIST)
       const previousWishlistCount = queryClient.getQueryData(QUERY_KEYS.WISHLIST_COUNT)
 
-      queryClient.setQueryData(QUERY_KEYS.WISHLIST_CHECK(productId), (old: any) => ({
+      queryClient.setQueryData(QUERY_KEYS.WISHLIST_CHECK(productId), (old: WishlistCheckQueryData | undefined) => ({
         ...old,
         data: { ...old?.data, data: { in_wishlist: true } }
       }))
 
-      queryClient.setQueryData(QUERY_KEYS.WISHLIST_COUNT, (old: any) => {
+      queryClient.setQueryData(QUERY_KEYS.WISHLIST_COUNT, (old: WishlistCountQueryData | undefined) => {
         if (!old) return old
         return {
           ...old,
@@ -77,12 +77,12 @@ export const useOptimisticWishlist = (productId: string) => {
       const previousWishlistData = queryClient.getQueryData(QUERY_KEYS.WISHLIST)
       const previousWishlistCount = queryClient.getQueryData(QUERY_KEYS.WISHLIST_COUNT)
 
-      queryClient.setQueryData(QUERY_KEYS.WISHLIST_CHECK(productId), (old: any) => ({
+      queryClient.setQueryData(QUERY_KEYS.WISHLIST_CHECK(productId), (old: WishlistCheckQueryData | undefined) => ({
         ...old,
         data: { ...old?.data, data: { in_wishlist: false } }
       }))
 
-      queryClient.setQueryData(QUERY_KEYS.WISHLIST_COUNT, (old: any) => {
+      queryClient.setQueryData(QUERY_KEYS.WISHLIST_COUNT, (old: WishlistCountQueryData | undefined) => {
         if (!old) return old
         return {
           ...old,

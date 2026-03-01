@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useMemo } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
+import { RetryError } from 'src/types/utils.type'
 
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
@@ -97,7 +98,7 @@ const ProductListInfinite = () => {
     },
     staleTime: 3 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }

@@ -59,7 +59,7 @@ const Register = () => {
   const onSubmit = handleSubmit((data) => {
     // confirm_password chỉ thực hiện validate ở FE mà thôi còn lên trên server thì không cần
     const body = omit(data, ['confirm_password'])
-    registerAccountMutation.mutate(body as any, {
+    registerAccountMutation.mutate(body as Omit<FormData, 'confirm_password'>, {
       onSuccess: (data) => {
         // console.log(data)
         setIsAuthenticated(true)

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import purchaseApi from 'src/apis/purchases.api'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchases.type'
-import { RemoveFromCartContext, QUERY_KEYS } from '../shared/types'
+import { RemoveFromCartContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
 import {
   updatePurchasesCache,
   createExtendedPurchase,
@@ -35,7 +35,9 @@ export const useOptimisticRemoveFromCart = () => {
 
       // Lưu thông tin sản phẩm bị xóa để có thể undo
       const removedItems =
-        (previousData as any)?.data?.data?.filter((purchase: Purchase) => purchaseIds.includes(purchase._id)) || []
+        (previousData as PurchasesQueryData | undefined)?.data?.data?.filter((purchase: Purchase) =>
+          purchaseIds.includes(purchase._id)
+        ) || []
 
       // Cập nhật cache optimistically - xóa items ngay lập tức
       updatePurchasesCache(queryClient, QUERY_KEYS.PURCHASES_IN_CART, (old) => ({
@@ -70,7 +72,7 @@ export const useOptimisticRemoveFromCart = () => {
         }
       })
 
-      return { previousData, removedItems, undoToast }
+      return { previousData: previousData as PurchasesQueryData | undefined, removedItems, undoToast }
     },
 
     onError: (err, _purchaseIds, context) => {

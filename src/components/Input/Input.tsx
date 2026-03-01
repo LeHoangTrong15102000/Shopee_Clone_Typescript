@@ -61,7 +61,7 @@ Props<TFieldValues, TName>) => {
   // state để lưu trữ trạng thái focus của input -> label float lên khi focus
   const [isFocused, setIsFocused] = useState(false)
   const reducedMotion = useReducedMotion()
-  const registerResult = register && name ? register(name, rules as any) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
+  const registerResult = register && name ? register(name, rules as RegisterOptions<TFieldValues, TName>) : null // {} // làm như này để tái sử dụng component Input ở các nơi khác nhau
 
   // Label hiển thị khi focus HOẶC khi có giá trị
   const hasValue = Boolean(rest.value)

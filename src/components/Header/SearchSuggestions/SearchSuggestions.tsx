@@ -7,6 +7,7 @@ import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
 import { generateNameId } from 'src/utils/utils'
 import useDebounce from 'src/hooks/useDebounce'
+import { RetryError } from 'src/types/utils.type'
 import SearchSuggestionItem from './SearchSuggestionItem'
 import SearchHistoryItem from './SearchHistoryItem'
 
@@ -67,7 +68,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
     },
     enabled: Boolean(debouncedSearchValue?.trim()) && (debouncedSearchValue?.length ?? 0) > 1,
     staleTime: 30000, // Cache 30 giây
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       // Không retry nếu request bị abort (do cancellation)
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
@@ -86,7 +87,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       return productApi.getSearchHistory({ signal })
     },
     staleTime: 60000, // Cache 1 phút
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       // Không retry nếu request bị abort
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
@@ -196,7 +197,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
   )
 
   // Tạo component ProductItem để tối ưu rendering
-  const ProductItem = React.memo(({ product }: { product: any }) => {
+  const ProductItem = React.memo(({ product }: { product: { _id: string; name: string; image: string; price: number } }) => {
     const imageUrl = failedImages.has(product._id)
       ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xMiAxNkwyOCAyNE0yOCAxNkwxMiAyNCIgc3Ryb2tlPSIjOTk5OTk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'
       : product.image

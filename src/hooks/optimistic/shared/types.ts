@@ -1,9 +1,28 @@
 import { Purchase } from 'src/types/purchases.type'
+import { Review } from 'src/types/review.type'
+import { SuccessResponseApi } from 'src/types/utils.type'
+
+// Cache-shape interfaces for React Query data
+export interface PurchasesQueryData {
+  data: SuccessResponseApi<Purchase[]>
+}
+
+export interface ReviewsQueryData {
+  data: SuccessResponseApi<{ reviews: Review[]; pagination: unknown }>
+}
+
+export interface WishlistCheckQueryData {
+  data: SuccessResponseApi<{ in_wishlist: boolean }>
+}
+
+export interface WishlistCountQueryData {
+  data: SuccessResponseApi<{ count: number }>
+}
 
 // Base optimistic context type
 export interface OptimisticContext {
-  previousData?: any
-  [key: string]: any
+  previousData?: unknown
+  [key: string]: unknown
 }
 
 // Cart-related types
@@ -18,43 +37,43 @@ export interface UpdateQuantityPayload {
 }
 
 export interface AddToCartContext extends OptimisticContext {
-  previousPurchases?: any
-  optimisticPurchase?: any
+  previousPurchases?: PurchasesQueryData | undefined
+  optimisticPurchase?: Purchase | undefined
 }
 
 export interface UpdateQuantityContext extends OptimisticContext {
-  previousData?: any
+  previousData?: PurchasesQueryData | undefined
   product_id?: string
 }
 
 export interface RemoveFromCartContext extends OptimisticContext {
-  previousData?: any
+  previousData?: PurchasesQueryData | undefined
   removedItems?: Purchase[]
-  undoToast?: any
+  undoToast?: string | number | undefined
 }
 
 // Review-related types
 export interface ReviewLikeContext extends OptimisticContext {
-  previousReviews?: any
+  previousReviews?: unknown
   reviewId?: string
 }
 
 // Wishlist-related types
 export interface WishlistContext extends OptimisticContext {
-  previousWishlistCheck?: any
-  previousWishlistData?: any
-  previousWishlistCount?: any
+  previousWishlistCheck?: unknown
+  previousWishlistData?: unknown
+  previousWishlistCount?: unknown
   productId?: string
 }
 
 // Notification-related types
 export interface NotificationContext extends OptimisticContext {
-  previousNotifications?: any
+  previousNotifications?: unknown
   notificationId?: string
 }
 
 export interface MarkAllAsReadContext extends OptimisticContext {
-  previousNotifications?: any
+  previousNotifications?: unknown
   previousUnreadCount?: number
 }
 
@@ -66,12 +85,12 @@ export interface ToastConfig {
 
 // Query keys
 export const QUERY_KEYS = {
-  PURCHASES_IN_CART: ['purchases', { status: 'inCart' }] as any[],
-  PRODUCT_REVIEWS: (productId: string) => ['product-reviews', productId] as any[],
-  PRODUCTS: ['products'] as any[],
-  PRODUCT: ['product'] as any[],
-  WISHLIST: ['wishlist'] as any[],
-  WISHLIST_CHECK: (productId: string) => ['wishlist', 'check', productId] as any[],
-  WISHLIST_COUNT: ['wishlist', 'count'] as any[],
-  NOTIFICATIONS: ['notifications'] as any[]
+  PURCHASES_IN_CART: ['purchases', { status: 'inCart' }] as readonly unknown[],
+  PRODUCT_REVIEWS: (productId: string) => ['product-reviews', productId] as readonly unknown[],
+  PRODUCTS: ['products'] as readonly unknown[],
+  PRODUCT: ['product'] as readonly unknown[],
+  WISHLIST: ['wishlist'] as readonly unknown[],
+  WISHLIST_CHECK: (productId: string) => ['wishlist', 'check', productId] as readonly unknown[],
+  WISHLIST_COUNT: ['wishlist', 'count'] as readonly unknown[],
+  NOTIFICATIONS: ['notifications'] as readonly unknown[]
 }

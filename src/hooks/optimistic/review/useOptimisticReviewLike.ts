@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import reviewApi from 'src/apis/review.api'
-import { ReviewLikeContext, QUERY_KEYS } from '../shared/types'
+import { Review } from 'src/types/review.type'
+import { ReviewLikeContext, ReviewsQueryData, QUERY_KEYS } from '../shared/types'
 import { showSuccessToast, showErrorToast, logOptimisticError } from '../shared/utils'
 import { TOAST_MESSAGES } from '../shared/constants'
 import { useQueryInvalidation } from '../../useQueryInvalidation'
@@ -22,7 +23,7 @@ export const useOptimisticReviewLike = (productId: string) => {
       const previousReviews = queryClient.getQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId))
 
       // Cập nhật cache optimistically
-      queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), (old: any) => {
+      queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), (old: ReviewsQueryData | undefined) => {
         if (!old) return old
 
         return {
@@ -31,7 +32,7 @@ export const useOptimisticReviewLike = (productId: string) => {
             ...old.data,
             data: {
               ...old.data.data,
-              reviews: old.data.data.reviews.map((review: any) =>
+              reviews: old.data.data.reviews.map((review: Review) =>
                 review._id === reviewId
                   ? {
                       ...review,
@@ -47,7 +48,7 @@ export const useOptimisticReviewLike = (productId: string) => {
 
       // Hiển thị feedback ngay lập tức
       const isCurrentlyLiked = previousReviews
-        ? (previousReviews as any).data?.data?.reviews?.find((r: any) => r._id === reviewId)?.is_liked
+        ? (previousReviews as ReviewsQueryData).data?.data?.reviews?.find((r: Review) => r._id === reviewId)?.is_liked
         : false
 
       const message = isCurrentlyLiked ? TOAST_MESSAGES.REVIEW_UNLIKE_SUCCESS : TOAST_MESSAGES.REVIEW_LIKE_SUCCESS
@@ -70,7 +71,7 @@ export const useOptimisticReviewLike = (productId: string) => {
 
     onSuccess: (data, reviewId, _context) => {
       // Cập nhật với data thật từ server
-      queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), (old: any) => {
+      queryClient.setQueryData(QUERY_KEYS.PRODUCT_REVIEWS(productId), (old: ReviewsQueryData | undefined) => {
         if (!old) return old
 
         return {
@@ -79,7 +80,7 @@ export const useOptimisticReviewLike = (productId: string) => {
             ...old.data,
             data: {
               ...old.data.data,
-              reviews: old.data.data.reviews.map((review: any) =>
+              reviews: old.data.data.reviews.map((review: Review) =>
                 review._id === reviewId
                   ? {
                       ...review,
@@ -100,3 +101,4 @@ export const useOptimisticReviewLike = (productId: string) => {
     }
   })
 }
+

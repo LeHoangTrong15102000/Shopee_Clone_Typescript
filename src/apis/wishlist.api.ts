@@ -41,9 +41,10 @@ const _mp = (
     view: sold * 3,
     rating,
     description: name,
+    location: 'TP. Hồ Chí Minh',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
-  } as any,
+  },
   addedAt: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString()
 })
 

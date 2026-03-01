@@ -81,7 +81,7 @@ class Http {
             error.response?.status as number
           )
         ) {
-          const data: any | undefined = error.response?.data
+          const data: { message?: string } | undefined = error.response?.data as { message?: string } | undefined
           const message = data?.message || error.message // đôi khi data.message nó không trả về thì sẽ lấy error.message
           toast.error(message)
         }

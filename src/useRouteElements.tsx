@@ -31,7 +31,6 @@ const OrderList = lazy(() => import('./pages/User/pages/OrderList'))
 const OrderDetail = lazy(() => import('./pages/User/pages/OrderDetail'))
 const MyVouchers = lazy(() => import('./pages/User/pages/MyVouchers'))
 const DailyCheckInPage = lazy(() => import('./pages/User/pages/DailyCheckIn'))
-const FollowedShopsPage = lazy(() => import('./pages/User/pages/FollowedShops'))
 const AddressBook = lazy(() => import('./pages/User/pages/AddressBook'))
 const Notifications = lazy(() => import('./pages/User/pages/Notifications'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -219,14 +218,6 @@ const useRouteElements = () => {
                   element: (
                     <Suspense>
                       <DailyCheckInPage />
-                    </Suspense>
-                  )
-                },
-                {
-                  path: path.followedShops,
-                  element: (
-                    <Suspense>
-                      <FollowedShopsPage />
                     </Suspense>
                   )
                 },

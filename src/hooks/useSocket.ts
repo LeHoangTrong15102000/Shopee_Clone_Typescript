@@ -5,7 +5,7 @@ const useSocket = () => {
   const { socket, isConnected, connectionStatus, connect, disconnect } = useSocketContext()
 
   const emit = useCallback(
-    (event: string, data?: any) => {
+    (event: string, data?: unknown) => {
       if (socket && isConnected) {
         socket.emit(event, data)
       }
@@ -14,7 +14,7 @@ const useSocket = () => {
   )
 
   const on = useCallback(
-    (event: string, handler: (...args: any[]) => void) => {
+    (event: string, handler: (...args: unknown[]) => void) => {
       if (socket) {
         socket.on(event, handler)
       }
@@ -23,7 +23,7 @@ const useSocket = () => {
   )
 
   const off = useCallback(
-    (event: string, handler?: (...args: any[]) => void) => {
+    (event: string, handler?: (...args: unknown[]) => void) => {
       if (socket) {
         socket.off(event, handler)
       }

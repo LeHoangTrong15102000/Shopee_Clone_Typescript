@@ -18,7 +18,7 @@ const useNotificationSound = () => {
   // Initialize AudioContext lazily (must be triggered by user interaction)
   const getAudioContext = useCallback(() => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
     }
     return audioContextRef.current
   }, [])

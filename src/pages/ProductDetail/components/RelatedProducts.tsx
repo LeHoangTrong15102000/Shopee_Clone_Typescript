@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import productApi from 'src/apis/product.api'
 import Product from 'src/pages/ProductList/components/Product'
 import { ProductListConfig } from 'src/types/product.type'
+import { RetryError } from 'src/types/utils.type'
 import { sectionEntrance } from 'src/styles/animations'
 
 interface RelatedProductsProps {
@@ -20,7 +21,7 @@ const RelatedProducts = ({ categoryId, reducedMotion }: RelatedProductsProps) =>
     },
     enabled: Boolean(categoryId),
     staleTime: 3 * 60 * 1000,
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }

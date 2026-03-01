@@ -41,7 +41,7 @@ const InputFile = ({ onChange }: Props) => {
         ref={fileInputRef}
         onChange={onFileChange}
         onClick={(event) => {
-          ;(event.target as any).value = null
+          ;(event.target as HTMLInputElement).value = ''
         }}
       />
       <button

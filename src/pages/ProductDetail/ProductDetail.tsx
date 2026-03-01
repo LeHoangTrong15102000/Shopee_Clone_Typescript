@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { RetryError } from 'src/types/utils.type'
 
 import productApi from 'src/apis/product.api'
 
-import SellerFollowButton from 'src/components/SellerFollowButton'
 import ProductReviews from 'src/components/ProductReviews'
 import PriceHistoryChart from 'src/components/PriceHistoryChart'
 import ProductQA from 'src/components/ProductQA'
@@ -92,7 +92,7 @@ const ProductDetail = () => {
     },
     placeholderData: (previousData) => previousData,
     staleTime: 5 * 60 * 1000,
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: RetryError) => {
       if (error?.name === 'AbortError' || error?.code === 'ERR_CANCELED') {
         return false
       }
@@ -301,19 +301,6 @@ const ProductDetail = () => {
                     {product.rating.toFixed(1)}
                   </span>
                 </div>
-              </div>
-              {/* Follow Button */}
-              <div className='shrink-0'>
-                <SellerFollowButton
-                  seller={{
-                    _id: `shop_${product.category._id}`,
-                    name: `Shop ${product.location || 'Shopee'}`,
-                    location: product.location,
-                    rating: product.rating
-                  }}
-                  size='md'
-                  variant='outline'
-                />
               </div>
             </div>
           </div>
