@@ -55,23 +55,53 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
-            // HeroUI phụ thuộc framer-motion — giữ chung chunk để tránh circular dependency
-            // floating-ui và tippy tách riêng vì chỉ dùng cho Popover/Tooltip
-            // HeroUI phụ thuộc framer-motion — giữ chung chunk để tránh circular dependency
-            'heroui-vendor': ['@heroui/react', 'framer-motion'],
-            'floating-vendor': ['@floating-ui/react', '@tippyjs/react', 'tippy.js'],
-            'http-vendor': ['axios', '@tanstack/react-query'],
-            'devtools-vendor': ['@tanstack/react-query-devtools'],
-            'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
-            'socket-vendor': ['socket.io-client'],
-            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-            'router-vendor': ['react-router', 'nuqs'],
-            'utils-vendor': ['classnames', 'immer', 'date-fns'],
-            'i18n-vendor': ['i18next', 'react-i18next'],
-            'sanitize-vendor': ['dompurify', 'html-to-text'],
-            'misc-vendor': ['react-helmet-async', 'react-toastify']
+          manualChunks(id) {
+            // React core - must be in its own chunk, loaded first
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+              return 'react-vendor'
+            }
+            // Router
+            if (id.includes('node_modules/react-router') || id.includes('node_modules/nuqs')) {
+              return 'router-vendor'
+            }
+            // HeroUI + framer-motion (keep together, they're tightly coupled)
+            if (id.includes('node_modules/@heroui/') || id.includes('node_modules/framer-motion')) {
+              return 'heroui-vendor'
+            }
+            // Forms
+            if (
+              id.includes('node_modules/react-hook-form') ||
+              id.includes('node_modules/@hookform/') ||
+              id.includes('node_modules/zod')
+            ) {
+              return 'form-vendor'
+            }
+            // HTTP (exclude devtools to avoid circular deps)
+            if (
+              id.includes('node_modules/axios') ||
+              (id.includes('node_modules/@tanstack/react-query') && !id.includes('devtools'))
+            ) {
+              return 'http-vendor'
+            }
+            // DnD
+            if (id.includes('node_modules/@dnd-kit/')) {
+              return 'dnd-vendor'
+            }
+            // i18n
+            if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
+              return 'i18n-vendor'
+            }
+            // Utils (small, no React dependency)
+            if (
+              id.includes('node_modules/classnames') ||
+              id.includes('node_modules/immer') ||
+              id.includes('node_modules/date-fns')
+            ) {
+              return 'utils-vendor'
+            }
+            // Let everything else (floating-ui, tippy, socket.io, dompurify, html-to-text,
+            // react-toastify, react-helmet-async, devtools, etc.) go into default chunks
+            // This avoids circular dependencies
           }
         }
       }
