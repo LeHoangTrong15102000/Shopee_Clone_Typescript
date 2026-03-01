@@ -5,18 +5,18 @@ import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchases.type'
-import { AddToCartPayload, AddToCartContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
-import {
-  findProductInCache,
-  createOptimisticPurchase,
-  updatePurchasesCache,
-  createExtendedPurchase,
-  showSuccessToast,
-  showErrorToast,
-  logOptimisticError
-} from '../shared/utils'
-import { TOAST_MESSAGES } from '../shared/constants'
 import { useQueryInvalidation } from '../../useQueryInvalidation'
+import { TOAST_MESSAGES } from '../shared/constants'
+import { AddToCartContext, AddToCartPayload, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
+import {
+  createExtendedPurchase,
+  createOptimisticPurchase,
+  findProductInCache,
+  logOptimisticError,
+  showErrorToast,
+  showSuccessToast,
+  updatePurchasesCache
+} from '../shared/utils'
 
 export const useOptimisticAddToCart = () => {
   const queryClient = useQueryClient()
@@ -63,7 +63,12 @@ export const useOptimisticAddToCart = () => {
         showSuccessToast(TOAST_MESSAGES.ADD_TO_CART_SUCCESS)
       }
 
-      return { previousPurchases: previousPurchases as PurchasesQueryData | undefined, optimisticPurchase: productData ? createOptimisticPurchase(productData, newItem.buy_count, purchasesStatus.inCart) : undefined }
+      return {
+        previousPurchases: previousPurchases as PurchasesQueryData | undefined,
+        optimisticPurchase: productData
+          ? createOptimisticPurchase(productData, newItem.buy_count, purchasesStatus.inCart)
+          : undefined
+      }
     },
 
     onError: (err, _newItem, context) => {

@@ -150,7 +150,8 @@ const notificationApi = {
 
   // Lấy số thông báo chưa đọc
   getUnreadCount: async () => {
-    const response = await http.get<SuccessResponseApi<UnreadCountBackendResponse['data']>>('/notifications/unread-count')
+    const response =
+      await http.get<SuccessResponseApi<UnreadCountBackendResponse['data']>>('/notifications/unread-count')
     return {
       data: {
         message: response.data.message,

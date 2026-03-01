@@ -267,9 +267,13 @@ const productApi = {
 
   saveSearchHistory: async (body: { keyword: string }, options?: ApiOptions) => {
     try {
-      return await http.post<SuccessResponseApi<{ keyword: string; saved: boolean }>>('products/search/save-history', body, {
-        signal: options?.signal
-      })
+      return await http.post<SuccessResponseApi<{ keyword: string; saved: boolean }>>(
+        'products/search/save-history',
+        body,
+        {
+          signal: options?.signal
+        }
+      )
     } catch (error) {
       console.warn('⚠️ [saveSearchHistory] API not available, using mock data')
       return {

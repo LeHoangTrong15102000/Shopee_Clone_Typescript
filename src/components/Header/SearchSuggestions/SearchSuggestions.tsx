@@ -1,15 +1,14 @@
-import React from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
-import { generateNameId } from 'src/utils/utils'
 import useDebounce from 'src/hooks/useDebounce'
 import { RetryError } from 'src/types/utils.type'
-import SearchSuggestionItem from './SearchSuggestionItem'
+import { generateNameId } from 'src/utils/utils'
 import SearchHistoryItem from './SearchHistoryItem'
+import SearchSuggestionItem from './SearchSuggestionItem'
 
 interface Props {
   searchValue: string
@@ -197,46 +196,48 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
   )
 
   // Tạo component ProductItem để tối ưu rendering
-  const ProductItem = React.memo(({ product }: { product: { _id: string; name: string; image: string; price: number } }) => {
-    const imageUrl = failedImages.has(product._id)
-      ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xMiAxNkwyOCAyNE0yOCAxNkwxMiAyNCIgc3Ryb2tlPSIjOTk5OTk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'
-      : product.image
+  const ProductItem = React.memo(
+    ({ product }: { product: { _id: string; name: string; image: string; price: number } }) => {
+      const imageUrl = failedImages.has(product._id)
+        ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xMiAxNkwyOCAyNE0yOCAxNkwxMiAyNCIgc3Ryb2tlPSIjOTk5OTk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'
+        : product.image
 
-    return (
-      <Link
-        key={product._id}
-        to={`${path.products}${generateNameId({ name: product.name, id: product._id })}`}
-        className='-mx-2 flex items-center rounded-sm px-2 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
-        onClick={onHide}
-      >
-        <div className='mr-2 h-8 w-8 shrink-0 md:mr-3 md:h-10 md:w-10'>
-          <img
-            src={imageUrl}
-            alt={product.name}
-            className='h-full w-full rounded-sm border border-gray-200 bg-gray-100 object-cover dark:border-slate-600 dark:bg-slate-700'
-            onError={(e) => handleImageError(e, product._id)}
-            loading='lazy'
-          />
-        </div>
-        <div className='min-w-0 flex-1'>
-          <div className='truncate text-xs leading-tight font-medium text-gray-900 md:text-sm dark:text-gray-100'>
-            {product.name}
+      return (
+        <Link
+          key={product._id}
+          to={`${path.products}${generateNameId({ name: product.name, id: product._id })}`}
+          className='-mx-2 flex items-center rounded-sm px-2 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-slate-700'
+          onClick={onHide}
+        >
+          <div className='mr-2 h-8 w-8 shrink-0 md:mr-3 md:h-10 md:w-10'>
+            <img
+              src={imageUrl}
+              alt={product.name}
+              className='h-full w-full rounded-sm border border-gray-200 bg-gray-100 object-cover dark:border-slate-600 dark:bg-slate-700'
+              onError={(e) => handleImageError(e, product._id)}
+              loading='lazy'
+            />
           </div>
-          <div className='text-xs font-semibold text-orange'>₫{product.price.toLocaleString('vi-VN')}</div>
-        </div>
-        <div className='shrink-0'>
-          <svg
-            className='h-3 w-3 text-gray-400 md:h-4 md:w-4 dark:text-gray-500'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-          </svg>
-        </div>
-      </Link>
-    )
-  })
+          <div className='min-w-0 flex-1'>
+            <div className='truncate text-xs leading-tight font-medium text-gray-900 md:text-sm dark:text-gray-100'>
+              {product.name}
+            </div>
+            <div className='text-xs font-semibold text-orange'>₫{product.price.toLocaleString('vi-VN')}</div>
+          </div>
+          <div className='shrink-0'>
+            <svg
+              className='h-3 w-3 text-gray-400 md:h-4 md:w-4 dark:text-gray-500'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+            </svg>
+          </div>
+        </Link>
+      )
+    }
+  )
 
   if (!isVisible) return null
 

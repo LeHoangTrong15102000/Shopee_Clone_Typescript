@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import classNames from 'classnames'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
+import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import orderTrackingApi from 'src/apis/orderTracking.api'
 import OrderTimeline from 'src/components/OrderTimeline'
+import { orderStatusFromNumber } from 'src/constant/order'
+import { purchasesStatus } from 'src/constant/purchase'
 import useOrderTracking from 'src/hooks/useOrderTracking'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { purchasesStatus } from 'src/constant/purchase'
-import { orderStatusFromNumber } from 'src/constant/order'
 import { ANIMATION_DURATION, STAGGER_DELAY } from 'src/styles/animations'
 
 interface LiveOrderTrackerProps {
@@ -148,9 +148,7 @@ export default function LiveOrderTracker({
       <motion.div
         className={classNames(
           'relative px-4 py-4 md:px-6',
-          isCancelled
-            ? 'bg-linear-to-r from-red-500 to-rose-500'
-            : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a]'
+          isCancelled ? 'bg-linear-to-r from-red-500 to-rose-500' : 'bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a]'
         )}
         variants={reducedMotion ? undefined : itemVariants}
       >
@@ -159,10 +157,7 @@ export default function LiveOrderTracker({
             {/* Tracking Icon */}
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-xs'>
               <svg
-                className={classNames(
-                  'h-5 w-5',
-                  isCancelled ? 'text-red-500' : 'text-[#ee4d2d]'
-                )}
+                className={classNames('h-5 w-5', isCancelled ? 'text-red-500' : 'text-[#ee4d2d]')}
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'

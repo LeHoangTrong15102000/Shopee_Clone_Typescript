@@ -43,7 +43,8 @@ export const PATHS = {
 } as const
 
 class NavigationService {
-  private navigate: ((path: string, options?: { replace?: boolean; state?: Record<string, unknown> }) => void) | null = null
+  private navigate: ((path: string, options?: { replace?: boolean; state?: Record<string, unknown> }) => void) | null =
+    null
 
   init(navigateFn: (path: string, options?: { replace?: boolean; state?: Record<string, unknown> }) => void) {
     this.navigate = navigateFn
