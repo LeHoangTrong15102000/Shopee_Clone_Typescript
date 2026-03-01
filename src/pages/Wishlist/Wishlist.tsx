@@ -472,6 +472,54 @@ export default function Wishlist() {
             {/* Real-time price monitoring */}
             <WishlistPriceAlert productIds={productIds} />
 
+            {/* Wishlist Hero Banner */}
+            <motion.div
+              variants={fadeInUp}
+              initial='hidden'
+              animate='visible'
+              className='relative mb-6 overflow-hidden rounded-xl bg-gradient-to-r from-[#ee4d2d] via-[#ff6b4a] to-[#ff8c6b] shadow-lg dark:from-orange-700 dark:via-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'
+            >
+              {/* Decorative blurred circles */}
+              <div className='pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl' />
+              <div className='pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/5 blur-2xl' />
+
+              <div className='relative z-10 flex flex-col items-center gap-4 px-6 py-7 sm:flex-row sm:justify-between sm:px-8 sm:py-8'>
+                {/* Left content */}
+                <div className='flex items-center gap-4 text-center sm:text-left'>
+                  <div className='hidden h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:flex'>
+                    <IconHeart className='h-7 w-7 text-white' />
+                  </div>
+                  <div className='text-white'>
+                    <div className='mb-1 flex items-center justify-center gap-2 sm:justify-start'>
+                      <IconSparkles className='h-4 w-4 text-yellow-200' />
+                      <span className='text-[11px] font-semibold uppercase tracking-wider text-white/80'>
+                        Danh sách yêu thích
+                      </span>
+                    </div>
+                    <h2 className='text-xl font-bold drop-shadow-sm sm:text-2xl'>
+                      Theo dõi {allWishlistItems.length} sản phẩm bạn yêu thích
+                    </h2>
+                    <p className='mt-1 max-w-md text-xs text-white/80 sm:text-sm'>
+                      Quản lý, so sánh giá và nhận thông báo khi có ưu đãi tốt nhất
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right decorative icons */}
+                <div className='hidden items-center gap-3 md:flex'>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                    <IconStar className='h-5 w-5 text-yellow-200' />
+                  </div>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                    <IconBell className='h-5 w-5 text-white/90' />
+                  </div>
+                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm'>
+                    <IconTrendingDown className='h-5 w-5 text-emerald-200' />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Stats Header - 4 Cards */}
             <motion.div
               variants={containerVariants}
