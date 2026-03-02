@@ -32,7 +32,7 @@ const SearchHistory = memo(function SearchHistory({
         <div className='border-b border-gray-100 p-3 dark:border-slate-600'>
           <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
-            <button onClick={onClearAll} className='text-xs text-blue-500 transition-colors hover:text-blue-600'>
+            <button onClick={onClearAll} className='text-xs text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'>
               Xóa tất cả
             </button>
           </div>
@@ -55,7 +55,7 @@ const SearchHistory = memo(function SearchHistory({
                       d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
                     />
                   </svg>
-                  <span className='text-sm text-gray-600 dark:text-gray-400'>{item.query}</span>
+                  <span className='text-sm text-gray-600 dark:text-gray-200'>{item.query}</span>
                 </div>
                 <button
                   onClick={(e) => handleRemove(e, item.query)}
@@ -85,7 +85,7 @@ const SearchHistory = memo(function SearchHistory({
             <button
               key={term}
               onClick={() => onSelect(term)}
-              className='rounded-full bg-gray-100 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-orange hover:text-white dark:bg-slate-900 dark:text-gray-400'
+              className='rounded-full bg-gray-100 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-orange hover:text-white dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-orange-500 dark:hover:text-white'
             >
               {term}
             </button>

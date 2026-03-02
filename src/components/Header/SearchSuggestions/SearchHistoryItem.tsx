@@ -30,7 +30,7 @@ const SearchHistoryItem = ({ historyItem, onSelect, onDelete }: Props) => {
           d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
         />
       </svg>
-      <span className='flex-1 text-xs leading-tight text-gray-600 md:text-sm dark:text-gray-300'>{historyItem}</span>
+      <span className='flex-1 text-xs leading-tight text-gray-600 md:text-sm dark:text-gray-100'>{historyItem}</span>
       {onDelete && (
         <button
           onClick={handleDelete}

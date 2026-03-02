@@ -41,7 +41,7 @@ const SearchSuggestionItem = ({ suggestion, searchValue, onSelect }: Props) => {
           d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
         />
       </svg>
-      <span className='flex-1 text-xs leading-tight text-gray-700 md:text-sm dark:text-gray-300'>
+      <span className='flex-1 text-xs leading-tight text-gray-700 md:text-sm dark:text-gray-100'>
         {highlightSearchValue(suggestion, searchValue)}
       </span>
     </div>

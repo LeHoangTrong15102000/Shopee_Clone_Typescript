@@ -145,7 +145,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
             id='main-search-input'
             value={searchValue}
             type='text'
-            className='grow border-none bg-transparent px-2 py-2 text-xs text-[rgba(0,0,0,.95)] outline-hidden sm:px-3 sm:py-2.5 sm:text-sm dark:text-gray-100 dark:placeholder-gray-500'
+            className='grow border-none bg-transparent px-2 py-2 text-xs text-[rgba(0,0,0,.95)] outline-hidden placeholder:text-gray-400 sm:px-3 sm:py-2.5 sm:text-sm dark:text-gray-100 dark:placeholder:text-gray-300'
             placeholder='Tìm kiếm sản phẩm'
             onChange={handleChangeInput}
             onFocus={handleFocusInput}

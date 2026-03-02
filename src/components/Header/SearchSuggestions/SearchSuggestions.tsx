@@ -249,7 +249,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       {showLoading && (
         <div className='flex items-center justify-center py-4'>
           <div className='h-5 w-5 animate-spin rounded-full border-b-2 border-orange'></div>
-          <span className='ml-2 text-sm text-gray-600 dark:text-gray-400'>Đang tìm kiếm...</span>
+          <span className='ml-2 text-sm text-gray-600 dark:text-gray-200'>Đang tìm kiếm...</span>
         </div>
       )}
 
@@ -258,7 +258,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* Search Suggestions */}
           {suggestions.length > 0 && (
             <div className='border-b border-gray-100 dark:border-slate-700'>
-              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
+              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-300'>
                 Gợi ý tìm kiếm
               </div>
               {suggestions.slice(0, 5).map((suggestion, index) => (
@@ -275,7 +275,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
           {/* Product Results */}
           {products.length > 0 && (
             <div>
-              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
+              <div className='px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-300'>
                 Sản phẩm ({products.length > 5 ? '5+' : products.length})
               </div>
               <div className='px-4 pb-2'>
@@ -288,7 +288,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
 
           {/* No Results */}
           {suggestions.length === 0 && products.length === 0 && !showLoading && (
-            <div className='px-4 py-6 text-center text-gray-500 dark:text-gray-400'>
+            <div className='px-4 py-6 text-center text-gray-500 dark:text-gray-200'>
               <svg
                 className='mx-auto mb-2 h-8 w-8 text-gray-400 dark:text-gray-500'
                 fill='none'
@@ -312,7 +312,7 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
       {!debouncedSearchValue && searchHistory.length > 0 && (
         <div>
           <div className='flex items-center justify-between px-4 py-2'>
-            <span className='text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400'>
+            <span className='text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-300'>
               Lịch sử tìm kiếm
             </span>
             <button
