@@ -36,4 +36,3 @@ const passwordResetApi = {
 }
 
 export default passwordResetApi
-

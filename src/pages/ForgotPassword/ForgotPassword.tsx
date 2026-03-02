@@ -1,18 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
-import { useMutation } from '@tanstack/react-query'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { toast } from 'react-toastify'
-import { motion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
-import Input from 'src/components/Input'
-import Button from 'src/components/Button'
-import path from 'src/constant/path'
 import passwordResetApi from 'src/apis/password-reset.api'
+import Button from 'src/components/Button'
+import Input from 'src/components/Input'
+import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
+import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
+import { z } from 'zod'
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Email không hợp lệ')
@@ -152,4 +152,3 @@ const ForgotPassword = () => {
 }
 
 export default ForgotPassword
-

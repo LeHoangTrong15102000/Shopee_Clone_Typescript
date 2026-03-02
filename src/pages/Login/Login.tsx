@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useContext } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { useContext, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router'
-import { useMutation } from '@tanstack/react-query'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-import { toast } from 'react-toastify'
-import { motion } from 'framer-motion'
-import Input from 'src/components/Input'
-import { LoginSchema, loginSchema } from 'src/utils/rules'
-import authApi from 'src/apis/auth.api'
-import { generateNameId, isAxiosUnprocessableEntityError } from 'src/utils/utils'
-import { ErrorResponseApi } from 'src/types/utils.type'
-import { AppContext } from 'src/contexts/app.context'
-import Button from 'src/components/Button'
-import path from 'src/constant/path'
 import classNames from 'classnames'
+import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
+import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import Button from 'src/components/Button'
+import Input from 'src/components/Input'
+import path from 'src/constant/path'
+import { AppContext } from 'src/contexts/app.context'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
+import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import { LoginSchema, loginSchema } from 'src/utils/rules'
+import { generateNameId, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 type FormData = LoginSchema
 
@@ -195,7 +195,10 @@ const Login = () => {
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-3 text-right'>
-                  <Link to={path.forgotPassword} className='text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'>
+                  <Link
+                    to={path.forgotPassword}
+                    className='text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
+                  >
                     Quên mật khẩu?
                   </Link>
                 </div>

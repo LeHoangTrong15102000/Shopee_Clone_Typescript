@@ -551,10 +551,11 @@ export default function OrderDetail() {
 
       {/* Actions */}
       {(canCancel || canReturn || isReturnExpired) && (
-        <motion.div variants={sectionItemVariants} className='flex flex-col justify-end gap-3 sm:flex-row sm:items-center'>
-          {isReturnExpired && (
-            <span className='text-sm text-gray-400 dark:text-gray-500'>Đã quá hạn trả hàng</span>
-          )}
+        <motion.div
+          variants={sectionItemVariants}
+          className='flex flex-col justify-end gap-3 sm:flex-row sm:items-center'
+        >
+          {isReturnExpired && <span className='text-sm text-gray-400 dark:text-gray-500'>Đã quá hạn trả hàng</span>}
           {canReturn && (
             <motion.div
               whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
@@ -880,9 +881,7 @@ function ReturnOrderModal({
           }`}
           rows={3}
         />
-        {returnReasonError && (
-          <p className='mt-1.5 text-xs text-red-500 dark:text-red-400'>{returnReasonError}</p>
-        )}
+        {returnReasonError && <p className='mt-1.5 text-xs text-red-500 dark:text-red-400'>{returnReasonError}</p>}
         <div className='mt-5 flex justify-end gap-3'>
           <motion.div
             whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}

@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import checkinApi from 'src/apis/checkin.api'
 import {
   CheckInDay,
-  CheckInStreak,
-  CheckInState,
   CheckInReward,
+  CheckInState,
+  CheckInStreak,
   DEFAULT_CHECKIN_CONFIG,
   getRewardForDay
 } from 'src/types/checkin.type'
-import checkinApi from 'src/apis/checkin.api'
 
 const CHECKIN_STORAGE_KEY = 'shopee_daily_checkin'
 const COINS_STORAGE_KEY = 'shopee_user_coins'
@@ -107,7 +107,7 @@ export const useDailyCheckIn = () => {
     }
 
     loadFromApi()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Save to localStorage

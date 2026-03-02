@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { Link, useSearchParams, useNavigate } from 'react-router'
-import { useMutation } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { toast } from 'react-toastify'
+import { useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import Input from 'src/components/Input'
-import Button from 'src/components/Button'
-import path from 'src/constant/path'
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import { toast } from 'react-toastify'
 import passwordResetApi from 'src/apis/password-reset.api'
+import Button from 'src/components/Button'
+import Input from 'src/components/Input'
+import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
+import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
+import { z } from 'zod'
 
 const resetPasswordSchema = z
   .object({
@@ -108,9 +108,7 @@ const ResetPassword = () => {
                   <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
                     Link đặt lại mật khẩu không hợp lệ
                   </h3>
-                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                    Link đã hết hạn hoặc không hợp lệ
-                  </p>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>Link đã hết hạn hoặc không hợp lệ</p>
                   <div className='mt-6'>
                     <Link to={path.forgotPassword} className='text-sm text-orange dark:text-orange-400'>
                       Yêu cầu đặt lại mật khẩu mới
@@ -128,9 +126,7 @@ const ResetPassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                     </svg>
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
-                    Đặt lại mật khẩu thành công
-                  </h3>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Đặt lại mật khẩu thành công</h3>
                   <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
                     Đang chuyển hướng đến trang đăng nhập...
                   </p>
@@ -200,4 +196,3 @@ const ResetPassword = () => {
 }
 
 export default ResetPassword
-

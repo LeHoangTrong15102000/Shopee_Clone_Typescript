@@ -45,14 +45,14 @@ const CartSummaryBar = ({
         <Button
           variant='ghost'
           onClick={handleCheckedAll}
-          className='mx-3 border-none bg-none capitalize hover:text-orange dark:hover:text-orange-400'
+          className='mx-3 border-none bg-none text-xs capitalize hover:text-orange sm:text-sm dark:hover:text-orange-400'
         >
           Chọn tất cả ({extendedPurchases.length})
         </Button>
         <Button
           variant='ghost'
           onClick={handleDeleteManyPurchases}
-          className='mx-3 border-none bg-none capitalize hover:text-red-500'
+          className='mx-3 border-none bg-none text-xs capitalize hover:text-red-500 sm:text-sm'
         >
           Xóa
         </Button>
@@ -61,11 +61,11 @@ const CartSummaryBar = ({
       <div className='mt-5 flex flex-col gap-4 sm:mt-0 sm:ml-auto sm:flex-row sm:items-center md:flex-row md:items-center'>
         <div className='flex flex-col justify-end'>
           <div className='flex flex-wrap items-center sm:justify-end md:justify-end'>
-            <div className='text-gray-700 dark:text-gray-200'>
+            <div className='text-xs text-gray-700 sm:text-sm dark:text-gray-200'>
               Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
             </div>
             <motion.div
-              className='ml-2 text-2xl font-medium text-[#ee4d2d]'
+              className='ml-2 text-lg font-medium text-[#ee4d2d] sm:text-xl md:text-2xl'
               key={totalCheckedPurchasePrice}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
@@ -135,7 +135,7 @@ const CartSummaryBar = ({
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center text-sm sm:justify-end md:justify-end'>
+          <div className='flex items-center text-xs sm:justify-end sm:text-sm md:justify-end'>
             <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
             <motion.div
               className='relative ml-7 overflow-hidden text-[#ee4d2d]'

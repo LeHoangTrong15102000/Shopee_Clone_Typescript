@@ -1,5 +1,5 @@
-import { SuccessResponseApi } from 'src/types/utils.type'
 import { CheckInReward } from 'src/types/checkin.type'
+import { SuccessResponseApi } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
 // Backend response types
@@ -100,5 +100,4 @@ const checkinApi = {
 }
 
 export default checkinApi
-export type { CheckInResponse, StreakResponse, HistoryResponse, HistoryParams }
-
+export type { CheckInResponse, HistoryParams, HistoryResponse, StreakResponse }

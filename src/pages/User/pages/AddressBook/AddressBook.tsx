@@ -1,29 +1,29 @@
-import { useState, useCallback, useMemo } from 'react'
-import { Helmet } from 'react-helmet-async'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
-  DndContext,
   closestCenter,
-  PointerSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
+  CollisionDetection,
+  DndContext,
   DragEndEvent,
-  DragStartEvent,
   DragOverlay,
+  DragStartEvent,
+  KeyboardSensor,
   MeasuringStrategy,
-  CollisionDetection
+  PointerSensor,
+  useSensor,
+  useSensors
 } from '@dnd-kit/core'
-import { SortableContext, useSortable, rectSortingStrategy } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
+import { rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { toast } from 'react-toastify'
 import addressApi from 'src/apis/address.api'
-import { Address, AddressType } from 'src/types/checkout.type'
 import AddressForm from 'src/components/AddressSelector/AddressForm'
 import Button from 'src/components/Button'
 import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
+import { Address, AddressType } from 'src/types/checkout.type'
 
 type FilterType = 'all' | AddressType
 
@@ -853,9 +853,7 @@ const SortableAddressCard = ({ isDragging, ...props }: SortableAddressCardProps)
     zIndex: isDragging || isSorting ? 50 : 'auto'
   }
 
-  const ringClass = isDragging || isSorting
-    ? 'ring-2 ring-orange/30 ring-offset-2'
-    : ''
+  const ringClass = isDragging || isSorting ? 'ring-2 ring-orange/30 ring-offset-2' : ''
 
   return (
     <div
