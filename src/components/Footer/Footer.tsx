@@ -33,8 +33,8 @@ const Footer = () => {
         {/* Copyright & Regions Section */}
         <motion.div
           variants={!disableAnimation ? sectionEntrance : undefined}
-          initial={!disableAnimation ? 'hidden' : false}
-          animate={!disableAnimation ? 'visible' : undefined}
+          initial={!disableAnimation ? 'hidden' : { opacity: 1, y: 0 }}
+          animate={!disableAnimation ? 'visible' : { opacity: 1, y: 0 }}
         >
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
             <div className='lg:col-span-1'>
@@ -55,14 +55,15 @@ const Footer = () => {
         <motion.div
           className='py-10'
           variants={!disableAnimation ? staggerContainer(STAGGER_DELAY.slow) : undefined}
-          initial={!disableAnimation ? 'hidden' : false}
-          animate={!disableAnimation ? 'visible' : undefined}
+          initial={!disableAnimation ? 'hidden' : { opacity: 1 }}
+          animate={!disableAnimation ? 'visible' : { opacity: 1 }}
         >
           <div className='text-center'>
             {/* Policy Links */}
             <motion.div
               className='flex flex-wrap items-center justify-center gap-4 md:gap-8'
               variants={!disableAnimation ? staggerItem : undefined}
+              style={disableAnimation ? { opacity: 1, transform: 'none' } : undefined}
             >
               {['CHÍNH SÁCH BẢO MẬT', 'QUY CHẾ HOẠT ĐỘNG', 'CHÍNH SÁCH VẬN CHUYỂN', 'CHÍNH SÁCH TRẢ HÀNG'].map(
                 (text) => (
@@ -84,6 +85,7 @@ const Footer = () => {
             <motion.div
               className='mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-8'
               variants={!disableAnimation ? staggerItem : undefined}
+              style={disableAnimation ? { opacity: 1, transform: 'none' } : undefined}
             >
               <Link to='/' className='group cursor-pointer transition-all duration-300 hover:scale-105'>
                 <div
@@ -121,7 +123,11 @@ const Footer = () => {
             </motion.div>
 
             {/* Company Info Section - No card, blends with background */}
-            <motion.div className='mt-12' variants={!disableAnimation ? staggerItem : undefined}>
+            <motion.div
+              className='mt-12'
+              variants={!disableAnimation ? staggerItem : undefined}
+              style={disableAnimation ? { opacity: 1, transform: 'none' } : undefined}
+            >
               <div className='mx-auto max-w-4xl space-y-3 border-t border-orange-200/30 px-4 py-6 md:px-8 dark:border-slate-700/40'>
                 {/* Company Name */}
                 <div className='text-base font-bold text-orange dark:text-orange-400'>Công ty TNHH Shopee</div>
