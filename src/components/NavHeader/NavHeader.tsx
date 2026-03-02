@@ -109,13 +109,13 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                   <div className='flex w-full items-center border-0'>
                     <Link
                       to={path.register}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400'
                     >
                       Đăng ký
                     </Link>
                     <Link
                       to={path.login}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400'
                     >
                       Đăng nhập
                     </Link>
@@ -426,13 +426,13 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                   <div className='flex w-full items-center border-0'>
                     <Link
                       to={path.register}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange md:text-sm'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400 md:text-sm'
                     >
                       Đăng ký
                     </Link>
                     <Link
                       to={path.login}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:bg-[#e8e8e8] hover:text-orange md:text-sm'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400 md:text-sm'
                     >
                       Đăng nhập
                     </Link>

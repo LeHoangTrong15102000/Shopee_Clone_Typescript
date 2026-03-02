@@ -156,7 +156,7 @@ const OrderSummary = memo(function OrderSummary({
             <button
               type='button'
               onClick={() => setIsExpanded(!isExpanded)}
-              className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange dark:border-slate-600 dark:text-gray-300'
+              className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange dark:border-slate-600 dark:text-gray-300 dark:hover:text-orange-400'
             >
               {isExpanded ? (
                 <>

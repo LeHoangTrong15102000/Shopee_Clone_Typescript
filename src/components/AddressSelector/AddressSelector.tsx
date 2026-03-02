@@ -76,7 +76,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
         {/* Title removed - using SectionHeader in parent */}
         <button
           onClick={handleAddNew}
-          className='flex items-center gap-1 text-sm text-orange hover:text-orange/80'
+          className='flex items-center gap-1 text-sm text-orange hover:text-orange/80 dark:hover:text-orange-400/80'
           aria-label='Thêm địa chỉ mới'
         >
           <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

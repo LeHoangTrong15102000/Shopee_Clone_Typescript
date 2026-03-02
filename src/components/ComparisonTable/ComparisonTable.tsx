@@ -196,7 +196,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
       <div className='mb-4 flex justify-end'>
         <button
           onClick={clearCompare}
-          className='text-sm text-gray-500 transition-colors hover:text-orange dark:text-gray-400'
+          className='text-sm text-gray-500 transition-colors hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
           aria-label='Xóa tất cả sản phẩm khỏi bảng so sánh'
         >
           Xóa tất cả
@@ -328,7 +328,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
               <td key={product._id} className='border-b p-3 text-center dark:border-slate-700' role='cell'>
                 <Link
                   to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
-                  className='line-clamp-2 text-sm font-medium text-gray-800 hover:text-orange dark:text-gray-200'
+                  className='line-clamp-2 text-sm font-medium text-gray-800 hover:text-orange dark:text-gray-200 dark:hover:text-orange-400'
                   aria-label={`Xem chi tiết sản phẩm ${product.name}`}
                 >
                   {product.name}

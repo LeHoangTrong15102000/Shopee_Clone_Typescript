@@ -60,7 +60,7 @@ const Breadcrumb = ({ items, className = '' }: BreadcrumbProps) => {
                   </span>
                 ) : (
                   // Link item
-                  <Link to={item.to} className='text-gray-500 transition-colors hover:text-orange dark:text-gray-400'>
+                  <Link to={item.to} className='text-gray-500 transition-colors hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'>
                     {item.label}
                   </Link>
                 )}

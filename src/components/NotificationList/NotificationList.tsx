@@ -205,7 +205,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
                 disabled={markAllAsReadMutation.isPending}
                 aria-label={`Đánh dấu tất cả ${unreadCount} thông báo là đã đọc`}
                 aria-busy={markAllAsReadMutation.isPending}
-                className='text-orange transition-colors hover:text-orange/80 focus:underline focus:outline-hidden disabled:opacity-50'
+                className='text-orange transition-colors hover:text-orange/80 focus:underline focus:outline-hidden disabled:opacity-50 dark:hover:text-orange-400/80'
                 title='Đánh dấu tất cả thông báo là đã đọc'
               >
                 {markAllAsReadMutation.isPending ? 'Đang xử lý...' : 'Đánh dấu đã đọc tất cả'}
