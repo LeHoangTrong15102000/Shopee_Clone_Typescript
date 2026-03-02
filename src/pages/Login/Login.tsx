@@ -109,22 +109,23 @@ const Login = () => {
   }, [])
 
   return (
-    <div
-      className='bg-orange'
-      style={{
-        backgroundImage: 'url(https://cf.shopee.vn/file/sg-11134004-23020-75qwyq2a7snv15)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        backgroundPosition: 'center center'
-      }}
-    >
+    <div className='relative bg-orange'>
+      <div
+        className='absolute inset-0 hidden lg:block'
+        style={{
+          backgroundImage: 'url(https://cf.shopee.vn/file/sg-11134004-23020-75qwyq2a7snv15)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+          backgroundPosition: 'center center'
+        }}
+      />
       <Helmet>
         <title>Đăng nhập | Shopee Clone</title>
         <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
       </Helmet>
-      <div className='container min-h-[60vh] lg:min-h-[773.94px]'>
+      <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
-          <div className='mt-10 lg:col-span-2 lg:col-start-4'>
+          <div className='mt-10 md:col-span-3 md:mx-auto md:w-full md:max-w-md lg:col-span-2 lg:col-start-4 lg:mx-0 lg:max-w-none'>
             <motion.form
               className='rounded-sm bg-white p-10 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               onSubmit={onSubmit}
