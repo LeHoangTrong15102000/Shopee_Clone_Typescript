@@ -2,6 +2,7 @@ import { describe, expect, test, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import userEvent from '@testing-library/user-event'
+import { format } from 'date-fns'
 import MessageList from 'src/components/Chat/MessageList'
 import MessageItem from 'src/components/Chat/MessageItem'
 import MessageInput from 'src/components/Chat/MessageInput'
@@ -69,9 +70,11 @@ describe('WebSocket UI Components', () => {
 
   describe('MessageItem', () => {
     test('shows message content and formatted time', () => {
-      render(<MessageItem message={createMessage({ content: 'Hello World' })} isSent={false} />)
+      const msg = createMessage({ content: 'Hello World' })
+      render(<MessageItem message={msg} isSent={false} />)
       expect(screen.getByText('Hello World')).toBeInTheDocument()
-      expect(screen.getByText('17:00')).toBeInTheDocument()
+      const expectedTime = format(new Date(msg.created_at), 'HH:mm')
+      expect(screen.getByText(expectedTime)).toBeInTheDocument()
     })
 
     test('shows sender name for received messages', () => {
