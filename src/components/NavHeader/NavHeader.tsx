@@ -1,22 +1,22 @@
-import classNames from 'classnames'
-import Popover from '../Popover'
-import path from 'src/constant/path'
-import { Link } from 'react-router'
-import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import authApi from 'src/apis/auth.api'
+import classNames from 'classnames'
+import { useContext } from 'react'
+import { Link } from 'react-router'
 import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
+import { AppContext } from 'src/contexts/app.context'
+import Popover from '../Popover'
 
-import { getAvatarUrl } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
-import { locales, loadLanguage } from 'src/i18n/i18n'
-import NotificationList from '../NotificationList'
 import notificationApi from 'src/apis/notification.api'
-import useInventoryAlerts from 'src/hooks/useInventoryAlerts'
 import InventoryAlertBadge from 'src/components/InventoryAlertBadge'
 import ThemeToggle from 'src/components/ThemeToggle'
+import useInventoryAlerts from 'src/hooks/useInventoryAlerts'
+import { loadLanguage, locales } from 'src/i18n/i18n'
+import { getAvatarUrl } from 'src/utils/utils'
+import NotificationList from '../NotificationList'
 
 interface NavHeaderProps {
   compact?: boolean
@@ -426,13 +426,13 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                   <div className='flex w-full items-center border-0'>
                     <Link
                       to={path.register}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400 md:text-sm'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange md:text-sm dark:hover:text-orange-400'
                     >
                       Đăng ký
                     </Link>
                     <Link
                       to={path.login}
-                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange dark:hover:text-orange-400 md:text-sm'
+                      className='h-10 w-[50%] bg-[rgba(0,0,0,0.04)] p-2 text-center text-xs hover:text-orange md:text-sm dark:hover:text-orange-400'
                     >
                       Đăng nhập
                     </Link>
