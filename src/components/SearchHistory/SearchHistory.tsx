@@ -1,5 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { memo, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { SearchHistoryItem } from 'src/hooks/useSearchHistory'
 
 interface SearchHistoryProps {
@@ -32,7 +32,10 @@ const SearchHistory = memo(function SearchHistory({
         <div className='border-b border-gray-100 p-3 dark:border-slate-600'>
           <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
-            <button onClick={onClearAll} className='text-xs text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'>
+            <button
+              onClick={onClearAll}
+              className='text-xs text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
+            >
               Xóa tất cả
             </button>
           </div>
