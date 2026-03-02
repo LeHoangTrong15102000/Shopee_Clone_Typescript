@@ -45,27 +45,27 @@ const CartSummaryBar = ({
         <Button
           variant='ghost'
           onClick={handleCheckedAll}
-          className='mx-3 border-none bg-none text-xs capitalize hover:text-orange sm:text-sm dark:hover:text-orange-400'
+          className='mx-3 border-none bg-none text-sm capitalize hover:text-orange sm:text-sm dark:hover:text-orange-400'
         >
           Chọn tất cả ({extendedPurchases.length})
         </Button>
         <Button
           variant='ghost'
           onClick={handleDeleteManyPurchases}
-          className='mx-3 border-none bg-none text-xs capitalize hover:text-red-500 sm:text-sm'
+          className='mx-3 border-none bg-none text-sm capitalize hover:text-red-500 sm:text-sm'
         >
           Xóa
         </Button>
       </div>
 
-      <div className='mt-5 flex flex-col gap-4 sm:mt-0 sm:ml-auto sm:flex-row sm:items-center md:flex-row md:items-center'>
+      <div className='mt-3 flex flex-col gap-2 sm:mt-0 sm:ml-auto sm:flex-row sm:items-center sm:gap-4 md:flex-row md:items-center'>
         <div className='flex flex-col justify-end'>
           <div className='flex flex-wrap items-center sm:justify-end md:justify-end'>
-            <div className='text-xs text-gray-700 sm:text-sm dark:text-gray-200'>
+            <div className='text-sm text-gray-700 sm:text-sm dark:text-gray-200'>
               Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
             </div>
             <motion.div
-              className='ml-2 text-lg font-medium text-[#ee4d2d] sm:text-xl md:text-2xl'
+              className='ml-2 text-xl font-medium text-[#ee4d2d] sm:text-xl md:text-2xl'
               key={totalCheckedPurchasePrice}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
@@ -135,7 +135,7 @@ const CartSummaryBar = ({
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center text-xs sm:justify-end sm:text-sm md:justify-end'>
+          <div className='flex items-center text-sm sm:justify-end sm:text-sm md:justify-end'>
             <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
             <motion.div
               className='relative ml-7 overflow-hidden text-[#ee4d2d]'
@@ -175,7 +175,7 @@ const CartSummaryBar = ({
             onClick={handleBuyPurchases}
             disabled={checkedPurchaseCount === 0}
             type='button'
-            className='mt-5 flex h-10 w-full items-center justify-center bg-red-500 text-center text-sm text-white capitalize transition-all hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:mt-0 sm:ml-0 sm:w-52 md:mt-0 md:ml-0 md:w-52'
+            className='mt-1 flex h-10 w-full items-center justify-center bg-red-500 text-center text-base text-white capitalize transition-all hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:mt-0 sm:ml-0 sm:w-52 sm:text-sm md:mt-0 md:ml-0 md:w-52'
           >
             Thanh toán ({checkedPurchaseCount})
           </Button>
