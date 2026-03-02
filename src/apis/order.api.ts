@@ -379,6 +379,33 @@ const mockOrders: Order[] = [
     note: 'Tìm được sản phẩm rẻ hơn',
     createdAt: '2024-01-25T14:30:00.000Z',
     updatedAt: '2024-01-25T16:00:00.000Z'
+  },
+
+  // RETURNED - Trả hàng (1 đơn)
+  {
+    _id: '65f6a7b8c9d0e1f2a3b4c5d6',
+    userId: 'user1',
+    items: [
+      {
+        product: createMockProduct('p17', 'Áo len mùa đông', 350000, 450000),
+        buyCount: 1,
+        price: 350000,
+        priceBeforeDiscount: 450000
+      }
+    ],
+    shippingAddress: mockShippingAddress,
+    shippingMethod: mockShippingStandard,
+    paymentMethod: 'cod',
+    subtotal: 350000,
+    shippingFee: 30000,
+    discount: 0,
+    coinsUsed: 0,
+    coinsDiscount: 0,
+    total: 380000,
+    status: 'returned',
+    note: 'Sản phẩm không đúng mô tả',
+    createdAt: '2024-01-10T09:00:00.000Z',
+    updatedAt: '2024-01-14T11:00:00.000Z'
   }
 ]
 
@@ -452,6 +479,27 @@ const orderApi = {
             ...order,
             _id: id,
             status: 'cancelled' as const,
+            updatedAt: new Date().toISOString()
+          }
+        }
+      }
+    }
+  },
+
+  returnOrder: async (id: string, reason: string) => {
+    try {
+      const response = await http.put<SuccessResponseApi<Order>>(`${URL}/${id}/return`, { reason })
+      return response
+    } catch (error) {
+      console.warn('⚠️ [returnOrder] API not available, using mock data')
+      const order = mockOrders.find((o) => o._id === id) || mockOrders[0]
+      return {
+        data: {
+          message: 'Yêu cầu trả hàng thành công (mock)',
+          data: {
+            ...order,
+            _id: id,
+            status: 'returned' as const,
             updatedAt: new Date().toISOString()
           }
         }

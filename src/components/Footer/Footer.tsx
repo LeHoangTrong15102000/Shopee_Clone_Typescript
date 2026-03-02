@@ -33,7 +33,7 @@ const Footer = () => {
         {/* Copyright & Regions Section */}
         <motion.div
           variants={!disableAnimation ? sectionEntrance : undefined}
-          initial={!disableAnimation ? 'hidden' : undefined}
+          initial={!disableAnimation ? 'hidden' : false}
           animate={!disableAnimation ? 'visible' : undefined}
         >
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
@@ -55,7 +55,7 @@ const Footer = () => {
         <motion.div
           className='py-10'
           variants={!disableAnimation ? staggerContainer(STAGGER_DELAY.slow) : undefined}
-          initial={!disableAnimation ? 'hidden' : undefined}
+          initial={!disableAnimation ? 'hidden' : false}
           animate={!disableAnimation ? 'visible' : undefined}
         >
           <div className='text-center'>

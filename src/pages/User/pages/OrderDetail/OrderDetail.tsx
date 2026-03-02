@@ -119,6 +119,9 @@ export default function OrderDetail() {
   const queryClient = useQueryClient()
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [cancelReason, setCancelReason] = useState('')
+  const [showReturnModal, setShowReturnModal] = useState(false)
+  const [returnReason, setReturnReason] = useState('')
+  const [returnReasonError, setReturnReasonError] = useState('')
   const shouldReduceMotion = useReducedMotion()
 
   // WebSocket: Real-time order status tracking
@@ -147,6 +150,21 @@ export default function OrderDetail() {
     },
     onError: () => {
       toast.error('Hủy đơn hàng thất bại')
+    }
+  })
+
+  const returnMutation = useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason: string }) => orderApi.returnOrder(id, reason),
+    onSuccess: () => {
+      toast.success('Yêu cầu trả hàng thành công')
+      queryClient.invalidateQueries({ queryKey: ['order', orderId] })
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+      setShowReturnModal(false)
+      setReturnReason('')
+      setReturnReasonError('')
+    },
+    onError: () => {
+      toast.error('Yêu cầu trả hàng thất bại')
     }
   })
 
@@ -190,6 +208,17 @@ export default function OrderDetail() {
     }
   }
 
+  const handleReturnOrder = () => {
+    if (!returnReason.trim()) {
+      setReturnReasonError('Vui lòng nhập lý do trả hàng')
+      return
+    }
+    if (orderId) {
+      setReturnReasonError('')
+      returnMutation.mutate({ id: orderId, reason: returnReason })
+    }
+  }
+
   if (isLoading) {
     return (
       <div className='flex min-h-[400px] items-center justify-center'>
@@ -211,6 +240,14 @@ export default function OrderDetail() {
 
   const status = getStatusDisplay(order.status as OrderStatus)
   const canCancel = ['pending', 'confirmed'].includes(order.status)
+
+  // Return eligibility: delivered within 7 days
+  const isDelivered = order.status === 'delivered'
+  const deliveredDaysAgo = isDelivered
+    ? Math.floor((Date.now() - new Date(order.updatedAt).getTime()) / (1000 * 60 * 60 * 24))
+    : 0
+  const canReturn = isDelivered && deliveredDaysAgo <= 7
+  const isReturnExpired = isDelivered && deliveredDaysAgo > 7
 
   // Select variants based on reduced motion preference
   const containerVariants = shouldReduceMotion ? reducedMotionVariants : pageContainerVariants
@@ -513,21 +550,41 @@ export default function OrderDetail() {
       </motion.div>
 
       {/* Actions */}
-      {canCancel && (
-        <motion.div variants={sectionItemVariants} className='flex flex-col justify-end gap-3 sm:flex-row'>
-          <motion.div
-            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-            transition={{ duration: ANIMATION_DURATION.fast }}
-          >
-            <Button
-              onClick={() => setShowCancelModal(true)}
-              aria-label='Hủy đơn hàng'
-              className='cursor-pointer rounded-xl border-2 border-red-400/80 bg-white px-6 py-2.5 font-medium text-red-500 transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:shadow-md hover:shadow-red-100/50 dark:border-red-500/40 dark:bg-slate-800 dark:text-red-400 dark:hover:border-red-400 dark:hover:bg-red-950/20 dark:hover:shadow-red-900/20'
+      {(canCancel || canReturn || isReturnExpired) && (
+        <motion.div variants={sectionItemVariants} className='flex flex-col justify-end gap-3 sm:flex-row sm:items-center'>
+          {isReturnExpired && (
+            <span className='text-sm text-gray-400 dark:text-gray-500'>Đã quá hạn trả hàng</span>
+          )}
+          {canReturn && (
+            <motion.div
+              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+              transition={{ duration: ANIMATION_DURATION.fast }}
             >
-              Hủy đơn hàng
-            </Button>
-          </motion.div>
+              <Button
+                onClick={() => setShowReturnModal(true)}
+                aria-label='Trả hàng/Hoàn tiền'
+                className='cursor-pointer rounded-xl border-2 border-amber-400/80 bg-white px-6 py-2.5 font-medium text-amber-600 transition-all duration-200 hover:border-amber-500 hover:bg-amber-50 hover:shadow-md hover:shadow-amber-100/50 dark:border-amber-500/40 dark:bg-slate-800 dark:text-amber-400 dark:hover:border-amber-400 dark:hover:bg-amber-950/20 dark:hover:shadow-amber-900/20'
+              >
+                Trả hàng/Hoàn tiền
+              </Button>
+            </motion.div>
+          )}
+          {canCancel && (
+            <motion.div
+              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+              transition={{ duration: ANIMATION_DURATION.fast }}
+            >
+              <Button
+                onClick={() => setShowCancelModal(true)}
+                aria-label='Hủy đơn hàng'
+                className='cursor-pointer rounded-xl border-2 border-red-400/80 bg-white px-6 py-2.5 font-medium text-red-500 transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:shadow-md hover:shadow-red-100/50 dark:border-red-500/40 dark:bg-slate-800 dark:text-red-400 dark:hover:border-red-400 dark:hover:bg-red-950/20 dark:hover:shadow-red-900/20'
+              >
+                Hủy đơn hàng
+              </Button>
+            </motion.div>
+          )}
         </motion.div>
       )}
 
@@ -540,6 +597,28 @@ export default function OrderDetail() {
             onClose={() => setShowCancelModal(false)}
             onConfirm={handleCancelOrder}
             isPending={cancelMutation.isPending}
+            shouldReduceMotion={shouldReduceMotion}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Return Modal */}
+      <AnimatePresence>
+        {showReturnModal && (
+          <ReturnOrderModal
+            returnReason={returnReason}
+            setReturnReason={(val) => {
+              setReturnReason(val)
+              if (val.trim()) setReturnReasonError('')
+            }}
+            returnReasonError={returnReasonError}
+            onClose={() => {
+              setShowReturnModal(false)
+              setReturnReason('')
+              setReturnReasonError('')
+            }}
+            onConfirm={handleReturnOrder}
+            isPending={returnMutation.isPending}
             shouldReduceMotion={shouldReduceMotion}
           />
         )}
@@ -731,6 +810,103 @@ function CancelOrderModal({
               className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 font-medium text-white transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-red-900/30'
             >
               {isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
+            </Button>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+interface ReturnOrderModalProps {
+  returnReason: string
+  setReturnReason: (reason: string) => void
+  returnReasonError: string
+  onClose: () => void
+  onConfirm: () => void
+  isPending: boolean
+  shouldReduceMotion: boolean | null
+}
+
+function ReturnOrderModal({
+  returnReason,
+  setReturnReason,
+  returnReasonError,
+  onClose,
+  onConfirm,
+  isPending,
+  shouldReduceMotion
+}: ReturnOrderModalProps) {
+  return (
+    <motion.div
+      variants={shouldReduceMotion ? reducedMotionVariants : modalBackdropVariants}
+      initial='hidden'
+      animate='visible'
+      exit='exit'
+      className='fixed inset-0 z-9999 flex items-center justify-center bg-black/60 backdrop-blur-xs'
+      onClick={onClose}
+    >
+      <motion.div
+        variants={shouldReduceMotion ? reducedMotionVariants : modalContentVariants}
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        onClick={(e) => e.stopPropagation()}
+        className='relative mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl dark:border dark:border-slate-700 dark:bg-slate-800'
+      >
+        <button
+          onClick={onClose}
+          className='absolute top-4 right-4 cursor-pointer rounded-full p-1 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
+          aria-label='Đóng modal'
+        >
+          <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+            <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+          </svg>
+        </button>
+        <div className='mb-4'>
+          <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Trả hàng/Hoàn tiền</h3>
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            Vui lòng cho chúng tôi biết lý do bạn muốn trả hàng
+          </p>
+        </div>
+        <textarea
+          value={returnReason}
+          onChange={(e) => setReturnReason(e.target.value)}
+          placeholder='Nhập lý do trả hàng (bắt buộc)'
+          className={`w-full resize-none rounded-xl border p-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-hidden dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 ${
+            returnReasonError
+              ? 'border-red-300 focus:border-red-400 focus:ring-red-200/20 dark:border-red-600 dark:focus:border-red-500'
+              : 'border-gray-200 focus:border-orange focus:ring-orange/20 dark:border-slate-600 dark:focus:border-orange-400'
+          }`}
+          rows={3}
+        />
+        {returnReasonError && (
+          <p className='mt-1.5 text-xs text-red-500 dark:text-red-400'>{returnReasonError}</p>
+        )}
+        <div className='mt-5 flex justify-end gap-3'>
+          <motion.div
+            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+            transition={{ duration: ANIMATION_DURATION.fast }}
+          >
+            <Button
+              onClick={onClose}
+              className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
+            >
+              Đóng
+            </Button>
+          </motion.div>
+          <motion.div
+            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+            transition={{ duration: ANIMATION_DURATION.fast }}
+          >
+            <Button
+              onClick={onConfirm}
+              disabled={isPending}
+              className='cursor-pointer rounded-xl bg-linear-to-r from-amber-500 to-orange-600 px-5 py-2.5 font-medium text-white transition-all duration-200 hover:from-amber-600 hover:to-orange-700 hover:shadow-lg hover:shadow-amber-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-amber-900/30'
+            >
+              {isPending ? 'Đang xử lý...' : 'Xác nhận trả hàng'}
             </Button>
           </motion.div>
         </div>

@@ -311,10 +311,7 @@ const Checkout = () => {
     }
 
     const orderBody: CreateOrderBody = {
-      items: checkedItems.map((item) => ({
-        productId: item.product._id,
-        buyCount: item.buy_count
-      })),
+      purchaseIds: checkedItems.map((item) => item._id),
       shippingAddressId: selectedAddress._id,
       shippingMethodId: selectedShippingMethod._id,
       paymentMethod: selectedPaymentMethod,

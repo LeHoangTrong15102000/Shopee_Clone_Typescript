@@ -193,6 +193,14 @@ const Login = () => {
                 </div>
               </motion.div>
 
+              <motion.div variants={reducedMotion ? undefined : staggerItem}>
+                <div className='mt-3 text-right'>
+                  <Link to={path.forgotPassword} className='text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'>
+                    Quên mật khẩu?
+                  </Link>
+                </div>
+              </motion.div>
+
               {/* Divider */}
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-4 flex items-center gap-3'>

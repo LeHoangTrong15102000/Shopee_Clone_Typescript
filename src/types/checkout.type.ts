@@ -91,13 +91,20 @@ export interface Order {
 
 // Checkout request/response types
 export interface CreateOrderBody {
-  items: { productId: string; buyCount: number }[]
+  purchaseIds: string[]
   shippingAddressId: string
   shippingMethodId: string
   paymentMethod: PaymentMethodType
   voucherCode?: string
   coinsUsed?: number
   note?: string
+}
+
+export interface CheckoutSummaryBody {
+  purchaseIds: string[]
+  shippingMethodId?: string
+  voucherCode?: string
+  coinsUsed?: number
 }
 
 export interface CheckoutSummary {

@@ -76,7 +76,7 @@ const mockPaymentMethods: PaymentMethod[] = [
 const checkoutApi = {
   getShippingMethods: async () => {
     try {
-      const response = await http.get<SuccessResponseApi<ShippingMethod[]>>('/shipping/methods')
+      const response = await http.get<SuccessResponseApi<ShippingMethod[]>>('/orders/shipping/methods')
       return response
     } catch (error) {
       console.warn('Shipping API not available, using mock data')
@@ -91,7 +91,7 @@ const checkoutApi = {
 
   getPaymentMethods: async () => {
     try {
-      const response = await http.get<SuccessResponseApi<PaymentMethod[]>>('/payment/methods')
+      const response = await http.get<SuccessResponseApi<PaymentMethod[]>>('/orders/payment/methods')
       return response
     } catch (error) {
       console.warn('Payment API not available, using mock data')
@@ -105,13 +105,18 @@ const checkoutApi = {
   },
 
   calculateSummary: async (body: {
-    items: { productId: string; buyCount: number }[]
-    shippingMethodId: string
+    purchaseIds: string[]
+    shippingMethodId?: string
     voucherCode?: string
     coinsUsed?: number
   }) => {
     try {
-      const response = await http.post<SuccessResponseApi<CheckoutSummary>>('/checkout/calculate', body)
+      const response = await http.post<SuccessResponseApi<CheckoutSummary>>('/checkout/summary', {
+        purchase_ids: body.purchaseIds,
+        shipping_method_id: body.shippingMethodId,
+        voucher_code: body.voucherCode,
+        coins_used: body.coinsUsed
+      })
       return response
     } catch (error) {
       const shippingMethod = mockShippingMethods.find((m) => m._id === body.shippingMethodId) || mockShippingMethods[0]
@@ -133,7 +138,15 @@ const checkoutApi = {
 
   createOrder: async (body: CreateOrderBody) => {
     try {
-      const response = await http.post<SuccessResponseApi<Order>>('/orders', body)
+      const response = await http.post<SuccessResponseApi<Order>>('/checkout/create-order', {
+        purchase_ids: body.purchaseIds,
+        shipping_address_id: body.shippingAddressId,
+        shipping_method_id: body.shippingMethodId,
+        payment_method: body.paymentMethod,
+        voucher_code: body.voucherCode,
+        coins_used: body.coinsUsed,
+        note: body.note
+      })
       return response
     } catch (error) {
       console.warn('⚠️ [createOrder] API not available, using mock data')

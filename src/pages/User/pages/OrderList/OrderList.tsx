@@ -17,7 +17,8 @@ const orderTabs: { status: number; label: string }[] = [
   { status: ordersStatus.confirmed, label: 'Đã xác nhận' },
   { status: ordersStatus.shipping, label: 'Đang giao' },
   { status: ordersStatus.delivered, label: 'Đã giao' },
-  { status: ordersStatus.cancelled, label: 'Đã hủy' }
+  { status: ordersStatus.cancelled, label: 'Đã hủy' },
+  { status: ordersStatus.returned, label: 'Trả hàng' }
 ]
 
 export default function OrderList() {

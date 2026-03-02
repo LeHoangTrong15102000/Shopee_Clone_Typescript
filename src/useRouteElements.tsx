@@ -34,6 +34,8 @@ const DailyCheckInPage = lazy(() => import('./pages/User/pages/DailyCheckIn'))
 const AddressBook = lazy(() => import('./pages/User/pages/AddressBook'))
 const Notifications = lazy(() => import('./pages/User/pages/Notifications'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword/ResetPassword'))
 
 // Khai báo một Route Protected(Vì nó return về Outlet nên hàm này được coi là component)
 function ProtectedRoute() {
@@ -271,6 +273,22 @@ const useRouteElements = () => {
               element: (
                 <Suspense>
                   <Register />
+                </Suspense>
+              )
+            },
+            {
+              path: path.forgotPassword,
+              element: (
+                <Suspense>
+                  <ForgotPassword />
+                </Suspense>
+              )
+            },
+            {
+              path: path.resetPassword,
+              element: (
+                <Suspense>
+                  <ResetPassword />
                 </Suspense>
               )
             }

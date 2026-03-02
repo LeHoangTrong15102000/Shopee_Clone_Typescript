@@ -12,9 +12,10 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverlay,
-  MeasuringStrategy
+  MeasuringStrategy,
+  CollisionDetection
 } from '@dnd-kit/core'
-import { SortableContext, useSortable, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, useSortable, rectSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import { toast } from 'react-toastify'
@@ -134,6 +135,17 @@ const AddressBook = () => {
   const defaultAddress = filteredAddresses.find((addr) => addr.isDefault)
   const otherAddresses = filteredAddresses.filter((addr) => !addr.isDefault)
 
+  // Custom collision detection: only allow drops on existing address items
+  const swapOnlyCollision: CollisionDetection = useCallback(
+    (args) => {
+      const collisions = closestCenter(args)
+      // Filter: only keep collisions with actual address item IDs
+      const validIds = new Set(otherAddresses.map((addr) => addr._id))
+      return collisions.filter((collision) => validIds.has(collision.id as string))
+    },
+    [otherAddresses]
+  )
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => addressApi.deleteAddress(id),
     onSuccess: () => {
@@ -243,11 +255,19 @@ const AddressBook = () => {
       setActiveId(null)
 
       if (over && active.id !== over.id) {
-        const oldIndex = otherAddresses.findIndex((addr) => addr._id === active.id)
-        const newIndex = otherAddresses.findIndex((addr) => addr._id === over.id)
-        const newOrder = arrayMove(otherAddresses, oldIndex, newIndex)
-        const newFullOrder = defaultAddress ? [defaultAddress, ...newOrder] : newOrder
-        handleReorder(newFullOrder)
+        // Swap: exchange positions of the two items directly
+        const activeIndex = otherAddresses.findIndex((addr) => addr._id === active.id)
+        const overIndex = otherAddresses.findIndex((addr) => addr._id === over.id)
+
+        if (activeIndex !== -1 && overIndex !== -1) {
+          const newOrder = [...otherAddresses]
+          // Direct swap instead of arrayMove (insertion)
+          const temp = newOrder[activeIndex]
+          newOrder[activeIndex] = newOrder[overIndex]
+          newOrder[overIndex] = temp
+          const newFullOrder = defaultAddress ? [defaultAddress, ...newOrder] : newOrder
+          handleReorder(newFullOrder)
+        }
       }
     },
     [otherAddresses, defaultAddress, handleReorder]
@@ -411,9 +431,10 @@ const AddressBook = () => {
           <AnimatePresence>
             {isSelectionMode && selectedIds.size > 0 && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
                 className='flex flex-col gap-3 rounded-lg bg-orange/5 p-3 sm:flex-row sm:items-center sm:justify-between dark:bg-orange-400/10'
               >
                 <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
@@ -436,16 +457,8 @@ const AddressBook = () => {
                 </div>
                 <Button
                   onClick={handleBulkDelete}
-                  className='flex w-full items-center justify-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600 sm:w-auto'
+                  className='flex w-full items-center justify-center rounded-lg bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600 sm:w-auto'
                 >
-                  <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-                    />
-                  </svg>
                   Xóa đã chọn
                 </Button>
               </motion.div>
@@ -520,7 +533,7 @@ const AddressBook = () => {
                 </h3>
                 <DndContext
                   sensors={isSelectionMode ? [] : sensors}
-                  collisionDetection={closestCenter}
+                  collisionDetection={swapOnlyCollision}
                   onDragStart={handleDragStart}
                   onDragEnd={handleDragEnd}
                   onDragCancel={handleDragCancel}
@@ -840,11 +853,15 @@ const SortableAddressCard = ({ isDragging, ...props }: SortableAddressCardProps)
     zIndex: isDragging || isSorting ? 50 : 'auto'
   }
 
+  const ringClass = isDragging || isSorting
+    ? 'ring-2 ring-orange/30 ring-offset-2'
+    : ''
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`${props.isSelectionMode ? '' : 'cursor-grab active:cursor-grabbing'} ${isDragging || isSorting ? 'ring-2 ring-orange/30 ring-offset-2' : ''} transition-shadow duration-200`}
+      className={`${props.isSelectionMode ? '' : 'cursor-grab active:cursor-grabbing'} ${ringClass} transition-all duration-200`}
       {...(props.isSelectionMode ? {} : { ...attributes, ...listeners })}
     >
       <AddressCard {...props} />

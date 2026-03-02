@@ -24,10 +24,8 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
     if (!canCheckInToday || isChecking) return
 
     setIsChecking(true)
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
 
-    const reward = checkIn()
+    const reward = await checkIn()
     if (reward) {
       toast.success(`🎉 Điểm danh thành công! +${reward.value} xu`, {
         autoClose: 3000,

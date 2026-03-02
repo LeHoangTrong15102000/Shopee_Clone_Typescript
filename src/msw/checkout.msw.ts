@@ -170,14 +170,14 @@ const sampleProduct = {
 const createMockOrder = (body: CreateOrderBody, id: string): Order => {
   const shippingMethod = mockShippingMethods.find((m) => m._id === body.shippingMethodId) || mockShippingMethods[0]
   const shippingAddress = mockAddresses.find((a) => a._id === body.shippingAddressId) || mockAddresses[0]
-  const subtotal = body.items.reduce((sum, item) => sum + sampleProduct.price * item.buyCount, 0)
+  const subtotal = body.purchaseIds.length * sampleProduct.price
 
   return {
     _id: id,
     userId: 'user1',
-    items: body.items.map((item) => ({
+    items: body.purchaseIds.map(() => ({
       product: sampleProduct,
-      buyCount: item.buyCount,
+      buyCount: 1,
       price: sampleProduct.price,
       priceBeforeDiscount: sampleProduct.price_before_discount
     })),
@@ -199,7 +199,7 @@ const createMockOrder = (body: CreateOrderBody, id: string): Order => {
 }
 
 // Shipping Methods Handlers
-export const getShippingMethodsRequest = http.get(`${config.baseUrl}shipping/methods`, () => {
+export const getShippingMethodsRequest = http.get(`${config.baseUrl}orders/shipping/methods`, () => {
   return HttpResponse.json(
     { message: 'Lấy phương thức vận chuyển thành công', data: mockShippingMethods },
     { status: HTTP_STATUS_CODE.Ok }
@@ -207,7 +207,7 @@ export const getShippingMethodsRequest = http.get(`${config.baseUrl}shipping/met
 })
 
 // Payment Methods Handlers
-export const getPaymentMethodsRequest = http.get(`${config.baseUrl}payment/methods`, () => {
+export const getPaymentMethodsRequest = http.get(`${config.baseUrl}orders/payment/methods`, () => {
   return HttpResponse.json(
     { message: 'Lấy phương thức thanh toán thành công', data: mockPaymentMethods },
     { status: HTTP_STATUS_CODE.Ok }
@@ -215,21 +215,21 @@ export const getPaymentMethodsRequest = http.get(`${config.baseUrl}payment/metho
 })
 
 // Checkout Calculate Handler
-export const calculateCheckoutRequest = http.post(`${config.baseUrl}checkout/calculate`, async ({ request }) => {
-  const body = (await request.json()) as {
-    items: { productId: string; buyCount: number }[]
-    shippingMethodId: string
-    voucherCode?: string
-    coinsUsed?: number
+export const calculateCheckoutRequest = http.post(`${config.baseUrl}checkout/summary`, async ({ request }) => {
+  const rawBody = (await request.json()) as {
+    purchase_ids: string[]
+    shipping_method_id?: string
+    voucher_code?: string
+    coins_used?: number
   }
-  const shippingMethod = mockShippingMethods.find((m) => m._id === body.shippingMethodId) || mockShippingMethods[0]
-  const subtotal = body.items.reduce((sum, item) => sum + sampleProduct.price * item.buyCount, 0)
-  const coinsDiscount = body.coinsUsed || 0
+  const shippingMethod = mockShippingMethods.find((m) => m._id === rawBody.shipping_method_id) || mockShippingMethods[0]
+  const subtotal = rawBody.purchase_ids.length * sampleProduct.price
+  const coinsDiscount = rawBody.coins_used || 0
 
   const summary: CheckoutSummary = {
-    items: body.items.map((item) => ({
+    items: rawBody.purchase_ids.map(() => ({
       product: sampleProduct,
-      buyCount: item.buyCount,
+      buyCount: 1,
       price: sampleProduct.price,
       priceBeforeDiscount: sampleProduct.price_before_discount
     })),
@@ -244,8 +244,25 @@ export const calculateCheckoutRequest = http.post(`${config.baseUrl}checkout/cal
 })
 
 // Order Handlers
-export const createOrderRequest = http.post(`${config.baseUrl}orders`, async ({ request }) => {
-  const body = (await request.json()) as CreateOrderBody
+export const createOrderRequest = http.post(`${config.baseUrl}checkout/create-order`, async ({ request }) => {
+  const rawBody = (await request.json()) as {
+    purchase_ids: string[]
+    shipping_address_id: string
+    shipping_method_id: string
+    payment_method: string
+    voucher_code?: string
+    coins_used?: number
+    note?: string
+  }
+  const body: CreateOrderBody = {
+    purchaseIds: rawBody.purchase_ids,
+    shippingAddressId: rawBody.shipping_address_id,
+    shippingMethodId: rawBody.shipping_method_id,
+    paymentMethod: rawBody.payment_method as CreateOrderBody['paymentMethod'],
+    voucherCode: rawBody.voucher_code,
+    coinsUsed: rawBody.coins_used,
+    note: rawBody.note
+  }
   const order = createMockOrder(body, `${Date.now().toString(16)}${Math.random().toString(16).slice(2, 10)}`)
   return HttpResponse.json({ message: 'Đặt hàng thành công', data: order }, { status: HTTP_STATUS_CODE.Created })
 })
@@ -271,7 +288,7 @@ export const getOrderByIdRequest = http.get(`${config.baseUrl}orders/:id`, ({ pa
   const { id } = params
   const mockOrder = createMockOrder(
     {
-      items: [{ productId: sampleProduct._id, buyCount: 1 }],
+      purchaseIds: [sampleProduct._id],
       shippingAddressId: '1',
       shippingMethodId: 'standard',
       paymentMethod: 'cod'
@@ -285,7 +302,7 @@ export const cancelOrderRequest = http.put(`${config.baseUrl}orders/:id/cancel`,
   const { id } = params
   const cancelledOrder = createMockOrder(
     {
-      items: [{ productId: sampleProduct._id, buyCount: 1 }],
+      purchaseIds: [sampleProduct._id],
       shippingAddressId: '1',
       shippingMethodId: 'standard',
       paymentMethod: 'cod'
@@ -374,7 +391,7 @@ export const setDefaultAddressRequest = http.put(`${config.baseUrl}addresses/:id
 })
 
 // Error Handlers
-export const createOrderErrorHandler = http.post(`${config.baseUrl}orders`, () => {
+export const createOrderErrorHandler = http.post(`${config.baseUrl}checkout/create-order`, () => {
   return HttpResponse.json(
     { message: 'Lỗi khi đặt hàng', data: { error: 'Internal Server Error' } },
     { status: HTTP_STATUS_CODE.InternalServerError }

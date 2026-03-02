@@ -3,9 +3,11 @@ import {
   CheckInDay,
   CheckInStreak,
   CheckInState,
+  CheckInReward,
   DEFAULT_CHECKIN_CONFIG,
   getRewardForDay
 } from 'src/types/checkin.type'
+import checkinApi from 'src/apis/checkin.api'
 
 const CHECKIN_STORAGE_KEY = 'shopee_daily_checkin'
 const COINS_STORAGE_KEY = 'shopee_user_coins'
@@ -43,38 +45,69 @@ export const useDailyCheckIn = () => {
     canCheckInToday: true
   })
 
-  // Load from localStorage on mount
+  // Load from API on mount, fall back to localStorage
   useEffect(() => {
-    const stored = localStorage.getItem(CHECKIN_STORAGE_KEY)
-    const storedCoins = localStorage.getItem(COINS_STORAGE_KEY)
+    const loadFromLocalStorage = () => {
+      const stored = localStorage.getItem(CHECKIN_STORAGE_KEY)
+      const storedCoins = localStorage.getItem(COINS_STORAGE_KEY)
 
-    if (stored) {
-      try {
-        const data: StoredCheckInData = JSON.parse(stored)
-        const today = getTodayDate()
-        const canCheckIn = data.streak.lastCheckIn !== today
+      if (stored) {
+        try {
+          const data: StoredCheckInData = JSON.parse(stored)
+          const today = getTodayDate()
+          const canCheckIn = data.streak.lastCheckIn !== today
 
-        // Check if streak is broken (more than 1 day since last check-in)
-        let currentStreak = data.streak.current
-        if (
-          data.streak.lastCheckIn &&
-          !areConsecutiveDays(data.streak.lastCheckIn, today) &&
-          !isToday(data.streak.lastCheckIn)
-        ) {
-          currentStreak = 0 // Reset streak if broken
+          let currentStreak = data.streak.current
+          if (
+            data.streak.lastCheckIn &&
+            !areConsecutiveDays(data.streak.lastCheckIn, today) &&
+            !isToday(data.streak.lastCheckIn)
+          ) {
+            currentStreak = 0
+          }
+
+          setState({
+            streak: { ...data.streak, current: currentStreak },
+            history: data.history,
+            totalCoins: storedCoins ? parseInt(storedCoins) : data.totalCoins,
+            canCheckInToday: canCheckIn
+          })
+        } catch (e) {
+          console.error('Failed to parse check-in data:', e)
+          localStorage.removeItem(CHECKIN_STORAGE_KEY)
         }
-
-        setState({
-          streak: { ...data.streak, current: currentStreak },
-          history: data.history,
-          totalCoins: storedCoins ? parseInt(storedCoins) : data.totalCoins,
-          canCheckInToday: canCheckIn
-        })
-      } catch (e) {
-        console.error('Failed to parse check-in data:', e)
-        localStorage.removeItem(CHECKIN_STORAGE_KEY)
       }
     }
+
+    const loadFromApi = async () => {
+      try {
+        const response = await checkinApi.getStreak()
+        const streakData = response.data.data
+        const newState: CheckInState = {
+          streak: {
+            current: streakData.current_streak,
+            longest: streakData.longest_streak,
+            lastCheckIn: streakData.last_checkin_date
+          },
+          history: [], // History loaded separately if needed
+          totalCoins: streakData.total_coins,
+          canCheckInToday: streakData.can_checkin_today
+        }
+        setState(newState)
+        // Cache to localStorage
+        saveToStorage({
+          streak: newState.streak,
+          history: newState.history,
+          totalCoins: newState.totalCoins
+        })
+      } catch {
+        // API failed, fall back to localStorage
+        loadFromLocalStorage()
+      }
+    }
+
+    loadFromApi()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Save to localStorage
@@ -83,39 +116,73 @@ export const useDailyCheckIn = () => {
     localStorage.setItem(COINS_STORAGE_KEY, data.totalCoins.toString())
   }, [])
 
-  // Perform check-in
-  const checkIn = useCallback(() => {
+  // Perform check-in via API with localStorage fallback
+  const checkIn = useCallback(async (): Promise<CheckInReward | null> => {
     if (!state.canCheckInToday) return null
 
-    const today = getTodayDate()
-    const newStreak = state.streak.current + 1
-    const reward = getRewardForDay(newStreak)
+    try {
+      const response = await checkinApi.checkIn()
+      const apiData = response.data.data
+      const reward: CheckInReward = apiData.reward
 
-    const newCheckInDay: CheckInDay = {
-      date: today,
-      checked: true,
-      reward
+      const today = getTodayDate()
+      const newCheckInDay: CheckInDay = {
+        date: today,
+        checked: true,
+        reward
+      }
+
+      const newState: CheckInState = {
+        streak: {
+          current: apiData.streak,
+          longest: Math.max(state.streak.longest, apiData.streak),
+          lastCheckIn: today
+        },
+        history: [newCheckInDay, ...state.history].slice(0, 365),
+        totalCoins: apiData.total_coins,
+        canCheckInToday: false
+      }
+
+      setState(newState)
+      saveToStorage({
+        streak: newState.streak,
+        history: newState.history,
+        totalCoins: newState.totalCoins
+      })
+
+      return reward
+    } catch {
+      // API failed, fall back to localStorage-based check-in
+      const today = getTodayDate()
+      const newStreak = state.streak.current + 1
+      const reward = getRewardForDay(newStreak)
+
+      const newCheckInDay: CheckInDay = {
+        date: today,
+        checked: true,
+        reward
+      }
+
+      const newState: CheckInState = {
+        streak: {
+          current: newStreak,
+          longest: Math.max(state.streak.longest, newStreak),
+          lastCheckIn: today
+        },
+        history: [newCheckInDay, ...state.history].slice(0, 365),
+        totalCoins: state.totalCoins + reward.value,
+        canCheckInToday: false
+      }
+
+      setState(newState)
+      saveToStorage({
+        streak: newState.streak,
+        history: newState.history,
+        totalCoins: newState.totalCoins
+      })
+
+      return reward
     }
-
-    const newState: CheckInState = {
-      streak: {
-        current: newStreak,
-        longest: Math.max(state.streak.longest, newStreak),
-        lastCheckIn: today
-      },
-      history: [newCheckInDay, ...state.history].slice(0, 365), // Keep 1 year of history
-      totalCoins: state.totalCoins + reward.value,
-      canCheckInToday: false
-    }
-
-    setState(newState)
-    saveToStorage({
-      streak: newState.streak,
-      history: newState.history,
-      totalCoins: newState.totalCoins
-    })
-
-    return reward
   }, [state, saveToStorage])
 
   // Get check-in status for a specific date

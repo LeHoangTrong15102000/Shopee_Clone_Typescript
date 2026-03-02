@@ -11,6 +11,8 @@ const path = {
   addressBook: '/user/address', // Trang quản lý địa chỉ giao hàng
   login: '/login',
   register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
   logout: '/logout',
   categories: '/categories',
   productDetail: ':nameId', // sửa lại thành nameId cho nó đồng bộ với logic productDetail, tuy không để dấu '/' nhưng nó vẫn hiểu là có dấu /
