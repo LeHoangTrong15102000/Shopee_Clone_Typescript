@@ -142,7 +142,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
             <div className='p-4'>
               {/* Navigation Section */}
               <div className='space-y-1'>
-                <Button variant='ghost' animated={false} onClick={() => go(path.home)} className={ITEM}>
+                <button type='button' onClick={() => go(path.home)} className={ITEM}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -158,9 +158,9 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     />
                   </svg>
                   Trang chủ
-                </Button>
+                </button>
 
-                <Button variant='ghost' animated={false} onClick={() => go(path.notifications)} className={ITEM}>
+                <button type='button' onClick={() => go(path.notifications)} className={ITEM}>
                   <div className='relative shrink-0'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
@@ -188,9 +188,9 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       {unreadCount} mới
                     </span>
                   )}
-                </Button>
+                </button>
 
-                <Button variant='ghost' animated={false} onClick={() => go(path.cart)} className={ITEM}>
+                <button type='button' onClick={() => go(path.cart)} className={ITEM}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -206,9 +206,9 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     />
                   </svg>
                   Giỏ hàng
-                </Button>
+                </button>
 
-                <Button variant='ghost' animated={false} onClick={() => go(path.wishlist)} className={ITEM}>
+                <button type='button' onClick={() => go(path.wishlist)} className={ITEM}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -224,7 +224,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     />
                   </svg>
                   Yêu thích
-                </Button>
+                </button>
 
                 <a
                   href='https://banhang.shopee.vn/'
@@ -366,7 +366,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       {profile?.email}
                     </span>
                   </div>
-                  <Button variant='ghost' animated={false} onClick={() => go(path.profile)} className={ITEM}>
+                  <button type='button' onClick={() => go(path.profile)} className={ITEM}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -382,8 +382,8 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       />
                     </svg>
                     Tài khoản của tôi
-                  </Button>
-                  <Button variant='ghost' animated={false} onClick={() => go(path.historyPurchases)} className={ITEM}>
+                  </button>
+                  <button type='button' onClick={() => go(path.historyPurchases)} className={ITEM}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -399,10 +399,9 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       />
                     </svg>
                     Đơn mua
-                  </Button>
-                  <Button
-                    variant='ghost'
-                    animated={false}
+                  </button>
+                  <button
+                    type='button'
                     onClick={handleLogout}
                     className={`${ITEM} text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20`}
                   >
@@ -421,7 +420,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       />
                     </svg>
                     Đăng xuất
-                  </Button>
+                  </button>
                 </div>
               ) : (
                 <div className='space-y-2 px-3 pt-1'>
