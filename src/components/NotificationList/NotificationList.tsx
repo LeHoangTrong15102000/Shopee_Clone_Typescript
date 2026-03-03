@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
+import Button from 'src/components/Button'
 import { useOptimisticNotification } from 'src/hooks/optimistic'
-import { formatTimeAgo } from 'src/utils/utils'
 import { useKeyboardNavigation } from 'src/hooks/useKeyboardNavigation'
 import useNotifications from 'src/hooks/useNotifications'
-import Button from 'src/components/Button'
+import { formatTimeAgo } from 'src/utils/utils'
 
 interface NotificationListProps {
   className?: string
@@ -109,17 +109,19 @@ const NotificationList = ({ className }: NotificationListProps) => {
         </div>
 
         {/* Notification List */}
-        <ul role='list' aria-label='Danh sách thông báo' className='mt-5 max-h-[300px] overflow-y-auto'>
+        <ul
+          role='list'
+          aria-label='Danh sách thông báo'
+          className='mt-5 max-h-[300px] overflow-x-hidden overflow-y-auto'
+        >
           {notifications.map((notification, _index) => (
             <li
               key={notification._id}
               role='listitem'
               tabIndex={0}
               aria-label={`${getNotificationTypeLabel(notification.type)}: ${notification.title}. ${notification.isRead ? 'Đã đọc' : 'Chưa đọc'}. ${formatTimeAgo(notification.createdAt)}`}
-              className={`mt-2 flex animate-fade-in cursor-pointer py-2 pr-2 transition-all duration-200 hover:bg-gray-100 hover:shadow-xs focus:ring-2 focus:ring-orange focus:outline-hidden focus:ring-inset dark:hover:bg-slate-700 ${
-                !notification.isRead
-                  ? 'border-l-2 border-orange bg-[#fff5f5] dark:bg-slate-700/50'
-                  : 'hover:scale-[1.01]'
+              className={`mt-2 flex animate-fade-in cursor-pointer py-2 pr-2 transition-colors duration-200 hover:bg-gray-100 hover:shadow-xs focus:ring-2 focus:ring-orange focus:outline-hidden focus:ring-inset dark:hover:bg-slate-700 ${
+                !notification.isRead ? 'border-l-2 border-orange bg-[#fff5f5] dark:bg-slate-700/50' : ''
               }`}
               onClick={() =>
                 !notification.isRead && !markAsReadMutation.isPending && handleMarkAsRead(notification._id)

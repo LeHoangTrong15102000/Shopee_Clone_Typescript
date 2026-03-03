@@ -1,5 +1,5 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import React from 'react'
 import { useTheme } from 'src/hooks/useTheme'
 
 interface ShopeeCheckboxProps {
@@ -31,16 +31,21 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
     unchecked: {
       backgroundColor: isDark ? '#1e293b' : '#ffffff',
       borderColor: isDark ? '#475569' : '#d1d5db',
-      scale: 1
+      scale: 1,
+      transition: {
+        backgroundColor: { duration: 0.15, ease: 'easeOut' },
+        borderColor: { duration: 0.15, ease: 'easeOut' },
+        scale: { duration: 0.15, ease: 'easeOut' }
+      }
     },
     checked: {
       backgroundColor: '#ee4d2d',
       borderColor: '#ee4d2d',
       scale: [1, 1.05, 1],
       transition: {
-        backgroundColor: { duration: 0.2, ease: 'easeOut' },
-        borderColor: { duration: 0.2, ease: 'easeOut' },
-        scale: { duration: 0.3, ease: 'easeOut', times: [0, 0.5, 1] }
+        backgroundColor: { duration: 0.15, ease: 'easeOut' },
+        borderColor: { duration: 0.15, ease: 'easeOut' },
+        scale: { duration: 0.25, ease: [0.34, 1.56, 0.64, 1], times: [0, 0.5, 1] }
       }
     }
   }
@@ -50,7 +55,12 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
     hidden: {
       pathLength: 0,
       opacity: 0,
-      scale: 0.8
+      scale: 0.8,
+      transition: {
+        pathLength: { duration: 0.1, ease: 'easeOut' },
+        opacity: { duration: 0.05 },
+        scale: { duration: 0.1, ease: 'easeOut' }
+      }
     },
     visible: {
       pathLength: 1,
@@ -59,18 +69,18 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
       transition: {
         pathLength: {
           type: 'tween',
-          duration: 0.4,
-          ease: 'easeOut',
-          delay: 0.1
+          duration: 0.2,
+          ease: [0.34, 1.56, 0.64, 1],
+          delay: 0.05
         },
         opacity: {
           duration: 0.1,
-          delay: 0.1
+          delay: 0.05
         },
         scale: {
-          duration: 0.3,
-          ease: 'backOut',
-          delay: 0.2
+          duration: 0.2,
+          ease: [0.34, 1.56, 0.64, 1],
+          delay: 0.1
         }
       }
     }
@@ -78,7 +88,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
 
   return (
     <div
-      className={`relative transition-transform duration-100 hover:scale-[1.02] active:scale-[0.98] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
+      className={`relative transition-transform duration-100 hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange active:scale-[0.98] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
       onClick={() => !disabled && onChange?.(!checked)}
       onKeyDown={(e) => {
         if (disabled) return
@@ -99,7 +109,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
       }
     >
       <motion.div
-        className={` ${sizeClasses[size]} overflow-hidden rounded-[3px] border-2 transition-colors duration-200 ${!checked ? 'hover:border-[#ee4d2d]' : ''}`}
+        className={` ${sizeClasses[size]} overflow-hidden rounded-[3px] border-2 ${!checked ? 'hover:border-[#ee4d2d]' : ''}`}
         variants={boxVariants}
         animate={checked ? 'checked' : 'unchecked'}
       >
@@ -107,7 +117,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
           className='flex h-full w-full items-center justify-center'
           initial={false}
           animate={checked ? { scale: 1 } : { scale: 0 }}
-          transition={{ duration: 0.2, delay: checked ? 0.1 : 0 }}
+          transition={{ duration: 0.15, delay: checked ? 0.05 : 0, ease: 'easeOut' }}
         >
           <motion.svg
             className='h-4/5 w-4/5 text-white'

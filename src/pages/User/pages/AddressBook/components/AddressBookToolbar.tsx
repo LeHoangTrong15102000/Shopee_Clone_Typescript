@@ -80,12 +80,11 @@ const AddressBookToolbar = ({
             <Button
               key={type}
               onClick={() => onFilterChange(type)}
-              variant='ghost'
               animated={false}
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-orange text-white shadow-md dark:bg-orange-400'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
+                  ? 'bg-orange text-white shadow-md dark:bg-orange-500 dark:text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
               }`}
             >
               {config && <span className={isActive ? 'text-white' : ''}>{config.icon}</span>}

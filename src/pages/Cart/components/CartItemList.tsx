@@ -189,11 +189,10 @@ const CartItemList = ({
                     </div>
                     <div className='col-span-1 flex flex-col items-center justify-center gap-1'>
                       <Button
-                        variant='ghost'
                         size='sm'
                         animated={false}
                         onClick={handleSaveForLater(index)}
-                        className='flex items-center gap-1 text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
+                        className='flex items-center gap-1 rounded-md p-1.5 text-sm text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                         title='Lưu để mua sau'
                       >
                         <svg
@@ -213,11 +212,10 @@ const CartItemList = ({
                         Lưu
                       </Button>
                       <Button
-                        variant='ghost'
                         size='sm'
                         animated={false}
                         onClick={handleDelete(index)}
-                        className='bg-none text-black/90 hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
+                        className='rounded-md p-1.5 text-black/90 transition-colors hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
                       >
                         Xóa
                       </Button>
@@ -336,11 +334,10 @@ const CartItemList = ({
 
                       <div className='ml-auto flex items-center gap-1'>
                         <Button
-                          variant='ghost'
                           size='sm'
                           animated={false}
                           onClick={handleSaveForLater(index)}
-                          className='p-1.5 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
+                          className='rounded-md p-1.5 text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                           aria-label='Lưu để mua sau'
                         >
                           <svg
@@ -360,11 +357,10 @@ const CartItemList = ({
                         </Button>
 
                         <Button
-                          variant='ghost'
                           size='sm'
                           animated={false}
                           onClick={handleDelete(index)}
-                          className='p-1.5 text-gray-500 hover:text-[#ee4d2d] dark:text-gray-400'
+                          className='rounded-md p-1.5 text-gray-500 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
                           aria-label='Xóa sản phẩm'
                         >
                           <svg

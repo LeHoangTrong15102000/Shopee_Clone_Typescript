@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { ANIMATION_DURATION } from 'src/styles/animations'
-import { formatCurrency } from 'src/utils/utils'
 import Button from 'src/components/Button'
+import SearchInput from './components/SearchInput'
+import FilterPanel from './components/FilterPanel'
+import ActiveFilterChips from './components/ActiveFilterChips'
+import { useFilterState } from './useFilterState'
 
 export interface OrderSearchFilterProps {
   searchQuery: string
@@ -19,207 +19,38 @@ export interface OrderSearchFilterProps {
   className?: string
 }
 
-const chipVariants = {
-  hidden: { opacity: 0, scale: 0.8, x: -10 },
-  visible: { opacity: 1, scale: 1, x: 0, transition: { duration: ANIMATION_DURATION.normal } },
-  exit: { opacity: 0, scale: 0.8, x: 10, transition: { duration: ANIMATION_DURATION.fast } }
-}
-
-const panelVariants = {
-  hidden: { opacity: 0, height: 0 },
-  visible: { opacity: 1, height: 'auto', transition: { duration: ANIMATION_DURATION.normal } },
-  exit: { opacity: 0, height: 0, transition: { duration: ANIMATION_DURATION.fast } }
-}
-
-export default function OrderSearchFilter({
-  searchQuery,
-  onSearchChange,
-  dateRange,
-  onDateRangeChange,
-  priceRange,
-  onPriceRangeChange,
-  onClearAll,
-  activeFilterCount,
-  totalResults,
-  className
-}: OrderSearchFilterProps) {
+export default function OrderSearchFilter(props: OrderSearchFilterProps) {
+  const { totalResults, className, searchQuery, dateRange, priceRange } = props
   const reducedMotion = useReducedMotion()
-  const [inputValue, setInputValue] = useState(searchQuery)
-  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
 
-  // Local state for filter inputs
-  const [dateFrom, setDateFrom] = useState(dateRange?.from || '')
-  const [dateTo, setDateTo] = useState(dateRange?.to || '')
-  const [priceMin, setPriceMin] = useState(priceRange?.min?.toString() || '')
-  const [priceMax, setPriceMax] = useState(priceRange?.max?.toString() || '')
-
-  // Sync external state changes
-  useEffect(() => {
-    setInputValue(searchQuery)
-  }, [searchQuery])
-
-  useEffect(() => {
-    setDateFrom(dateRange?.from || '')
-    setDateTo(dateRange?.to || '')
-  }, [dateRange])
-
-  useEffect(() => {
-    setPriceMin(priceRange?.min?.toString() || '')
-    setPriceMax(priceRange?.max?.toString() || '')
-  }, [priceRange])
-
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inputValue !== searchQuery) {
-        onSearchChange(inputValue)
-      }
-    }, 300)
-
-    return () => clearTimeout(timer)
-  }, [inputValue, searchQuery, onSearchChange])
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
-
-  const handleClearSearch = useCallback(() => {
-    setInputValue('')
-    onSearchChange('')
-  }, [onSearchChange])
-
-  // Date range handlers
-  const handleDateFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newFrom = e.target.value
-    setDateFrom(newFrom)
-    if (newFrom && dateTo) {
-      onDateRangeChange({ from: newFrom, to: dateTo })
-    } else if (!newFrom && !dateTo) {
-      onDateRangeChange(null)
-    }
-  }
-
-  const handleDateToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTo = e.target.value
-    setDateTo(newTo)
-    if (dateFrom && newTo) {
-      onDateRangeChange({ from: dateFrom, to: newTo })
-    } else if (!dateFrom && !newTo) {
-      onDateRangeChange(null)
-    }
-  }
-
-  const handleClearDateRange = useCallback(() => {
-    setDateFrom('')
-    setDateTo('')
-    onDateRangeChange(null)
-  }, [onDateRangeChange])
-
-  // Price range handlers
-  const handlePriceMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setPriceMin(value)
-    const min = parseFloat(value)
-    const max = parseFloat(priceMax)
-    if (!isNaN(min) && !isNaN(max)) {
-      onPriceRangeChange({ min, max })
-    } else if (value === '' && priceMax === '') {
-      onPriceRangeChange(null)
-    }
-  }
-
-  const handlePriceMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setPriceMax(value)
-    const min = parseFloat(priceMin)
-    const max = parseFloat(value)
-    if (!isNaN(min) && !isNaN(max)) {
-      onPriceRangeChange({ min, max })
-    } else if (priceMin === '' && value === '') {
-      onPriceRangeChange(null)
-    }
-  }
-
-  const handleClearPriceRange = useCallback(() => {
-    setPriceMin('')
-    setPriceMax('')
-    onPriceRangeChange(null)
-  }, [onPriceRangeChange])
-
-  const handleClearAllFilters = useCallback(() => {
-    setInputValue('')
-    setDateFrom('')
-    setDateTo('')
-    setPriceMin('')
-    setPriceMax('')
-    onClearAll()
-  }, [onClearAll])
-
-  const toggleFilterPanel = () => {
-    setIsFilterPanelOpen((prev) => !prev)
-  }
-
-  const hasSearchFilter = searchQuery.trim().length > 0
-  const hasDateFilter = dateRange !== null
-  const hasPriceFilter = priceRange !== null
-  const hasAnyFilter = activeFilterCount > 0
+  const {
+    inputValue,
+    isFilterPanelOpen,
+    dateFrom,
+    dateTo,
+    priceMin,
+    priceMax,
+    hasSearchFilter,
+    hasDateFilter,
+    hasPriceFilter,
+    hasAnyFilter,
+    handleInputChange,
+    handleClearSearch,
+    handleDateFromChange,
+    handleDateToChange,
+    handleClearDateRange,
+    handlePriceMinChange,
+    handlePriceMaxChange,
+    handleClearPriceRange,
+    handleClearAllFilters,
+    toggleFilterPanel
+  } = useFilterState(props)
 
   return (
     <div className={classNames('rounded-xs bg-white p-4 shadow-xs dark:bg-slate-800', className)}>
-      {/* Search Input Row */}
       <div className='flex flex-col gap-3 sm:flex-row'>
-        {/* Search Input */}
-        <div className='relative flex-1'>
-          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='h-5 w-5 text-gray-400 dark:text-gray-500'
-              aria-hidden='true'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z'
-              />
-            </svg>
-          </div>
-          <input
-            type='text'
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder='Tìm kiếm đơn hàng theo tên sản phẩm...'
-            className='w-full rounded-xs border border-gray-300 bg-gray-50 py-2.5 pr-10 pl-10 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:bg-white focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:focus:bg-slate-800'
-            aria-label='Tìm kiếm đơn hàng'
-          />
-          {inputValue && (
-            <Button
-              variant='ghost'
-              animated={false}
-              type='button'
-              onClick={handleClearSearch}
-              className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
-              aria-label='Xóa tìm kiếm'
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='h-5 w-5'
-                aria-hidden='true'
-              >
-                <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
-              </svg>
-            </Button>
-          )}
-        </div>
+        <SearchInput inputValue={inputValue} onInputChange={handleInputChange} onClearSearch={handleClearSearch} />
 
-        {/* Filter Toggle Button */}
         <Button
           animated={false}
           type='button'
@@ -251,9 +82,9 @@ export default function OrderSearchFilter({
             />
           </svg>
           <span>Bộ lọc</span>
-          {activeFilterCount > 0 && (
+          {props.activeFilterCount > 0 && (
             <span className='absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#ee4d2d] text-xs font-bold text-white'>
-              {activeFilterCount}
+              {props.activeFilterCount}
             </span>
           )}
           <svg
@@ -272,244 +103,34 @@ export default function OrderSearchFilter({
         </Button>
       </div>
 
-      {/* Collapsible Filter Panel */}
-      <AnimatePresence>
-        {isFilterPanelOpen && (
-          <motion.div
-            variants={reducedMotion ? undefined : panelVariants}
-            initial='hidden'
-            animate='visible'
-            exit='exit'
-            className='overflow-hidden'
-          >
-            <div className='mt-4 rounded-xs border border-gray-200 bg-gray-50/50 p-4 dark:border-slate-700 dark:bg-slate-900/50'>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                {/* Date Range Filter */}
-                <div>
-                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
-                    Khoảng thời gian
-                  </label>
-                  <div className='flex items-center gap-2'>
-                    <div className='flex-1'>
-                      <input
-                        type='date'
-                        value={dateFrom}
-                        onChange={handleDateFromChange}
-                        className='w-full rounded-xs border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
-                        aria-label='Từ ngày'
-                      />
-                    </div>
-                    <span className='text-gray-400 dark:text-gray-500'>-</span>
-                    <div className='flex-1'>
-                      <input
-                        type='date'
-                        value={dateTo}
-                        onChange={handleDateToChange}
-                        className='w-full rounded-xs border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
-                        aria-label='Đến ngày'
-                      />
-                    </div>
-                  </div>
-                </div>
+      <FilterPanel
+        isOpen={isFilterPanelOpen}
+        reducedMotion={reducedMotion}
+        dateFrom={dateFrom}
+        dateTo={dateTo}
+        priceMin={priceMin}
+        priceMax={priceMax}
+        onDateFromChange={handleDateFromChange}
+        onDateToChange={handleDateToChange}
+        onPriceMinChange={handlePriceMinChange}
+        onPriceMaxChange={handlePriceMaxChange}
+      />
 
-                {/* Price Range Filter */}
-                <div>
-                  <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Khoảng giá</label>
-                  <div className='flex items-center gap-2'>
-                    <div className='relative flex-1'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-400 dark:text-gray-500'>
-                        ₫
-                      </span>
-                      <input
-                        type='number'
-                        value={priceMin}
-                        onChange={handlePriceMinChange}
-                        placeholder='Từ'
-                        min='0'
-                        className='w-full rounded-xs border border-gray-300 bg-white py-2 pr-3 pl-7 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
-                        aria-label='Giá tối thiểu'
-                      />
-                    </div>
-                    <span className='text-gray-400 dark:text-gray-500'>-</span>
-                    <div className='relative flex-1'>
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-400 dark:text-gray-500'>
-                        ₫
-                      </span>
-                      <input
-                        type='number'
-                        value={priceMax}
-                        onChange={handlePriceMaxChange}
-                        placeholder='Đến'
-                        min='0'
-                        className='w-full rounded-xs border border-gray-300 bg-white py-2 pr-3 pl-7 text-sm text-gray-900 transition-colors focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d] focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
-                        aria-label='Giá tối đa'
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Active Filters & Results Count */}
-      <div className='mt-3 flex flex-wrap items-center justify-between gap-2'>
-        <div className='flex flex-wrap items-center gap-2'>
-          {totalResults !== undefined && (
-            <span className='text-sm text-gray-600 dark:text-gray-300'>Tìm thấy {totalResults} đơn hàng</span>
-          )}
-
-          {/* Filter Chips */}
-          <AnimatePresence mode='popLayout'>
-            {hasSearchFilter && (
-              <motion.div
-                key='search-chip'
-                variants={reducedMotion ? undefined : chipVariants}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
-              >
-                <span className='max-w-[150px] truncate'>"{searchQuery}"</span>
-                <Button
-                  variant='ghost'
-                  animated={false}
-                  type='button'
-                  onClick={handleClearSearch}
-                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
-                  aria-label='Xóa bộ lọc tìm kiếm'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={2}
-                    stroke='currentColor'
-                    className='h-3 w-3'
-                    aria-hidden='true'
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
-                  </svg>
-                </Button>
-              </motion.div>
-            )}
-
-            {hasDateFilter && (
-              <motion.div
-                key='date-chip'
-                variants={reducedMotion ? undefined : chipVariants}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='currentColor'
-                  className='h-3 w-3'
-                  aria-hidden='true'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5'
-                  />
-                </svg>
-                <span>
-                  {dateRange?.from} - {dateRange?.to}
-                </span>
-                <Button
-                  variant='ghost'
-                  animated={false}
-                  type='button'
-                  onClick={handleClearDateRange}
-                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
-                  aria-label='Xóa bộ lọc ngày'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={2}
-                    stroke='currentColor'
-                    className='h-3 w-3'
-                    aria-hidden='true'
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
-                  </svg>
-                </Button>
-              </motion.div>
-            )}
-
-            {hasPriceFilter && (
-              <motion.div
-                key='price-chip'
-                variants={reducedMotion ? undefined : chipVariants}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='currentColor'
-                  className='h-3 w-3'
-                  aria-hidden='true'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                  />
-                </svg>
-                <span>
-                  ₫{formatCurrency(priceRange?.min || 0)} - ₫{formatCurrency(priceRange?.max || 0)}
-                </span>
-                <Button
-                  variant='ghost'
-                  animated={false}
-                  type='button'
-                  onClick={handleClearPriceRange}
-                  className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
-                  aria-label='Xóa bộ lọc giá'
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={2}
-                    stroke='currentColor'
-                    className='h-3 w-3'
-                    aria-hidden='true'
-                  >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
-                  </svg>
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Clear All Button */}
-        {hasAnyFilter && (
-          <Button
-            variant='ghost'
-            animated={false}
-            type='button'
-            onClick={handleClearAllFilters}
-            className='text-sm font-medium text-[#ee4d2d] underline transition-colors hover:text-[#d73211]'
-          >
-            Xóa tất cả bộ lọc
-          </Button>
-        )}
-      </div>
+      <ActiveFilterChips
+        reducedMotion={reducedMotion}
+        totalResults={totalResults}
+        searchQuery={searchQuery}
+        dateRange={dateRange}
+        priceRange={priceRange}
+        hasSearchFilter={hasSearchFilter}
+        hasDateFilter={hasDateFilter}
+        hasPriceFilter={hasPriceFilter}
+        hasAnyFilter={hasAnyFilter}
+        onClearSearch={handleClearSearch}
+        onClearDateRange={handleClearDateRange}
+        onClearPriceRange={handleClearPriceRange}
+        onClearAllFilters={handleClearAllFilters}
+      />
     </div>
   )
 }
