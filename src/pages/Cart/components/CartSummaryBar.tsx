@@ -38,7 +38,7 @@ const CartSummaryBar = ({
       transition={{ duration: 0.5, delay: 0.3 }}
       className='sticky bottom-0 z-10 mt-10 flex flex-col rounded-xs border border-[rgba(0,0,0,.08)] bg-white px-4 py-5 shadow-sm sm:flex-row sm:items-center sm:px-9 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
     >
-      <div className='flex items-center'>
+      <div className='flex items-center select-none'>
         <div className='flex shrink-0 items-center justify-center pr-3'>
           <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
         </div>

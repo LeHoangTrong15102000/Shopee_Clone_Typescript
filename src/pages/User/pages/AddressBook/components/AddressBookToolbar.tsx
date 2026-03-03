@@ -110,7 +110,7 @@ const AddressBookToolbar = ({
             className='flex flex-col gap-3 rounded-lg bg-orange/5 p-3 sm:flex-row sm:items-center sm:justify-between dark:bg-orange-400/10'
           >
             <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
-              <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300'>
+              <div className='flex items-center gap-2 text-sm text-gray-600 select-none dark:text-gray-300'>
                 <ShopeeCheckbox checked={selectedCount === totalSelectableCount} onChange={onSelectAll} size='sm' />
                 <span className='cursor-pointer hover:text-orange dark:hover:text-orange-400' onClick={onSelectAll}>
                   Chọn tất cả

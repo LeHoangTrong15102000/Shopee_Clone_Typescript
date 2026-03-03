@@ -88,7 +88,7 @@ const ShopeeCheckbox: React.FC<ShopeeCheckboxProps> = ({
 
   return (
     <div
-      className={`relative transition-transform duration-100 hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange active:scale-[0.98] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
+      className={`relative transition-transform duration-100 select-none hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange active:scale-[0.98] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
       onClick={() => !disabled && onChange?.(!checked)}
       onKeyDown={(e) => {
         if (disabled) return

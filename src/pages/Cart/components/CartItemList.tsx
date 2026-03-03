@@ -1,15 +1,15 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { memo } from 'react'
 import { Link } from 'react-router'
-import { motion, AnimatePresence } from 'framer-motion'
-import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
+import Button from 'src/components/Button'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import QuantityController from 'src/components/QuantityController'
-import StockBadge from 'src/components/StockBadge'
-import Button from 'src/components/Button'
 import { InlineStockAlert } from 'src/components/RealTimeStockAlert'
+import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
+import StockBadge from 'src/components/StockBadge'
+import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Purchase } from 'src/types/purchases.type'
 import { ExtendedPurchase, InlineStockAlertState } from '../types'
-import { useIsMobile } from 'src/hooks/useIsMobile'
 
 interface CartItemListProps {
   extendedPurchases: ExtendedPurchase[]
@@ -53,7 +53,7 @@ const CartItemList = ({
         {/* Tiêu đề của các sản phẩm trong cart */}
         <div className='my-2 grid grid-cols-12 rounded-md bg-white px-9 py-5 text-sm text-gray-500 capitalize shadow-sm dark:bg-slate-800 dark:text-gray-300 dark:shadow-slate-900/50'>
           <div className='col-span-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center select-none'>
               <div className='flex shrink-0 items-center justify-center pr-3'>
                 <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
               </div>
@@ -61,9 +61,9 @@ const CartItemList = ({
             </div>
           </div>
           <div className='col-span-6'>
-            <div className='grid grid-cols-5 text-center text-[#888] dark:text-gray-400'>
+            <div className='grid grid-cols-6 text-center text-[#888] dark:text-gray-400'>
               <div className='col-span-2'>Đơn giá</div>
-              <div className='col-span-1'>Số lượng</div>
+              <div className='col-span-2'>Số lượng</div>
               <div className='col-span-1'>Số tiền</div>
               <div className='col-span-1'>Thao tác</div>
             </div>
@@ -81,7 +81,7 @@ const CartItemList = ({
                 className='mt-5 grid grid-cols-12 items-center rounded-xs border border-[rgba(0,0,0,.09)] bg-white px-9 py-5 text-sm text-gray-500 transition-shadow first:mt-0 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300 dark:hover:shadow-slate-900/50'
               >
                 <div className='col-span-6'>
-                  <div className='flex items-center'>
+                  <div className='flex items-center select-none'>
                     <div className='flex shrink-0 items-center justify-center pr-3'>
                       <ShopeeCheckbox
                         checked={purchase.isChecked}
@@ -140,18 +140,18 @@ const CartItemList = ({
                   </div>
                 </div>
                 <div className='col-span-6'>
-                  <div className='grid grid-cols-5 items-center'>
+                  <div className='grid grid-cols-6 items-center'>
                     <div className='col-span-2'>
-                      <div className='flex items-center justify-center text-[15px]'>
-                        <span className='mr-2 text-gray-500 line-through dark:text-gray-400'>
+                      <div className='flex items-center justify-center gap-1 text-[15px]'>
+                        <span className='truncate text-gray-500 line-through dark:text-gray-400'>
                           ₫{formatCurrency(purchase.product.price_before_discount)}
                         </span>
-                        <span className='text-black/90 dark:text-gray-100'>
+                        <span className='truncate text-black/90 dark:text-gray-100'>
                           ₫{formatCurrency(purchase.product.price)}
                         </span>
                       </div>
                     </div>
-                    <div className='col-span-1'>
+                    <div className='col-span-2'>
                       <QuantityController
                         handleDelete={handleDelete(index)}
                         product={purchase.product}
@@ -176,9 +176,9 @@ const CartItemList = ({
                         isQuantityInCart={true}
                       />
                     </div>
-                    <div className='col-span-1'>
+                    <div className='col-span-1 overflow-hidden'>
                       <motion.span
-                        className='flex items-center justify-center text-[15px] font-medium text-[#ee4d2d]'
+                        className='flex items-center justify-center truncate text-[15px] font-medium text-[#ee4d2d]'
                         key={purchase.buy_count}
                         initial={{ scale: 0.9, opacity: 0.7 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -230,7 +230,7 @@ const CartItemList = ({
 
       {/* Mobile Layout - Card view (below lg) */}
       <div className='block lg:hidden'>
-        <div className='my-2 flex items-center rounded-md bg-white px-4 py-4 text-sm shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
+        <div className='my-2 flex items-center rounded-md bg-white px-4 py-4 text-sm shadow-sm select-none dark:bg-slate-800 dark:shadow-slate-900/50'>
           <div className='flex shrink-0 items-center justify-center pr-3'>
             <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
           </div>
@@ -247,7 +247,7 @@ const CartItemList = ({
                 transition={isMobile ? undefined : { duration: 0.3, delay: index * 0.1 }}
                 className='rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
               >
-                <div className='flex gap-3'>
+                <div className='flex gap-3 select-none'>
                   <div className='flex shrink-0 items-start pt-1'>
                     <ShopeeCheckbox
                       checked={purchase.isChecked}
