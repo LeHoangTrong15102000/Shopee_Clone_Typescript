@@ -374,6 +374,13 @@ body {
   outline-offset: 2px;
 }
 
+/* Form elements have their own focus styles via Tailwind classes */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
 /* Remove default focus outline and ring for mouse users */
 *:focus:not(:focus-visible) {
   outline: none;

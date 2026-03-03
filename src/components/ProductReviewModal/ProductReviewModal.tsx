@@ -127,7 +127,7 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder='Hãy chia sẻ những điều bạn thích về sản phẩm này với những người mua khác nhé.'
-              className='w-full resize-none rounded-md border border-gray-300 bg-white p-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-orange-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
+              className='w-full resize-none rounded-md border border-gray-300 bg-white p-3 text-gray-900 outline-hidden focus:border-orange-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
               rows={4}
               maxLength={2000}
             />

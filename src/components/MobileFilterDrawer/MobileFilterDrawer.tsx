@@ -110,7 +110,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                 variant='icon'
                 animated={false}
                 onClick={onClose}
-                className='p-1'
+                className='p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
                 aria-label='Close filter drawer'
               >
                 <svg className='h-6 w-6 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

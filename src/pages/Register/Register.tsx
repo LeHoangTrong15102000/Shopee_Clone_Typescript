@@ -132,7 +132,7 @@ const Register = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      'border-red-500 focus:border-red-500 text-red-500':
                         errors.email && errors.email.message
                     }
                   )}
@@ -151,7 +151,7 @@ const Register = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      'border-red-500 focus:border-red-500 text-red-500':
                         errors.password && errors.password.message
                     }
                   )}
@@ -171,7 +171,7 @@ const Register = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:ring-1 focus:border-red-500 text-red-500 focus:ring-red-600':
+                      'border-red-500 focus:border-red-500 text-red-500':
                         errors.confirm_password && errors.confirm_password.message
                     }
                   )}
