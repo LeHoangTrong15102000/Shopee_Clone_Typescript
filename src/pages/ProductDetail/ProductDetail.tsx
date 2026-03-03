@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { RetryError } from 'src/types/utils.type'
 
 import productApi from 'src/apis/product.api'
@@ -46,6 +47,7 @@ export type AddToCartType = {
  * Tự động hủy request cũ khi user navigate giữa các sản phẩm khác nhau
  */
 const ProductDetail = () => {
+  const { t } = useTranslation('product')
   const { isAuthenticated } = useContext(AppContext)
   const reducedMotion = useReducedMotion()
   const infoContainerVariants = staggerContainer(STAGGER_DELAY.normal)
@@ -127,12 +129,10 @@ const ProductDetail = () => {
       <div className='bg-gray-200 py-6 dark:bg-slate-900'>
         <div className='container'>
           <div className='py-16 text-center'>
-            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>Sản phẩm không tồn tại</h1>
-            <p className='mb-6 text-gray-500 dark:text-gray-400'>
-              Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa
-            </p>
+            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>{t('detail.notFound')}</h1>
+            <p className='mb-6 text-gray-500 dark:text-gray-400'>{t('detail.notFoundDesc')}</p>
             <Button variant='primary' onClick={() => navigate(path.home)} className='rounded-xs px-6 py-3'>
-              Về trang chủ
+              {t('detail.goHome')}
             </Button>
           </div>
         </div>
@@ -197,7 +197,7 @@ const ProductDetail = () => {
   return (
     <div className='bg-gray-200 py-6 dark:bg-slate-900'>
       <Helmet>
-        <title>{product?.name} | Shopee Clone</title>
+        <title>{t('meta.title', { name: product?.name })}</title>
         <meta
           name='description'
           content={convert(product?.description, {
@@ -335,7 +335,7 @@ const ProductDetail = () => {
           <div className='bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>
             {/* Title */}
             <div className='rounded-sm text-base font-medium text-[rgba(0,0,0,.87)] uppercase md:text-lg dark:text-gray-100'>
-              Chi tiết sản phẩm
+              {t('detail.specifications')}
             </div>
             {/* Thông tin chi tiết sản phẩm */}
             <div className='mx-4 mt-12 mb-4 text-sm leading-loose text-gray-700 dark:text-gray-300'>

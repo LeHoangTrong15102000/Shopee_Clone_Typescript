@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { useIsMobile } from 'src/hooks/useIsMobile'
 import { sectionEntrance, staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
 
 const Footer = () => {
+  const { t } = useTranslation('nav')
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
   const disableAnimation = reducedMotion || isMobile
@@ -39,12 +41,12 @@ const Footer = () => {
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
             <div className='lg:col-span-1'>
               <div className='text-sm font-semibold text-gray-800 dark:text-gray-100'>
-                © 2023 Shopee. Tất cả các quyền được bảo lưu
+                {t('footer.copyright')}
               </div>
             </div>
             <div className='lg:col-span-2'>
               <div className='text-sm leading-relaxed text-gray-600 dark:text-gray-300'>
-                Quốc gia & Khu vực: Singapore | Indonesia | Đài Loan | Thái Lan | Malaysia | Việt Nam | Philippines |
+                {t('footer.country')} Singapore | Indonesia | Đài Loan | Thái Lan | Malaysia | Việt Nam | Philippines |
                 Brazil | México | Colombia | Chile
               </div>
             </div>
@@ -65,20 +67,23 @@ const Footer = () => {
               variants={!disableAnimation ? staggerItem : undefined}
               style={disableAnimation ? { opacity: 1, transform: 'none' } : undefined}
             >
-              {['CHÍNH SÁCH BẢO MẬT', 'QUY CHẾ HOẠT ĐỘNG', 'CHÍNH SÁCH VẬN CHUYỂN', 'CHÍNH SÁCH TRẢ HÀNG'].map(
-                (text) => (
-                  <Link
-                    key={text}
-                    to='/'
-                    className='group relative cursor-pointer text-sm font-semibold text-gray-700 transition-all duration-300 hover:text-orange dark:text-gray-200 dark:hover:text-orange-400'
-                  >
-                    <span className='relative px-2 py-1'>
-                      {text}
-                      <span className='absolute -bottom-0.5 left-0 h-0.5 w-0 rounded-full bg-linear-to-r from-orange to-orange-400 transition-all duration-300 group-hover:w-full dark:from-orange-400 dark:to-orange-300' />
-                    </span>
-                  </Link>
-                )
-              )}
+              {[
+                { key: 'privacyPolicy', label: t('footer.privacyPolicy') },
+                { key: 'termsOfService', label: t('footer.termsOfService') },
+                { key: 'shippingPolicy', label: t('footer.shippingPolicy') },
+                { key: 'returnPolicy', label: t('footer.returnPolicy') }
+              ].map((item) => (
+                <Link
+                  key={item.key}
+                  to='/'
+                  className='group relative cursor-pointer text-sm font-semibold text-gray-700 transition-all duration-300 hover:text-orange dark:text-gray-200 dark:hover:text-orange-400'
+                >
+                  <span className='relative px-2 py-1'>
+                    {item.label}
+                    <span className='absolute -bottom-0.5 left-0 h-0.5 w-0 rounded-full bg-linear-to-r from-orange to-orange-400 transition-all duration-300 group-hover:w-full dark:from-orange-400 dark:to-orange-300' />
+                  </span>
+                </Link>
+              ))}
             </motion.div>
 
             {/* Certification Badges */}
@@ -136,15 +141,15 @@ const Footer = () => {
                   Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 19001221 - Email: cskh@hotro.shopee.vn
                 </div>
                 <div className='text-sm leading-relaxed text-gray-600 dark:text-gray-400'>
-                  Chịu Trách Nhiệm Quản Lý Nội Dung: Nguyễn Đức Trí - Điện thoại liên hệ: 024 73081221 (ext 4678)
+                  {t('footer.contentManager')}
                 </div>
                 <div className='text-sm leading-relaxed text-gray-600 dark:text-gray-400'>
-                  Mã số doanh nghiệp: 0106773786 do Sở Kế hoạch & Đầu tư TP Hà Nội cấp lần đầu ngày 10/02/2015
+                  {t('footer.businessLicense')}
                 </div>
                 {/* Bottom copyright */}
                 <div className='mt-4 border-t border-orange-200/20 pt-4 dark:border-slate-700/30'>
                   <div className='text-xs text-gray-500 dark:text-gray-500'>
-                    © 2015 - Bản quyền thuộc về Công ty TNHH Shopee
+                    {t('footer.copyright')}
                   </div>
                 </div>
               </div>

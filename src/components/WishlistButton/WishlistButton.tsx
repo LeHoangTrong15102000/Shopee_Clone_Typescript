@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { useOptimisticWishlist } from 'src/hooks/optimistic'
 import { TOAST_MESSAGES } from 'src/hooks/optimistic/shared/constants'
 import Button from 'src/components/Button'
@@ -12,6 +13,7 @@ interface WishlistButtonProps {
 }
 
 export default function WishlistButton({ productId, productName, className, size = 'md' }: WishlistButtonProps) {
+  const { t } = useTranslation('product')
   const { isInWishlist, isLoading, isAuthenticated, toggleWishlist } = useOptimisticWishlist(productId)
 
   const handleClick = (e: React.MouseEvent) => {
@@ -46,10 +48,10 @@ export default function WishlistButton({ productId, productName, className, size
   }
 
   const ariaLabel = isLoading
-    ? 'Đang xử lý...'
+    ? t('wishlist.processing')
     : isInWishlist
-      ? `Xóa ${productName || 'sản phẩm'} khỏi danh sách yêu thích`
-      : `Thêm ${productName || 'sản phẩm'} vào danh sách yêu thích`
+      ? t('wishlist.removeFromWishlist', { name: productName || t('wishlist.product') })
+      : t('wishlist.addToWishlist', { name: productName || t('wishlist.product') })
 
   return (
     <Button
@@ -68,7 +70,7 @@ export default function WishlistButton({ productId, productName, className, size
         { 'cursor-not-allowed opacity-50': isLoading },
         className
       )}
-      title={isInWishlist ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
+      title={isInWishlist ? t('wishlist.removeTitle') : t('wishlist.addTitle')}
     >
       {isLoading ? (
         <svg

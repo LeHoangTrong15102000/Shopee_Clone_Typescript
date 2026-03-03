@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import productApi from 'src/apis/product.api'
 import Product from 'src/pages/ProductList/components/Product'
 import { ProductListConfig } from 'src/types/product.type'
@@ -12,6 +13,7 @@ interface RelatedProductsProps {
 }
 
 const RelatedProducts = ({ categoryId, reducedMotion }: RelatedProductsProps) => {
+  const { t } = useTranslation('product')
   const queryConfig: ProductListConfig = { limit: '20', page: '1', category: categoryId }
 
   const { data: productsData } = useQuery({
@@ -38,7 +40,7 @@ const RelatedProducts = ({ categoryId, reducedMotion }: RelatedProductsProps) =>
       viewport={{ once: true, amount: 0.1 }}
     >
       <div className='container'>
-        <div className='text-gray-400 uppercase dark:text-gray-500'>Có thể bạn cũng thích</div>
+        <div className='text-gray-400 uppercase dark:text-gray-500'>{t('related.youMayAlsoLike')}</div>
         {productsData && (
           <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
             {productsData.data.data.products.map((product) => (

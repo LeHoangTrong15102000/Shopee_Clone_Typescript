@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import NavHeader from '../NavHeader'
 import { Link, useLocation } from 'react-router'
 import path from 'src/constant/path'
@@ -12,9 +13,11 @@ interface CartHeaderProps {
   showStepper?: boolean
 }
 
-const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderProps) => {
+const CartHeader = ({ title, showStepper = true }: CartHeaderProps) => {
+  const { t } = useTranslation('cart')
   const { onSubmitSearch, register } = useSearchProducts()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const displayTitle = title ?? t('header.title')
   return (
     <motion.div
       className='border-b border-b-black/10 dark:border-b-slate-700'
@@ -46,7 +49,7 @@ const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderPro
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
-                {title}
+                {displayTitle}
               </motion.div>
             </Link>
             {/* Bên dưới là form để search product */}
@@ -61,7 +64,7 @@ const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderPro
                 <input
                   type='text'
                   className='w-full grow border-none bg-transparent px-2 py-2 text-xs text-[rgba(0,0,0,.95)] outline-hidden md:px-3 md:text-sm dark:text-gray-100'
-                  placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
+                  placeholder={t('header.searchPlaceholder')}
                   {...register('name')}
                 />
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -123,14 +126,14 @@ const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderPro
  * Shopping flow breadcrumb bar below the cart header.
  * Shows: Trang chủ > Giỏ hàng, plus a visual step indicator for the shopping journey.
  */
-const SHOPPING_STEPS = [
-  { label: 'Giỏ hàng', path: path.cart },
-  { label: 'Thanh toán', path: path.checkout },
-  { label: 'Hoàn tất', path: '' }
-]
-
 const CartShoppingFlow = () => {
+  const { t } = useTranslation('cart')
   const location = useLocation()
+  const SHOPPING_STEPS = [
+    { label: t('steps.cart'), path: path.cart },
+    { label: t('steps.checkout'), path: path.checkout },
+    { label: t('steps.complete'), path: '' }
+  ]
 
   // Determine current step based on route
   const currentStepIndex = SHOPPING_STEPS.findIndex((step) => step.path && location.pathname === step.path)
@@ -149,7 +152,7 @@ const CartShoppingFlow = () => {
           <ol className='flex items-center gap-1.5'>
             <li>
               <Link to={path.home} className='text-gray-500 transition-colors hover:text-orange dark:text-gray-400'>
-                Trang chủ
+                {t('breadcrumb.home')}
               </Link>
             </li>
             <li>
@@ -157,7 +160,7 @@ const CartShoppingFlow = () => {
             </li>
             <li>
               <span className='font-medium text-gray-800 dark:text-gray-200' aria-current='page'>
-                Giỏ hàng
+                {t('steps.cart')}
               </span>
             </li>
           </ol>

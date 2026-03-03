@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import useSellerDashboard from 'src/hooks/useSellerDashboard'
 
@@ -10,6 +11,7 @@ const formatCurrency = (value: number) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
 
 export default function SellerDashboardPanel({ className }: SellerDashboardPanelProps) {
+  const { t } = useTranslation('user')
   const { metrics, orderNotifications, qaNotifications, isActive } = useSellerDashboard()
   if (!isActive) {
     return null
@@ -17,34 +19,34 @@ export default function SellerDashboardPanel({ className }: SellerDashboardPanel
 
   return (
     <div className={classNames('rounded-lg bg-white p-4 shadow-sm dark:bg-slate-800', className)}>
-      <h3 className='mb-4 text-lg font-semibold text-gray-800 dark:text-gray-100'>📊 Bảng điều khiển người bán</h3>
+      <h3 className='mb-4 text-lg font-semibold text-gray-800 dark:text-gray-100'>📊 {t('seller.dashboardTitle')}</h3>
 
       {/* Metrics Cards */}
       <div className='mb-4 grid grid-cols-2 gap-3'>
         <div className='rounded-lg bg-orange-50 p-3 text-center dark:bg-orange-900/20'>
           <p className='text-2xl font-bold text-[#ee4d2d]'>{metrics.today_orders}</p>
-          <p className='text-xs text-gray-500 dark:text-gray-400'>Đơn hàng hôm nay</p>
+          <p className='text-xs text-gray-500 dark:text-gray-400'>{t('seller.todayOrders')}</p>
         </div>
         <div className='rounded-lg bg-green-50 p-3 text-center dark:bg-green-900/20'>
           <p className='text-2xl font-bold text-green-600 dark:text-green-400'>
             {formatCurrency(metrics.today_revenue)}
           </p>
-          <p className='text-xs text-gray-500 dark:text-gray-400'>Doanh thu hôm nay</p>
+          <p className='text-xs text-gray-500 dark:text-gray-400'>{t('seller.todayRevenue')}</p>
         </div>
         <div className='rounded-lg bg-yellow-50 p-3 text-center dark:bg-yellow-900/20'>
           <p className='text-2xl font-bold text-yellow-600 dark:text-yellow-400'>{metrics.pending_orders}</p>
-          <p className='text-xs text-gray-500 dark:text-gray-400'>Đơn chờ xử lý</p>
+          <p className='text-xs text-gray-500 dark:text-gray-400'>{t('seller.pendingOrders')}</p>
         </div>
         <div className='rounded-lg bg-blue-50 p-3 text-center dark:bg-blue-900/20'>
           <p className='text-2xl font-bold text-blue-600 dark:text-blue-400'>{metrics.pending_qa}</p>
-          <p className='text-xs text-gray-500 dark:text-gray-400'>Câu hỏi chờ trả lời</p>
+          <p className='text-xs text-gray-500 dark:text-gray-400'>{t('seller.pendingQA')}</p>
         </div>
       </div>
 
       {/* Order Notifications */}
       {orderNotifications.length > 0 && (
         <div className='mb-3'>
-          <h4 className='mb-2 text-sm font-medium text-gray-700 dark:text-gray-200'>🔔 Đơn hàng mới</h4>
+          <h4 className='mb-2 text-sm font-medium text-gray-700 dark:text-gray-200'>🔔 {t('seller.newOrders')}</h4>
           <div className='max-h-40 space-y-1 overflow-y-auto'>
             {orderNotifications.slice(0, 10).map((notif, index) => (
               <div
@@ -65,7 +67,7 @@ export default function SellerDashboardPanel({ className }: SellerDashboardPanel
       {/* Q&A Notifications */}
       {qaNotifications.length > 0 && (
         <div>
-          <h4 className='mb-2 text-sm font-medium text-gray-700 dark:text-gray-200'>❓ Câu hỏi mới</h4>
+          <h4 className='mb-2 text-sm font-medium text-gray-700 dark:text-gray-200'>❓ {t('seller.newQuestions')}</h4>
           <div className='max-h-40 space-y-1 overflow-y-auto'>
             {qaNotifications.slice(0, 10).map((notif, index) => (
               <div

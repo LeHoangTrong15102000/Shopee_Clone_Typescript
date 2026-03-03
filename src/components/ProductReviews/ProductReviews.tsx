@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { formatDistanceToNow } from 'date-fns'
-import { vi } from 'date-fns/locale'
+import { vi, enUS } from 'date-fns/locale'
 import reviewApi from 'src/apis/review.api'
 import { Review, ReviewComment, CreateCommentData } from 'src/types/review.type'
 import ProductRating from 'src/components/ProductRating'
@@ -14,6 +15,7 @@ interface ProductReviewsProps {
 }
 
 const ProductReviews = ({ productId }: ProductReviewsProps) => {
+  const { t } = useTranslation('product')
   const [currentPage, setCurrentPage] = useState(1)
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest_rating' | 'lowest_rating' | 'most_helpful'>(
     'newest'
@@ -66,13 +68,13 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
     commentMutation.mutate(commentData, {
       onSuccess: () => {
-        toast.success('Bình luận thành công!')
+        toast.success(t('reviews.comment') + '!')
         setCommentText('')
         setReplyingTo(null)
         queryClient.invalidateQueries({ queryKey: ['review-comments', reviewId] })
       },
       onError: () => {
-        toast.error('Có lỗi xảy ra khi bình luận')
+        toast.error('Error')
       }
     })
   }
@@ -110,7 +112,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
   return (
     <div className='rounded-sm bg-white p-4 shadow-sm md:p-8 dark:bg-slate-800'>
       {/* Header */}
-      <h2 className='mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200'>ĐÁNH GIÁ SẢN PHẨM</h2>
+      <h2 className='mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200'>{t('reviews.title').toUpperCase()}</h2>
 
       {/* Stats Overview */}
       {stats && (
@@ -161,13 +163,13 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
       {/* Filters */}
       <div className='mb-6 flex flex-col items-start justify-between gap-3 border-b pb-4 sm:flex-row sm:items-center dark:border-slate-700'>
         <div className='flex flex-wrap items-center gap-2'>
-          <span className='text-sm font-medium dark:text-gray-300'>Lọc theo:</span>
+          <span className='text-sm font-medium dark:text-gray-300'></span>
           <Button
             animated={false}
             onClick={() => setRatingFilter(undefined)}
             className={`rounded-sm px-3 py-1 text-sm ${!ratingFilter ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
           >
-            Tất Cả
+            {t('reviews.all')}
           </Button>
           {[5, 4, 3, 2, 1].map((rating) => (
             <Button
@@ -176,7 +178,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
               onClick={() => setRatingFilter(rating)}
               className={`flex items-center rounded-sm px-3 py-1 text-sm ${ratingFilter === rating ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
             >
-              {rating}{' '}
+              {t('reviews.stars', { count: rating })}{' '}
               <svg className='ml-1 h-3 w-3 fill-current' viewBox='0 0 20 20'>
                 <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
               </svg>
@@ -189,11 +191,11 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
           className='rounded-sm border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
         >
-          <option value='newest'>Mới nhất</option>
-          <option value='oldest'>Cũ nhất</option>
-          <option value='highest_rating'>Đánh giá cao nhất</option>
-          <option value='lowest_rating'>Đánh giá thấp nhất</option>
-          <option value='most_helpful'>Hữu ích nhất</option>
+          <option value='newest'>{t('reviews.newest')}</option>
+          <option value='oldest'>{t('reviews.oldest')}</option>
+          <option value='highest_rating'>{t('reviews.stars', { count: 5 })}</option>
+          <option value='lowest_rating'>{t('reviews.stars', { count: 1 })}</option>
+          <option value='most_helpful'>{t('reviews.mostHelpful')}</option>
         </select>
       </div>
 
@@ -267,6 +269,8 @@ const ReviewItem = ({
   onCommentSubmit,
   isSubmittingComment
 }: ReviewItemProps) => {
+  const { t, i18n } = useTranslation('product')
+  const dateLocale = i18n.language === 'vi' ? vi : enUS
   // Fetch comments when expanded
   const { data: commentsData } = useQuery({
     queryKey: ['review-comments', review._id],
@@ -303,7 +307,7 @@ const ReviewItem = ({
 
           {/* Time */}
           <div className='mb-2 text-sm text-gray-500 dark:text-gray-400'>
-            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: vi })}
+            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: dateLocale })}
           </div>
 
           {/* Comment */}
@@ -334,7 +338,7 @@ const ReviewItem = ({
               <svg className='h-4 w-4 fill-current' viewBox='0 0 20 20'>
                 <path d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' />
               </svg>
-              <span>Hữu ích ({review.helpful_count})</span>
+              <span>{t('reviews.helpful')} ({review.helpful_count})</span>
             </Button>
 
             <Button
@@ -343,7 +347,7 @@ const ReviewItem = ({
               onClick={() => onToggleComments(review._id)}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
-              Bình luận ({review.comments_count || comments.length})
+              {t('reviews.comment')} ({review.comments_count || comments.length})
             </Button>
 
             <Button
@@ -352,7 +356,7 @@ const ReviewItem = ({
               onClick={() => onReply()}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
-              Trả lời
+              {t('reviews.reply')}
             </Button>
           </div>
 
@@ -378,7 +382,7 @@ const ReviewItem = ({
                   <textarea
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    placeholder='Viết bình luận...'
+                    placeholder={t('reviews.writeComment')}
                     className='w-full resize-none rounded-md border border-gray-300 bg-white p-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                     rows={3}
                   />
@@ -389,7 +393,7 @@ const ReviewItem = ({
                       onClick={() => onReply()}
                       className='rounded-sm border border-gray-300 px-4 py-2 text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                     >
-                      Hủy
+                      {t('reviews.cancel')}
                     </Button>
                     <Button
                       animated={false}
@@ -397,7 +401,7 @@ const ReviewItem = ({
                       disabled={isSubmittingComment || !commentText.trim()}
                       className='rounded-sm bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                     >
-                      {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
+                      {isSubmittingComment ? t('reviews.sending') : t('reviews.send')}
                     </Button>
                   </div>
                 </div>
@@ -430,6 +434,8 @@ const CommentItem = ({
   onCommentSubmit,
   isSubmittingComment
 }: CommentItemProps) => {
+  const { t, i18n } = useTranslation('product')
+  const dateLocale = i18n.language === 'vi' ? vi : enUS
   return (
     <div className='mb-4'>
       <div className='flex items-start space-x-3'>
@@ -450,14 +456,14 @@ const CommentItem = ({
           </div>
 
           <div className='mt-1 flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400'>
-            <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: vi })}</span>
+            <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: dateLocale })}</span>
             <Button
               variant='ghost'
               animated={false}
               onClick={() => onReply(comment._id)}
               className='hover:text-gray-700 dark:hover:text-gray-300'
             >
-              Trả lời
+              {t('reviews.reply')}
             </Button>
           </div>
 
@@ -467,7 +473,7 @@ const CommentItem = ({
               <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder={`Trả lời ${comment.user.name}...`}
+                placeholder={t('reviews.replyTo', { name: comment.user.name })}
                 className='w-full resize-none rounded-md border border-gray-300 bg-white p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                 rows={2}
               />
@@ -478,7 +484,7 @@ const CommentItem = ({
                   onClick={() => onReply()}
                   className='rounded-sm border border-gray-300 px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                 >
-                  Hủy
+                  {t('reviews.cancel')}
                 </Button>
                 <Button
                   animated={false}
@@ -486,7 +492,7 @@ const CommentItem = ({
                   disabled={isSubmittingComment || !commentText.trim()}
                   className='rounded-sm bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                 >
-                  {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
+                  {isSubmittingComment ? t('reviews.sending') : t('reviews.send')}
                 </Button>
               </div>
             </div>

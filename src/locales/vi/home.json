@@ -2,5 +2,31 @@
   "aside filter": {
     "all categories": "Tất cả danh mục",
     "search filter": "Bộ lọc tìm kiếm"
-  }
+  },
+  "filter.apply": "Áp dụng",
+  "filter.category": "Theo danh mục",
+  "filter.clearAll": "Xóa tất cả",
+  "filter.fromPlaceholder": "₫ TỪ",
+  "filter.priceRange": "Khoảng giá",
+  "filter.rating": "Đánh giá",
+  "filter.ratingUp": "trở lên",
+  "filter.toPlaceholder": "₫ ĐẾN",
+  "product.originalPrice": "Giá gốc",
+  "product.salePrice": "Giá bán",
+  "product.sold": "Đã bán",
+  "search.clearFilter": "Xóa bộ lọc",
+  "search.clearHistory": "Xóa lịch sử",
+  "search.noResults": "Không tìm thấy kết quả",
+  "search.noResultsFor": "Không có kết quả nào cho \"{{term}}\". Hãy thử từ khóa khác.",
+  "search.noResultsGeneric": "Không có kết quả nào phù hợp với tìm kiếm của bạn.",
+  "search.clearFilters": "Xóa bộ lọc",
+  "search.popularSearches": "Tìm kiếm phổ biến",
+  "search.recentSearches": "Lịch sử tìm kiếm",
+  "sort.bestSelling": "Bán chạy",
+  "sort.latest": "Mới nhất",
+  "sort.popular": "Phổ biến",
+  "sort.price": "Giá",
+  "sort.priceHighToLow": "Giá: Cao đến Thấp",
+  "sort.priceLowToHigh": "Giá: Thấp đến Cao",
+  "sort.sortBy": "Sắp xếp theo"
 }

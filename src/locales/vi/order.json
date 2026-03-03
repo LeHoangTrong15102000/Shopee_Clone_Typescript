@@ -1,0 +1,19 @@
+{
+  "tracking.title": "Theo dõi đơn hàng",
+  "tracking.trackingNumber": "Mã vận đơn",
+  "tracking.carrier": "Đơn vị vận chuyển",
+  "tracking.live": "LIVE",
+  "tracking.completed": "Hoàn thành",
+  "tracking.estimatedDelivery": "Dự kiến giao hàng",
+  "tracking.lastUpdate": "Cập nhật lần cuối",
+  "status.waitForConfirmation": "Chờ xác nhận",
+  "status.waitForGetting": "Chờ lấy hàng",
+  "status.inProgress": "Đang giao",
+  "status.delivered": "Đã giao",
+  "status.cancelled": "Đã hủy",
+  "status.update": "Cập nhật",
+  "toast.orderDelivered": "Đơn hàng {{status}}!",
+  "toast.orderCancelled": "Đơn hàng {{status}}",
+  "toast.orderUpdate": "Đơn hàng: {{status}}"
+}
+

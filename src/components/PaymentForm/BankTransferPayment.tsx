@@ -1,5 +1,6 @@
 import { memo, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 import BankDropdown, { BANKS } from './components/BankDropdown'
 import { BankInfo } from './components/BankLogo'
@@ -31,6 +32,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
   onPaymentConfirmed,
   onPaymentExpired
 }: BankTransferPaymentProps) {
+  const { t } = useTranslation('payment')
   const [paymentState, setPaymentState] = useState<PaymentState>('select_bank')
   const [selectedBank, setSelectedBank] = useState<BankInfo | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -106,13 +108,13 @@ const BankTransferPayment = memo(function BankTransferPayment({
         className='space-y-6'
       >
         <div className='rounded-xl bg-blue-50 p-4 dark:bg-blue-900/30'>
-          <h4 className='font-medium text-blue-900 dark:text-blue-300'>Chuyển khoản ngân hàng</h4>
+          <h4 className='font-medium text-blue-900 dark:text-blue-300'>{t('bankTransfer.title')}</h4>
           <p className='mt-1 text-sm text-blue-700 dark:text-blue-200'>
-            Chọn ngân hàng bạn muốn chuyển khoản để nhận thông tin tài khoản
+            {t('bankTransfer.selectBankDescription')}
           </p>
         </div>
         <div className='space-y-4'>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>Chọn ngân hàng</label>
+          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('bankTransfer.selectBank')}</label>
           <BankDropdown
             selectedBank={selectedBank}
             onSelectBank={handleSelectBank}
@@ -127,7 +129,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
               onClick={handleProceedToPayment}
               className='w-full rounded-xl bg-orange px-6 py-3 font-medium text-white hover:bg-orange/90'
             >
-              Tiếp tục
+              {t('buttons.continue')}
             </Button>
           </motion.div>
         )}
@@ -155,9 +157,9 @@ const BankTransferPayment = memo(function BankTransferPayment({
           </svg>
         </div>
         <div className='text-center'>
-          <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Đơn hàng đã hết hạn</h4>
+          <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('bankTransfer.expiredTitle')}</h4>
           <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            Thời hạn thanh toán đã hết. Vui lòng đặt hàng lại.
+            {t('bankTransfer.expiredMessage')}
           </p>
         </div>
       </motion.div>
@@ -189,7 +191,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
               onClick={() => setPaymentState('select_bank')}
               className='flex-1 rounded-xl border border-gray-300 bg-white px-6 py-3 font-medium text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
             >
-              Đổi ngân hàng
+              {t('bankTransfer.changeBank')}
             </Button>
             <Button
               type='button'
@@ -200,7 +202,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                 </svg>
-                Tôi đã chuyển khoản
+                {t('bankTransfer.confirmTransfer')}
               </span>
             </Button>
           </div>

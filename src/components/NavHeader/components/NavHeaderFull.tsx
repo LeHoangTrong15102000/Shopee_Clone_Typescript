@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import path from 'src/constant/path'
 import InventoryAlertBadge from 'src/components/InventoryAlertBadge'
 import ThemeToggle from 'src/components/ThemeToggle'
@@ -61,11 +62,13 @@ const NavHeaderFull = ({
   )
 }
 
-const AuthenticatedLeftSection = () => (
+const AuthenticatedLeftSection = () => {
+  const { t } = useTranslation('nav')
+  return (
   <div className='hidden items-center justify-center md:flex'>
     <Link to='https://banhang.shopee.vn/' className='ml-2 hidden lg:block'>
       <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>Kênh người bán</span>
+        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
       </div>
     </Link>
     <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
@@ -76,27 +79,30 @@ const AuthenticatedLeftSection = () => (
       className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
       renderPopover={<AppDownloadPopover />}
     >
-      <span className='mx-1 text-sm capitalize'>Tải ứng dụng</span>
+      <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
     </Popover>
     <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
     <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
-      <span className='mx-1 text-sm capitalize'>Kết nối</span>
+      <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
     </div>
     <SocialLinks />
   </div>
-)
+  )
+}
 
-const UnauthenticatedLeftSection = () => (
+const UnauthenticatedLeftSection = () => {
+  const { t } = useTranslation('nav')
+  return (
   <div className='hidden items-center justify-center md:flex'>
     <Link to='https://banhang.shopee.vn/' className='mr-2 ml-2 hidden lg:block'>
       <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>Kênh người bán</span>
+        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
       </div>
     </Link>
     <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
     <Link to='https://shopee.vn/seller/signup' className='mr-2 ml-1 hidden lg:block'>
       <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>Trở thành người bán shopee</span>
+        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
       </div>
     </Link>
     <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
@@ -107,15 +113,16 @@ const UnauthenticatedLeftSection = () => (
       className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
       renderPopover={<AppDownloadPopover />}
     >
-      <span className='mx-1 text-sm capitalize'>Tải ứng dụng</span>
+      <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
     </Popover>
     <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
     <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
-      <span className='mx-1 text-sm capitalize'>Kết nối</span>
+      <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
     </div>
     <SocialLinks />
   </div>
-)
+  )
+}
 
 const SocialLinks = () => (
   <div className='flex hidden items-center justify-center lg:flex'>
@@ -154,7 +161,9 @@ interface NotificationBellProps {
   unreadCount: number
 }
 
-const NotificationBell = ({ isAuthenticated, unreadCount }: NotificationBellProps) => (
+const NotificationBell = ({ isAuthenticated, unreadCount }: NotificationBellProps) => {
+  const { t } = useTranslation('nav')
+  return (
   <Popover
     as='span'
     className={classNames('relative flex cursor-pointer items-center py-1 hover:text-white/70')}
@@ -183,11 +192,14 @@ const NotificationBell = ({ isAuthenticated, unreadCount }: NotificationBellProp
         </span>
       )}
     </div>
-    <span className='mx-1 hidden text-xs capitalize md:inline md:text-sm'>Thông báo</span>
+    <span className='mx-1 hidden text-xs capitalize md:inline md:text-sm'>{t('header.notification')}</span>
   </Popover>
-)
+  )
+}
 
-const SupportLink = () => (
+const SupportLink = () => {
+  const { t } = useTranslation('nav')
+  return (
   <Link to={path.login} className='mt-px hidden md:block'>
     <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
       <svg
@@ -204,10 +216,11 @@ const SupportLink = () => (
           d='M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z'
         />
       </svg>
-      <span className='mx-1 text-sm capitalize'>Hỗ trợ</span>
+      <span className='mx-1 text-sm capitalize'>{t('header.support')}</span>
     </div>
   </Link>
-)
+  )
+}
 
 interface LanguagePopoverProps {
   handleTranslateLanguage: (lng: 'en' | 'vi') => Promise<void>
@@ -276,7 +289,9 @@ interface UserMenuProps {
   handleLogout: () => void
 }
 
-const UserMenu = ({ profile, handleLogout }: UserMenuProps) => (
+const UserMenu = ({ profile, handleLogout }: UserMenuProps) => {
+  const { t } = useTranslation('nav')
+  return (
   <Popover
     as='span'
     placement='bottom-start'
@@ -291,20 +306,20 @@ const UserMenu = ({ profile, handleLogout }: UserMenuProps) => (
             to={path.profile}
             className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
           >
-            Tài Khoản Của Tôi
+            {t('header.myAccount')}
           </Link>
           <Link
             to={path.historyPurchases}
             className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
           >
-            Đơn Mua
+            {t('header.myOrders')}
           </Link>
           <Button
             animated={false}
             onClick={() => handleLogout()}
             className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
           >
-            Đăng Xuất
+            {t('header.logout')}
           </Button>
         </div>
       </div>
@@ -316,18 +331,22 @@ const UserMenu = ({ profile, handleLogout }: UserMenuProps) => (
     </div>
     <span className='hidden max-w-none truncate text-sm md:inline'>{profile?.email}</span>
   </Popover>
-)
+  )
+}
 
-const AuthLinks = () => (
+const AuthLinks = () => {
+  const { t } = useTranslation('nav')
+  return (
   <div className='mt-[1.5px] flex items-center text-xs md:text-sm'>
     <Link to={path.register} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
-      Đăng ký
+      {t('header.register')}
     </Link>
     <div className='h-4 border-r border-r-white/40'></div>
     <Link to={path.login} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
-      Đăng nhập
+      {t('header.login')}
     </Link>
   </div>
-)
+  )
+}
 
 export default NavHeaderFull

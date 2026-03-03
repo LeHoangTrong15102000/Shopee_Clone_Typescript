@@ -1,5 +1,6 @@
 import { Tooltip } from '@heroui/tooltip'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
 import { ExtendedPurchase } from '../types'
@@ -31,6 +32,7 @@ const CartSummaryBar = ({
   handleBuyPurchases,
   formatCurrency
 }: CartSummaryBarProps) => {
+  const { t } = useTranslation('cart')
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -47,14 +49,14 @@ const CartSummaryBar = ({
           onClick={handleCheckedAll}
           className='mx-3 border-none bg-none text-sm capitalize hover:text-orange sm:text-sm dark:hover:text-orange-400'
         >
-          Chọn tất cả ({extendedPurchases.length})
+          {t('summary.selectAll')} ({extendedPurchases.length})
         </Button>
         <Button
           variant='ghost'
           onClick={handleDeleteManyPurchases}
           className='mx-3 border-none bg-none text-sm capitalize hover:text-red-500 sm:text-sm'
         >
-          Xóa
+          {t('summary.delete')}
         </Button>
       </div>
 
@@ -62,7 +64,7 @@ const CartSummaryBar = ({
         <div className='flex flex-col justify-end'>
           <div className='flex flex-wrap items-center sm:justify-end md:justify-end'>
             <div className='text-sm text-gray-700 sm:text-sm dark:text-gray-200'>
-              Tổng thanh toán ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} sản phẩm):{' '}
+              {t('summary.totalPayment')} ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} {t('summary.products')}):{' '}
             </div>
             <motion.div
               className='ml-2 text-xl font-medium text-[#ee4d2d] sm:text-xl md:text-2xl'
@@ -79,11 +81,11 @@ const CartSummaryBar = ({
                 content={
                   <div className='w-full max-w-[90vw] rounded-lg border border-gray-200 bg-white p-4 shadow-lg sm:w-96 dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'>
                     <div className='mb-3 border-b border-gray-200 pb-2 text-sm font-medium text-gray-700 dark:border-slate-700 dark:text-gray-200'>
-                      Chi tiết khuyến mãi
+                      {t('summary.promotionDetails')}
                     </div>
                     <div className='space-y-2'>
                       <div className='flex justify-between text-sm'>
-                        <span className='text-gray-600 dark:text-gray-300'>Tổng tiền hàng</span>
+                        <span className='text-gray-600 dark:text-gray-300'>{t('summary.totalGoods')}</span>
                         <span className='text-gray-900 dark:text-gray-100'>
                           ₫{formatCurrency(totalCheckedPurchasePrice + totalCheckedPurchaseSavingPrice)}
                         </span>
@@ -97,7 +99,7 @@ const CartSummaryBar = ({
                         <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
-                        <span className='text-gray-600 dark:text-gray-300'>Tiết kiệm</span>
+                        <span className='text-gray-600 dark:text-gray-300'>{t('summary.savings')}</span>
                         <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <hr className='my-2 border-gray-200 dark:border-slate-700' />
@@ -136,7 +138,7 @@ const CartSummaryBar = ({
             )}
           </div>
           <div className='flex items-center text-sm sm:justify-end sm:text-sm md:justify-end'>
-            <div className='text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
+            <div className='text-gray-500 dark:text-gray-400'>{t('summary.savings')}</div>
             <motion.div
               className='relative ml-7 overflow-hidden text-[#ee4d2d]'
               key={totalCheckedPurchaseSavingPrice}
@@ -177,7 +179,7 @@ const CartSummaryBar = ({
             type='button'
             className='mt-1 flex h-10 w-full items-center justify-center bg-red-500 text-center text-base text-white capitalize transition-all hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:mt-0 sm:ml-0 sm:w-52 sm:text-sm md:mt-0 md:ml-0 md:w-52'
           >
-            Thanh toán ({checkedPurchaseCount})
+            {t('summary.buy')} ({checkedPurchaseCount})
           </Button>
         </motion.div>
       </div>

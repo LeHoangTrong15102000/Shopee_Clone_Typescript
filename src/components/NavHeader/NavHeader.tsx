@@ -16,7 +16,7 @@ interface NavHeaderProps {
 }
 
 const NavHeader = ({ compact = false }: NavHeaderProps) => {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation('nav')
   const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { setIsAuthenticated, isAuthenticated, profile, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
@@ -33,7 +33,7 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
     onSuccess: () => {
       setIsAuthenticated(false)
       setProfile(null)
-      toast.success('Đăng xuất thành công', { autoClose: 1000 })
+      toast.success(t('header.logoutSuccess'), { autoClose: 1000 })
       queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }], exact: true })
     }
   })

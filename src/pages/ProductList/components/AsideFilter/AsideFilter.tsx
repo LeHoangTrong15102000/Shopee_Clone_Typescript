@@ -151,7 +151,7 @@ const AsideFilter = ({ categories }: Props) => {
       <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
       {/* Filter theo khoảng giá */}
       <div className='my-4'>
-        <div className='capitalize dark:text-gray-200'>Khoảng giá</div>
+        <div className='capitalize dark:text-gray-200'>{t('filter.priceRange')}</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
             <Controller
@@ -163,7 +163,7 @@ const AsideFilter = ({ categories }: Props) => {
                     type='text'
                     className='grow'
                     classNameError='hidden'
-                    placeholder='₫ TỪ'
+                    placeholder={t('filter.fromPlaceholder')}
                     classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                     // onChange={(event) => field.onChange(event)} // onChange trong field có nhận vào cái event
                     {...field}
@@ -204,7 +204,7 @@ const AsideFilter = ({ categories }: Props) => {
                     type='text'
                     className='grow'
                     classNameError='hidden'
-                    placeholder='₫ ĐẾN'
+                    placeholder={t('filter.toPlaceholder')}
                     classNameInput='px-2 py-2 md:px-1 md:py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                     maxValue={'50000000'}
                     {...field}
@@ -222,16 +222,16 @@ const AsideFilter = ({ categories }: Props) => {
           </div>
           <Button
             variant='primary'
-            aria-label='Áp dụng bộ lọc giá'
+            aria-label={t('filter.apply')}
             className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
           >
-            áp dụng
+            {t('filter.apply')}
           </Button>
           <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
         </form>
         {/* Đánh giá */}
         <div className='my-4'>
-          <div className='capitalize dark:text-gray-200'>đánh giá</div>
+          <div className='capitalize dark:text-gray-200'>{t('filter.rating')}</div>
         </div>
       </div>
       {/* Sao đánh giá sản phẩm */}
@@ -241,10 +241,10 @@ const AsideFilter = ({ categories }: Props) => {
       <Button
         variant='primary'
         onClick={handleRemoveAsideFilter}
-        aria-label='Xóa tất cả bộ lọc'
+        aria-label={t('filter.clearAll')}
         className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
       >
-        xóa tất cả
+        {t('filter.clearAll')}
       </Button>
     </div>
   )

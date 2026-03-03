@@ -1,9 +1,11 @@
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
 import useSocket from 'src/hooks/useSocket'
 import Button from 'src/components/Button'
 
 export default function ConnectionStatus() {
+  const { t } = useTranslation('common')
   const { isAuthenticated } = useContext(AppContext)
   const { connectionStatus, connect } = useSocket()
 
@@ -22,7 +24,7 @@ export default function ConnectionStatus() {
           <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75'></span>
           <span className='relative inline-flex h-3 w-3 rounded-full bg-yellow-500'></span>
         </span>
-        <span>Đang kết nối...</span>
+        <span>{t('status.connecting')}</span>
       </div>
     )
   }
@@ -33,9 +35,9 @@ export default function ConnectionStatus() {
         <span className='relative flex h-3 w-3'>
           <span className='relative inline-flex h-3 w-3 rounded-full bg-red-500'></span>
         </span>
-        <span>Mất kết nối</span>
+        <span>{t('status.disconnected')}</span>
         <Button variant='danger' size='sm' animated={false} onClick={() => connect()} className='ml-2 rounded-sm'>
-          Kết nối lại
+          {t('connection.reconnect')}
         </Button>
       </div>
     )
@@ -47,9 +49,9 @@ export default function ConnectionStatus() {
         <span className='relative flex h-3 w-3'>
           <span className='relative inline-flex h-3 w-3 rounded-full bg-red-500'></span>
         </span>
-        <span>Lỗi kết nối</span>
+        <span>{t('connection.error')}</span>
         <Button variant='danger' size='sm' animated={false} onClick={() => connect()} className='ml-2 rounded-sm'>
-          Thử lại
+          {t('button.retry')}
         </Button>
       </div>
     )

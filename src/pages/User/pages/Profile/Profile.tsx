@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, FormProvider, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import userApi, { BodyUpdateProfile } from 'src/apis/user.api'
 import Button from 'src/components/Button'
@@ -21,6 +22,7 @@ import AvatarCropModal from 'src/components/AvatarCropModal'
 
 // Khai báo 1 cái component Info
 function Info() {
+  const { t } = useTranslation('user')
   const {
     register,
     control,
@@ -31,13 +33,13 @@ function Info() {
       {/* Tên */}
       <div className='mt-3 flex flex-col flex-wrap sm:mt-6 sm:flex-row'>
         <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
-          Tên
+          {t('profile.name')}
         </div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Input
             register={register}
             name='name'
-            placeholder='Tên'
+            placeholder={t('profile.name')}
             errorMessage={errors.name?.message}
             autoComplete='on'
             classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
@@ -47,7 +49,7 @@ function Info() {
       {/* Số điện thoại */}
       <div className='mt-1 flex flex-col flex-wrap sm:mt-2 sm:flex-row'>
         <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
-          Số điện thoại
+          {t('profile.phone')}
         </div>
         <div className='sm:w-[70%] sm:pl-5'>
           <Controller
@@ -58,7 +60,7 @@ function Info() {
                 <InputNumber
                   type='text'
                   className='grow'
-                  placeholder='Số điện thoại'
+                  placeholder={t('profile.phone')}
                   errorMessage={errors.phone?.message}
                   classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
                   {...field}
@@ -84,6 +86,7 @@ const profileSchema = baseUserSchema.pick({ name: true, address: true, phone: tr
 // URL.createObjectURL(file)
 
 const Profile = () => {
+  const { t } = useTranslation('user')
   const { setProfile, profile: profileFromContext } = useContext(AppContext)
   const [file, setFile] = useState<File>()
   const [pendingFile, setPendingFile] = useState<File | null>(null)
@@ -238,9 +241,9 @@ const Profile = () => {
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <h1 className='text-base font-medium text-gray-700 capitalize sm:text-lg dark:text-gray-200'>Hồ sơ của tôi</h1>
+        <h1 className='text-base font-medium text-gray-700 capitalize sm:text-lg dark:text-gray-200'>{t('profile.title')}</h1>
         <div className='mt-0.75 text-xs sm:text-[.875rem] dark:text-gray-300'>
-          Quản lý thông tin hồ sơ để bảo mật tài khoản
+          {t('profile.description')}
         </div>
       </motion.div>
       {/* Form và Avatar */}
@@ -252,7 +255,7 @@ const Profile = () => {
             {/* Email */}
             <div className='flex flex-col flex-wrap sm:flex-row'>
               <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
-                Email
+                {t('profile.email')}
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
                 <div className='pt-1 text-sm text-gray-500 sm:pt-3 sm:text-base dark:text-gray-400'>
@@ -276,13 +279,13 @@ const Profile = () => {
             {/* Địa chỉ */}
             <div className='mt-1 flex flex-col flex-wrap sm:mt-2 sm:flex-row'>
               <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
-                Địa chỉ
+                {t('profile.address')}
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
                 <Input
                   register={register}
                   name='address'
-                  placeholder='Địa chỉ'
+                  placeholder={t('profile.address')}
                   errorMessage={errors.address?.message}
                   autoComplete='on'
                   classNameInput='w-full rounded-md border border-gray-300 dark:border-slate-600 px-3 py-2 shadow-xs outline-hidden focus:border-[#ee4d2d] focus:ring-1 focus:ring-[#ee4d2d]/30 dark:bg-slate-900 dark:text-gray-100'
@@ -315,7 +318,7 @@ const Profile = () => {
                   type='submit'
                   className='flex h-10 max-w-[220px] min-w-[100px] items-center justify-center rounded-lg bg-orange px-5 text-center text-sm text-white hover:bg-orange/90 dark:bg-orange-400 dark:hover:bg-orange-400/90'
                 >
-                  Lưu
+                  {t('profile.save')}
                 </Button>
               </div>
             </div>

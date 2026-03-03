@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 import CreditCardForm, { PaymentFormData } from './CreditCardForm'
 import BankTransferPayment from './BankTransferPayment'
@@ -77,13 +78,7 @@ const PaymentTabIcon = ({ type }: { type: string }) => {
   return <>{icons[type] || null}</>
 }
 
-const paymentTabs: { id: PaymentMethodTab; label: string }[] = [
-  { id: 'credit_card', label: 'Thẻ tín dụng' },
-  { id: 'bank_transfer', label: 'Chuyển khoản' },
-  { id: 'e_wallet', label: 'Ví điện tử' }
-]
-
-const SecureBadge = memo(function SecureBadge() {
+const SecureBadge = memo(function SecureBadge({ label }: { label: string }) {
   return (
     <div className='flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700 dark:bg-green-900/30 dark:text-green-400'>
       <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
@@ -93,12 +88,12 @@ const SecureBadge = memo(function SecureBadge() {
           clipRule='evenodd'
         />
       </svg>
-      <span>Thanh toán bảo mật SSL 256-bit</span>
+      <span>{label}</span>
     </div>
   )
 })
 
-const SuccessFeedback = memo(function SuccessFeedback() {
+const SuccessFeedback = memo(function SuccessFeedback({ title, message }: { title: string; message: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -110,13 +105,23 @@ const SuccessFeedback = memo(function SuccessFeedback() {
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
         </svg>
       </div>
-      <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Thanh toán thành công!</h3>
-      <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Đơn hàng của bạn đang được xử lý</p>
+      <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{title}</h3>
+      <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>{message}</p>
     </motion.div>
   )
 })
 
-const ErrorFeedback = memo(function ErrorFeedback({ message, onRetry }: { message: string; onRetry: () => void }) {
+const ErrorFeedback = memo(function ErrorFeedback({
+  title,
+  message,
+  retryLabel,
+  onRetry
+}: {
+  title: string
+  message: string
+  retryLabel: string
+  onRetry: () => void
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -128,14 +133,14 @@ const ErrorFeedback = memo(function ErrorFeedback({ message, onRetry }: { messag
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
         </svg>
       </div>
-      <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Thanh toán thất bại</h3>
+      <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{title}</h3>
       <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>{message}</p>
       <Button
         type='button'
         onClick={onRetry}
         className='mt-4 rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'
       >
-        Thử lại
+        {retryLabel}
       </Button>
     </motion.div>
   )
@@ -147,9 +152,16 @@ const PaymentForm = memo(function PaymentForm({
   isProcessing = false,
   amount = 150000
 }: PaymentFormProps) {
+  const { t } = useTranslation('payment')
   const [activeTab, setActiveTab] = useState<PaymentMethodTab>('credit_card')
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+
+  const paymentTabs: { id: PaymentMethodTab; label: string }[] = [
+    { id: 'credit_card', label: t('tabs.creditCard') },
+    { id: 'bank_transfer', label: t('tabs.bankTransfer') },
+    { id: 'e_wallet', label: t('tabs.eWallet') }
+  ]
 
   const {
     register,
@@ -176,10 +188,10 @@ const PaymentForm = memo(function PaymentForm({
         setPaymentStatus('success')
       } catch (error) {
         setPaymentStatus('error')
-        setErrorMessage(error instanceof Error ? error.message : 'Đã có lỗi xảy ra')
+        setErrorMessage(error instanceof Error ? error.message : t('status.error'))
       }
     },
-    [onSubmit]
+    [onSubmit, t]
   )
 
   const handleRetry = useCallback(() => {
@@ -188,11 +200,13 @@ const PaymentForm = memo(function PaymentForm({
   }, [])
 
   if (paymentStatus === 'success') {
-    return <SuccessFeedback />
+    return <SuccessFeedback title={t('status.success')} message={t('status.processing')} />
   }
 
   if (paymentStatus === 'error') {
-    return <ErrorFeedback message={errorMessage} onRetry={handleRetry} />
+    return (
+      <ErrorFeedback title={t('status.failed')} message={errorMessage} retryLabel={t('buttons.retry')} onRetry={handleRetry} />
+    )
   }
 
   const isLoading = paymentStatus === 'processing' || isProcessing
@@ -200,8 +214,8 @@ const PaymentForm = memo(function PaymentForm({
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Thanh toán</h3>
-        <SecureBadge />
+        <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('title')}</h3>
+        <SecureBadge label={t('secureBadge')} />
       </div>
 
       <div className='flex gap-2 overflow-x-auto border-b border-gray-200 pb-1 dark:border-slate-700'>
@@ -244,7 +258,7 @@ const PaymentForm = memo(function PaymentForm({
                 className='h-4 w-4 rounded-sm border-gray-300 text-orange focus:ring-orange dark:border-slate-600 dark:bg-slate-800'
               />
               <label htmlFor='saveCard' className='text-sm text-gray-700 dark:text-gray-300'>
-                Lưu thẻ cho lần thanh toán sau
+                {t('creditCard.saveCard')}
               </label>
             </div>
 
@@ -256,7 +270,7 @@ const PaymentForm = memo(function PaymentForm({
                   disabled={isLoading}
                   className='w-full rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 hover:bg-gray-50 sm:w-auto dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
                 >
-                  Hủy
+                  {t('buttons.cancel')}
                 </Button>
               )}
               <Button
@@ -265,7 +279,7 @@ const PaymentForm = memo(function PaymentForm({
                 isLoading={isLoading}
                 className='w-full rounded-lg bg-orange px-6 py-3 text-white hover:bg-orange/90 disabled:opacity-50 sm:w-auto'
               >
-                {isLoading ? 'Đang xử lý...' : 'Thanh toán'}
+                {isLoading ? t('status.processing') : t('buttons.pay')}
               </Button>
             </div>
           </motion.form>
@@ -282,7 +296,7 @@ const PaymentForm = memo(function PaymentForm({
               amount={amount}
               onPaymentConfirmed={() => setPaymentStatus('success')}
               onPaymentExpired={() => {
-                setErrorMessage('Đơn hàng đã hết hạn thanh toán')
+                setErrorMessage(t('bankTransfer.expired'))
                 setPaymentStatus('error')
               }}
             />

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { memo, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SearchHistoryItem } from 'src/hooks/useSearchHistory'
 import Button from 'src/components/Button'
 
@@ -18,6 +19,7 @@ const SearchHistory = memo(function SearchHistory({
   onRemove,
   onClearAll
 }: SearchHistoryProps) {
+  const { t } = useTranslation('home')
   const handleRemove = useCallback(
     (e: React.MouseEvent, query: string) => {
       e.stopPropagation()
@@ -32,7 +34,7 @@ const SearchHistory = memo(function SearchHistory({
       {history.length > 0 && (
         <div className='border-b border-gray-100 p-3 dark:border-slate-600'>
           <div className='mb-2 flex items-center justify-between'>
-            <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
+            <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>{t('search.recentSearches')}</span>
             <Button
               variant='ghost'
               size='xs'
@@ -40,7 +42,7 @@ const SearchHistory = memo(function SearchHistory({
               onClick={onClearAll}
               className='text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
             >
-              Xóa tất cả
+              {t('filter.clearAll')}
             </Button>
           </div>
           <AnimatePresence mode='popLayout'>
@@ -90,7 +92,7 @@ const SearchHistory = memo(function SearchHistory({
           <svg className='h-4 w-4 text-orange dark:text-orange-400' fill='currentColor' viewBox='0 0 24 24'>
             <path d='M17.56 21a1 1 0 01-.46-.11L12 18.22l-5.1 2.67a1 1 0 01-1.45-1.06l1-5.63-4.12-4a1 1 0 01-.25-1 1 1 0 01.81-.68l5.7-.83 2.51-5.13a1 1 0 011.8 0l2.54 5.12 5.7.83a1 1 0 01.81.68 1 1 0 01-.25 1l-4.12 4 1 5.63a1 1 0 01-.4 1 1 1 0 01-.62.21z' />
           </svg>
-          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Tìm kiếm phổ biến</span>
+          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>{t('search.popularSearches')}</span>
         </div>
         <div className='flex flex-wrap gap-2'>
           {trendingSearches.map((term) => (

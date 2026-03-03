@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { memo, useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { ANIMATION_DURATION, ANIMATION_EASING } from 'src/styles/animations'
 import Button from 'src/components/Button'
@@ -39,6 +40,7 @@ const backToTopReducedVariants = {
 }
 
 const BackToTopInner = () => {
+  const { t } = useTranslation('common')
   const [isVisible, setIsVisible] = useState(false)
   const prefersReducedMotion = useReducedMotion()
 
@@ -86,7 +88,7 @@ const BackToTopInner = () => {
             animated={false}
             onClick={scrollToTop}
             className='flex h-12 w-12 items-center justify-center bg-orange text-white shadow-lg transition-all duration-200 hover:scale-110 hover:bg-[#d73211] focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 active:scale-90'
-            aria-label='Cuộn lên đầu trang'
+            aria-label={t('aria.backToTop')}
           >
             {/* Up Arrow SVG Icon */}
             <svg

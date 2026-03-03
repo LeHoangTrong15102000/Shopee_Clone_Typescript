@@ -1,5 +1,6 @@
 import { Fragment, memo, useCallback } from 'react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
 import WishlistButton from 'src/components/WishlistButton'
@@ -16,6 +17,7 @@ interface Props {
 
 const Product = ({ product }: Props) => {
   const navigate = useNavigate()
+  const { t } = useTranslation('home')
 
   // Hover prefetching với optimal strategy
   const {
@@ -105,7 +107,7 @@ const Product = ({ product }: Props) => {
                 <ProductRating rating={product.rating} />
                 {/* số lượng bán */}
                 <div className='ml-2 text-xs sm:text-sm dark:text-gray-300'>
-                  <span className=''>Đã bán</span>
+                  <span className=''>{t('product.sold')}</span>
                   <span className='ml-1'>{formatNumberToSocialStyle(product.sold)}</span>
                 </div>
               </div>

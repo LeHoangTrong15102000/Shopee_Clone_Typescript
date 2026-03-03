@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 
 interface LiveQAAnswer {
@@ -23,6 +24,8 @@ export default function LiveQASection({
   onViewQuestions,
   className
 }: LiveQASectionProps) {
+  const { t } = useTranslation('product')
+
   if (newQuestionCount <= 0 && newAnswers.length === 0) {
     return null
   }
@@ -42,8 +45,10 @@ export default function LiveQASection({
           onClick={onViewQuestions}
         >
           <span className='text-lg'>❓</span>
-          <span className='font-medium text-blue-600 dark:text-blue-400'>{newQuestionCount} câu hỏi mới</span>
-          <span className='ml-auto text-xs text-gray-400 dark:text-gray-500'>Nhấn để xem ↓</span>
+          <span className='font-medium text-blue-600 dark:text-blue-400'>
+            {t('qa.newQuestions', { count: newQuestionCount })}
+          </span>
+          <span className='ml-auto text-xs text-gray-400 dark:text-gray-500'>{t('qa.clickToView')}</span>
         </Button>
       )}
       {newAnswers.length > 0 && (
@@ -65,7 +70,7 @@ export default function LiveQASection({
                   })}
                 >
                   {item.answer.user_name}
-                  {item.answer.is_seller && ' (Người bán)'}
+                  {item.answer.is_seller && ` (${t('qa.seller')})`}
                 </span>
                 <p className='mt-0.5 line-clamp-2 text-gray-600 dark:text-gray-300'>{item.answer.answer}</p>
               </div>

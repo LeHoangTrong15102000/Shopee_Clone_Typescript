@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Input from 'src/components/Input'
 import Button from 'src/components/Button'
 import { CardTypeIcon, CheckmarkIcon, InfoIcon } from './components/CardTypeIcons'
@@ -23,6 +24,7 @@ interface CreditCardFormProps {
 }
 
 const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }: CreditCardFormProps) {
+  const { t } = useTranslation('payment')
   const cardNumber = watch('cardNumber') || ''
   const cardHolder = watch('cardHolder') || ''
   const expiryDate = watch('expiryDate') || ''
@@ -59,7 +61,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
 
       <div className='space-y-3 md:space-y-4'>
         <div>
-          <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>Số thẻ</label>
+          <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('creditCard.cardNumber')}</label>
           <motion.div className='relative' animate={shakeFields.cardNumber ? 'shake' : ''} variants={shakeAnimation}>
             <Input
               type='text'
@@ -86,7 +88,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
         </div>
 
         <div>
-          <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>Tên chủ thẻ</label>
+          <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('creditCard.cardholderName')}</label>
           <Input
             type='text'
             placeholder='NGUYEN VAN A'
@@ -100,7 +102,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
 
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4'>
           <div>
-            <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>Ngày hết hạn</label>
+            <label className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('creditCard.expiryDate')}</label>
             <motion.div className='relative' animate={shakeFields.expiryDate ? 'shake' : ''} variants={shakeAnimation}>
               <Input
                 type='text'
@@ -128,7 +130,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
           </div>
           <div>
             <div className='mb-1 flex items-center gap-1'>
-              <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>CVV</label>
+              <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('creditCard.cvv')}</label>
               <div className='relative'>
                 <Button
                   type='button'
@@ -136,7 +138,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
                   variant='ghost'
                   animated={false}
                   className='flex items-center'
-                  aria-label='CVV là gì?'
+                  aria-label={t('creditCard.cvvTooltip')}
                 >
                   <InfoIcon />
                 </Button>

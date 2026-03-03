@@ -1,0 +1,19 @@
+{
+  "tracking.title": "Order Tracking",
+  "tracking.trackingNumber": "Tracking Number",
+  "tracking.carrier": "Carrier",
+  "tracking.live": "LIVE",
+  "tracking.completed": "Completed",
+  "tracking.estimatedDelivery": "Estimated Delivery",
+  "tracking.lastUpdate": "Last Update",
+  "status.waitForConfirmation": "Pending Confirmation",
+  "status.waitForGetting": "Pending Pickup",
+  "status.inProgress": "In Transit",
+  "status.delivered": "Delivered",
+  "status.cancelled": "Cancelled",
+  "status.update": "Update",
+  "toast.orderDelivered": "Order {{status}}!",
+  "toast.orderCancelled": "Order {{status}}",
+  "toast.orderUpdate": "Order: {{status}}"
+}
+

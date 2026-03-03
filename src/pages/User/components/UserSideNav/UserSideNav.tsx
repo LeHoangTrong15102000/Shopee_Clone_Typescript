@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, NavLink } from 'react-router'
 import path from 'src/constant/path'
 import MobileAccountNav from 'src/components/MobileAccountNav'
@@ -9,6 +10,7 @@ import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { getAvatarUrl } from 'src/utils/utils'
 
 const UserSideNav = () => {
+  const { t } = useTranslation('user')
   const { profile } = useContext(AppContext)
   const reducedMotion = useReducedMotion()
 
@@ -118,7 +120,7 @@ const UserSideNav = () => {
                       className='h-6 w-6'
                     />
                   </div>
-                  <span className='font-medium capitalize'>Tài khoản của tôi</span>
+                  <span className='font-medium capitalize'>{t('sideNav.myAccount')}</span>
                 </div>
               </>
             )}
@@ -160,7 +162,7 @@ const UserSideNav = () => {
                       />
                     </svg>
                   </div>
-                  <span className='font-medium capitalize'>Đổi mật khẩu</span>
+                  <span className='font-medium capitalize'>{t('sideNav.changePassword')}</span>
                 </div>
               </>
             )}
@@ -193,7 +195,7 @@ const UserSideNav = () => {
                       className='h-6 w-6'
                     />
                   </div>
-                  <span className='font-medium capitalize'>Đơn mua</span>
+                  <span className='font-medium capitalize'>{t('sideNav.purchaseOrders')}</span>
                 </div>
               </>
             )}
@@ -320,7 +322,7 @@ const UserSideNav = () => {
                       />
                     </svg>
                   </div>
-                  <span className='font-medium capitalize'>Địa chỉ</span>
+                  <span className='font-medium capitalize'>{t('sideNav.address')}</span>
                 </div>
               </>
             )}

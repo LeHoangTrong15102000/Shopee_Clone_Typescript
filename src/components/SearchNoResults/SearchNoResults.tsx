@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import Button from 'src/components/Button'
 
@@ -20,6 +21,7 @@ const popularSearchTerms = [
 ]
 
 const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSearch }: SearchNoResultsProps) {
+  const { t } = useTranslation('home')
   const prefersReducedMotion = useReducedMotion()
 
   const containerVariants = {
@@ -83,7 +85,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
 
       {/* Main message */}
       <motion.h3 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300' variants={itemVariants}>
-        Không tìm thấy kết quả cho '{searchTerm}'
+        {t('search.noResultsFor', { term: searchTerm })}
       </motion.h3>
 
       {/* Suggestions section */}
@@ -137,7 +139,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
 
       {/* Popular search terms */}
       <motion.div className='mt-8' variants={listVariants}>
-        <p className='mb-4 font-medium text-gray-600 dark:text-gray-300'>Tìm kiếm phổ biến:</p>
+        <p className='mb-4 font-medium text-gray-600 dark:text-gray-300'>{t('search.popularSearches')}:</p>
         <div className='flex flex-wrap justify-center gap-2'>
           {popularSearchTerms.map((term, index) => (
             <motion.div key={term} variants={listItemVariants} custom={index}>

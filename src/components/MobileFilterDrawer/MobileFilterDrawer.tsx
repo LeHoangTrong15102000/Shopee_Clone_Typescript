@@ -196,7 +196,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
               </Link>
               <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
               <div className='my-4'>
-                <div className='capitalize dark:text-gray-200'>Khoảng giá</div>
+                <div className='capitalize dark:text-gray-200'>{t('filter.priceRange')}</div>
                 <form className='mt-2' onSubmit={onSubmit}>
                   <div className='flex items-start'>
                     <Controller
@@ -207,7 +207,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           type='text'
                           className='grow'
                           classNameError='hidden'
-                          placeholder='₫ TỪ'
+                          placeholder={t('filter.fromPlaceholder')}
                           classNameInput='px-1 py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                           {...field}
                           onChange={(event) => {
@@ -226,7 +226,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                           type='text'
                           className='grow'
                           classNameError='hidden'
-                          placeholder='₫ ĐẾN'
+                          placeholder={t('filter.toPlaceholder')}
                           classNameInput='px-1 py-1 text-sm w-full outline-hidden border rounded-xs border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-gray-100 focus:border-gray-500 dark:focus:border-gray-400 focus:shadow-xs'
                           maxValue='50000000'
                           {...field}
@@ -245,12 +245,12 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                     variant='primary'
                     className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
                   >
-                    áp dụng
+                    {t('filter.apply')}
                   </Button>
                   <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
                 </form>
                 <div className='my-4'>
-                  <div className='capitalize dark:text-gray-200'>đánh giá</div>
+                  <div className='capitalize dark:text-gray-200'>{t('filter.rating')}</div>
                 </div>
               </div>
               <RatingStars />
@@ -260,7 +260,7 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                 onClick={handleRemoveAsideFilter}
                 className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
               >
-                xóa tất cả
+                {t('filter.clearAll')}
               </Button>
             </div>
           </motion.div>

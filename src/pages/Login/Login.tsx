@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useContext, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router'
 
 import classNames from 'classnames'
@@ -22,6 +23,7 @@ import { generateNameId, isAxiosUnprocessableEntityError } from 'src/utils/utils
 type FormData = LoginSchema
 
 const Login = () => {
+  const { t } = useTranslation('auth')
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const location = useLocation()
@@ -56,10 +58,10 @@ const Login = () => {
   const loginAccountMutation = useMutation({
     mutationFn: (body: FormData) => authApi.loginAccount(body),
     onSuccess: () => {
-      toast.success('Đăng nhập thành công', { autoClose: 1000 })
+      toast.success(t('login.success'), { autoClose: 1000 })
     },
     onError: () => {
-      toast.error('Đăng nhập thất bại', { autoClose: 1000 })
+      toast.error(t('login.error'), { autoClose: 1000 })
     }
   })
 
@@ -120,8 +122,8 @@ const Login = () => {
         }}
       />
       <Helmet>
-        <title>Đăng nhập | Shopee Clone</title>
-        <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
+        <title>{t('login.meta.title')}</title>
+        <meta name='description' content={t('login.meta.description')} />
       </Helmet>
       <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
@@ -135,7 +137,7 @@ const Login = () => {
               animate={reducedMotion ? undefined : 'visible'}
             >
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
-                <div className='text-2xl text-gray-900 dark:text-gray-100'>Đăng nhập</div>
+                <div className='text-2xl text-gray-900 dark:text-gray-100'>{t('login.title')}</div>
               </motion.div>
               {/* Nên cho 1 cái  thẻ div bao bọc bên ngoài để handle lỗi cho dễ */}
               {/*  Input ở đây truyền hay không truyền generic type đều được, nếu mà không truyền generic type thì xóa register đi thì nó sẽ không gợi ý nữa */}
@@ -186,7 +188,7 @@ const Login = () => {
                     type='submit'
                     className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm text-white uppercase hover:bg-red-600'
                   >
-                    đăng nhập
+                    {t('login.button')}
                   </Button>
                 </div>
               </motion.div>
@@ -237,15 +239,15 @@ const Login = () => {
                       fill='#EA4335'
                     />
                   </svg>
-                  Đăng nhập với Google
+                  {t('login.withGoogle')}
                 </Button>
               </motion.div>
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex items-center justify-center text-center'>
-                  <span className='mr-1 text-black/25 dark:text-gray-400'>Bạn mới biết đến Shopee?</span>
+                  <span className='mr-1 text-black/25 dark:text-gray-400'>{t('login.newToShopee')}</span>
                   <Link to={path.register} className='text-orange dark:text-orange-400'>
-                    <span className=''>Đăng ký</span>
+                    <span className=''>{t('login.registerLink')}</span>
                   </Link>
                 </div>
               </motion.div>

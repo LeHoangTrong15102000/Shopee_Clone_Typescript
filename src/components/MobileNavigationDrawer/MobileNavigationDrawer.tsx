@@ -29,7 +29,7 @@ const DIVIDER = 'my-3 h-px bg-gray-200 dark:bg-slate-600'
 const SECTION_TITLE = 'px-3 pb-1 text-xs font-semibold uppercase text-gray-400 dark:text-gray-500'
 
 const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps) => {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation('nav')
   const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { setIsAuthenticated, isAuthenticated, profile, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
@@ -157,7 +157,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       d='M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'
                     />
                   </svg>
-                  Trang chủ
+                  {t('drawer.home')}
                 </button>
 
                 <button type='button' onClick={() => go(path.notifications)} className={ITEM}>
@@ -182,7 +182,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       </span>
                     )}
                   </div>
-                  <span>Thông báo</span>
+                  <span>{t('drawer.notification')}</span>
                   {isAuthenticated && unreadCount > 0 && (
                     <span className='ml-auto rounded-full bg-orange/10 px-2 py-0.5 text-[10px] font-medium text-orange dark:bg-orange/20 dark:text-orange-400'>
                       {unreadCount} mới
@@ -223,7 +223,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                     />
                   </svg>
-                  Yêu thích
+                  {t('drawer.wishlist')}
                 </button>
 
                 <a
@@ -247,14 +247,14 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                       d='M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.15c0 .415.336.75.75.75z'
                     />
                   </svg>
-                  Kênh người bán
+                  {t('drawer.sellerChannel')}
                 </a>
               </div>
 
               <div className={DIVIDER} />
 
               {/* Settings Section */}
-              <div className={SECTION_TITLE}>Cài đặt</div>
+              <div className={SECTION_TITLE}>{t('drawer.settings')}</div>
               <div className='space-y-1'>
                 {/* Theme Toggle */}
                 <div className='flex items-center justify-between rounded-lg px-3 py-2.5'>
@@ -295,7 +295,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                         d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
                       />
                     </svg>
-                    Ngôn ngữ
+                    {t('drawer.language')}
                   </span>
                   <div className='flex gap-1.5'>
                     <Button
@@ -417,7 +417,7 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                         d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75'
                       />
                     </svg>
-                    Đăng xuất
+                    {t('drawer.logout')}
                   </button>
                 </div>
               ) : (
@@ -427,14 +427,14 @@ const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps
                     onClick={onClose}
                     className='block w-full rounded-lg bg-orange py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-orange/90'
                   >
-                    Đăng nhập
+                    {t('drawer.login')}
                   </Link>
                   <Link
                     to={path.register}
                     onClick={onClose}
                     className='block w-full rounded-lg border border-orange py-2.5 text-center text-sm font-medium text-orange transition-colors hover:bg-orange/5 dark:text-orange-400 dark:hover:bg-orange/10'
                   >
-                    Đăng ký
+                    {t('drawer.register')}
                   </Link>
                 </div>
               )}

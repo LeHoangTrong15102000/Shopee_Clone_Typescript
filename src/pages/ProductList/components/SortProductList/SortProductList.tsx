@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import path from 'src/constant/path'
 import { sortBy, order as orderConstant } from 'src/constant/product'
 import { useProductQueryStates } from 'src/hooks/nuqs'
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
+  const { t } = useTranslation('home')
   const [filters, setFilters] = useProductQueryStates()
   const page = filters.page
   const { sort_by, order } = filters
@@ -42,7 +44,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
       <div className='flex flex-wrap items-center justify-between gap-2'>
         {/* sort theo tên: phổ biến - mới nhất - bán chạy */}
         <div className='flex flex-wrap items-center gap-2'>
-          <div className='text-sm text-[rgba(0,0,0,.7)] dark:text-gray-300'>Sắp xếp theo</div>
+          <div className='text-sm text-[rgba(0,0,0,.7)] dark:text-gray-300'>{t('sort.sortBy')}</div>
           <Button
             variant='ghost'
             animated={false}
@@ -53,7 +55,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             })}
             onClick={() => handleSortNavigate(sortBy.view)}
           >
-            Phổ biến
+            {t('sort.popular')}
           </Button>
           <Button
             variant='ghost'
@@ -65,7 +67,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             })}
             onClick={() => handleSortNavigate(sortBy.createdAt)}
           >
-            Mới nhất
+            {t('sort.latest')}
           </Button>
           <Button
             variant='ghost'
@@ -77,11 +79,11 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             })}
             onClick={() => handleSortNavigate(sortBy.sold)}
           >
-            Bán chạy
+            {t('sort.bestSelling')}
           </Button>
           {/* sort productList */}
           <select
-            aria-label='Sắp xếp theo giá'
+            aria-label={t('sort.sortBy')}
             className={classNames('h-10 px-4 text-left text-sm capitalize outline-hidden md:h-8', {
               'bg-white/70 text-orange hover:bg-slate-100 dark:bg-slate-700/70 dark:hover:bg-slate-700': isActiveSortBy(
                 sortBy.price
@@ -93,13 +95,13 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
           >
             <option value='' className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200' disabled>
-              Giá
+              {t('sort.price')}
             </option>
             <option value={orderConstant.asc} className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200'>
-              Giá: Thấp đến cao
+              {t('sort.priceLowToHigh')}
             </option>
             <option value={orderConstant.desc} className='bg-white text-black/80 dark:bg-slate-800 dark:text-gray-200'>
-              Giá: Cao đến thấp
+              {t('sort.priceHighToLow')}
             </option>
           </select>
         </div>

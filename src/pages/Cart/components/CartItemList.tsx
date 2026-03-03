@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import Button from 'src/components/Button'
 import ImageWithFallback from 'src/components/ImageWithFallback'
@@ -44,6 +45,7 @@ const CartItemList = ({
   formatCurrency,
   generateNameId
 }: CartItemListProps) => {
+  const { t } = useTranslation('cart')
   const isMobile = useIsMobile()
 
   return (
@@ -57,15 +59,15 @@ const CartItemList = ({
               <div className='flex shrink-0 items-center justify-center pr-3'>
                 <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
               </div>
-              <div className='flex grow text-black dark:text-gray-100'>Sản phẩm</div>
+              <div className='flex grow text-black dark:text-gray-100'>{t('list.product')}</div>
             </div>
           </div>
           <div className='col-span-6'>
             <div className='grid grid-cols-6 text-center text-[#888] dark:text-gray-400'>
-              <div className='col-span-2'>Đơn giá</div>
-              <div className='col-span-2'>Số lượng</div>
-              <div className='col-span-1'>Số tiền</div>
-              <div className='col-span-1'>Thao tác</div>
+              <div className='col-span-2'>{t('list.unitPrice')}</div>
+              <div className='col-span-2'>{t('list.quantity')}</div>
+              <div className='col-span-1'>{t('list.amount')}</div>
+              <div className='col-span-1'>{t('list.actions')}</div>
             </div>
           </div>
         </div>
@@ -193,7 +195,7 @@ const CartItemList = ({
                         animated={false}
                         onClick={handleSaveForLater(index)}
                         className='flex items-center gap-1 rounded-md p-1.5 text-sm text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
-                        title='Lưu để mua sau'
+                        title={t('list.saveForLater')}
                       >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
@@ -209,7 +211,7 @@ const CartItemList = ({
                             d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
                           />
                         </svg>
-                        Lưu
+                        {t('list.save')}
                       </Button>
                       <Button
                         size='sm'
@@ -217,7 +219,7 @@ const CartItemList = ({
                         onClick={handleDelete(index)}
                         className='rounded-md p-1.5 text-black/90 transition-colors hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
                       >
-                        Xóa
+                        {t('list.delete')}
                       </Button>
                     </div>
                   </div>
@@ -234,7 +236,7 @@ const CartItemList = ({
           <div className='flex shrink-0 items-center justify-center pr-3'>
             <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
           </div>
-          <span className='font-medium text-black dark:text-gray-100'>Chọn tất cả ({extendedPurchases.length})</span>
+          <span className='font-medium text-black dark:text-gray-100'>{t('list.selectAll')} ({extendedPurchases.length})</span>
         </div>
 
         {extendedPurchases.length > 0 && (
@@ -338,7 +340,7 @@ const CartItemList = ({
                           animated={false}
                           onClick={handleSaveForLater(index)}
                           className='rounded-md p-1.5 text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
-                          aria-label='Lưu để mua sau'
+                          aria-label={t('list.saveForLater')}
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -361,7 +363,7 @@ const CartItemList = ({
                           animated={false}
                           onClick={handleDelete(index)}
                           className='rounded-md p-1.5 text-gray-500 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
-                          aria-label='Xóa sản phẩm'
+                          aria-label={t('list.delete')}
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -382,7 +384,7 @@ const CartItemList = ({
                     </div>
 
                     <div className='mt-2 flex items-center justify-end'>
-                      <span className='mr-2 text-sm text-gray-500 dark:text-gray-400'>Tổng:</span>
+                      <span className='mr-2 text-sm text-gray-500 dark:text-gray-400'>{t('summary.totalPayment')}:</span>
                       <motion.span
                         className='font-medium text-[#ee4d2d]'
                         key={purchase.buy_count}

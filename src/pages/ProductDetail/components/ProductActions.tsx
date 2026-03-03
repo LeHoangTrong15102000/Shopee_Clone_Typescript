@@ -78,7 +78,7 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
       })
     } catch (error) {
       console.error('Buy now error:', error)
-      toast.error('Không thể mua ngay. Vui lòng thử lại!', {
+      toast.error(t('actions.buyNowError'), {
         autoClose: 2000,
         position: 'top-center'
       })
@@ -99,7 +99,7 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
       {/* Quantity Selector */}
       <motion.div variants={reducedMotion ? undefined : staggerItem}>
         <div className='mt-8 flex items-center'>
-          <div className='text-gray-500/80 capitalize dark:text-gray-400'>Số lượng</div>
+          <div className='text-gray-500/80 capitalize dark:text-gray-400'>{t('actions.quantity')}</div>
           <QuantityController
             max={product?.quantity}
             value={buyCount}
@@ -127,8 +127,8 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
               className='flex h-12 items-center justify-center rounded-xs px-5 capitalize shadow-xs'
             >
               <CartIcon />
-              <span className='hidden text-orange sm:inline dark:text-orange-400'>thêm vào giỏ hàng</span>
-              <span className='text-orange sm:hidden dark:text-orange-400'>Thêm</span>
+              <span className='hidden text-orange sm:inline dark:text-orange-400'>{t('actions.addToCart')}</span>
+              <span className='text-orange sm:hidden dark:text-orange-400'>{t('actions.addToCart')}</span>
             </Button>
           </motion.div>
           {/* Buy Now Button */}
@@ -143,7 +143,7 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
               onClick={isAuthenticated ? handleBuyNow : handleLoginRedirect}
               className='flex h-12 min-w-20 items-center justify-center rounded-xs px-4 capitalize shadow-xs'
             >
-              Mua ngay
+              {t('actions.buyNow')}
             </Button>
           </motion.div>
         </div>

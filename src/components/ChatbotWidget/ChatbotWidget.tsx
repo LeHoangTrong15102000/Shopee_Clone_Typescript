@@ -1,24 +1,20 @@
 import { useState, useRef, useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import chatbotApi from 'src/apis/chatbot.api'
 import { ChatMessage } from 'src/types/chatbot.type'
 import Button from 'src/components/Button'
 
 export default function ChatbotWidget() {
+  const { t } = useTranslation('chat')
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: 'Xin chào! Tôi là trợ lý ảo của Shopee. Tôi có thể giúp gì cho bạn?',
-      timestamp: new Date().toISOString()
-    }
-  ])
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const initializedRef = useRef(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -33,6 +29,20 @@ export default function ChatbotWidget() {
       inputRef.current?.focus()
     }
   }, [isOpen])
+
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true
+      setMessages([
+        {
+          id: '1',
+          role: 'assistant',
+          content: t('welcome'),
+          timestamp: new Date().toISOString()
+        }
+      ])
+    }
+  }, [t])
 
   const sendMutation = useMutation({
     mutationFn: (message: string) => chatbotApi.testChatbot({ message }),
@@ -49,7 +59,7 @@ export default function ChatbotWidget() {
       const errorMessage: ChatMessage = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.',
+        content: t('error'),
         timestamp: new Date().toISOString()
       }
       setMessages((prev) => [...prev, errorMessage])
@@ -132,8 +142,8 @@ export default function ChatbotWidget() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className='text-sm font-medium'>Hỗ trợ khách hàng</h3>
-                  <p className='text-xs text-white/80'>Trực tuyến</p>
+                  <h3 className='text-sm font-medium'>{t('title')}</h3>
+                  <p className='text-xs text-white/80'>{t('online')}</p>
                 </div>
               </div>
               <Button
@@ -141,7 +151,7 @@ export default function ChatbotWidget() {
                 animated={false}
                 onClick={() => setIsOpen(false)}
                 className='flex h-8 w-8 items-center justify-center bg-white/20 transition-colors hover:bg-white/30 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2'
-                aria-label='Đóng chat'
+                aria-label={t('close')}
               >
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
@@ -196,7 +206,7 @@ export default function ChatbotWidget() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder='Nhập tin nhắn...'
+                  placeholder={t('placeholder')}
                   className='flex-1 rounded-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                   disabled={sendMutation.isPending}
                 />

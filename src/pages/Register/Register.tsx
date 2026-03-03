@@ -6,6 +6,7 @@ import omit from 'lodash/omit'
 import { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
@@ -24,6 +25,7 @@ type FormData = RegisterSchema
 // co ra sau thì ra chứ t vẫn đứng ở đây mà thôi có gì mà đâu mà phải sợ
 
 const Register = () => {
+  const { t } = useTranslation('auth')
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
@@ -48,10 +50,10 @@ const Register = () => {
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body),
     onSuccess: (_) => {
-      toast.success('Đăng ký thành công', { autoClose: 1000 })
+      toast.success(t('register.success'), { autoClose: 1000 })
     },
     onError: () => {
-      toast.error('Đăng ký thất bại', { autoClose: 1000 })
+      toast.error(t('register.error'), { autoClose: 1000 })
     }
   })
 
@@ -109,8 +111,8 @@ const Register = () => {
         }}
       />
       <Helmet>
-        <title>Đăng ký | Shopee Clone</title>
-        <meta name='description' content='Đăng ký tài khoản vào dự án Shopee Clone' />
+        <title>{t('register.meta.title')}</title>
+        <meta name='description' content={t('register.meta.description')} />
       </Helmet>
       <div className='relative container min-h-[60vh]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
@@ -124,7 +126,7 @@ const Register = () => {
               animate={reducedMotion ? undefined : 'visible'}
             >
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
-                <div className='text-2xl text-gray-900 dark:text-gray-100'>Đăng ký</div>
+                <div className='text-2xl text-gray-900 dark:text-gray-100'>{t('register.title')}</div>
               </motion.div>
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <Input
@@ -192,7 +194,7 @@ const Register = () => {
                     type='submit'
                     className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-sm text-white uppercase hover:bg-red-600'
                   >
-                    đăng ký
+                    {t('register.button')}
                   </Button>
                 </div>
               </motion.div>
@@ -214,9 +216,9 @@ const Register = () => {
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex items-center justify-center text-center'>
-                  <span className='mr-1 text-black/25 dark:text-gray-400'>Bạn đã có tài khoản?</span>
+                  <span className='mr-1 text-black/25 dark:text-gray-400'>{t('register.haveAccount')}</span>
                   <Link to={path.login} className='text-orange dark:text-orange-400'>
-                    <span className=''>Đăng nhập</span>
+                    <span className=''>{t('register.loginLink')}</span>
                   </Link>
                 </div>
               </motion.div>

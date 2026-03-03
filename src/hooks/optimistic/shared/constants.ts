@@ -1,41 +1,87 @@
-// Toast messages
+import i18n from 'src/i18n/i18n'
+
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(key as never, options as never)
+
+// Toast messages - resolved at runtime for i18n support
 export const TOAST_MESSAGES = {
   // Cart messages
-  ADD_TO_CART_SUCCESS: '🛒 Đã thêm vào giỏ hàng!',
-  ADD_TO_CART_ERROR: '❌ Không thể thêm vào giỏ hàng',
-  UPDATE_QUANTITY_ERROR: '❌ Không thể cập nhật số lượng',
+  get ADD_TO_CART_SUCCESS() {
+    return `🛒 ${t('cart:toast.addToCartSuccess')}`
+  },
+  get ADD_TO_CART_ERROR() {
+    return `❌ ${t('cart:toast.addToCartError')}`
+  },
+  get UPDATE_QUANTITY_ERROR() {
+    return `❌ ${t('cart:toast.updateQuantityError')}`
+  },
   REMOVE_FROM_CART_SUCCESS: (count: number) =>
-    `🗑️ Đã xóa ${count > 1 ? `${count} sản phẩm` : 'sản phẩm'} khỏi giỏ hàng`,
-  REMOVE_FROM_CART_ERROR: '❌ Không thể xóa sản phẩm khỏi giỏ hàng',
+    `🗑️ ${count > 1 ? t('cart:toast.removeSuccessMultiple', { count }) : t('cart:toast.removeSuccess')}`,
+  get REMOVE_FROM_CART_ERROR() {
+    return `❌ ${t('cart:toast.removeError')}`
+  },
   REMOVE_FROM_CART_FINAL_SUCCESS: (count: number) =>
-    `✅ Đã xóa ${count > 1 ? `${count} sản phẩm` : 'sản phẩm'} thành công`,
-  RESTORE_ITEMS: '↩️ Đã khôi phục sản phẩm',
+    `✅ ${count > 1 ? t('cart:toast.removeFinalSuccessMultiple', { count }) : t('cart:toast.removeFinalSuccess')}`,
+  get RESTORE_ITEMS() {
+    return `↩️ ${t('cart:toast.restoreItems')}`
+  },
 
   // Save for Later messages
-  SAVE_FOR_LATER_SUCCESS: '🔖 Đã lưu để mua sau',
-  SAVE_FOR_LATER_ALREADY_SAVED: '⚠️ Sản phẩm đã được lưu trước đó',
-  MOVE_TO_CART_SUCCESS: '🛒 Đã thêm lại vào giỏ hàng',
-  CLEAR_SAVED_SUCCESS: '🗑️ Đã xóa tất cả sản phẩm đã lưu',
+  get SAVE_FOR_LATER_SUCCESS() {
+    return `🔖 ${t('cart:toast.saveForLaterSuccess')}`
+  },
+  get SAVE_FOR_LATER_ALREADY_SAVED() {
+    return `⚠️ ${t('cart:toast.saveForLaterAlreadySaved')}`
+  },
+  get MOVE_TO_CART_SUCCESS() {
+    return `🛒 ${t('cart:toast.moveToCartSuccess')}`
+  },
+  get CLEAR_SAVED_SUCCESS() {
+    return `🗑️ ${t('cart:toast.clearSavedSuccess')}`
+  },
 
   // Review messages
-  REVIEW_LIKE_SUCCESS: '❤️ Đã thích đánh giá!',
-  REVIEW_UNLIKE_SUCCESS: '💔 Đã bỏ thích đánh giá',
-  REVIEW_LIKE_ERROR: '❌ Không thể thực hiện thao tác',
+  get REVIEW_LIKE_SUCCESS() {
+    return `❤️ ${t('product:toast.reviewLikeSuccess')}`
+  },
+  get REVIEW_UNLIKE_SUCCESS() {
+    return `💔 ${t('product:toast.reviewUnlikeSuccess')}`
+  },
+  get REVIEW_LIKE_ERROR() {
+    return `❌ ${t('product:toast.reviewLikeError')}`
+  },
 
   // Wishlist messages
-  WISHLIST_ADD_SUCCESS: '❤️ Đã thêm vào danh sách yêu thích!',
-  WISHLIST_ADD_ERROR: '❌ Không thể thêm vào danh sách yêu thích',
-  WISHLIST_REMOVE_SUCCESS: '💔 Đã xóa khỏi danh sách yêu thích',
-  WISHLIST_REMOVE_ERROR: '❌ Không thể xóa khỏi danh sách yêu thích',
-  WISHLIST_LOGIN_REQUIRED: '⚠️ Vui lòng đăng nhập để sử dụng tính năng này',
+  get WISHLIST_ADD_SUCCESS() {
+    return `❤️ ${t('product:toast.wishlistAddSuccess')}`
+  },
+  get WISHLIST_ADD_ERROR() {
+    return `❌ ${t('product:toast.wishlistAddError')}`
+  },
+  get WISHLIST_REMOVE_SUCCESS() {
+    return `💔 ${t('product:toast.wishlistRemoveSuccess')}`
+  },
+  get WISHLIST_REMOVE_ERROR() {
+    return `❌ ${t('product:toast.wishlistRemoveError')}`
+  },
+  get WISHLIST_LOGIN_REQUIRED() {
+    return `⚠️ ${t('auth:toast.loginRequired')}`
+  },
 
   // Notification messages
-  MARK_AS_READ_ERROR: '❌ Không thể đánh dấu đã đọc',
-  MARK_ALL_AS_READ_SUCCESS: '✅ Đã đánh dấu tất cả thông báo là đã đọc',
-  MARK_ALL_AS_READ_ERROR: '❌ Không thể đánh dấu tất cả đã đọc',
+  get MARK_AS_READ_ERROR() {
+    return `❌ ${t('notification:toast.markAsReadError')}`
+  },
+  get MARK_ALL_AS_READ_SUCCESS() {
+    return `✅ ${t('notification:toast.markAllAsReadSuccess')}`
+  },
+  get MARK_ALL_AS_READ_ERROR() {
+    return `❌ ${t('notification:toast.markAllAsReadError')}`
+  },
 
   // Generic messages
-  GENERIC_ERROR: '❌ Có lỗi xảy ra, vui lòng thử lại'
+  get GENERIC_ERROR() {
+    return `❌ ${t('common:status.error')}`
+  }
 } as const
 
 // Temporary ID prefixes

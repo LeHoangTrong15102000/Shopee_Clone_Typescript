@@ -1,5 +1,6 @@
 import { memo, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { WALLETS, WalletType } from './components/WalletCard'
 import WalletSelectionView from './components/WalletSelectionView'
 import QRDisplayView from './components/QRDisplayView'
@@ -37,6 +38,7 @@ const EWalletPayment = memo(function EWalletPayment({
   onPaymentComplete,
   onPaymentFailed
 }: EWalletPaymentProps) {
+  const { t } = useTranslation('payment')
   const [flowState, setFlowState] = useState<PaymentFlowState>('select')
   const [selectedWallet, setSelectedWallet] = useState<WalletType | null>(null)
   const [timeRemaining, setTimeRemaining] = useState(QR_EXPIRATION_SECONDS)
@@ -68,8 +70,8 @@ const EWalletPayment = memo(function EWalletPayment({
   }, [])
 
   const handleLinkNewWallet = useCallback(() => {
-    alert('Chức năng liên kết ví mới sẽ được triển khai sau')
-  }, [])
+    alert(t('eWallet.linkNewWalletMessage'))
+  }, [t])
 
   const handleProceedToQR = useCallback(() => {
     if (!selectedWallet) return
@@ -88,13 +90,13 @@ const EWalletPayment = memo(function EWalletPayment({
           setFlowState('success')
           onPaymentComplete?.()
         } else {
-          setErrorMessage('Giao dịch bị từ chối bởi ví điện tử')
+          setErrorMessage(t('eWallet.transactionRejected'))
           setFlowState('failed')
-          onPaymentFailed?.('Giao dịch bị từ chối')
+          onPaymentFailed?.(t('eWallet.transactionRejected'))
         }
       }, 3000)
     }, 1000)
-  }, [selectedWalletInfo, onPaymentComplete, onPaymentFailed])
+  }, [selectedWalletInfo, onPaymentComplete, onPaymentFailed, t])
 
   const handleCancel = useCallback(() => {
     setFlowState('select')

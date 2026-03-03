@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import orderTrackingApi from 'src/apis/orderTracking.api'
 import OrderTimeline from 'src/components/OrderTimeline'
@@ -30,13 +31,13 @@ const STATUS_MAP: Record<string, number> = {
   returned: purchasesStatus.cancelled
 }
 
-// Status labels for toast notifications
-const STATUS_LABELS: Record<number, string> = {
-  [purchasesStatus.waitForConfirmation]: 'Chờ xác nhận',
-  [purchasesStatus.waitForGetting]: 'Chờ lấy hàng',
-  [purchasesStatus.inProgress]: 'Đang giao',
-  [purchasesStatus.delivered]: 'Đã giao',
-  [purchasesStatus.cancelled]: 'Đã hủy'
+// Status labels keys for toast notifications
+const STATUS_LABEL_KEYS: Record<number, string> = {
+  [purchasesStatus.waitForConfirmation]: 'status.waitForConfirmation',
+  [purchasesStatus.waitForGetting]: 'status.waitForGetting',
+  [purchasesStatus.inProgress]: 'status.inProgress',
+  [purchasesStatus.delivered]: 'status.delivered',
+  [purchasesStatus.cancelled]: 'status.cancelled'
 }
 
 // Container animation variants
@@ -60,6 +61,7 @@ export default function LiveOrderTracker({
   trackingNumber = 'VN2024SHOP001',
   carrier = 'Giao Hàng Nhanh'
 }: LiveOrderTrackerProps) {
+  const { t } = useTranslation('order')
   const reducedMotion = useReducedMotion()
   const [currentStatus, setCurrentStatus] = useState(initialStatus)
 
@@ -107,17 +109,18 @@ export default function LiveOrderTracker({
         setCurrentStatus(mappedStatus)
 
         // Show toast notification for status change
-        const statusLabel = STATUS_LABELS[mappedStatus] || 'Cập nhật'
+        const statusLabelKey = STATUS_LABEL_KEYS[mappedStatus] || 'status.update'
+        const statusLabel = t(statusLabelKey as never)
         if (mappedStatus === purchasesStatus.delivered) {
-          toast.success(`🎉 Đơn hàng ${statusLabel}!`, { autoClose: 5000 })
+          toast.success(t('toast.orderDelivered', { status: statusLabel }), { autoClose: 5000 })
         } else if (mappedStatus === purchasesStatus.cancelled) {
-          toast.warning(`Đơn hàng ${statusLabel}`, { autoClose: 5000 })
+          toast.warning(t('toast.orderCancelled', { status: statusLabel }), { autoClose: 5000 })
         } else {
-          toast.info(`Đơn hàng: ${statusLabel}`, { autoClose: 4000 })
+          toast.info(t('toast.orderUpdate', { status: statusLabel }), { autoClose: 4000 })
         }
       }
     }
-  }, [socketStatus, currentStatus])
+  }, [socketStatus, currentStatus, t])
 
   // Calculate estimated delivery time (mock: 2-3 days from now for in-progress orders)
   const getEstimatedDelivery = useCallback(() => {
@@ -171,8 +174,8 @@ export default function LiveOrderTracker({
               </svg>
             </div>
             <div>
-              <h4 className='font-semibold text-white'>Theo dõi đơn hàng</h4>
-              <p className='text-xs text-white/80'>Mã vận đơn: {trackingNumber}</p>
+              <h4 className='font-semibold text-white'>{t('tracking.title')}</h4>
+              <p className='text-xs text-white/80'>{t('tracking.trackingNumber')}: {trackingNumber}</p>
             </div>
           </div>
 
@@ -188,7 +191,7 @@ export default function LiveOrderTracker({
                 <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75' />
                 <span className='relative inline-flex h-2 w-2 rounded-full bg-white' />
               </span>
-              <span className='text-xs font-medium text-white'>LIVE</span>
+              <span className='text-xs font-medium text-white'>{t('tracking.live')}</span>
             </motion.div>
           )}
 
@@ -202,7 +205,7 @@ export default function LiveOrderTracker({
                   clipRule='evenodd'
                 />
               </svg>
-              <span className='text-xs font-medium text-white'>Hoàn thành</span>
+              <span className='text-xs font-medium text-white'>{t('tracking.completed')}</span>
             </div>
           )}
         </div>
@@ -232,11 +235,11 @@ export default function LiveOrderTracker({
           </div>
           <div className='flex-1'>
             <p className='text-sm font-medium text-gray-900 dark:text-gray-100'>{carrier}</p>
-            <p className='text-xs text-gray-500 dark:text-gray-400'>Đơn vị vận chuyển</p>
+            <p className='text-xs text-gray-500 dark:text-gray-400'>{t('tracking.carrier')}</p>
           </div>
           <div className='text-right'>
             <p className='text-sm font-medium text-[#ee4d2d]'>{trackingNumber}</p>
-            <p className='text-xs text-gray-500 dark:text-gray-400'>Mã vận đơn</p>
+            <p className='text-xs text-gray-500 dark:text-gray-400'>{t('tracking.trackingNumber')}</p>
           </div>
         </motion.div>
 
@@ -267,7 +270,7 @@ export default function LiveOrderTracker({
                   </svg>
                 </div>
                 <div>
-                  <p className='text-sm text-gray-600'>Dự kiến giao hàng</p>
+                  <p className='text-sm text-gray-600'>{t('tracking.estimatedDelivery')}</p>
                   <p className='text-base font-semibold text-[#ee4d2d]'>{estimatedDelivery}</p>
                 </div>
               </div>
@@ -296,7 +299,7 @@ export default function LiveOrderTracker({
               <path strokeLinecap='round' strokeLinejoin='round' d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
             </svg>
             <p className='text-xs text-gray-400 dark:text-gray-500'>
-              Cập nhật lần cuối:{' '}
+              {t('tracking.lastUpdate')}:{' '}
               {new Date(lastUpdate).toLocaleString('vi-VN', {
                 day: '2-digit',
                 month: '2-digit',

@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { purchasesStatus } from 'src/constant/purchase'
 import Button from 'src/components/Button'
 
@@ -8,15 +9,16 @@ interface PurchaseTabBarProps {
 }
 
 const purchaseTabs = [
-  { status: purchasesStatus.all, name: 'Tất cả' },
-  { status: purchasesStatus.waitForConfirmation, name: 'Chờ xác nhận' },
-  { status: purchasesStatus.waitForGetting, name: 'Chờ lấy hàng' },
-  { status: purchasesStatus.inProgress, name: 'Đang giao hàng' },
-  { status: purchasesStatus.delivered, name: 'Hoàn thành' },
-  { status: purchasesStatus.cancelled, name: 'Đã hủy' }
+  { status: purchasesStatus.all, nameKey: 'history.all' },
+  { status: purchasesStatus.waitForConfirmation, nameKey: 'history.pendingConfirmation' },
+  { status: purchasesStatus.waitForGetting, nameKey: 'history.pendingPickup' },
+  { status: purchasesStatus.inProgress, nameKey: 'history.inDelivery' },
+  { status: purchasesStatus.delivered, nameKey: 'history.completed' },
+  { status: purchasesStatus.cancelled, nameKey: 'history.cancelled' }
 ]
 
 const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
+  const { t } = useTranslation('user')
   return (
     <div className='sticky top-0 z-20 scrollbar-hide flex items-center overflow-x-auto rounded-t-sm bg-white shadow-xs dark:bg-slate-800'>
       {purchaseTabs.map((tab) => (
@@ -34,7 +36,7 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
             }
           )}
         >
-          {tab.name}
+          {t(tab.nameKey as never)}
         </Button>
       ))}
     </div>

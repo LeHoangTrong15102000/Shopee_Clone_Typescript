@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { PaymentMethod, PaymentMethodType } from 'src/types/checkout.type'
 import checkoutApi from 'src/apis/checkout.api'
 import { PaymentIcon } from 'src/components/Icons'
@@ -15,6 +16,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
   selectedMethodType,
   onSelect
 }: PaymentMethodSelectorProps) {
+  const { t } = useTranslation('payment')
   const { data: methodsData, isLoading } = useQuery({
     queryKey: ['payment-methods'],
     queryFn: async () => {
@@ -78,7 +80,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
 
               {!method.isAvailable && (
                 <span className='ml-auto rounded-sm bg-gray-200 px-2 py-1 text-xs text-gray-600 dark:bg-slate-700 dark:text-gray-400'>
-                  Không khả dụng
+                  {t('methodSelector.unavailable')}
                 </span>
               )}
             </div>
@@ -92,19 +94,19 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
           animate={{ opacity: 1, height: 'auto' }}
           className='rounded-lg bg-blue-50 p-4 dark:bg-blue-900/30'
         >
-          <h4 className='font-medium text-blue-900 dark:text-blue-300'>Thông tin chuyển khoản</h4>
+          <h4 className='font-medium text-blue-900 dark:text-blue-300'>{t('methodSelector.bankTransferInfo')}</h4>
           <div className='mt-2 space-y-1 text-sm text-blue-800 dark:text-blue-200'>
             <p>
-              Ngân hàng: <span className='font-medium'>Vietcombank</span>
+              {t('methodSelector.bank')}: <span className='font-medium'>Vietcombank</span>
             </p>
             <p>
-              Số tài khoản: <span className='font-medium'>1234567890</span>
+              {t('methodSelector.accountNumber')}: <span className='font-medium'>1234567890</span>
             </p>
             <p>
-              Chủ tài khoản: <span className='font-medium'>SHOPEE CLONE</span>
+              {t('methodSelector.accountHolder')}: <span className='font-medium'>SHOPEE CLONE</span>
             </p>
             <p className='mt-2 text-xs text-blue-600 dark:text-blue-400'>
-              * Vui lòng chuyển khoản trong vòng 24h sau khi đặt hàng
+              * {t('methodSelector.transferNote')}
             </p>
           </div>
         </motion.div>
@@ -116,7 +118,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
           animate={{ opacity: 1, height: 'auto' }}
           className='rounded-xl bg-linear-to-br from-purple-50 via-white to-pink-50 p-4 ring-1 ring-purple-100 dark:from-purple-900/30 dark:via-slate-800 dark:to-pink-900/30 dark:ring-purple-800'
         >
-          <h4 className='font-medium text-purple-900 dark:text-purple-300'>Chọn ví điện tử</h4>
+          <h4 className='font-medium text-purple-900 dark:text-purple-300'>{t('methodSelector.selectEWallet')}</h4>
           <div className='mt-3 flex gap-3'>
             <Button
               animated={false}

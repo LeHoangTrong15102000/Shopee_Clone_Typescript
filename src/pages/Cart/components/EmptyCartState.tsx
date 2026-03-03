@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 import SaveForLaterSection from 'src/components/SaveForLaterSection'
 import { SavedItem } from 'src/hooks/useSaveForLater'
@@ -38,6 +39,7 @@ const EmptyCartState = ({
   noproduct,
   path
 }: EmptyCartStateProps) => {
+  const { t } = useTranslation('cart')
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -74,7 +76,7 @@ const EmptyCartState = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
       >
-        Giỏ hàng của bạn còn trống
+        {t('empty.message')}
       </motion.span>
       <Link to={path.home} className='mt-5 text-left'>
         <motion.div
@@ -95,7 +97,7 @@ const EmptyCartState = ({
             animated={false}
             className='flex h-10 w-full items-center justify-center rounded-sm text-center text-sm uppercase sm:mt-0 sm:w-[168px]'
           >
-            Mua ngay
+            {t('empty.shopNow')}
           </Button>
         </motion.div>
       </Link>
