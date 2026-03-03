@@ -92,4 +92,3 @@ const UploadReceipt = memo(function UploadReceipt({ onFileSelect }: { onFileSele
 })
 
 export default UploadReceipt
-

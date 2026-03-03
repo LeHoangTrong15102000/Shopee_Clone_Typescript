@@ -53,13 +53,24 @@ const FailedAnimation = memo(function FailedAnimation() {
 
 export const WaitingView = memo(function WaitingView({ walletName }: { walletName: string }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className='flex flex-col items-center space-y-6 py-8'>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className='flex flex-col items-center space-y-6 py-8'
+    >
       <LoadingSpinner />
       <div className='text-center'>
         <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Đang chờ thanh toán...</h4>
-        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Vui lòng hoàn tất thanh toán trên ứng dụng {walletName}</p>
+        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          Vui lòng hoàn tất thanh toán trên ứng dụng {walletName}
+        </p>
       </div>
-      <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className='flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400'>
+      <motion.div
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className='flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400'
+      >
         <span className='h-2 w-2 rounded-full bg-orange' />
         <span>Đang xử lý giao dịch</span>
       </motion.div>
@@ -69,52 +80,118 @@ export const WaitingView = memo(function WaitingView({ walletName }: { walletNam
 
 export const SuccessView = memo(function SuccessView({ amount }: { amount: number }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className='flex flex-col items-center space-y-6 py-8'>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className='flex flex-col items-center space-y-6 py-8'
+    >
       <SuccessAnimation />
       <div className='text-center'>
         <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Thanh toán thành công!</h4>
-        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Bạn đã thanh toán thành công {formatCurrency(amount)}</p>
+        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          Bạn đã thanh toán thành công {formatCurrency(amount)}
+        </p>
       </div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className='rounded-lg bg-green-50 px-4 py-2 text-sm text-green-700 dark:bg-green-900/30 dark:text-green-400'>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className='rounded-lg bg-green-50 px-4 py-2 text-sm text-green-700 dark:bg-green-900/30 dark:text-green-400'
+      >
         Đơn hàng của bạn đang được xử lý
       </motion.div>
     </motion.div>
   )
 })
 
-export const FailedView = memo(function FailedView({ message, onRetry, onCancel }: { message: string; onRetry: () => void; onCancel: () => void }) {
+export const FailedView = memo(function FailedView({
+  message,
+  onRetry,
+  onCancel
+}: {
+  message: string
+  onRetry: () => void
+  onCancel: () => void
+}) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className='flex flex-col items-center space-y-6 py-8'>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className='flex flex-col items-center space-y-6 py-8'
+    >
       <FailedAnimation />
       <div className='text-center'>
         <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Thanh toán thất bại</h4>
         <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>{message}</p>
       </div>
       <div className='flex w-full flex-col gap-3 sm:flex-row sm:justify-center'>
-        <Button type='button' onClick={onRetry} className='rounded-lg bg-orange px-6 py-3 text-white hover:bg-orange/90'>Thử lại</Button>
-        <Button type='button' onClick={onCancel} className='rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'>Chọn phương thức khác</Button>
+        <Button
+          type='button'
+          onClick={onRetry}
+          className='rounded-lg bg-orange px-6 py-3 text-white hover:bg-orange/90'
+        >
+          Thử lại
+        </Button>
+        <Button
+          type='button'
+          onClick={onCancel}
+          className='rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
+        >
+          Chọn phương thức khác
+        </Button>
       </div>
     </motion.div>
   )
 })
 
-export const TimeoutView = memo(function TimeoutView({ onRegenerateQR, onCancel }: { onRegenerateQR: () => void; onCancel: () => void }) {
+export const TimeoutView = memo(function TimeoutView({
+  onRegenerateQR,
+  onCancel
+}: {
+  onRegenerateQR: () => void
+  onCancel: () => void
+}) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className='flex flex-col items-center space-y-6 py-8'>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className='flex flex-col items-center space-y-6 py-8'
+    >
       <div className='flex h-20 w-20 items-center justify-center rounded-full bg-orange/10'>
         <svg className='h-10 w-10 text-orange' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       </div>
       <div className='text-center'>
         <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Mã QR đã hết hạn</h4>
-        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Mã QR thanh toán đã hết hạn. Vui lòng tạo mã mới để tiếp tục.</p>
+        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          Mã QR thanh toán đã hết hạn. Vui lòng tạo mã mới để tiếp tục.
+        </p>
       </div>
       <div className='flex w-full flex-col gap-3 sm:flex-row sm:justify-center'>
-        <Button type='button' onClick={onRegenerateQR} className='rounded-lg bg-orange px-6 py-3 text-white hover:bg-orange/90'>Tạo mã QR mới</Button>
-        <Button type='button' onClick={onCancel} className='rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'>Hủy</Button>
+        <Button
+          type='button'
+          onClick={onRegenerateQR}
+          className='rounded-lg bg-orange px-6 py-3 text-white hover:bg-orange/90'
+        >
+          Tạo mã QR mới
+        </Button>
+        <Button
+          type='button'
+          onClick={onCancel}
+          className='rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
+        >
+          Hủy
+        </Button>
       </div>
     </motion.div>
   )
 })
-

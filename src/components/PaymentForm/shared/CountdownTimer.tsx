@@ -157,4 +157,3 @@ export const BankTransferCountdownTimer = memo(function BankTransferCountdownTim
     </motion.div>
   )
 })
-

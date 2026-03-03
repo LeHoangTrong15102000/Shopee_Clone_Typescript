@@ -4,9 +4,17 @@ import Button from 'src/components/Button'
 import { CardTypeIcon, CardType } from './CardTypeIcons'
 
 const CardFront = memo(function CardFront({
-  cardNumber, cardHolder, expiryDate, cardType, gradient
+  cardNumber,
+  cardHolder,
+  expiryDate,
+  cardType,
+  gradient
 }: {
-  cardNumber: string; cardHolder: string; expiryDate: string; cardType: CardType; gradient: string
+  cardNumber: string
+  cardHolder: string
+  expiryDate: string
+  cardType: CardType
+  gradient: string
 }) {
   const displayNumber = cardNumber || '•••• •••• •••• ••••'
   const displayHolder = cardHolder || 'CARDHOLDER NAME'
@@ -17,7 +25,9 @@ const CardFront = memo(function CardFront({
       className={`absolute inset-0 rounded-xl bg-linear-to-br ${gradient} p-6 text-white shadow-xl backface-hidden`}
       style={{ backfaceVisibility: 'hidden' }}
     >
-      <div className='absolute top-6 right-6'><CardTypeIcon type={cardType} /></div>
+      <div className='absolute top-6 right-6'>
+        <CardTypeIcon type={cardType} />
+      </div>
       <div className='absolute top-12 left-6 h-10 w-14 rounded-sm bg-linear-to-br from-yellow-300 to-yellow-500' />
       <div className='absolute right-6 bottom-20 left-6'>
         <p className='font-mono text-xl tracking-widest'>{displayNumber}</p>
@@ -36,7 +46,15 @@ const CardFront = memo(function CardFront({
   )
 })
 
-const CardBack = memo(function CardBack({ cvv, gradient, cardType }: { cvv: string; gradient: string; cardType: CardType }) {
+const CardBack = memo(function CardBack({
+  cvv,
+  gradient,
+  cardType
+}: {
+  cvv: string
+  gradient: string
+  cardType: CardType
+}) {
   const cvvLength = cardType === 'amex' ? 4 : 3
   const displayCvv = cvv ? cvv.padEnd(cvvLength, '•') : '•'.repeat(cvvLength)
 
@@ -67,9 +85,19 @@ const CardBack = memo(function CardBack({ cvv, gradient, cardType }: { cvv: stri
 })
 
 export const VisualCardPreview = memo(function VisualCardPreview({
-  cardNumber, cardHolder, expiryDate, cardType, cvv, isFlipped
+  cardNumber,
+  cardHolder,
+  expiryDate,
+  cardType,
+  cvv,
+  isFlipped
 }: {
-  cardNumber: string; cardHolder: string; expiryDate: string; cardType: CardType; cvv: string; isFlipped: boolean
+  cardNumber: string
+  cardHolder: string
+  expiryDate: string
+  cardType: CardType
+  cvv: string
+  isFlipped: boolean
 }) {
   const gradientMap: Record<CardType, string> = {
     visa: 'from-blue-600 to-blue-800',
@@ -89,7 +117,13 @@ export const VisualCardPreview = memo(function VisualCardPreview({
         transition={{ duration: 0.6, ease: 'easeInOut' }}
         style={{ transformStyle: 'preserve-3d' }}
       >
-        <CardFront cardNumber={cardNumber} cardHolder={cardHolder} expiryDate={expiryDate} cardType={cardType} gradient={gradient} />
+        <CardFront
+          cardNumber={cardNumber}
+          cardHolder={cardHolder}
+          expiryDate={expiryDate}
+          cardType={cardType}
+          gradient={gradient}
+        />
         <CardBack cvv={cvv} gradient={gradient} cardType={cardType} />
       </motion.div>
     </div>
@@ -97,9 +131,13 @@ export const VisualCardPreview = memo(function VisualCardPreview({
 })
 
 export const CVVTooltip = memo(function CVVTooltip({
-  isVisible, onClose, cardType
+  isVisible,
+  onClose,
+  cardType
 }: {
-  isVisible: boolean; onClose: () => void; cardType: CardType
+  isVisible: boolean
+  onClose: () => void
+  cardType: CardType
 }) {
   const cvvLength = cardType === 'amex' ? 4 : 3
   const cvvLocation = cardType === 'amex' ? 'mặt trước thẻ' : 'mặt sau thẻ'
@@ -113,13 +151,25 @@ export const CVVTooltip = memo(function CVVTooltip({
           exit={{ opacity: 0, y: -10 }}
           className='absolute bottom-full left-0 z-50 mb-2 w-64 rounded-lg border border-gray-200 bg-white p-4 shadow-xl dark:border-slate-600 dark:bg-slate-800'
         >
-          <Button onClick={onClose} variant='ghost' animated={false} className='absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400' aria-label='Đóng tooltip'>
+          <Button
+            onClick={onClose}
+            variant='ghost'
+            animated={false}
+            className='absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400'
+            aria-label='Đóng tooltip'
+          >
             <svg className='h-4 w-4' viewBox='0 0 20 20' fill='currentColor'>
-              <path fillRule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clipRule='evenodd' />
+              <path
+                fillRule='evenodd'
+                d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                clipRule='evenodd'
+              />
             </svg>
           </Button>
           <p className='mb-3 text-sm font-medium text-gray-800 dark:text-gray-200'>CVV là gì?</p>
-          <p className='mb-3 text-xs text-gray-600 dark:text-gray-400'>Mã bảo mật {cvvLength} chữ số nằm ở {cvvLocation}</p>
+          <p className='mb-3 text-xs text-gray-600 dark:text-gray-400'>
+            Mã bảo mật {cvvLength} chữ số nằm ở {cvvLocation}
+          </p>
           <div className='relative h-20 w-full rounded-lg bg-linear-to-br from-gray-600 to-gray-800'>
             {cardType === 'amex' ? (
               <div className='absolute top-4 right-4'>
@@ -130,7 +180,9 @@ export const CVVTooltip = memo(function CVVTooltip({
                 <div className='absolute top-4 right-0 left-0 h-6 bg-gray-900' />
                 <div className='absolute right-4 bottom-4 left-4 flex items-center justify-end'>
                   <div className='mr-2 h-4 w-24 rounded-sm bg-white' />
-                  <div className='rounded-sm bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>{cvvLength} số</div>
+                  <div className='rounded-sm bg-yellow-400 px-2 py-1 text-xs font-bold text-gray-800'>
+                    {cvvLength} số
+                  </div>
                 </div>
               </>
             )}
@@ -140,4 +192,3 @@ export const CVVTooltip = memo(function CVVTooltip({
     </AnimatePresence>
   )
 })
-

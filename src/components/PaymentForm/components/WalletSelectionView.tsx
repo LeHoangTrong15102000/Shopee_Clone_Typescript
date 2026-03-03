@@ -68,4 +68,3 @@ const WalletSelectionView = memo(function WalletSelectionView({
 })
 
 export default WalletSelectionView
-

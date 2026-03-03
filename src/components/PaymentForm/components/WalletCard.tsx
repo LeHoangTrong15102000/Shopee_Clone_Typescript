@@ -16,9 +16,36 @@ export interface WalletInfo {
 }
 
 export const WALLETS: WalletInfo[] = [
-  { id: 'momo', name: 'MoMo', color: 'text-pink-600', bgColor: 'bg-pink-50', borderColor: 'border-pink-500', balance: 2500000, isLinked: true, deepLink: 'momo://payment' },
-  { id: 'zalopay', name: 'ZaloPay', color: 'text-blue-600', bgColor: 'bg-blue-50', borderColor: 'border-blue-500', balance: 1800000, isLinked: true, deepLink: 'zalopay://payment' },
-  { id: 'vnpay', name: 'VNPay', color: 'text-red-600', bgColor: 'bg-linear-to-r from-red-50 to-blue-50', borderColor: 'border-red-500', balance: 3200000, isLinked: false, deepLink: 'vnpay://payment' }
+  {
+    id: 'momo',
+    name: 'MoMo',
+    color: 'text-pink-600',
+    bgColor: 'bg-pink-50',
+    borderColor: 'border-pink-500',
+    balance: 2500000,
+    isLinked: true,
+    deepLink: 'momo://payment'
+  },
+  {
+    id: 'zalopay',
+    name: 'ZaloPay',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-500',
+    balance: 1800000,
+    isLinked: true,
+    deepLink: 'zalopay://payment'
+  },
+  {
+    id: 'vnpay',
+    name: 'VNPay',
+    color: 'text-red-600',
+    bgColor: 'bg-linear-to-r from-red-50 to-blue-50',
+    borderColor: 'border-red-500',
+    balance: 3200000,
+    isLinked: false,
+    deepLink: 'vnpay://payment'
+  }
 ]
 
 export const formatCurrency = (amount: number): string => {
@@ -33,7 +60,9 @@ export const WalletLogo = memo(function WalletLogo({ wallet }: { wallet: WalletT
   }
   const config = logoConfig[wallet]
   return (
-    <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${config.gradient} shadow-lg`}>
+    <div
+      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${config.gradient} shadow-lg`}
+    >
       <span className='text-xl font-bold text-white'>{config.text}</span>
     </div>
   )
@@ -103,4 +132,3 @@ const WalletCard = memo(function WalletCard({
 })
 
 export default WalletCard
-

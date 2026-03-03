@@ -41,4 +41,3 @@ const BankLogo = memo(function BankLogo({ bank, size = 'md' }: { bank: BankInfo;
 })
 
 export default BankLogo
-

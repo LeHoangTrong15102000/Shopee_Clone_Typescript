@@ -123,10 +123,24 @@ const EWalletPayment = memo(function EWalletPayment({
     >
       <AnimatePresence mode='wait'>
         {flowState === 'select' && (
-          <WalletSelectionView key='select' selectedWallet={selectedWallet} onSelectWallet={handleSelectWallet} onLinkNewWallet={handleLinkNewWallet} onProceed={handleProceedToQR} />
+          <WalletSelectionView
+            key='select'
+            selectedWallet={selectedWallet}
+            onSelectWallet={handleSelectWallet}
+            onLinkNewWallet={handleLinkNewWallet}
+            onProceed={handleProceedToQR}
+          />
         )}
         {flowState === 'qr_display' && selectedWalletInfo && (
-          <QRDisplayView key='qr_display' wallet={selectedWalletInfo} amount={amount} timeRemaining={timeRemaining} isMobile={isMobile} onOpenApp={handleOpenApp} onCancel={handleCancel} />
+          <QRDisplayView
+            key='qr_display'
+            wallet={selectedWalletInfo}
+            amount={amount}
+            timeRemaining={timeRemaining}
+            isMobile={isMobile}
+            onOpenApp={handleOpenApp}
+            onCancel={handleCancel}
+          />
         )}
         {flowState === 'waiting' && selectedWalletInfo && (
           <WaitingView key='waiting' walletName={selectedWalletInfo.name} />
@@ -145,4 +159,3 @@ const EWalletPayment = memo(function EWalletPayment({
 
 export default EWalletPayment
 export type { WalletType }
-

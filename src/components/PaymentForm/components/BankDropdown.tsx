@@ -4,14 +4,86 @@ import Button from 'src/components/Button'
 import BankLogo, { BankInfo } from './BankLogo'
 
 const BANKS: BankInfo[] = [
-  { id: 'vcb', name: 'Vietcombank', shortName: 'VCB', color: 'text-green-700', bgColor: 'bg-green-50', accountNumber: '1234567890123', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Hà Nội' },
-  { id: 'tcb', name: 'Techcombank', shortName: 'TCB', color: 'text-red-600', bgColor: 'bg-red-50', accountNumber: '19035678901234', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh HCM' },
-  { id: 'bidv', name: 'BIDV', shortName: 'BIDV', color: 'text-blue-700', bgColor: 'bg-blue-50', accountNumber: '31410001234567', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Đống Đa' },
-  { id: 'vtb', name: 'VietinBank', shortName: 'CTG', color: 'text-blue-800', bgColor: 'bg-blue-50', accountNumber: '108001234567', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Cầu Giấy' },
-  { id: 'mb', name: 'MB Bank', shortName: 'MB', color: 'text-purple-700', bgColor: 'bg-purple-50', accountNumber: '0801234567890', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Thanh Xuân' },
-  { id: 'acb', name: 'ACB', shortName: 'ACB', color: 'text-blue-600', bgColor: 'bg-blue-50', accountNumber: '12345678901', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Tân Bình' },
-  { id: 'stb', name: 'Sacombank', shortName: 'STB', color: 'text-blue-500', bgColor: 'bg-cyan-50', accountNumber: '060123456789', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Quận 1' },
-  { id: 'tpb', name: 'TPBank', shortName: 'TPB', color: 'text-purple-600', bgColor: 'bg-purple-50', accountNumber: '01234567890', accountHolder: 'CONG TY SHOPEE CLONE', branch: 'Chi nhánh Hoàn Kiếm' }
+  {
+    id: 'vcb',
+    name: 'Vietcombank',
+    shortName: 'VCB',
+    color: 'text-green-700',
+    bgColor: 'bg-green-50',
+    accountNumber: '1234567890123',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Hà Nội'
+  },
+  {
+    id: 'tcb',
+    name: 'Techcombank',
+    shortName: 'TCB',
+    color: 'text-red-600',
+    bgColor: 'bg-red-50',
+    accountNumber: '19035678901234',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh HCM'
+  },
+  {
+    id: 'bidv',
+    name: 'BIDV',
+    shortName: 'BIDV',
+    color: 'text-blue-700',
+    bgColor: 'bg-blue-50',
+    accountNumber: '31410001234567',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Đống Đa'
+  },
+  {
+    id: 'vtb',
+    name: 'VietinBank',
+    shortName: 'CTG',
+    color: 'text-blue-800',
+    bgColor: 'bg-blue-50',
+    accountNumber: '108001234567',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Cầu Giấy'
+  },
+  {
+    id: 'mb',
+    name: 'MB Bank',
+    shortName: 'MB',
+    color: 'text-purple-700',
+    bgColor: 'bg-purple-50',
+    accountNumber: '0801234567890',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Thanh Xuân'
+  },
+  {
+    id: 'acb',
+    name: 'ACB',
+    shortName: 'ACB',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    accountNumber: '12345678901',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Tân Bình'
+  },
+  {
+    id: 'stb',
+    name: 'Sacombank',
+    shortName: 'STB',
+    color: 'text-blue-500',
+    bgColor: 'bg-cyan-50',
+    accountNumber: '060123456789',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Quận 1'
+  },
+  {
+    id: 'tpb',
+    name: 'TPBank',
+    shortName: 'TPB',
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    accountNumber: '01234567890',
+    accountHolder: 'CONG TY SHOPEE CLONE',
+    branch: 'Chi nhánh Hoàn Kiếm'
+  }
 ]
 
 export { BANKS }
@@ -162,4 +234,3 @@ const BankDropdown = memo(function BankDropdown({
 })
 
 export default BankDropdown
-

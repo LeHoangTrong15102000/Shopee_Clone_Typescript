@@ -36,4 +36,3 @@ const CopyButton = memo(function CopyButton({ text, label }: { text: string; lab
 })
 
 export default CopyButton
-

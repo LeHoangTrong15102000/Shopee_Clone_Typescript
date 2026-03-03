@@ -128,10 +128,18 @@ export function useCardValidation(cardNumber: string, expiryDate: string, cvv: s
   const closeCvvTooltip = useCallback(() => setShowCvvTooltip(false), [])
 
   return {
-    cardType, formattedCardNumber, formattedExpiry,
-    isCardFlipped, showCvvTooltip, validationState, shakeFields,
-    handleCvvFocus, handleCvvBlur, handleCardNumberBlur, handleExpiryBlur,
-    toggleCvvTooltip, closeCvvTooltip
+    cardType,
+    formattedCardNumber,
+    formattedExpiry,
+    isCardFlipped,
+    showCvvTooltip,
+    validationState,
+    shakeFields,
+    handleCvvFocus,
+    handleCvvBlur,
+    handleCardNumberBlur,
+    handleExpiryBlur,
+    toggleCvvTooltip,
+    closeCvvTooltip
   }
 }
-

@@ -41,4 +41,3 @@ const VerificationPendingView = memo(function VerificationPendingView() {
 })
 
 export default VerificationPendingView
-

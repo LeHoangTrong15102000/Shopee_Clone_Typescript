@@ -40,4 +40,3 @@ const SecurityBadges = memo(function SecurityBadges() {
 })
 
 export default SecurityBadges
-

@@ -122,4 +122,3 @@ const QRDisplayView = memo(function QRDisplayView({
 })
 
 export default QRDisplayView
-

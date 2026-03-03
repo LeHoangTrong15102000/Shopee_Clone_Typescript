@@ -66,4 +66,3 @@ const AccountInfoCard = memo(function AccountInfoCard({
 })
 
 export default AccountInfoCard
-

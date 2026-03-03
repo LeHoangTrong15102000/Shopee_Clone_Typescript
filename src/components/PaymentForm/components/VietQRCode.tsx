@@ -64,4 +64,3 @@ const VietQRCode = memo(function VietQRCode({
 })
 
 export default VietQRCode
-
