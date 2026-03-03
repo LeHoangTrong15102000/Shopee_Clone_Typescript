@@ -7,6 +7,15 @@ import '@testing-library/jest-dom/vitest'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
+// Suppress SSL/TLS errors from socket cleanup in CI
+// These are benign errors from socket.io-client cleanup during test teardown
+process.on('unhandledRejection', (reason) => {
+  if (reason && typeof reason === 'object' && 'code' in reason && reason.code === 'ECANCELED') {
+    // Suppress ECANCELED errors from SSL socket cleanup
+    return
+  }
+})
+
 import authRequests from './src/msw/auth.msw'
 import productRequests from './src/msw/product.msw'
 import userRequests from './src/msw/user.msw'

@@ -145,8 +145,7 @@ const Login = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:border-red-500 text-red-500':
-                        errors.email && errors.email.message
+                      'border-red-500 focus:border-red-500 text-red-500': errors.email && errors.email.message
                     }
                   )}
                   type='email'
@@ -164,8 +163,7 @@ const Login = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:border-red-500 text-red-500':
-                        errors.password && errors.password.message
+                      'border-red-500 focus:border-red-500 text-red-500': errors.password && errors.password.message
                     }
                   )}
                   type='password'

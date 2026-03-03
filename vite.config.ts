@@ -153,6 +153,12 @@ export default defineConfig(({ mode }) => {
         outputFile: {
           junit: './test-results/junit-report.xml'
         },
+        // Suppress SSL/TLS errors from socket cleanup in CI
+        onConsoleLog(log) {
+          if (log.includes('ECANCELED') || log.includes('SSL destruction')) {
+            return false // suppress
+          }
+        },
         coverage: {
           provider: 'v8',
           include: ['src/**/*.{ts,tsx}'],

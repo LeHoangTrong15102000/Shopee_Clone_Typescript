@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest'
+import { describe, expect, test, vi, beforeEach, afterEach, afterAll } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { ReactNode } from 'react'
 import { AppContext, AppProvider, getInitialAppContext } from 'src/contexts/app.context'
@@ -88,6 +88,24 @@ const connectSocket = async () => {
 }
 
 vi.mock('socket.io-client', () => ({ io: vi.fn(() => mockSocket) }))
+
+// Global cleanup - runs BEFORE vitest.setup.js afterEach
+afterEach(() => {
+  // Ensure all mock socket handlers are cleared
+  mockEventHandlers.clear()
+  mockSocket.connected = false
+  // Prevent any pending socket operations
+  mockSocket.emit.mockClear()
+  mockSocket.connect.mockClear()
+  mockSocket.disconnect.mockClear()
+})
+
+afterAll(() => {
+  mockEventHandlers.clear()
+  mockSocket.connected = false
+  vi.restoreAllMocks()
+})
+
 vi.mock('src/constant/config', () => ({
   default: {
     baseUrl: 'https://api-ecom.duthanhduoc.com/',
@@ -138,6 +156,7 @@ const createAdminWrapper = () => {
 
 describe('12.1 - WebSocket Connection with Authentication', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket() })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('connects when authenticated', async () => {
     const wrapper = createWrapper(true)
@@ -155,7 +174,7 @@ describe('12.1 - WebSocket Connection with Authentication', () => {
 
 describe('12.2 - Real-time Chat', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('joinChat emits JOIN_CHAT event', async () => {
     const wrapper = createWrapper(true)
@@ -188,6 +207,7 @@ describe('12.2 - Real-time Chat', () => {
 
 describe('12.3 - Typing Indicators', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('startTyping emits TYPING_START', async () => {
     const wrapper = createWrapper(true)
@@ -207,6 +227,7 @@ describe('12.3 - Typing Indicators', () => {
 
 describe('12.4 - Notification Delivery', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('NOTIFICATION adds to notifications and increments unreadCount', async () => {
     const { toast } = await import('react-toastify')
@@ -232,6 +253,7 @@ describe('12.4 - Notification Delivery', () => {
 
 describe('12.5 - Reconnection', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket() })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('disconnect event updates connectionStatus', async () => {
     const wrapper = createWrapper(true)
@@ -255,7 +277,7 @@ describe('12.6 - Graceful Degradation', () => {
 
 describe('Phase2 12.1 - Order Tracking Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('subscribes to order room on mount', async () => {
     const wrapper = createWrapper(true)
@@ -356,7 +378,7 @@ describe('Phase2 12.1 - Order Tracking Hook', () => {
 
 describe('Phase2 12.2 - Flash Sale Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('subscribes to flash sale room on mount', async () => {
     const wrapper = createWrapper(true)
@@ -459,7 +481,7 @@ describe('Phase2 12.2 - Flash Sale Hook', () => {
 
 describe('Phase2 12.3 - Viewer Count Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('handles VIEWER_COUNT_UPDATE event', async () => {
     const wrapper = createWrapper(true)
@@ -529,7 +551,7 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
   }
 
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('handles CART_UPDATED event and sets isSyncing', async () => {
     const wrapper = createCartSyncWrapper(true)
@@ -599,7 +621,7 @@ describe('Phase2 12.4 - Cart Sync Hook', () => {
 
 describe('Phase1 11.1 - usePresence Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('emits get_presence on mount with userId', async () => {
     const wrapper = createWrapper(true)
@@ -667,7 +689,7 @@ describe('Phase1 11.1 - usePresence Hook', () => {
 
 describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('subscribes to product room on mount', async () => {
     const wrapper = createWrapper(true)
@@ -750,7 +772,7 @@ describe('Phase1 11.2 - useLivePriceUpdate Hook', () => {
 
 describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('subscribes to inventory alerts when admin', async () => {
     const wrapper = createAdminWrapper()
@@ -856,7 +878,7 @@ describe('Phase1 11.3 - useInventoryAlerts Hook', () => {
 
 describe('Phase3 12.1 - useLiveReviews Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('handles NEW_REVIEW event', async () => {
     const wrapper = createWrapper(true)
@@ -939,7 +961,7 @@ describe('Phase3 12.1 - useLiveReviews Hook', () => {
 
 describe('Phase3 12.2 - useLiveQA Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('handles NEW_QUESTION event', async () => {
     const wrapper = createWrapper(true)
@@ -1011,7 +1033,7 @@ describe('Phase3 12.2 - useLiveQA Hook', () => {
 
 describe('Phase3 12.3 - useActivityFeed Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('handles ACTIVITY_EVENT', async () => {
     const wrapper = createWrapper(true)
@@ -1070,7 +1092,7 @@ describe('Phase3 12.3 - useActivityFeed Hook', () => {
 
 describe('Phase3 12.4 - useSellerDashboard Hook', () => {
   beforeEach(async () => { mockEventHandlers.clear(); vi.clearAllMocks(); await restoreMockSocket(); mockSocket.connected = true })
-  afterEach(() => { mockSocket.connected = false })
+  afterEach(() => { mockSocket.connected = false; mockEventHandlers.clear(); mockSocket.removeAllListeners() })
 
   test('subscribes when admin', async () => {
     const wrapper = createAdminWrapper()

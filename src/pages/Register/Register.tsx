@@ -1,24 +1,24 @@
-import { Link, useNavigate } from 'react-router'
-import { useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import omit from 'lodash/omit'
+import { useMutation } from '@tanstack/react-query'
+import classNames from 'classnames'
 import { motion } from 'framer-motion'
-import { RegisterSchema, registerSchema } from 'src/utils/rules'
+import omit from 'lodash/omit'
+import { useContext } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import PasswordStrengthMeter from 'src/components/PasswordStrengthMeter'
-import authApi from 'src/apis/auth.api'
-import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
-import { ErrorResponseApi } from 'src/types/utils.type'
-import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
-import Button from 'src/components/Button'
 import path from 'src/constant/path'
-import classNames from 'classnames'
-import { Helmet } from 'react-helmet-async'
+import { AppContext } from 'src/contexts/app.context'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
-import { staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
+import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import { RegisterSchema, registerSchema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 type FormData = RegisterSchema
 // co ra sau thì ra chứ t vẫn đứng ở đây mà thôi có gì mà đâu mà phải sợ
@@ -132,8 +132,7 @@ const Register = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:border-red-500 text-red-500':
-                        errors.email && errors.email.message
+                      'border-red-500 focus:border-red-500 text-red-500': errors.email && errors.email.message
                     }
                   )}
                   type='email'
@@ -151,8 +150,7 @@ const Register = () => {
                   classNameInput={classNames(
                     'w-full rounded-md border border-gray-300 dark:border-slate-600 p-3 shadow-xs dark:shadow-slate-900/30 outline-hidden focus:border-gray-500 dark:focus:border-slate-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500',
                     {
-                      'border-red-500 focus:border-red-500 text-red-500':
-                        errors.password && errors.password.message
+                      'border-red-500 focus:border-red-500 text-red-500': errors.password && errors.password.message
                     }
                   )}
                   type='password'
