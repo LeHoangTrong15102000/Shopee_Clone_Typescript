@@ -164,8 +164,11 @@ const { isLoading, isInitialLoading } = useQuery(...)
 
 // v5
 const { isPending, isLoading } = useQuery(...)
-// isPending: thay thế isLoading cũ
-// isLoading: bây giờ là isPending && isFetching
+// isPending: status === 'pending' — true khi chưa có data trong cache
+//   ⚠️ LƯU Ý: isPending = true ngay cả khi query bị enabled: false và chưa bao giờ fetch
+// isLoading: isPending && isFetching — true CHỈ KHI đang thực sự fetch lần đầu
+//   → Đây chính là isInitialLoading cũ của v4
+// isInitialLoading: vẫn tồn tại nhưng đã DEPRECATED, sẽ bị xóa ở v6
 ```
 
 ### 2.2 Cải Tiến API
@@ -181,35 +184,154 @@ useQuery({ queryKey: ['todos'], queryFn: fetchTodos, ...options })
 useQuery({ queryKey: ['todos'], queryFn: fetchTodos, ...options })
 ```
 
-#### B. Loại bỏ callbacks từ useQuery
+#### B. Loại bỏ callbacks từ useQuery (KHÔNG ảnh hưởng useMutation)
+
+> ⚠️ **QUAN TRỌNG**: `onSuccess`, `onError`, `onSettled` chỉ bị xóa khỏi `useQuery`.
+> Chúng **VẪN HOẠT ĐỘNG BÌNH THƯỜNG** trên `useMutation` và `mutate()`.
+
+```typescript
+// v4 - useQuery có callbacks
+useQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos,
+  onSuccess: (data) => {}, // ❌ Bị loại bỏ trong v5
+  onError: (error) => {}, // ❌ Bị loại bỏ trong v5
+  onSettled: () => {} // ❌ Bị loại bỏ trong v5
+})
+
+// v5 - useMutation VẪN CÓ callbacks (không thay đổi)
+useMutation({
+  mutationFn: updateTodo,
+  onSuccess: (data) => {
+    toast.success('Cập nhật thành công') // ✅ Vẫn hoạt động
+  },
+  onError: (error) => {
+    toast.error('Có lỗi xảy ra') // ✅ Vẫn hoạt động
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: ['todos'] }) // ✅ Vẫn hoạt động
+  }
+})
+```
+
+**Best Practices thay thế callbacks trong useQuery (v5):**
+
+```typescript
+// ✅ Cách 1 (Ưu tiên): Derive state trực tiếp từ query data
+const { data, error } = useQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos
+})
+
+// Render dựa trên data — không cần side effect
+if (error) return <ErrorDisplay error={error} />
+if (data) return <TodoList todos={data} />
+
+// ✅ Cách 2: Global QueryCache callbacks (cho side effects như toast)
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      toast.error(`Lỗi: ${error.message}`)
+    }
+  })
+})
+
+// ⚠️ Cách 3: useEffect (chỉ khi cần sync với external system)
+useEffect(() => {
+  if (data) {
+    // Sync với external system (analytics, localStorage, etc.)
+  }
+}, [data])
+```
+
+### 2.3 Các Breaking Changes Quan Trọng Khác
+
+#### A. `useErrorBoundary` → `throwOnError`
 
 ```typescript
 // v4
 useQuery({
   queryKey: ['todos'],
   queryFn: fetchTodos,
-  onSuccess: (data) => {}, // ❌ Bị loại bỏ
-  onError: (error) => {}, // ❌ Bị loại bỏ
-  onSettled: () => {} // ❌ Bị loại bỏ
+  useErrorBoundary: true // ❌ Đã đổi tên
 })
 
-// v5 - Sử dụng useEffect thay thế
-const { data, error } = useQuery({
+// v5
+useQuery({
   queryKey: ['todos'],
-  queryFn: fetchTodos
+  queryFn: fetchTodos,
+  throwOnError: true // ✅ Tên mới
+})
+```
+
+#### B. `initialPageParam` và `getNextPageParam` bắt buộc
+
+```typescript
+// v4 - initialPageParam không bắt buộc
+useInfiniteQuery({
+  queryKey: ['todos'],
+  queryFn: ({ pageParam = 0 }) => fetchTodos(pageParam), // default trong destructuring
+  getNextPageParam: (lastPage) => lastPage.nextCursor
 })
 
-useEffect(() => {
-  if (data) {
-    // Handle success
-  }
-}, [data])
+// v5 - initialPageParam BẮT BUỘC, getNextPageParam BẮT BUỘC
+useInfiniteQuery({
+  queryKey: ['todos'],
+  queryFn: ({ pageParam }) => fetchTodos(pageParam), // không cần default
+  initialPageParam: 0, // ✅ BẮT BUỘC
+  getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined // ✅ BẮT BUỘC
+  // Lưu ý: return null cũng được chấp nhận (ngoài undefined) để indicate hết trang
+})
+```
 
-useEffect(() => {
-  if (error) {
-    // Handle error
-  }
-}, [error])
+#### C. Window focus refetching chỉ dùng `visibilitychange`
+
+```typescript
+// v4: Sử dụng cả 'focus' event và 'visibilitychange'
+// v5: CHỈ sử dụng 'visibilitychange' event
+// → Giảm false positives khi user chỉ click vào window mà không thực sự rời đi
+```
+
+#### D. `Error` là default error type
+
+```typescript
+// v4 - error type là unknown
+const { error } = useQuery(...)
+// error: unknown → phải type guard
+
+// v5 - error type là Error
+const { error } = useQuery(...)
+// error: Error | null → có thể access error.message trực tiếp
+// Với Axios: cần type guard isAxiosError(error) để access error.response
+```
+
+#### E. `Hydrate` → `HydrationBoundary`
+
+```typescript
+// v4
+import { Hydrate } from '@tanstack/react-query'
+<Hydrate state={dehydratedState}>...</Hydrate>
+
+// v5
+import { HydrationBoundary } from '@tanstack/react-query'
+<HydrationBoundary state={dehydratedState}>...</HydrationBoundary>
+```
+
+#### F. `suspense: true` → Dedicated Suspense Hooks
+
+```typescript
+// v4
+useQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos,
+  suspense: true // ❌ Bị loại bỏ
+})
+
+// v5 - Sử dụng hooks chuyên dụng
+useSuspenseQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos // ✅ Không cần option suspense
+})
 ```
 
 ## 3. Các Kỹ Thuật Nâng Cao
@@ -281,15 +403,20 @@ const { data } = useQuery({
 
 ### 3.3 Scroll Restoration (Khôi Phục Vị Trí Cuộn)
 
+> ⚠️ **LƯU Ý**: `useScrollRestoration` KHÔNG phải hook của `@tanstack/react-query`.
+> Nó thuộc về `@tanstack/react-router`. TanStack Query hỗ trợ scroll restoration
+> gián tiếp thông qua caching — dữ liệu được giữ trong cache giúp UI không bị reset
+> khi navigate back, từ đó scroll position được khôi phục tự nhiên.
+
 ```typescript
-import { useScrollRestoration } from '@tanstack/react-query'
+// TanStack Query KHÔNG có useScrollRestoration hook
+// Thay vào đó, caching mechanism giúp scroll restoration hoạt động:
 
 function TodoList() {
-  useScrollRestoration('todo-list')
-
   const { data } = useQuery({
     queryKey: ['todos'],
     queryFn: fetchTodos,
+    staleTime: 5 * 60 * 1000 // Giữ data fresh → UI không bị reset khi back
   })
 
   return (
@@ -298,6 +425,10 @@ function TodoList() {
     </div>
   )
 }
+
+// Để scroll restoration thực sự, sử dụng router:
+// - React Router: <ScrollRestoration />
+// - TanStack Router: useScrollRestoration() (từ @tanstack/react-router)
 ```
 
 ### 3.4 Filters (Lọc Queries)
@@ -647,6 +778,118 @@ function App() {
 }
 ```
 
+### 3.13 Query Options API (v5)
+
+`queryOptions()` là helper function mới trong v5, giúp tạo type-safe query configuration có thể tái sử dụng:
+
+```typescript
+import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+
+// Tạo query options factory
+const todoQueries = {
+  all: () => queryOptions({
+    queryKey: ['todos'],
+    queryFn: fetchTodos,
+    staleTime: 5 * 60 * 1000
+  }),
+  detail: (id: number) => queryOptions({
+    queryKey: ['todos', id],
+    queryFn: () => fetchTodoDetail(id),
+    staleTime: 10 * 60 * 1000
+  })
+}
+
+// Sử dụng — type-safe hoàn toàn
+const { data } = useQuery(todoQueries.all())
+const { data: todo } = useQuery(todoQueries.detail(1))
+
+// getQueryData cũng type-safe nhờ DataTag
+const queryClient = useQueryClient()
+const cachedTodo = queryClient.getQueryData(todoQueries.detail(1).queryKey)
+// → cachedTodo tự động có type Todo | undefined
+
+// Prefetch cũng type-safe
+queryClient.prefetchQuery(todoQueries.detail(2))
+```
+
+> Tương tự có `infiniteQueryOptions()` và `mutationOptions()`.
+
+### 3.14 Prefetch Hooks (v5)
+
+```typescript
+import { usePrefetchQuery, useSuspenseQuery } from '@tanstack/react-query'
+
+// usePrefetchQuery — prefetch TRƯỚC Suspense boundary
+function App() {
+  // Bắt đầu fetch ngay khi component render, trước khi Suspense boundary
+  usePrefetchQuery({
+    queryKey: ['todos'],
+    queryFn: fetchTodos
+  })
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <TodosList /> {/* useSuspenseQuery bên trong sẽ có data ngay */}
+    </Suspense>
+  )
+}
+
+// useSuspenseQueries — nhiều Suspense queries song song
+function Dashboard() {
+  const [todosQuery, usersQuery] = useSuspenseQueries({
+    queries: [
+      { queryKey: ['todos'], queryFn: fetchTodos },
+      { queryKey: ['users'], queryFn: fetchUsers }
+    ]
+  })
+  // data luôn có giá trị, không bao giờ undefined
+  return <DashboardContent todos={todosQuery.data} users={usersQuery.data} />
+}
+
+// useSuspenseInfiniteQuery
+function InfiniteList() {
+  const { data, fetchNextPage } = useSuspenseInfiniteQuery({
+    queryKey: ['items'],
+    queryFn: ({ pageParam }) => fetchItems(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor
+  })
+  // data luôn có giá trị
+  return <List items={data.pages.flatMap(p => p.items)} />
+}
+```
+
+### 3.15 Mutation State (v5)
+
+```typescript
+import { useMutationState } from '@tanstack/react-query'
+
+// Theo dõi trạng thái mutation across components
+function GlobalSubmitIndicator() {
+  const pendingMutations = useMutationState({
+    filters: { status: 'pending' },
+    select: (mutation) => mutation.state.variables
+  })
+
+  if (pendingMutations.length === 0) return null
+  return <div>Đang xử lý {pendingMutations.length} thao tác...</div>
+}
+```
+
+### 3.16 Static Stale Time (v5.50+)
+
+```typescript
+// staleTime: 'static' — query KHÔNG BAO GIỜ refetch, kể cả khi invalidate
+useQuery({
+  queryKey: ['app-config'],
+  queryFn: fetchAppConfig,
+  staleTime: 'static' // ✅ Mới trong v5.50+
+  // Khác với staleTime: Infinity:
+  // - Infinity: không tự refetch, nhưng VẪN refetch khi invalidateQueries
+  // - 'static': không refetch trong MỌI trường hợp
+})
+```
+
 ## 4. Áp Dụng Vào Dự Án Shopee Clone
 
 ### 4.1 Cấu Hình QueryClient Tối Ưu
@@ -661,7 +904,14 @@ export const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000, // 5 phút
       gcTime: 10 * 60 * 1000, // 10 phút
       retry: (failureCount, error) => {
-        if (error?.status === 404) return false
+        // ⚠️ Trong v5, Error là default type (không phải unknown như v4)
+        // Với Axios, cần access error.response?.status (KHÔNG PHẢI error.status)
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 404) return false
+          if (error.response?.status === 401) return false
+        }
+        // Không retry cho AbortError
+        if (error?.name === 'AbortError') return false
         return failureCount < 3
       },
       refetchOnWindowFocus: false // Tắt refetch khi focus window
@@ -788,17 +1038,24 @@ function Profile() {
 ### 5.2 Lưu Ý Khi Migrate Lên v5
 
 1. **Cập nhật syntax**: Sử dụng object syntax cho tất cả hooks
-2. **Thay đổi naming**: `cacheTime` → `gcTime`, `isLoading` → `isPending`
-3. **Remove callbacks**: Thay bằng useEffect
-4. **Update TypeScript**: Yêu cầu TS 4.7+
-5. **Test thoroughly**: Kiểm tra kỹ behavior changes
+2. **Thay đổi naming**: `cacheTime` → `gcTime`, `isLoading` → `isPending`, `useErrorBoundary` → `throwOnError`
+3. **Remove callbacks từ useQuery**: Thay bằng derived state hoặc global QueryCache callbacks (KHÔNG ảnh hưởng useMutation)
+4. **Update TypeScript**: Yêu cầu TS 4.7+, React 18+
+5. **InfiniteQuery**: `initialPageParam` và `getNextPageParam` giờ là BẮT BUỘC
+6. **Suspense**: Thay `suspense: true` bằng `useSuspenseQuery` / `useSuspenseInfiniteQuery`
+7. **Error type**: Default error type giờ là `Error` (không còn `unknown`)
+8. **Hydration**: `Hydrate` → `HydrationBoundary`
+9. **Test thoroughly**: Kiểm tra kỹ behavior changes, đặc biệt window focus (chỉ dùng `visibilitychange`)
 
 ### 5.3 Performance Tips
 
 1. **Sử dụng structural sharing**: Mặc định đã enable, giữ nguyên
-2. **Implement proper query key structure**: Consistent và predictable
-3. **Use query filters effectively**: Invalidate và refetch chính xác
-4. **Consider data transformation**: Sử dụng select function
-5. **Monitor bundle size**: TanStack Query v5 nhỏ hơn 20% so với v4
+2. **Sử dụng `queryOptions()` helper**: Type-safe, reusable, tránh duplicate query keys
+3. **Implement proper query key structure**: Consistent và predictable (dùng query key factory)
+4. **Use query filters effectively**: Invalidate và refetch chính xác
+5. **Consider data transformation**: Sử dụng select function
+6. **Dùng `usePrefetchQuery`**: Prefetch trước Suspense boundary để tránh waterfall
+7. **Dùng `staleTime: 'static'`**: Cho data không bao giờ thay đổi (config, enums)
+8. **Monitor bundle size**: TanStack Query v5 nhỏ hơn 20% so với v4
 
-TanStack Query v5 mang lại nhiều cải tiến đáng kể về performance, DX và consistency. Việc hiểu rõ cơ chế caching và áp dụng đúng các kỹ thuật nâng cao sẽ giúp xây dựng ứng dụng có hiệu suất cao và UX tốt.
+TanStack Query v5 mang lại nhiều cải tiến đáng kể về performance, DX và consistency. Các tính năng mới như `queryOptions()`, `useSuspenseQuery`, `usePrefetchQuery`, và `staleTime: 'static'` giúp code type-safe hơn và tối ưu hơn. Việc hiểu rõ cơ chế caching và áp dụng đúng các kỹ thuật nâng cao sẽ giúp xây dựng ứng dụng có hiệu suất cao và UX tốt.
