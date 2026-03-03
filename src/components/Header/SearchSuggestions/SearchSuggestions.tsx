@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
+import Button from 'src/components/Button'
 import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
 import useDebounce from 'src/hooks/useDebounce'
@@ -315,13 +316,14 @@ const SearchSuggestions = ({ searchValue, isVisible, onSelectSuggestion, onHide 
             <span className='text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-300'>
               Lịch sử tìm kiếm
             </span>
-            <button
+            <Button
+              animated={false}
               onClick={() => clearHistoryMutation.mutate()}
               disabled={clearHistoryMutation.isPending}
               className='text-xs text-orange hover:underline disabled:opacity-50'
             >
               Xóa tất cả
-            </button>
+            </Button>
           </div>
           {searchHistory.slice(0, 5).map((item, index) => (
             <SearchHistoryItem

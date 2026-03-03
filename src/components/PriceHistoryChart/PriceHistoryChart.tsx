@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import priceHistoryApi from 'src/apis/priceHistory.api'
 import { formatCurrency, formatDate } from 'src/utils/utils'
 import { PriceHistory, PricePoint } from 'src/types/priceHistory.type'
+import Button from 'src/components/Button'
 
 interface PriceHistoryChartProps {
   productId: string
@@ -140,7 +141,8 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
         <h3 className='text-base font-semibold text-gray-800 sm:text-lg dark:text-gray-200'>Lịch sử giá</h3>
         <div className='flex gap-1' role='group' aria-label='Chọn khoảng thời gian'>
           {TIME_RANGE_OPTIONS.map((option) => (
-            <button
+            <Button
+              animated={false}
               key={option.value}
               onClick={() => setSelectedDays(option.value)}
               aria-label={`Xem lịch sử giá ${option.label}`}
@@ -152,7 +154,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
               }`}
             >
               {option.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -250,7 +252,8 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
 
           <div className='border-t border-gray-100 pt-4 dark:border-slate-700'>
             {!showAlertForm ? (
-              <button
+              <Button
+                animated={false}
                 onClick={() => setShowAlertForm(true)}
                 aria-label='Mở form tạo thông báo khi giảm giá'
                 className='flex w-full items-center justify-center gap-2 rounded-lg border border-orange bg-orange/5 py-2 text-orange transition-colors hover:bg-orange/10'
@@ -264,7 +267,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                   />
                 </svg>
                 <span className='font-medium'>Thông báo khi giảm giá</span>
-              </button>
+              </Button>
             ) : (
               <div className='space-y-3' role='form' aria-label='Form tạo thông báo giảm giá'>
                 <div className='flex items-center gap-2'>
@@ -285,7 +288,8 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                   </span>
                 </div>
                 <div className='flex gap-2'>
-                  <button
+                  <Button
+                    animated={false}
                     onClick={handleCreateAlert}
                     disabled={createAlertMutation.isPending}
                     aria-label={createAlertMutation.isPending ? 'Đang tạo thông báo' : 'Tạo thông báo giảm giá'}
@@ -293,14 +297,15 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     className='flex-1 rounded-lg bg-orange py-2 text-sm font-medium text-white transition-colors hover:bg-orange/90 disabled:opacity-50'
                   >
                     {createAlertMutation.isPending ? 'Đang tạo...' : 'Tạo thông báo'}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    animated={false}
                     onClick={handleCancelAlert}
                     aria-label='Hủy tạo thông báo'
                     className='rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                   >
                     Hủy
-                  </button>
+                  </Button>
                 </div>
                 <p id='target-price-description' className='text-xs text-gray-500 dark:text-gray-400'>
                   Bạn sẽ nhận được thông báo khi giá giảm xuống dưới{' '}

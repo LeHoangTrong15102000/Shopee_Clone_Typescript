@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 interface EmptyStateProps {
   icon?: ReactNode
@@ -68,12 +69,14 @@ export default function EmptyState({ icon, title, description, action, className
           <p className='mb-4 max-w-sm text-center text-sm text-gray-500 dark:text-gray-400'>{description}</p>
         )}
         {action && (
-          <button
+          <Button
+            variant='primary'
+            animated={false}
             onClick={action.onClick}
-            className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
+            className='flex items-center gap-2 rounded-xs px-6 py-2 text-sm font-medium'
           >
             {action.label}
-          </button>
+          </Button>
         )}
       </div>
     )
@@ -127,9 +130,7 @@ export default function EmptyState({ icon, title, description, action, className
       )}
 
       {action && (
-        <motion.button
-          onClick={action.onClick}
-          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95'
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{
             opacity: 1,
@@ -145,9 +146,17 @@ export default function EmptyState({ icon, title, description, action, className
             y: { duration: 0.4, delay: 0.5 },
             boxShadow: { duration: 2, repeat: Infinity, delay: 1 }
           }}
+          style={{ borderRadius: '2px' }}
         >
-          {action.label}
-        </motion.button>
+          <Button
+            variant='primary'
+            animated={false}
+            onClick={action.onClick}
+            className='flex items-center gap-2 rounded-xs px-6 py-2 text-sm font-medium'
+          >
+            {action.label}
+          </Button>
+        </motion.div>
       )}
     </motion.div>
   )

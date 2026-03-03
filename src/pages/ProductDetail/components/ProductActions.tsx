@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import QuantityController from 'src/components/QuantityController'
+import Button from 'src/components/Button'
 import { Product as ProductType } from 'src/types/product.type'
 import { useOptimisticAddToCart } from 'src/hooks/optimistic'
 import path from 'src/constant/path'
@@ -115,25 +116,36 @@ const ProductActions = ({ product, isAuthenticated, reducedMotion }: ProductActi
       <motion.div variants={reducedMotion ? undefined : staggerItem}>
         <div className='mt-10 flex items-center'>
           {/* Add to Cart Button */}
-          <motion.button
-            onClick={isAuthenticated ? addToCart : handleLoginRedirect}
-            className='flex h-12 items-center justify-center rounded-xs border border-orange bg-orange/10 px-5 capitalize shadow-xs hover:bg-orange/5'
+          <motion.div
             whileHover={reducedMotion ? undefined : { scale: 1.02 }}
             whileTap={reducedMotion ? undefined : { scale: 0.98 }}
           >
-            <CartIcon />
-            <span className='hidden text-orange sm:inline dark:text-orange-400'>thêm vào giỏ hàng</span>
-            <span className='text-orange sm:hidden dark:text-orange-400'>Thêm</span>
-          </motion.button>
+            <Button
+              variant='outline'
+              animated={false}
+              onClick={isAuthenticated ? addToCart : handleLoginRedirect}
+              className='flex h-12 items-center justify-center rounded-xs px-5 capitalize shadow-xs'
+            >
+              <CartIcon />
+              <span className='hidden text-orange sm:inline dark:text-orange-400'>thêm vào giỏ hàng</span>
+              <span className='text-orange sm:hidden dark:text-orange-400'>Thêm</span>
+            </Button>
+          </motion.div>
           {/* Buy Now Button */}
-          <motion.button
-            onClick={isAuthenticated ? handleBuyNow : handleLoginRedirect}
-            className='ml-4 flex h-12 min-w-20 items-center justify-center rounded-xs bg-orange px-4 text-white capitalize shadow-xs outline-hidden hover:bg-orange/90'
+          <motion.div
+            className='ml-4'
             whileHover={reducedMotion ? undefined : { scale: 1.03 }}
             whileTap={reducedMotion ? undefined : { scale: 0.97 }}
           >
-            Mua ngay
-          </motion.button>
+            <Button
+              variant='primary'
+              animated={false}
+              onClick={isAuthenticated ? handleBuyNow : handleLoginRedirect}
+              className='flex h-12 min-w-20 items-center justify-center rounded-xs px-4 capitalize shadow-xs'
+            >
+              Mua ngay
+            </Button>
+          </motion.div>
         </div>
       </motion.div>
     </>

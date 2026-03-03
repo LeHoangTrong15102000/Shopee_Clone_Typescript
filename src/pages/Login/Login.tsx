@@ -215,12 +215,11 @@ const Login = () => {
 
               {/* Google Login Button (UI only) */}
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
-                <motion.button
-                  type='button'
+                <Button
+                  variant='secondary'
+                  animated={false}
                   disabled
-                  whileHover={reducedMotion ? undefined : { scale: 1.01 }}
-                  whileTap={reducedMotion ? undefined : { scale: 0.99 }}
-                  className='mt-4 flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 shadow-xs transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
+                  className='mt-4 flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm shadow-xs'
                 >
                   <svg viewBox='0 0 24 24' className='h-5 w-5' aria-hidden='true'>
                     <path
@@ -241,7 +240,7 @@ const Login = () => {
                     />
                   </svg>
                   Đăng nhập với Google
-                </motion.button>
+                </Button>
               </motion.div>
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>

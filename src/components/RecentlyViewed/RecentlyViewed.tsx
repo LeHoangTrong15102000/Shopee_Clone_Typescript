@@ -4,6 +4,7 @@ import { RecentlyViewedProduct } from 'src/hooks/useRecentlyViewed'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import path from 'src/constant/path'
 import ProductRating from 'src/components/ProductRating'
+import Button from 'src/components/Button'
 
 interface RecentlyViewedProps {
   products: RecentlyViewedProduct[]
@@ -28,13 +29,14 @@ function RecentlyViewed({ products, maxItems = 10, className = '', onRemove, onC
       <div className='mb-4 flex items-center justify-between'>
         <h2 className='text-sm font-medium text-gray-500 uppercase dark:text-gray-400'>Sản phẩm đã xem gần đây</h2>
         {onClearAll && displayProducts.length > 0 && (
-          <button
+          <Button
+            animated={false}
             onClick={onClearAll}
             className='text-sm text-[#ee4d2d] transition-colors hover:text-[#d73211]'
             aria-label='Xóa tất cả sản phẩm đã xem'
           >
             Xóa tất cả
-          </button>
+          </Button>
         )}
       </div>
 
@@ -84,7 +86,8 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
   return (
     <article className='group relative overflow-hidden rounded-xs border border-gray-100 bg-white transition-shadow hover:shadow-md dark:border-slate-600 dark:bg-slate-800'>
       {onRemove && (
-        <button
+        <Button
+          animated={false}
           onClick={handleRemove}
           className='absolute top-1 right-1 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/70'
           aria-label={`Xóa sản phẩm ${product.name} khỏi danh sách đã xem`}
@@ -92,7 +95,7 @@ const ProductCard = memo(function ProductCard({ product, onRemove }: ProductCard
           <svg className='h-3 w-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
-        </button>
+        </Button>
       )}
 
       <Link

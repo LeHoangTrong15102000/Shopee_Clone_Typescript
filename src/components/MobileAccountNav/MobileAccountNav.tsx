@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 // ChevronDown icon
 const ChevronDownIcon = ({ className }: { className?: string }) => (
@@ -219,12 +220,13 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
   return (
     <div ref={dropdownRef} className={classNames('relative bg-white md:hidden dark:bg-slate-800', className)}>
       {/* Dropdown trigger button */}
-      <button
-        type='button'
+      <Button
+        variant='ghost'
+        animated={false}
         onClick={toggleDropdown}
         aria-expanded={isOpen}
         aria-haspopup='listbox'
-        aria-label='Menu tài khoản'
+        ariaLabel='Menu tài khoản'
         className='flex w-full items-center justify-between px-3 py-2.5 text-left'
       >
         <div className='flex items-center gap-2'>
@@ -237,7 +239,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
             'duration-200': !reducedMotion
           })}
         />
-      </button>
+      </Button>
 
       {/* Dropdown menu */}
       <AnimatePresence>
@@ -254,9 +256,10 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
             {mobileNavItems.map((item) => {
               const isActive = location.pathname === item.to
               return (
-                <button
+                <Button
                   key={item.to}
-                  type='button'
+                  variant='ghost'
+                  animated={false}
                   role='option'
                   aria-selected={isActive}
                   onClick={() => handleSelect(item.to)}
@@ -274,7 +277,7 @@ const MobileAccountNav = ({ className }: MobileAccountNavProps) => {
                     {item.icon}
                   </span>
                   <span className='font-medium'>{item.label}</span>
-                </button>
+                </Button>
               )
             })}
           </motion.div>

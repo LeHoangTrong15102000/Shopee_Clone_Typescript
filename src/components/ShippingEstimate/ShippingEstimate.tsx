@@ -3,6 +3,7 @@ import { addDays, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import classNames from 'classnames'
 import { formatCurrency } from 'src/utils/utils'
+import Button from 'src/components/Button'
 
 export interface ShippingOption {
   id: string
@@ -113,13 +114,14 @@ function ShippingEstimate({
               <span className='font-medium'>{address || 'Chưa có địa chỉ'}</span>
             )}
           </div>
-          <button
+          <Button
+            animated={false}
             onClick={() => setIsEditingAddress(!isEditingAddress)}
             className='text-sm text-[#ee4d2d] hover:underline'
             aria-expanded={isEditingAddress}
           >
             {isEditingAddress ? 'Xong' : 'Thay đổi'}
-          </button>
+          </Button>
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { memo, useMemo, useState, useCallback } from 'react'
 import { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
 import Input from 'src/components/Input'
+import Button from 'src/components/Button'
 
 export interface PaymentFormData {
   cardNumber: string
@@ -247,8 +248,10 @@ const CVVTooltip = memo(function CVVTooltip({
           exit={{ opacity: 0, y: -10 }}
           className='absolute bottom-full left-0 z-50 mb-2 w-64 rounded-lg border border-gray-200 bg-white p-4 shadow-xl dark:border-slate-600 dark:bg-slate-800'
         >
-          <button
+          <Button
             onClick={onClose}
+            variant='ghost'
+            animated={false}
             className='absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400'
             aria-label='Đóng tooltip'
           >
@@ -259,7 +262,7 @@ const CVVTooltip = memo(function CVVTooltip({
                 clipRule='evenodd'
               />
             </svg>
-          </button>
+          </Button>
           <p className='mb-3 text-sm font-medium text-gray-800 dark:text-gray-200'>CVV là gì?</p>
           <p className='mb-3 text-xs text-gray-600 dark:text-gray-400'>
             Mã bảo mật {cvvLength} chữ số nằm ở {cvvLocation}
@@ -598,9 +601,16 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
             <div className='mb-1 flex items-center gap-1'>
               <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>CVV</label>
               <div className='relative'>
-                <button type='button' onClick={toggleCvvTooltip} className='flex items-center' aria-label='CVV là gì?'>
+                <Button
+                  type='button'
+                  onClick={toggleCvvTooltip}
+                  variant='ghost'
+                  animated={false}
+                  className='flex items-center'
+                  aria-label='CVV là gì?'
+                >
                   <InfoIcon />
-                </button>
+                </Button>
                 <CVVTooltip isVisible={showCvvTooltip} onClose={closeCvvTooltip} cardType={cardType} />
               </div>
             </div>

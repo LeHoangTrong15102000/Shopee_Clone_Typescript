@@ -3,6 +3,7 @@ import SearchSuggestions from '../SearchSuggestions'
 import SearchHistory from 'src/components/SearchHistory'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 import useSearchHistory from 'src/hooks/useSearchHistory'
+import Button from 'src/components/Button'
 
 interface SearchBarProps {
   filters: ReturnType<typeof useProductQueryStates>[0]
@@ -151,7 +152,8 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
             onFocus={handleFocusInput}
             onBlur={handleBlurInput}
           />
-          <button
+          <Button
+            animated={false}
             type='submit'
             className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] px-4 py-2 hover:opacity-90 sm:px-5 sm:py-2.5 md:px-6'
           >
@@ -169,7 +171,7 @@ const SearchBar = ({ filters, setFilters }: SearchBarProps) => {
                 d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
               />
             </svg>
-          </button>
+          </Button>
         </div>
       </form>
 

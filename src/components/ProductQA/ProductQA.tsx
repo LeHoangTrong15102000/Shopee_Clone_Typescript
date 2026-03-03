@@ -6,6 +6,7 @@ import { vi } from 'date-fns/locale'
 import qaApi from 'src/apis/qa.api'
 import { ProductQuestion, ProductAnswer } from 'src/types/qa.type'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
 
 interface ProductQAProps {
   productId: string
@@ -164,14 +165,15 @@ const ProductQA = memo(function ProductQA({ productId, className = '' }: Product
               aria-describedby='ask-question-heading'
             />
             <div className='mt-2 flex justify-end'>
-              <button
+              <Button
+                animated={false}
                 onClick={handleAskQuestion}
                 disabled={askQuestionMutation.isPending || !questionText.trim()}
                 className='rounded-sm bg-orange-500 px-4 py-2 text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50'
                 aria-label='Gửi câu hỏi về sản phẩm'
               >
                 {askQuestionMutation.isPending ? 'Đang gửi...' : 'Gửi câu hỏi'}
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
@@ -231,14 +233,15 @@ const ProductQA = memo(function ProductQA({ productId, className = '' }: Product
       {/* Load More Button */}
       {hasNextPage && (
         <div className='mt-6 flex justify-center' aria-live='polite'>
-          <button
+          <Button
+            animated={false}
             onClick={handleLoadMore}
             disabled={isFetchingNextPage}
             className='rounded-sm border border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
             aria-label='Tải thêm câu hỏi'
           >
             {isFetchingNextPage ? 'Đang tải...' : 'Xem thêm câu hỏi'}
-          </button>
+          </Button>
         </div>
       )}
     </div>
@@ -297,7 +300,8 @@ const QuestionItem = memo(function QuestionItem({
 
           {/* Question Actions */}
           <div className='mt-2 flex items-center space-x-4 text-sm'>
-            <button
+            <Button
+              animated={false}
               onClick={() => onLikeQuestion(question._id)}
               className={`flex items-center space-x-1 ${question.is_liked ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400'} hover:text-orange-500`}
               aria-label={`Thích câu hỏi, ${question.likes_count} lượt thích`}
@@ -307,8 +311,9 @@ const QuestionItem = memo(function QuestionItem({
                 <path d='M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z' />
               </svg>
               <span>{question.likes_count}</span>
-            </button>
-            <button
+            </Button>
+            <Button
+              animated={false}
               onClick={onToggleReply}
               className='text-gray-500 hover:text-orange-500 dark:text-gray-400'
               aria-expanded={isReplying}
@@ -316,7 +321,7 @@ const QuestionItem = memo(function QuestionItem({
               aria-label={`Trả lời câu hỏi, ${question.answers.length} câu trả lời`}
             >
               Trả lời ({question.answers.length})
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -355,21 +360,23 @@ const QuestionItem = memo(function QuestionItem({
                 Nhập câu trả lời cho câu hỏi này
               </span>
               <div className='mt-2 flex justify-end space-x-2'>
-                <button
+                <Button
+                  animated={false}
                   onClick={onToggleReply}
                   className='rounded-sm border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                   aria-label='Hủy trả lời'
                 >
                   Hủy
-                </button>
-                <button
+                </Button>
+                <Button
+                  animated={false}
                   onClick={onSubmitAnswer}
                   disabled={isSubmitting || !answerText.trim()}
                   className='rounded-sm bg-orange-500 px-3 py-1 text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50'
                   aria-label='Gửi câu trả lời'
                 >
                   {isSubmitting ? 'Đang gửi...' : 'Gửi'}
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
@@ -418,7 +425,8 @@ const AnswerItem = memo(function AnswerItem({ answer, questionId, onLikeAnswer }
           </span>
         </div>
         <p className='text-sm text-gray-700 dark:text-gray-300'>{answer.answer}</p>
-        <button
+        <Button
+          animated={false}
           onClick={() => onLikeAnswer(questionId, answer._id)}
           className={`mt-1 flex items-center space-x-1 text-xs ${answer.is_liked ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400'} hover:text-orange-500`}
           aria-label={`Thích câu trả lời, ${answer.likes_count} lượt thích`}
@@ -428,7 +436,7 @@ const AnswerItem = memo(function AnswerItem({ answer, questionId, onLikeAnswer }
             <path d='M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z' />
           </svg>
           <span>{answer.likes_count}</span>
-        </button>
+        </Button>
       </div>
     </div>
   )

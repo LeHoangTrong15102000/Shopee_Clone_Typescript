@@ -2,6 +2,7 @@ import { memo, useState, useCallback, useRef, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 
 interface ShareButtonProps {
   url: string
@@ -140,11 +141,11 @@ const ShareButton = memo(function ShareButton({
   return (
     <div ref={dropdownRef} className={classNames('relative inline-block', className)}>
       {/* Share Button */}
-      <button
-        type='button'
+      <Button
+        animated={false}
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center gap-2 rounded-xs border border-gray-300 px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
-        aria-label='Chia sẻ sản phẩm'
+        ariaLabel='Chia sẻ sản phẩm'
         aria-expanded={isOpen}
       >
         <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -156,7 +157,7 @@ const ShareButton = memo(function ShareButton({
           />
         </svg>
         <span className='hidden sm:inline'>Chia sẻ</span>
-      </button>
+      </Button>
 
       {/* Dropdown Menu */}
       <AnimatePresence>
@@ -170,8 +171,9 @@ const ShareButton = memo(function ShareButton({
           >
             <div className='py-1'>
               {shareOptions.map((option) => (
-                <button
+                <Button
                   key={option.id}
+                  animated={false}
                   onClick={() => handleShare(option.id)}
                   className={classNames(
                     'flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors',
@@ -180,7 +182,7 @@ const ShareButton = memo(function ShareButton({
                 >
                   {option.icon}
                   <span>{option.name}</span>
-                </button>
+                </Button>
               ))}
             </div>
           </motion.div>

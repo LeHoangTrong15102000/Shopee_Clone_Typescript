@@ -35,6 +35,61 @@ describe('Button Component Unit Tests', () => {
     })
   })
 
+  describe('Variants and Sizes', () => {
+    test('should render icon variant with correct classes', () => {
+      render(<Button variant='icon'>🔍</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('rounded-full')
+      expect(button).toHaveClass('p-2')
+      expect(button).toHaveClass('bg-transparent')
+      // Icon variant uses ring focus instead of outline
+      expect(button.className).toContain('focus-visible:ring-2')
+      expect(button.className).toContain('focus-visible:ring-orange')
+    })
+
+    test('should render xs size with correct classes', () => {
+      render(<Button size='xs'>Tiny</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('px-2')
+      expect(button).toHaveClass('py-0.5')
+      expect(button).toHaveClass('text-xs')
+    })
+
+    test('should render shape pill with correct classes', () => {
+      render(<Button shape='pill'>Pill</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('rounded-full')
+    })
+
+    test('should render shape rounded with correct classes', () => {
+      render(<Button shape='rounded'>Rounded</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('rounded-md')
+    })
+
+    test('should render animated={false} without hover transition classes', () => {
+      render(<Button animated={false}>Static</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).not.toHaveClass('transition-all')
+      expect(button).not.toHaveClass('duration-150')
+      // Should still be a plain button element
+      expect(button.tagName).toBe('BUTTON')
+    })
+
+    test('should render animated={true} (default) with hover transition classes', () => {
+      render(<Button>Animated</Button>)
+
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('transition-all')
+      expect(button).toHaveClass('duration-150')
+    })
+  })
+
   describe('User Interactions', () => {
     test('should handle click events', async () => {
       const mockOnClick = vi.fn()

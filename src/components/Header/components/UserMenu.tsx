@@ -3,6 +3,7 @@ import Popover from 'src/components/Popover'
 import { getAvatarUrl } from 'src/utils/utils'
 import path from 'src/constant/path'
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 
 interface UserMenuProps {
   isAuthenticated: boolean
@@ -37,12 +38,13 @@ const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
                 >
                   Đơn Mua
                 </Link>
-                <button
+                <Button
+                  animated={false}
                   onClick={() => onLogout()}
                   className='block w-full bg-white px-4 py-3 text-left text-sm text-gray-800 hover:bg-slate-100 hover:text-cyan-500 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700'
                 >
                   Đăng Xuất
-                </button>
+                </Button>
               </div>
             </div>
           }

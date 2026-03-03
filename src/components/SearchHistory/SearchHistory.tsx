@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { memo, useCallback } from 'react'
 import { SearchHistoryItem } from 'src/hooks/useSearchHistory'
+import Button from 'src/components/Button'
 
 interface SearchHistoryProps {
   history: SearchHistoryItem[]
@@ -32,12 +33,15 @@ const SearchHistory = memo(function SearchHistory({
         <div className='border-b border-gray-100 p-3 dark:border-slate-600'>
           <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>Lịch sử tìm kiếm</span>
-            <button
+            <Button
+              variant='ghost'
+              size='xs'
+              animated={false}
               onClick={onClearAll}
-              className='text-xs text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
+              className='text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'
             >
               Xóa tất cả
-            </button>
+            </Button>
           </div>
           <AnimatePresence mode='popLayout'>
             {history.map((item) => (
@@ -60,15 +64,20 @@ const SearchHistory = memo(function SearchHistory({
                   </svg>
                   <span className='text-sm text-gray-600 dark:text-gray-200'>{item.query}</span>
                 </div>
-                <button
-                  onClick={(e) => handleRemove(e, item.query)}
+                <Button
+                  variant='ghost'
+                  size='xs'
+                  animated={false}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                    handleRemove(e as unknown as React.MouseEvent, item.query)
+                  }
                   className='p-1 text-gray-400 opacity-0 transition-all group-hover:opacity-100 hover:text-red-500'
                   aria-label={`Xóa "${item.query}" khỏi lịch sử`}
                 >
                   <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -85,13 +94,16 @@ const SearchHistory = memo(function SearchHistory({
         </div>
         <div className='flex flex-wrap gap-2'>
           {trendingSearches.map((term) => (
-            <button
+            <Button
               key={term}
+              variant='ghost'
+              size='xs'
+              animated={false}
               onClick={() => onSelect(term)}
-              className='rounded-full bg-gray-100 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-orange hover:text-white dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-orange-500 dark:hover:text-white'
+              className='rounded-full bg-gray-100 px-3 py-1.5 text-sm text-gray-600 hover:bg-orange hover:text-white dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-orange-500 dark:hover:text-white'
             >
               {term}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

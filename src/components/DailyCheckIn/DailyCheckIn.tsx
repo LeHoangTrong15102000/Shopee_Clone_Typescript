@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import classNames from 'classnames'
 import useDailyCheckIn from 'src/hooks/useDailyCheckIn'
 import { DEFAULT_CHECKIN_CONFIG } from 'src/types/checkin.type'
+import Button from 'src/components/Button'
 
 interface DailyCheckInProps {
   className?: string
@@ -158,32 +159,34 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
       {/* Check-in Button */}
       <div className='p-4'>
         {canCheckInToday ? (
-          <motion.button
-            onClick={handleCheckIn}
-            disabled={isChecking}
-            whileTap={{ scale: 0.95 }}
-            className='w-full cursor-pointer rounded-lg bg-linear-to-r from-orange to-[#ff6633] py-3 text-lg font-bold text-white transition-all hover:shadow-lg'
-          >
-            {isChecking ? (
-              <span className='flex items-center justify-center gap-2'>
-                <svg className='h-5 w-5 animate-spin' viewBox='0 0 24 24'>
-                  <circle
-                    className='opacity-25'
-                    cx='12'
-                    cy='12'
-                    r='10'
-                    stroke='currentColor'
-                    strokeWidth='4'
-                    fill='none'
-                  />
-                  <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' />
-                </svg>
-                Đang điểm danh...
-              </span>
-            ) : (
-              `Điểm danh nhận ${nextReward.value} xu`
-            )}
-          </motion.button>
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Button
+              animated={false}
+              onClick={handleCheckIn}
+              disabled={isChecking}
+              className='w-full cursor-pointer rounded-lg bg-linear-to-r from-orange to-[#ff6633] py-3 text-lg font-bold text-white transition-all hover:shadow-lg'
+            >
+              {isChecking ? (
+                <span className='flex items-center justify-center gap-2'>
+                  <svg className='h-5 w-5 animate-spin' viewBox='0 0 24 24'>
+                    <circle
+                      className='opacity-25'
+                      cx='12'
+                      cy='12'
+                      r='10'
+                      stroke='currentColor'
+                      strokeWidth='4'
+                      fill='none'
+                    />
+                    <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' />
+                  </svg>
+                  Đang điểm danh...
+                </span>
+              ) : (
+                `Điểm danh nhận ${nextReward.value} xu`
+              )}
+            </Button>
+          </motion.div>
         ) : (
           /* Checked-in Success State - Beautiful Gradient Design */
           <motion.div
@@ -251,7 +254,8 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
         )}
 
         {/* Toggle Calendar */}
-        <button
+        <Button
+          animated={false}
           onClick={() => setShowCalendar(!showCalendar)}
           className='mt-3 flex w-full cursor-pointer items-center justify-center gap-1 py-2 text-sm text-gray-600 transition-colors hover:text-orange dark:text-gray-300 dark:hover:text-orange-400'
         >
@@ -264,7 +268,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
           </svg>
           {showCalendar ? 'Ẩn lịch' : 'Xem lịch điểm danh'}
-        </button>
+        </Button>
       </div>
 
       {/* Calendar */}
@@ -280,7 +284,8 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
             <div className='p-4'>
               {/* Month Navigation */}
               <div className='mb-4 flex items-center justify-between'>
-                <button
+                <Button
+                  animated={false}
                   onClick={goToPrevMonth}
                   className='cursor-pointer rounded-sm p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
                   aria-label='Tháng trước'
@@ -288,11 +293,12 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                   <svg className='h-5 w-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
                   </svg>
-                </button>
+                </Button>
                 <span className='font-medium dark:text-gray-200'>
                   {monthNames[currentMonth.month]} {currentMonth.year}
                 </span>
-                <button
+                <Button
+                  animated={false}
                   onClick={goToNextMonth}
                   className='cursor-pointer rounded-sm p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
                   aria-label='Tháng sau'
@@ -300,7 +306,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                   <svg className='h-5 w-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
                   </svg>
-                </button>
+                </Button>
               </div>
 
               {/* Day Names */}

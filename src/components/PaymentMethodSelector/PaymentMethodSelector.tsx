@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { PaymentMethod, PaymentMethodType } from 'src/types/checkout.type'
 import checkoutApi from 'src/apis/checkout.api'
 import { PaymentIcon } from 'src/components/Icons'
+import Button from 'src/components/Button'
 
 interface PaymentMethodSelectorProps {
   selectedMethodType: PaymentMethodType | null
@@ -117,15 +118,24 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
         >
           <h4 className='font-medium text-purple-900 dark:text-purple-300'>Chọn ví điện tử</h4>
           <div className='mt-3 flex gap-3'>
-            <button className='flex-1 rounded-xl bg-linear-to-r from-pink-500 to-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-500/40'>
+            <Button
+              animated={false}
+              className='flex-1 rounded-xl bg-linear-to-r from-pink-500 to-rose-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-500/40'
+            >
               MoMo
-            </button>
-            <button className='flex-1 rounded-xl bg-linear-to-r from-blue-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40'>
+            </Button>
+            <Button
+              animated={false}
+              className='flex-1 rounded-xl bg-linear-to-r from-blue-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40'
+            >
               ZaloPay
-            </button>
-            <button className='flex-1 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-600/40'>
+            </Button>
+            <Button
+              animated={false}
+              className='flex-1 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-600/40'
+            >
               VNPay
-            </button>
+            </Button>
           </div>
         </motion.div>
       )}

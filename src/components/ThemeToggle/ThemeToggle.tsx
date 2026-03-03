@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { useTheme } from 'src/hooks/useTheme'
+import Button from 'src/components/Button'
 
 // Icons
 const SunIcon = () => (
@@ -31,9 +32,11 @@ const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
   const colorClasses = colorClassName ?? 'text-white/90 hover:text-white'
 
   return (
-    <button
+    <Button
+      variant='icon'
+      animated={false}
       onClick={toggleTheme}
-      className={`${colorClasses} ${className} border-none outline-hidden transition-all duration-200 hover:scale-110 focus:border-none focus:ring-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 focus-visible:outline-hidden active:scale-90`}
+      className={`${colorClasses} ${className} border-none transition-all duration-200 hover:scale-110 focus:border-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 active:scale-90`}
       aria-label={isDark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
       title={isDark ? 'Chế độ sáng' : 'Chế độ tối'}
     >
@@ -48,7 +51,7 @@ const ThemeToggle = ({ className = '', colorClassName }: ThemeToggleProps) => {
           {isDark ? <MoonIcon /> : <SunIcon />}
         </motion.div>
       </AnimatePresence>
-    </button>
+    </Button>
   )
 }
 

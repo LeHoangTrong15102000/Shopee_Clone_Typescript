@@ -15,6 +15,7 @@ import noproduct from 'src/assets/images/img-product-incart.png'
 import { formatCurrency } from 'src/utils/utils'
 import NavHeader from '../NavHeader'
 import useSearchProducts from 'src/hooks/useSearchProducts'
+import Button from 'src/components/Button'
 const MAX_PURCHASES = 5
 
 const Header1 = () => {
@@ -78,7 +79,8 @@ const Header1 = () => {
                 />
                 {/* Nút tìm kiếm  */}
 
-                <button
+                <Button
+                  animated={false}
                   type='submit'
                   className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] px-4 py-1.5 hover:opacity-90 md:px-6 md:py-2'
                 >
@@ -96,7 +98,7 @@ const Header1 = () => {
                       d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
                     />
                   </svg>
-                </button>
+                </Button>
               </div>
             </Tooltip>
           </form>

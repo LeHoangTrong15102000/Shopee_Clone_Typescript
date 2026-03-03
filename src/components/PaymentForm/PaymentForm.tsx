@@ -206,10 +206,12 @@ const PaymentForm = memo(function PaymentForm({
 
       <div className='flex gap-2 overflow-x-auto border-b border-gray-200 pb-1 dark:border-slate-700'>
         {paymentTabs.map((tab) => (
-          <button
+          <Button
             key={tab.id}
             type='button'
             onClick={() => setActiveTab(tab.id)}
+            variant='ghost'
+            animated={false}
             className={`flex shrink-0 items-center gap-2 rounded-t-lg px-4 py-3 text-sm font-medium transition-all ${
               activeTab === tab.id
                 ? 'border-b-2 border-orange bg-orange/5 text-orange'
@@ -218,7 +220,7 @@ const PaymentForm = memo(function PaymentForm({
           >
             <PaymentTabIcon type={tab.id} />
             <span className='hidden sm:inline'>{tab.label}</span>
-          </button>
+          </Button>
         ))}
       </div>
 

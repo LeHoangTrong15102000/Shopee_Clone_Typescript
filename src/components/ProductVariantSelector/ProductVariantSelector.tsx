@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import classNames from 'classnames'
 import { ProductVariant, ProductVariantCombination } from 'src/types/variant.type'
+import Button from 'src/components/Button'
 
 interface ProductVariantSelectorProps {
   variants: ProductVariant[]
@@ -67,7 +68,8 @@ export default function ProductVariantSelector({
 
           return (
             <div key={option.value} className='group relative'>
-              <button
+              <Button
+                animated={false}
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
@@ -95,7 +97,7 @@ export default function ProductVariantSelector({
                     </svg>
                   </div>
                 )}
-              </button>
+              </Button>
               <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
                 {option.name}
               </div>
@@ -116,7 +118,8 @@ export default function ProductVariantSelector({
 
           return (
             <div key={option.value} className='group relative'>
-              <button
+              <Button
+                animated={false}
                 type='button'
                 onClick={() => handleOptionClick(variant.type, option.value)}
                 disabled={!isAvailable}
@@ -131,7 +134,7 @@ export default function ProductVariantSelector({
                 aria-pressed={isSelected}
               >
                 {option.name}
-              </button>
+              </Button>
               <div className='pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
                 {option.name}
               </div>

@@ -4,6 +4,7 @@ import path from 'src/constant/path'
 import { sortBy, order as orderConstant } from 'src/constant/product'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 import ViewToggle, { ViewMode } from 'src/components/ViewToggle'
+import Button from 'src/components/Button'
 
 import { ProductListConfig } from 'src/types/product.type'
 
@@ -42,7 +43,9 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
         {/* sort theo tên: phổ biến - mới nhất - bán chạy */}
         <div className='flex flex-wrap items-center gap-2'>
           <div className='text-sm text-[rgba(0,0,0,.7)] dark:text-gray-300'>Sắp xếp theo</div>
-          <button
+          <Button
+            variant='ghost'
+            animated={false}
             className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.view),
               'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
@@ -51,8 +54,10 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             onClick={() => handleSortNavigate(sortBy.view)}
           >
             Phổ biến
-          </button>
-          <button
+          </Button>
+          <Button
+            variant='ghost'
+            animated={false}
             className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.createdAt),
               'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
@@ -61,8 +66,10 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             onClick={() => handleSortNavigate(sortBy.createdAt)}
           >
             Mới nhất
-          </button>
-          <button
+          </Button>
+          <Button
+            variant='ghost'
+            animated={false}
             className={classNames('capitaliz h-10 rounded-xs px-4 text-center text-sm md:h-8', {
               'bg-orange text-white hover:bg-orange': isActiveSortBy(sortBy.sold),
               'bg-white text-black/80 hover:bg-slate-100 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700':
@@ -71,7 +78,7 @@ const SortProductList = ({ pageSize, viewMode, onViewChange }: Props) => {
             onClick={() => handleSortNavigate(sortBy.sold)}
           >
             Bán chạy
-          </button>
+          </Button>
           {/* sort productList */}
           <select
             aria-label='Sắp xếp theo giá'

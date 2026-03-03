@@ -1,6 +1,7 @@
 import React, { Fragment, useRef } from 'react'
 import config from 'src/constant/config'
 import { toast } from 'react-toastify'
+import Button from 'src/components/Button'
 
 interface Props {
   onChange?: (file?: File) => void
@@ -44,13 +45,14 @@ const InputFile = ({ onChange }: Props) => {
           ;(event.target as HTMLInputElement).value = ''
         }}
       />
-      <button
-        type='button'
-        className='flex h-9 min-w-[70px] items-center justify-center rounded-xs border border-gray-300 bg-white px-4 text-xs text-[#555] capitalize outline-hidden transition-colors hover:bg-gray-50 md:h-10 md:min-w-[90px] md:px-5 md:text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700'
+      <Button
+        variant='secondary'
+        animated={false}
         onClick={handleUpload}
+        className='flex h-9 min-w-[70px] items-center justify-center rounded-xs px-4 text-xs capitalize md:h-10 md:min-w-[90px] md:px-5 md:text-sm'
       >
         chọn ảnh
-      </button>
+      </Button>
     </Fragment>
   )
 }

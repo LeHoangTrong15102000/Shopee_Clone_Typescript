@@ -126,59 +126,61 @@ const WalletCard = memo(function WalletCard({
   onSelect: () => void
 }) {
   return (
-    <motion.button
-      type='button'
-      onClick={onSelect}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`relative w-full rounded-xl border-2 p-4 text-left transition-all ${
-        isSelected
-          ? `${wallet.borderColor} ${wallet.bgColor}`
-          : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
-      }`}
-    >
-      {isSelected && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500'
-        >
-          <svg className='h-4 w-4 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
-          </svg>
-        </motion.div>
-      )}
+    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+      <Button
+        type='button'
+        onClick={onSelect}
+        animated={false}
+        className={`relative w-full rounded-xl border-2 p-4 text-left transition-all ${
+          isSelected
+            ? `${wallet.borderColor} ${wallet.bgColor}`
+            : 'border-gray-200 bg-white hover:border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500'
+        }`}
+      >
+        {isSelected && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500'
+          >
+            <svg className='h-4 w-4 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
+            </svg>
+          </motion.div>
+        )}
 
-      <div className='flex items-center gap-3'>
-        <WalletLogo wallet={wallet.id} />
-        <div className='flex-1'>
-          <div className='flex items-center gap-2'>
-            <span className={`font-semibold ${wallet.color}`}>{wallet.name}</span>
-            <LinkedBadge isLinked={wallet.isLinked} />
+        <div className='flex items-center gap-3'>
+          <WalletLogo wallet={wallet.id} />
+          <div className='flex-1'>
+            <div className='flex items-center gap-2'>
+              <span className={`font-semibold ${wallet.color}`}>{wallet.name}</span>
+              <LinkedBadge isLinked={wallet.isLinked} />
+            </div>
+            <p className='mt-1 text-sm text-gray-600 dark:text-gray-400'>
+              Số dư: <span className='font-medium'>{formatCurrency(wallet.balance)}</span>
+            </p>
           </div>
-          <p className='mt-1 text-sm text-gray-600 dark:text-gray-400'>
-            Số dư: <span className='font-medium'>{formatCurrency(wallet.balance)}</span>
-          </p>
         </div>
-      </div>
-    </motion.button>
+      </Button>
+    </motion.div>
   )
 })
 
 const LinkNewWalletButton = memo(function LinkNewWalletButton({ onClick }: { onClick: () => void }) {
   return (
-    <motion.button
-      type='button'
-      onClick={onClick}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className='flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 p-4 text-gray-500 transition-all hover:border-gray-400 hover:text-gray-700 dark:border-slate-600 dark:text-gray-400 dark:hover:border-slate-500 dark:hover:text-gray-300'
-    >
-      <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
-      </svg>
-      <span className='font-medium'>Liên kết ví mới</span>
-    </motion.button>
+    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+      <Button
+        type='button'
+        onClick={onClick}
+        animated={false}
+        className='flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 p-4 text-gray-500 transition-all hover:border-gray-400 hover:text-gray-700 dark:border-slate-600 dark:text-gray-400 dark:hover:border-slate-500 dark:hover:text-gray-300'
+      >
+        <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
+        </svg>
+        <span className='font-medium'>Liên kết ví mới</span>
+      </Button>
+    </motion.div>
   )
 })
 

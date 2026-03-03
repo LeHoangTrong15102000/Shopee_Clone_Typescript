@@ -15,6 +15,7 @@ import { purchasesStatus } from 'src/constant/purchase'
 import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Product } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
+import Button from 'src/components/Button'
 
 // Mock categories for visual enhancement
 const mockCategories = ['Điện tử', 'Thời trang', 'Gia dụng', 'Làm đẹp', 'Thể thao', 'Sách', 'Đồ chơi', 'Phụ kiện']
@@ -627,7 +628,8 @@ export default function Wishlist() {
             >
               <div className='scrollbar-hide flex gap-2 overflow-x-auto pb-1'>
                 {filterPills.map((pill) => (
-                  <button
+                  <Button
+                    animated={false}
                     key={pill.id}
                     onClick={() => setActiveFilter(pill.id)}
                     className={`inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:focus:ring-orange-400 ${
@@ -638,12 +640,13 @@ export default function Wishlist() {
                   >
                     <pill.Icon className='h-3.5 w-3.5' />
                     {pill.label}
-                  </button>
+                  </Button>
                 ))}
               </div>
               {/* Sort dropdown */}
               <div className='relative shrink-0'>
-                <button
+                <Button
+                  animated={false}
                   onClick={() => setShowSortDropdown(!showSortDropdown)}
                   className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-600 transition-colors hover:border-[#ee4d2d] focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-orange-400 dark:focus:ring-orange-400'
                 >
@@ -651,7 +654,7 @@ export default function Wishlist() {
                   <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                   </svg>
-                </button>
+                </Button>
                 <AnimatePresence>
                   {showSortDropdown && (
                     <motion.div
@@ -661,7 +664,8 @@ export default function Wishlist() {
                       className='absolute top-full right-0 z-30 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-slate-600 dark:bg-slate-800 dark:shadow-slate-900/50'
                     >
                       {sortOptions.map((opt) => (
-                        <button
+                        <Button
+                          animated={false}
                           key={opt.id}
                           onClick={() => {
                             setActiveSort(opt.id)
@@ -674,7 +678,7 @@ export default function Wishlist() {
                           }`}
                         >
                           <opt.Icon className='h-4 w-4' /> {opt.label}
-                        </button>
+                        </Button>
                       ))}
                     </motion.div>
                   )}
@@ -749,27 +753,32 @@ export default function Wishlist() {
                     )}
 
                     {/* Delete button overlay - visible on hover */}
-                    <motion.button
+                    <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: hoveredCardId === item._id ? 1 : 0,
                         scale: hoveredCardId === item._id ? 1 : 0.8
                       }}
-                      onClick={() => removeMutation.mutate(item.product._id)}
-                      className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden active:scale-90 dark:bg-slate-700/90 dark:shadow-slate-900/50'
-                      aria-label='Xóa khỏi yêu thích'
+                      transition={{ duration: 0.15 }}
                     >
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='h-3.5 w-3.5'
+                      <Button
+                        animated={false}
+                        onClick={() => removeMutation.mutate(item.product._id)}
+                        className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden active:scale-90 dark:bg-slate-700/90 dark:shadow-slate-900/50'
+                        aria-label='Xóa khỏi yêu thích'
                       >
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
-                      </svg>
-                    </motion.button>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='h-3.5 w-3.5'
+                        >
+                          <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+                        </svg>
+                      </Button>
+                    </motion.div>
 
                     {/* Product Image */}
                     <Link
@@ -832,14 +841,15 @@ export default function Wishlist() {
                       </div>
 
                       {/* Add to Cart Button */}
-                      <button
+                      <Button
+                        animated={false}
                         onClick={() => addToCartMutation.mutate(item.product._id)}
                         className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden active:scale-95 dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
                         aria-label='Thêm vào giỏ hàng'
                       >
                         <IconShoppingCart className='h-3.5 w-3.5' />
                         Thêm vào giỏ
-                      </button>
+                      </Button>
                     </div>
                   </motion.div>
                 )
@@ -853,12 +863,14 @@ export default function Wishlist() {
                   <IconMagnifyingGlass className='h-7 w-7' />
                 </div>
                 <p className='text-gray-500 dark:text-gray-400'>Không tìm thấy sản phẩm phù hợp</p>
-                <button
+                <Button
+                  variant='ghost'
+                  animated={false}
                   onClick={() => setActiveFilter('all')}
                   className='mt-3 cursor-pointer rounded-sm text-sm text-[#ee4d2d] hover:underline focus:ring-2 focus:ring-orange-500 focus:outline-hidden dark:text-orange-400 dark:focus:ring-orange-400'
                 >
                   Xem tất cả
-                </button>
+                </Button>
               </motion.div>
             )}
 
@@ -880,9 +892,12 @@ export default function Wishlist() {
                     <p className='mt-0.5 text-xs text-white/80'>Nhận thông báo ngay khi giá giảm!</p>
                   </div>
                 </div>
-                <button className='mt-3 cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-[#ee4d2d] transition-all duration-200 hover:bg-white/90 hover:shadow-md focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-orange-500 focus:outline-hidden dark:text-orange-600'>
+                <Button
+                  animated={false}
+                  className='mt-3 cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-[#ee4d2d] transition-all duration-200 hover:bg-white/90 hover:shadow-md focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-orange-500 focus:outline-hidden dark:text-orange-600'
+                >
                   Bật thông báo
-                </button>
+                </Button>
               </div>
 
               {/* Savings Goal Banner */}

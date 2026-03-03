@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import useSocket from 'src/hooks/useSocket'
+import Button from 'src/components/Button'
 
 export default function ConnectionStatus() {
   const { isAuthenticated } = useContext(AppContext)
@@ -33,12 +34,9 @@ export default function ConnectionStatus() {
           <span className='relative inline-flex h-3 w-3 rounded-full bg-red-500'></span>
         </span>
         <span>Mất kết nối</span>
-        <button
-          onClick={() => connect()}
-          className='ml-2 rounded-sm bg-red-500 px-3 py-1 text-xs text-white transition-colors hover:bg-red-600'
-        >
+        <Button variant='danger' size='sm' animated={false} onClick={() => connect()} className='ml-2 rounded-sm'>
           Kết nối lại
-        </button>
+        </Button>
       </div>
     )
   }
@@ -50,12 +48,9 @@ export default function ConnectionStatus() {
           <span className='relative inline-flex h-3 w-3 rounded-full bg-red-500'></span>
         </span>
         <span>Lỗi kết nối</span>
-        <button
-          onClick={() => connect()}
-          className='ml-2 rounded-sm bg-red-500 px-3 py-1 text-xs text-white transition-colors hover:bg-red-600'
-        >
+        <Button variant='danger' size='sm' animated={false} onClick={() => connect()} className='ml-2 rounded-sm'>
           Thử lại
-        </button>
+        </Button>
       </div>
     )
   }

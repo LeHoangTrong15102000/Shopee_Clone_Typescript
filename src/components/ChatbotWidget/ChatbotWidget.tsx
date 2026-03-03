@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import chatbotApi from 'src/apis/chatbot.api'
 import { ChatMessage } from 'src/types/chatbot.type'
+import Button from 'src/components/Button'
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -79,34 +80,40 @@ export default function ChatbotWidget() {
 
   return (
     <>
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className={classNames(
-          'fixed right-3 bottom-4 z-50 hidden h-14 w-14 items-center justify-center rounded-full bg-orange shadow-lg transition-colors hover:bg-[#d73211] sm:right-6 sm:bottom-6 md:flex',
-          !isOpen && 'animate-[message-shake_2s_ease-in-out_infinite]'
-        )}
+      <motion.div
+        className='fixed right-3 bottom-4 z-50 hidden sm:right-6 sm:bottom-6 md:flex'
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <motion.svg
-          className='h-6 w-6 text-white'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
-          animate={{
-            rotate: isOpen ? 360 : 0,
-            scale: isOpen ? [1, 1.2, 1] : 1
-          }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        <Button
+          shape='pill'
+          animated={false}
+          onClick={() => setIsOpen(!isOpen)}
+          className={classNames(
+            'flex h-14 w-14 items-center justify-center bg-orange shadow-lg transition-colors hover:bg-[#d73211] focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2',
+            !isOpen && 'animate-[message-shake_2s_ease-in-out_infinite]'
+          )}
         >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-          />
-        </motion.svg>
-      </motion.button>
+          <motion.svg
+            className='h-6 w-6 text-white'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            animate={{
+              rotate: isOpen ? 360 : 0,
+              scale: isOpen ? [1, 1.2, 1] : 1
+            }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+            />
+          </motion.svg>
+        </Button>
+      </motion.div>
 
       <AnimatePresence>
         {isOpen && (
@@ -129,15 +136,17 @@ export default function ChatbotWidget() {
                   <p className='text-xs text-white/80'>Trực tuyến</p>
                 </div>
               </div>
-              <button
+              <Button
+                shape='pill'
+                animated={false}
                 onClick={() => setIsOpen(false)}
-                className='flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30'
+                className='flex h-8 w-8 items-center justify-center bg-white/20 transition-colors hover:bg-white/30 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2'
                 aria-label='Đóng chat'
               >
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             </div>
 
             <div className='flex-1 space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-slate-900'>
@@ -191,11 +200,13 @@ export default function ChatbotWidget() {
                   className='flex-1 rounded-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                   disabled={sendMutation.isPending}
                 />
-                <button
+                <Button
+                  shape='pill'
+                  animated={false}
                   onClick={handleSend}
                   disabled={!inputValue.trim() || sendMutation.isPending}
                   className={classNames(
-                    'flex h-10 w-10 items-center justify-center rounded-full transition-colors',
+                    'flex h-10 w-10 items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2',
                     inputValue.trim() && !sendMutation.isPending
                       ? 'bg-orange text-white hover:bg-[#d73211]'
                       : 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-slate-600 dark:text-gray-500'
@@ -209,7 +220,7 @@ export default function ChatbotWidget() {
                       d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8'
                     />
                   </svg>
-                </button>
+                </Button>
               </div>
             </div>
           </motion.div>

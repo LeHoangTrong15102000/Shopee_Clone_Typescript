@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 interface NetworkErrorProps {
   onRetry?: () => void
@@ -124,10 +125,12 @@ export default function NetworkError({
 
       {/* Retry Button */}
       {onRetry && (
-        <button
+        <Button
+          variant='primary'
+          animated={false}
           onClick={handleRetry}
           disabled={isRetrying}
-          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
+          className='flex items-center gap-2 rounded-xs px-6 py-2 text-sm font-medium'
         >
           {isRetrying ? (
             <>
@@ -153,7 +156,7 @@ export default function NetworkError({
               <span>Thử lại</span>
             </>
           )}
-        </button>
+        </Button>
       )}
     </motion.div>
   )

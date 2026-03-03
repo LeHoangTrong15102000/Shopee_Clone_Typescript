@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import voucherApi from 'src/apis/voucher.api'
 import VoucherCard from 'src/components/VoucherCard'
 import { VoucherStatus, VoucherCategory } from 'src/types/voucher.type'
+import Button from 'src/components/Button'
 
 type TabStatus = VoucherStatus | 'all'
 
@@ -68,7 +69,8 @@ export default function MyVouchers() {
       <div className='rounded-lg bg-white shadow-xs dark:bg-slate-800'>
         <div className='flex flex-wrap gap-2 border-b p-3 dark:border-slate-600'>
           {categoryTabs.map((tab) => (
-            <button
+            <Button
+              animated={false}
               key={tab.category}
               onClick={() => setActiveCategory(tab.category)}
               className={classNames(
@@ -81,13 +83,14 @@ export default function MyVouchers() {
               )}
             >
               {tab.label}
-            </button>
+            </Button>
           ))}
         </div>
 
         <div className='flex overflow-x-auto border-b dark:border-slate-600'>
           {statusTabs.map((tab) => (
-            <button
+            <Button
+              animated={false}
               key={tab.status}
               onClick={() => setActiveStatus(tab.status)}
               className={classNames(
@@ -104,7 +107,7 @@ export default function MyVouchers() {
                   className='absolute right-0 bottom-0 left-0 h-0.5 bg-[#ee4d2d] dark:bg-orange-400'
                 />
               )}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

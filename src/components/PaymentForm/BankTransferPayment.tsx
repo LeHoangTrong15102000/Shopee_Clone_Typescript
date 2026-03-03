@@ -199,9 +199,10 @@ const BankDropdown = memo(function BankDropdown({
 
   return (
     <div ref={dropdownRef} className='relative'>
-      <button
+      <Button
         type='button'
         onClick={onToggle}
+        animated={false}
         className='flex w-full items-center justify-between rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-left transition-all hover:border-blue-300 focus:border-blue-500 focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-400'
       >
         {selectedBank ? (
@@ -224,7 +225,7 @@ const BankDropdown = memo(function BankDropdown({
         >
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
         </motion.svg>
-      </button>
+      </Button>
 
       <AnimatePresence>
         {isOpen && (
@@ -263,29 +264,31 @@ const BankDropdown = memo(function BankDropdown({
             <div className='max-h-64 overflow-y-auto p-2'>
               {filteredBanks.length > 0 ? (
                 filteredBanks.map((bank) => (
-                  <motion.button
-                    key={bank.id}
-                    type='button'
-                    onClick={() => handleSelectBank(bank)}
-                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-blue-500/5 dark:hover:bg-blue-400/10 ${
-                      selectedBank?.id === bank.id ? bank.bgColor : ''
-                    }`}
-                  >
-                    <BankLogo bank={bank} size='sm' />
-                    <div className='flex-1'>
-                      <p className={`font-medium ${bank.color}`}>{bank.name}</p>
-                      <p className='text-xs text-gray-500 dark:text-gray-400'>{bank.shortName}</p>
-                    </div>
-                    {selectedBank?.id === bank.id && (
-                      <svg className='h-5 w-5 text-green-500' fill='currentColor' viewBox='0 0 20 20'>
-                        <path
-                          fillRule='evenodd'
-                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                    )}
-                  </motion.button>
+                  <motion.div key={bank.id} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+                    <Button
+                      type='button'
+                      onClick={() => handleSelectBank(bank)}
+                      animated={false}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-blue-500/5 dark:hover:bg-blue-400/10 ${
+                        selectedBank?.id === bank.id ? bank.bgColor : ''
+                      }`}
+                    >
+                      <BankLogo bank={bank} size='sm' />
+                      <div className='flex-1'>
+                        <p className={`font-medium ${bank.color}`}>{bank.name}</p>
+                        <p className='text-xs text-gray-500 dark:text-gray-400'>{bank.shortName}</p>
+                      </div>
+                      {selectedBank?.id === bank.id && (
+                        <svg className='h-5 w-5 text-green-500' fill='currentColor' viewBox='0 0 20 20'>
+                          <path
+                            fillRule='evenodd'
+                            d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                      )}
+                    </Button>
+                  </motion.div>
                 ))
               ) : (
                 <p className='py-4 text-center text-sm text-gray-500 dark:text-gray-400'>Không tìm thấy ngân hàng</p>
@@ -371,23 +374,24 @@ const CopyButton = memo(function CopyButton({ text, label }: { text: string; lab
   }, [text, label])
 
   return (
-    <motion.button
-      type='button'
-      onClick={handleCopy}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className='rounded-lg bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800 dark:bg-slate-700 dark:text-gray-400 dark:hover:bg-slate-600 dark:hover:text-gray-200'
-      title={`Sao chép ${label}`}
-    >
-      <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          strokeWidth={2}
-          d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'
-        />
-      </svg>
-    </motion.button>
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button
+        type='button'
+        onClick={handleCopy}
+        animated={false}
+        className='rounded-lg bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800 dark:bg-slate-700 dark:text-gray-400 dark:hover:bg-slate-600 dark:hover:text-gray-200'
+        title={`Sao chép ${label}`}
+      >
+        <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'
+          />
+        </svg>
+      </Button>
+    </motion.div>
   )
 })
 
@@ -634,15 +638,17 @@ const UploadReceipt = memo(function UploadReceipt({ onFileSelect }: { onFileSele
               <p className='text-sm font-medium text-gray-800 dark:text-gray-200'>{selectedFile.name}</p>
               <p className='text-xs text-gray-500 dark:text-gray-400'>{(selectedFile.size / 1024).toFixed(1)} KB</p>
             </div>
-            <button
+            <Button
               type='button'
               onClick={handleRemoveFile}
+              variant='ghost'
+              animated={false}
               className='rounded-full p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500'
             >
               <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
               </svg>
-            </button>
+            </Button>
           </div>
         </motion.div>
       )}

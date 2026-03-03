@@ -5,6 +5,7 @@ import useTypingIndicator from 'src/hooks/useTypingIndicator'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
 import TypingIndicator from './TypingIndicator'
+import Button from 'src/components/Button'
 
 interface ChatWindowProps {
   conversationId?: string
@@ -53,7 +54,8 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
 
   if (isMinimized) {
     return (
-      <button
+      <Button
+        animated={false}
         onClick={handleToggle}
         className='fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-orange shadow-lg transition-transform hover:scale-105 hover:bg-[#d73211] sm:right-6 sm:bottom-6 sm:h-14 sm:w-14'
       >
@@ -65,7 +67,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
           />
         </svg>
-      </button>
+      </Button>
     )
   }
 
@@ -87,7 +89,8 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
           </div>
         </div>
         <div className='flex items-center gap-1'>
-          <button
+          <Button
+            animated={false}
             onClick={handleToggle}
             className='rounded-sm p-1.5 transition-colors hover:bg-white/20'
             title='Thu nhỏ'
@@ -95,12 +98,17 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M18 12H6' />
             </svg>
-          </button>
-          <button onClick={handleClose} className='rounded-sm p-1.5 transition-colors hover:bg-white/20' title='Đóng'>
+          </Button>
+          <Button
+            animated={false}
+            onClick={handleClose}
+            className='rounded-sm p-1.5 transition-colors hover:bg-white/20'
+            title='Đóng'
+          >
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 

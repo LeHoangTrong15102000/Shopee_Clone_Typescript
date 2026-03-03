@@ -5,6 +5,7 @@ import path from 'src/constant/path'
 import useSearchProducts from 'src/hooks/useSearchProducts'
 import { motion } from 'framer-motion'
 import MobileNavigationDrawer from '../MobileNavigationDrawer'
+import Button from 'src/components/Button'
 
 interface CartHeaderProps {
   title?: string
@@ -63,31 +64,35 @@ const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderPro
                   placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
                   {...register('name')}
                 />
-                <motion.button
-                  type='submit'
-                  className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] px-4 py-2 hover:opacity-90 sm:px-5 sm:py-2 md:px-8'
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='h-5 w-5 stroke-white'
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant='primary'
+                    animated={false}
+                    type='submit'
+                    className='shrink-0 rounded-xs bg-[linear-gradient(-180deg,#f53d2d,#f63)] px-4 py-2 hover:opacity-90 sm:px-5 sm:py-2 md:px-8'
                   >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
-                    />
-                  </svg>
-                </motion.button>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='h-5 w-5 stroke-white'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
+                      />
+                    </svg>
+                  </Button>
+                </motion.div>
               </div>
             </motion.form>
             {/* Hamburger menu button - mobile only (RIGHT side) */}
-            <button
+            <Button
+              variant='icon'
+              animated={false}
               onClick={() => setIsDrawerOpen(true)}
               className='shrink-0 p-1 text-orange hover:text-orange/70 md:hidden dark:text-orange-400'
               aria-label='Open navigation menu'
@@ -102,7 +107,7 @@ const CartHeader = ({ title = 'giỏ hàng', showStepper = true }: CartHeaderPro
               >
                 <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
               </svg>
-            </button>
+            </Button>
           </nav>
         </div>
       </div>

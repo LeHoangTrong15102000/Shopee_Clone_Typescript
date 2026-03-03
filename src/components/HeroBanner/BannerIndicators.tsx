@@ -1,3 +1,4 @@
+import Button from 'src/components/Button'
 import type { BannerSlide } from './types'
 
 interface Props {
@@ -11,7 +12,8 @@ const BannerIndicators = ({ slides, currentSlide, onSlideChange }: Props) => {
     <div className='absolute bottom-2 left-1/2 z-20 -translate-x-1/2 transform sm:bottom-4'>
       <div className='flex items-center space-x-1.5 sm:space-x-2'>
         {slides.map((_, index) => (
-          <button
+          <Button
+            animated={false}
             key={index}
             onClick={() => onSlideChange(index)}
             className={`rounded-full p-1 transition-all duration-300 ${

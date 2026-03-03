@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Address } from 'src/types/checkout.type'
 import addressApi from 'src/apis/address.api'
+import Button from 'src/components/Button'
 import AddressForm from './AddressForm'
 
 interface AddressSelectorProps {
@@ -74,8 +75,10 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         {/* Title removed - using SectionHeader in parent */}
-        <button
+        <Button
           onClick={handleAddNew}
+          variant='ghost'
+          animated={false}
           className='flex items-center gap-1 text-sm text-orange hover:text-orange/80 dark:hover:text-orange-400/80'
           aria-label='Thêm địa chỉ mới'
         >
@@ -83,7 +86,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
           </svg>
           Thêm địa chỉ mới
-        </button>
+        </Button>
       </div>
 
       {addresses.length === 0 ? (
@@ -103,9 +106,9 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
           </svg>
           <p className='mt-2 text-gray-500 dark:text-gray-400'>Bạn chưa có địa chỉ nào</p>
-          <button onClick={handleAddNew} className='mt-4 rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'>
+          <Button onClick={handleAddNew} className='mt-4 rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'>
             Thêm địa chỉ đầu tiên
-          </button>
+          </Button>
         </div>
       ) : (
         <div className='space-y-3'>
@@ -151,35 +154,44 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                   </p>
 
                   <div className='mt-2 flex gap-3'>
-                    <button
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation()
                         handleEdit(address)
                       }}
+                      variant='ghost'
+                      size='sm'
+                      animated={false}
                       className='text-sm text-blue-600 hover:underline dark:text-blue-400'
                     >
                       Sửa
-                    </button>
+                    </Button>
                     {!address.isDefault && (
                       <>
-                        <button
+                        <Button
                           onClick={(e) => {
                             e.stopPropagation()
                             setDefaultMutation.mutate(address._id)
                           }}
+                          variant='ghost'
+                          size='sm'
+                          animated={false}
                           className='text-sm text-gray-600 hover:underline dark:text-gray-300'
                         >
                           Đặt mặc định
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={(e) => {
                             e.stopPropagation()
                             deleteMutation.mutate(address._id)
                           }}
+                          variant='ghost'
+                          size='sm'
+                          animated={false}
                           className='text-sm text-red-600 hover:underline dark:text-red-400'
                         >
                           Xóa
-                        </button>
+                        </Button>
                       </>
                     )}
                   </div>

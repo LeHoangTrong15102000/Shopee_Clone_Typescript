@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 
 export type ViewMode = 'grid' | 'list'
 
@@ -20,7 +21,9 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
   return (
     <div className={classNames('flex items-center gap-1 overflow-hidden rounded-lg', className)}>
       {/* Grid View Button */}
-      <button
+      <Button
+        variant='ghost'
+        animated={false}
         type='button'
         onClick={handleGridClick}
         className={classNames('p-2 transition-all duration-100 active:scale-95', {
@@ -39,10 +42,12 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
           <rect x='1' y='9' width='6' height='6' rx='1' />
           <rect x='9' y='9' width='6' height='6' rx='1' />
         </svg>
-      </button>
+      </Button>
 
       {/* List View Button */}
-      <button
+      <Button
+        variant='ghost'
+        animated={false}
         type='button'
         onClick={handleListClick}
         className={classNames('p-2 transition-all duration-100 active:scale-95', {
@@ -60,7 +65,7 @@ const ViewToggle = ({ viewMode, onViewChange, className }: ViewToggleProps) => {
           <rect x='1' y='6.75' width='14' height='2.5' rx='1' />
           <rect x='1' y='11.5' width='14' height='2.5' rx='1' />
         </svg>
-      </button>
+      </Button>
     </div>
   )
 }

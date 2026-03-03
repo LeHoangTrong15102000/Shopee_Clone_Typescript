@@ -2,6 +2,7 @@ import { toast } from 'react-toastify'
 import classNames from 'classnames'
 import { useOptimisticWishlist } from 'src/hooks/optimistic'
 import { TOAST_MESSAGES } from 'src/hooks/optimistic/shared/constants'
+import Button from 'src/components/Button'
 
 interface WishlistButtonProps {
   productId: string
@@ -51,9 +52,9 @@ export default function WishlistButton({ productId, productName, className, size
       : `Thêm ${productName || 'sản phẩm'} vào danh sách yêu thích`
 
   return (
-    <button
-      type='button'
-      role='button'
+    <Button
+      variant='icon'
+      animated={false}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       disabled={isLoading}
@@ -62,7 +63,7 @@ export default function WishlistButton({ productId, productName, className, size
       aria-busy={isLoading}
       tabIndex={0}
       className={classNames(
-        'flex items-center justify-center rounded-full bg-white/80 shadow-xs transition-all duration-200 hover:bg-white focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden dark:bg-slate-800/80 dark:hover:bg-slate-700',
+        'flex items-center justify-center bg-white/80 shadow-xs transition-all duration-200 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-700',
         sizeClasses[size],
         { 'cursor-not-allowed opacity-50': isLoading },
         className
@@ -98,6 +99,6 @@ export default function WishlistButton({ productId, productName, className, size
           />
         </svg>
       )}
-    </button>
+    </Button>
   )
 }

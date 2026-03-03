@@ -3,6 +3,7 @@ import ProductRating from 'src/components/ProductRating'
 import ShareButton from 'src/components/ShareButton'
 import ViewerCountBadge from 'src/components/ViewerCountBadge'
 import LivePriceTag from 'src/components/LivePriceTag'
+import Button from 'src/components/Button'
 import { Product as ProductType } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
 import { staggerItem } from 'src/styles/animations'
@@ -78,9 +79,14 @@ const ProductInfo = ({
               description={product.description?.slice(0, 150)}
               image={product.image}
             />
-            <button className='text-sm text-black/60 transition-colors hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'>
+            <Button
+              variant='ghost'
+              size='sm'
+              animated={false}
+              className='text-sm text-black/60 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
+            >
               Tố cáo
-            </button>
+            </Button>
           </div>
         </div>
       </motion.div>

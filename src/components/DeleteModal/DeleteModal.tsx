@@ -66,9 +66,9 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
         </div>
         <div className='mt-[80px] flex items-center justify-between'>
           <Button
-            variant='primary'
+            variant='danger'
             onClick={handleDelete}
-            className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm border px-5 text-[14px] shadow-xs outline-hidden'
+            className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm px-5 text-[14px] shadow-xs'
           >
             Có
           </Button>

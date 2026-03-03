@@ -7,6 +7,7 @@ import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Notification, NotificationType } from 'src/types/notification.type'
 import useNotifications from 'src/hooks/useNotifications'
 import useNotificationSound from 'src/hooks/useNotificationSound'
+import Button from 'src/components/Button'
 
 type FilterTab = 'all' | 'order' | 'promotion' | 'system' | 'other'
 
@@ -248,7 +249,9 @@ const Notifications = () => {
           </div>
 
           {/* Sound toggle */}
-          <button
+          <Button
+            variant='ghost'
+            animated={false}
             type='button'
             onClick={toggleMute}
             className='flex items-center gap-1 rounded-md px-2 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-700'
@@ -280,18 +283,20 @@ const Notifications = () => {
                 />
               </svg>
             )}
-          </button>
+          </Button>
 
           {/* Mark all as read button */}
           {unreadCount > 0 && (
-            <button
+            <Button
+              variant='ghost'
+              animated={false}
               type='button'
               onClick={handleMarkAllAsRead}
               disabled={markAllAsReadMutation.isPending}
               className='text-sm text-[#ee4d2d] hover:text-[#ee4d2d]/80 disabled:opacity-50 dark:text-orange-400 dark:hover:text-orange-400/80'
             >
               {markAllAsReadMutation.isPending ? 'Đang xử lý...' : 'Đánh dấu tất cả đã đọc'}
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -299,8 +304,10 @@ const Notifications = () => {
       {/* Filter Tabs */}
       <div className='mb-6 scrollbar-hide flex gap-1 overflow-x-auto border-b border-gray-200 pb-px md:gap-2 dark:border-slate-600'>
         {FILTER_TABS.map((tab) => (
-          <button
+          <Button
             key={tab.key}
+            variant='ghost'
+            animated={false}
             type='button'
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
@@ -310,7 +317,7 @@ const Notifications = () => {
             }`}
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -327,26 +334,30 @@ const Notifications = () => {
           {/* New notification banner */}
           <AnimatePresence>
             {showNewBanner && (
-              <motion.button
-                type='button'
-                onClick={handleBannerClick}
-                className='absolute -top-2 left-1/2 z-10 -translate-x-1/2 cursor-pointer rounded-lg bg-[#ee4d2d] px-4 py-2 text-sm text-white shadow-lg'
+              <motion.div
                 initial={reducedMotion ? undefined : { opacity: 0, y: -20 }}
                 animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                 exit={reducedMotion ? undefined : { opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <span className='flex items-center gap-2'>
-                  <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
-                    <path
-                      fillRule='evenodd'
-                      d='M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
-                  Thông báo mới ({newBannerCount})
-                </span>
-              </motion.button>
+                <Button
+                  animated={false}
+                  type='button'
+                  onClick={handleBannerClick}
+                  className='absolute -top-2 left-1/2 z-10 -translate-x-1/2 cursor-pointer rounded-lg bg-[#ee4d2d] px-4 py-2 text-sm text-white shadow-lg'
+                >
+                  <span className='flex items-center gap-2'>
+                    <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
+                      <path
+                        fillRule='evenodd'
+                        d='M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    Thông báo mới ({newBannerCount})
+                  </span>
+                </Button>
+              </motion.div>
             )}
           </AnimatePresence>
 

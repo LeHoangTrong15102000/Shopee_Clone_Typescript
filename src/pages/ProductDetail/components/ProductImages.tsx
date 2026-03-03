@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import { Product as ProductType } from 'src/types/product.type'
 import { imageCrossfade, staggerContainer, staggerItem, STAGGER_DELAY } from 'src/styles/animations'
+import Button from 'src/components/Button'
 
 const FALLBACK_IMAGE =
   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNFNUU3RUIiLz48cGF0aCBkPSJNMTAwIDcwQzg4LjUgNzAgNzkgNzkuNSA3OSA5MUM3OSAxMDIuNSA4OC41IDExMiAxMDAgMTEyQzExMS41IDExMiAxMjEgMTAyLjUgMTIxIDkxQzEyMSA3OS41IDExMS41IDcwIDEwMCA3MFpNMTAwIDEwNEM5Mi44IDEwNCA4NyA5OC4yIDg3IDkxQzg3IDgzLjggOTIuOCA3OCAxMDAgNzhDMTA3LjIgNzggMTEzIDgzLjggMTEzIDkxQzExMyA5OC4yIDEwNy4yIDEwNCAxMDAgMTA0WiIgZmlsbD0iIzlDQTNBRiIvPjxwYXRoIGQ9Ik0xNDAgMTMwSDYwQzU1LjYgMTMwIDUyIDEyNi40IDUyIDEyMlY3OEM1MiA3My42IDU1LjYgNzAgNjAgNzBIMTQwQzE0NC40IDcwIDE0OCA3My42IDE0OCA3OFYxMjJDMTQ4IDEyNi40IDE0NC40IDEzMCAxNDAgMTMwWk02MCA3OFYxMjJIMTQwVjc4SDYwWiIgZmlsbD0iIzlDQTNBRiIvPjwvc3ZnPg=='
@@ -116,7 +117,8 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
         role='group'
         aria-label='Product image gallery. Use left and right arrow keys to navigate.'
       >
-        <button
+        <Button
+          animated={false}
           onClick={handlePrevSlider}
           className='absolute top-1/2 left-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
         >
@@ -130,7 +132,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
           </svg>
-        </button>
+        </Button>
         {currentImages.map((img, index) => {
           const isActive = img === activeImage
           return (
@@ -154,7 +156,8 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
             </motion.div>
           )
         })}
-        <button
+        <Button
+          animated={false}
           onClick={handleNextSlider}
           className='absolute top-1/2 right-0 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white'
         >
@@ -168,7 +171,7 @@ const ProductImages = ({ product, reducedMotion }: ProductImagesProps) => {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
           </svg>
-        </button>
+        </Button>
       </motion.div>
     </div>
   )

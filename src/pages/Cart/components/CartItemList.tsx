@@ -5,6 +5,7 @@ import ShopeeCheckbox from 'src/components/ShopeeCheckbox'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import QuantityController from 'src/components/QuantityController'
 import StockBadge from 'src/components/StockBadge'
+import Button from 'src/components/Button'
 import { InlineStockAlert } from 'src/components/RealTimeStockAlert'
 import { Purchase } from 'src/types/purchases.type'
 import { ExtendedPurchase, InlineStockAlertState } from '../types'
@@ -187,11 +188,12 @@ const CartItemList = ({
                       </motion.span>
                     </div>
                     <div className='col-span-1 flex flex-col items-center justify-center gap-1'>
-                      <motion.button
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        animated={false}
                         onClick={handleSaveForLater(index)}
-                        className='flex items-center gap-1 text-sm text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className='flex items-center gap-1 text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                         title='Lưu để mua sau'
                       >
                         <svg
@@ -209,15 +211,16 @@ const CartItemList = ({
                           />
                         </svg>
                         Lưu
-                      </motion.button>
-                      <motion.button
+                      </Button>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        animated={false}
                         onClick={handleDelete(index)}
-                        className='bg-none text-black/90 transition-colors hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        className='bg-none text-black/90 hover:font-medium hover:text-[#ee4d2d] dark:text-gray-200'
                       >
                         Xóa
-                      </motion.button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -332,13 +335,13 @@ const CartItemList = ({
                       />
 
                       <div className='ml-auto flex items-center gap-1'>
-                        <motion.button
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          animated={false}
                           onClick={handleSaveForLater(index)}
-                          className='p-1.5 text-blue-500 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
+                          className='p-1.5 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                           aria-label='Lưu để mua sau'
-                          whileHover={{ scale: 1.15 }}
-                          whileTap={{ scale: 0.9 }}
-                          transition={{ duration: 0.2 }}
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -354,15 +357,15 @@ const CartItemList = ({
                               d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
                             />
                           </svg>
-                        </motion.button>
+                        </Button>
 
-                        <motion.button
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          animated={false}
                           onClick={handleDelete(index)}
-                          className='p-1.5 text-gray-500 transition-colors hover:text-[#ee4d2d] dark:text-gray-400'
+                          className='p-1.5 text-gray-500 hover:text-[#ee4d2d] dark:text-gray-400'
                           aria-label='Xóa sản phẩm'
-                          whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
-                          whileTap={{ scale: 0.9 }}
-                          transition={{ duration: 0.3 }}
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -378,7 +381,7 @@ const CartItemList = ({
                               d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'
                             />
                           </svg>
-                        </motion.button>
+                        </Button>
                       </div>
                     </div>
 

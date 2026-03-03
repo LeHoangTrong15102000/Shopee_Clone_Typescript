@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { purchasesStatus } from 'src/constant/purchase'
+import Button from 'src/components/Button'
 
 interface PurchaseTabBarProps {
   status: number
@@ -19,7 +20,8 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
   return (
     <div className='sticky top-0 z-20 scrollbar-hide flex items-center overflow-x-auto rounded-t-sm bg-white shadow-xs dark:bg-slate-800'>
       {purchaseTabs.map((tab) => (
-        <button
+        <Button
+          animated={false}
           key={tab.status}
           onClick={() => onStatusChange(tab.status)}
           className={classNames(
@@ -33,7 +35,7 @@ const PurchaseTabBar = ({ status, onStatusChange }: PurchaseTabBarProps) => {
           )}
         >
           {tab.name}
-        </button>
+        </Button>
       ))}
     </div>
   )

@@ -3,6 +3,7 @@ import { useOptimisticNotification } from 'src/hooks/optimistic'
 import { formatTimeAgo } from 'src/utils/utils'
 import { useKeyboardNavigation } from 'src/hooks/useKeyboardNavigation'
 import useNotifications from 'src/hooks/useNotifications'
+import Button from 'src/components/Button'
 
 interface NotificationListProps {
   className?: string
@@ -198,31 +199,34 @@ const NotificationList = ({ className }: NotificationListProps) => {
         <div className='mt-6 flex items-center justify-between text-gray-500 dark:text-gray-400'>
           <div className='text-xs capitalize'>
             {unreadCount > 0 ? (
-              <button
+              <Button
                 type='button'
                 onClick={handleMarkAllAsRead}
                 onKeyDown={(e) => handleMarkAllKeyDown(e as unknown as KeyboardEvent)}
                 disabled={markAllAsReadMutation.isPending}
                 aria-label={`Đánh dấu tất cả ${unreadCount} thông báo là đã đọc`}
                 aria-busy={markAllAsReadMutation.isPending}
+                variant='ghost'
+                animated={false}
                 className='text-orange transition-colors hover:text-orange/80 focus:underline focus:outline-hidden disabled:opacity-50 dark:hover:text-orange-400/80'
                 title='Đánh dấu tất cả thông báo là đã đọc'
               >
                 {markAllAsReadMutation.isPending ? 'Đang xử lý...' : 'Đánh dấu đã đọc tất cả'}
-              </button>
+              </Button>
             ) : (
               <span className='text-green-600 dark:text-green-400' role='status'>
                 ✓ Tất cả đã đọc
               </span>
             )}
           </div>
-          <button
+          <Button
             type='button'
             aria-label='Xem tất cả thông báo'
+            animated={false}
             className='hover:bg-opacity-90 rounded-xs bg-orange px-4 py-2 text-xs text-white capitalize focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden'
           >
             Xem tất cả
-          </button>
+          </Button>
         </div>
       </div>
     </div>

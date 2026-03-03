@@ -5,6 +5,7 @@ import { CreateReviewData } from 'src/types/review.type'
 import { Purchase } from 'src/types/purchases.type'
 import reviewApi from 'src/apis/review.api'
 import ProductRating from 'src/components/ProductRating'
+import Button from 'src/components/Button'
 
 interface ProductReviewModalProps {
   isOpen: boolean
@@ -182,19 +183,22 @@ const ProductReviewModal = ({ isOpen, onClose, purchase }: ProductReviewModalPro
 
         {/* Footer */}
         <div className='flex justify-end space-x-3 border-t bg-gray-50 p-6 dark:border-slate-700 dark:bg-slate-900'>
-          <button
+          <Button
             onClick={onClose}
+            variant='secondary'
+            animated={false}
             className='rounded-sm border border-gray-300 px-6 py-2 text-gray-600 hover:bg-gray-100 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
           >
             Trở Lại
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleSubmit}
             disabled={createReviewMutation.isPending || !rating || !comment.trim()}
+            animated={false}
             className='rounded-sm bg-orange-500 px-6 py-2 text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50'
           >
             {createReviewMutation.isPending ? 'Đang gửi...' : 'Hoàn Thành'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { toast } from 'react-toastify'
 import { Product } from 'src/types/product.type'
 import { useProductComparison } from 'src/hooks/useProductComparison'
+import Button from 'src/components/Button'
 
 interface CompareButtonProps {
   product: Product
@@ -54,8 +55,9 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
     : `Thêm ${product.name} vào danh sách so sánh`
 
   return (
-    <button
-      type='button'
+    <Button
+      variant='icon'
+      animated={false}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       aria-label={ariaLabel}
@@ -63,7 +65,7 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
       tabIndex={0}
       title={isComparing ? 'Xóa khỏi so sánh' : 'Thêm vào so sánh'}
       className={classNames(
-        'flex items-center justify-center rounded-full bg-white/80 shadow-xs transition-all duration-200 hover:bg-white focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900',
+        'flex items-center justify-center bg-white/80 shadow-xs transition-all duration-200 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900',
         sizeClasses[size],
         className
       )}
@@ -82,6 +84,6 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
           d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
         />
       </svg>
-    </button>
+    </Button>
   )
 }

@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { ANIMATION_DURATION } from 'src/styles/animations'
 import { formatCurrency } from 'src/utils/utils'
+import Button from 'src/components/Button'
 
 export interface OrderSearchFilterProps {
   searchQuery: string
@@ -195,7 +196,9 @@ export default function OrderSearchFilter({
             aria-label='Tìm kiếm đơn hàng'
           />
           {inputValue && (
-            <button
+            <Button
+              variant='ghost'
+              animated={false}
               type='button'
               onClick={handleClearSearch}
               className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
@@ -212,12 +215,13 @@ export default function OrderSearchFilter({
               >
                 <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
               </svg>
-            </button>
+            </Button>
           )}
         </div>
 
         {/* Filter Toggle Button */}
-        <button
+        <Button
+          animated={false}
           type='button'
           onClick={toggleFilterPanel}
           className={classNames(
@@ -265,7 +269,7 @@ export default function OrderSearchFilter({
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* Collapsible Filter Panel */}
@@ -368,7 +372,9 @@ export default function OrderSearchFilter({
                 className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-[#ee4d2d]'
               >
                 <span className='max-w-[150px] truncate'>"{searchQuery}"</span>
-                <button
+                <Button
+                  variant='ghost'
+                  animated={false}
                   type='button'
                   onClick={handleClearSearch}
                   className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
@@ -385,7 +391,7 @@ export default function OrderSearchFilter({
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
               </motion.div>
             )}
 
@@ -416,7 +422,9 @@ export default function OrderSearchFilter({
                 <span>
                   {dateRange?.from} - {dateRange?.to}
                 </span>
-                <button
+                <Button
+                  variant='ghost'
+                  animated={false}
                   type='button'
                   onClick={handleClearDateRange}
                   className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
@@ -433,7 +441,7 @@ export default function OrderSearchFilter({
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
               </motion.div>
             )}
 
@@ -464,7 +472,9 @@ export default function OrderSearchFilter({
                 <span>
                   ₫{formatCurrency(priceRange?.min || 0)} - ₫{formatCurrency(priceRange?.max || 0)}
                 </span>
-                <button
+                <Button
+                  variant='ghost'
+                  animated={false}
                   type='button'
                   onClick={handleClearPriceRange}
                   className='rounded-full p-0.5 transition-colors hover:bg-[#ee4d2d]/20'
@@ -481,7 +491,7 @@ export default function OrderSearchFilter({
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -489,13 +499,15 @@ export default function OrderSearchFilter({
 
         {/* Clear All Button */}
         {hasAnyFilter && (
-          <button
+          <Button
+            variant='ghost'
+            animated={false}
             type='button'
             onClick={handleClearAllFilters}
             className='text-sm font-medium text-[#ee4d2d] underline transition-colors hover:text-[#d73211]'
           >
             Xóa tất cả bộ lọc
-          </button>
+          </Button>
         )}
       </div>
     </div>

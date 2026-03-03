@@ -1,6 +1,7 @@
 import { memo, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import InputNumber, { InputNumberProps } from 'src/components/InputNumber'
+import Button from 'src/components/Button'
 import DeleteModal from '../DeleteModal'
 import { Product } from 'src/types/product.type'
 
@@ -110,24 +111,26 @@ const QuantityController = ({
       animate={isShaking ? { x: [0, -4, 4, -4, 4, 0] } : { x: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <motion.button
-        type='button'
-        aria-label='Decrease quantity'
-        className='flex h-10 w-10 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] bg-white text-black transition-colors duration-100 hover:bg-black/4 sm:h-8 sm:w-8 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-white/6'
-        onClick={decrease}
-        whileTap={{ scale: 0.85 }}
-      >
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          fill='none'
-          viewBox='0 0 24 24'
-          strokeWidth={1.5}
-          stroke='currentColor'
-          className='h-4 w-4'
+      <motion.div whileTap={{ scale: 0.85 }}>
+        <Button
+          variant='secondary'
+          animated={false}
+          aria-label='Decrease quantity'
+          onClick={decrease}
+          className='flex h-10 w-10 items-center justify-center rounded-l-md border border-[rgba(0,0,0,.09)] sm:h-8 sm:w-8 dark:border-slate-600'
         >
-          <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
-        </svg>
-      </motion.button>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
+          </svg>
+        </Button>
+      </motion.div>
       <InputNumber
         classNameError='hidden'
         classNameInput='h-10 w-14 sm:h-8 p-1 text-center border border-[rgba(0,0,0,.09)] dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-gray-100'
@@ -143,24 +146,26 @@ const QuantityController = ({
         value={value || localValue}
         {...rest}
       />
-      <motion.button
-        type='button'
-        aria-label='Increase quantity'
-        className='flex h-10 w-10 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] bg-white text-black transition-colors duration-100 hover:bg-black/4 sm:h-8 sm:w-8 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-white/6'
-        onClick={increase}
-        whileTap={{ scale: 0.85 }}
-      >
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          fill='none'
-          viewBox='0 0 24 24'
-          strokeWidth={1.5}
-          stroke='currentColor'
-          className='h-4 w-4'
+      <motion.div whileTap={{ scale: 0.85 }}>
+        <Button
+          variant='secondary'
+          animated={false}
+          aria-label='Increase quantity'
+          onClick={increase}
+          className='flex h-10 w-10 items-center justify-center rounded-r-md border border-[rgba(0,0,0,.09)] sm:h-8 sm:w-8 dark:border-slate-600'
         >
-          <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-        </svg>
-      </motion.button>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
+          </svg>
+        </Button>
+      </motion.div>
       {/* Delete Modal */}
       {isQuantityInCart && (
         <DeleteModal

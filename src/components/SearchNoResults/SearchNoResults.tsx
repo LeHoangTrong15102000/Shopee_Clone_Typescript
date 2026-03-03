@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 interface SearchNoResultsProps {
   searchTerm: string
@@ -139,15 +140,15 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
         <p className='mb-4 font-medium text-gray-600 dark:text-gray-300'>Tìm kiếm phổ biến:</p>
         <div className='flex flex-wrap justify-center gap-2'>
           {popularSearchTerms.map((term, index) => (
-            <motion.button
-              key={term}
-              variants={listItemVariants}
-              custom={index}
-              onClick={() => onPopularSearch?.(term)}
-              className='rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:bg-[#ee4d2d] hover:text-white dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-orange-500'
-            >
-              {term}
-            </motion.button>
+            <motion.div key={term} variants={listItemVariants} custom={index}>
+              <Button
+                animated={false}
+                onClick={() => onPopularSearch?.(term)}
+                className='rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:bg-[#ee4d2d] hover:text-white dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-orange-500'
+              >
+                {term}
+              </Button>
+            </motion.div>
           ))}
         </div>
       </motion.div>

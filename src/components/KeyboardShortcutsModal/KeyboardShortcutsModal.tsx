@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { ANIMATION_DURATION, ANIMATION_EASING } from 'src/styles/animations'
+import Button from 'src/components/Button'
 
 // Display shortcut type that supports both single-key and sequence shortcuts
 interface DisplayShortcut {
@@ -151,15 +152,17 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
               <h2 id='keyboard-shortcuts-title' className='text-xl font-semibold text-gray-900 dark:text-gray-100'>
                 Phím tắt
               </h2>
-              <button
+              <Button
+                variant='icon'
+                animated={false}
                 onClick={onClose}
-                className='rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
+                className='p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
                 aria-label='Đóng'
               >
                 <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             </div>
 
             <div className='space-y-6'>

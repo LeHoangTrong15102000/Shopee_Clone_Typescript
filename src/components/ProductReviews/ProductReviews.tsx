@@ -7,6 +7,7 @@ import reviewApi from 'src/apis/review.api'
 import { Review, ReviewComment, CreateCommentData } from 'src/types/review.type'
 import ProductRating from 'src/components/ProductRating'
 import { useOptimisticReviewLike } from 'src/hooks/optimistic'
+import Button from 'src/components/Button'
 
 interface ProductReviewsProps {
   productId: string
@@ -161,14 +162,16 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
       <div className='mb-6 flex flex-col items-start justify-between gap-3 border-b pb-4 sm:flex-row sm:items-center dark:border-slate-700'>
         <div className='flex flex-wrap items-center gap-2'>
           <span className='text-sm font-medium dark:text-gray-300'>Lọc theo:</span>
-          <button
+          <Button
+            animated={false}
             onClick={() => setRatingFilter(undefined)}
             className={`rounded-sm px-3 py-1 text-sm ${!ratingFilter ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
           >
             Tất Cả
-          </button>
+          </Button>
           {[5, 4, 3, 2, 1].map((rating) => (
-            <button
+            <Button
+              animated={false}
               key={rating}
               onClick={() => setRatingFilter(rating)}
               className={`flex items-center rounded-sm px-3 py-1 text-sm ${ratingFilter === rating ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'}`}
@@ -177,7 +180,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
               <svg className='ml-1 h-3 w-3 fill-current' viewBox='0 0 20 20'>
                 <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
               </svg>
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -218,7 +221,8 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
         <div className='mt-8 flex justify-center'>
           <div className='flex space-x-2'>
             {Array.from({ length: pagination.total_pages }, (_, i) => i + 1).map((page) => (
-              <button
+              <Button
+                animated={false}
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 className={`rounded px-3 py-2 text-sm ${
@@ -228,7 +232,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
                 }`}
               >
                 {page}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -321,7 +325,9 @@ const ReviewItem = ({
 
           {/* Actions */}
           <div className='flex items-center space-x-4 text-sm'>
-            <button
+            <Button
+              variant='ghost'
+              animated={false}
               onClick={() => onLike(review._id)}
               className={`flex items-center space-x-1 ${review.is_liked ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'} hover:text-red-500`}
             >
@@ -329,21 +335,25 @@ const ReviewItem = ({
                 <path d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' />
               </svg>
               <span>Hữu ích ({review.helpful_count})</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
+              variant='ghost'
+              animated={false}
               onClick={() => onToggleComments(review._id)}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               Bình luận ({review.comments_count || comments.length})
-            </button>
+            </Button>
 
-            <button
+            <Button
+              variant='ghost'
+              animated={false}
               onClick={() => onReply()}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               Trả lời
-            </button>
+            </Button>
           </div>
 
           {/* Comments Section */}
@@ -373,19 +383,22 @@ const ReviewItem = ({
                     rows={3}
                   />
                   <div className='mt-2 flex justify-end space-x-2'>
-                    <button
+                    <Button
+                      variant='ghost'
+                      animated={false}
                       onClick={() => onReply()}
                       className='rounded-sm border border-gray-300 px-4 py-2 text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                     >
                       Hủy
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      animated={false}
                       onClick={() => onCommentSubmit(review._id)}
                       disabled={isSubmittingComment || !commentText.trim()}
                       className='rounded-sm bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                     >
                       {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -438,9 +451,14 @@ const CommentItem = ({
 
           <div className='mt-1 flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400'>
             <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: vi })}</span>
-            <button onClick={() => onReply(comment._id)} className='hover:text-gray-700 dark:hover:text-gray-300'>
+            <Button
+              variant='ghost'
+              animated={false}
+              onClick={() => onReply(comment._id)}
+              className='hover:text-gray-700 dark:hover:text-gray-300'
+            >
               Trả lời
-            </button>
+            </Button>
           </div>
 
           {/* Reply Form */}
@@ -454,19 +472,22 @@ const CommentItem = ({
                 rows={2}
               />
               <div className='mt-2 flex justify-end space-x-2'>
-                <button
+                <Button
+                  variant='ghost'
+                  animated={false}
                   onClick={() => onReply()}
                   className='rounded-sm border border-gray-300 px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                 >
                   Hủy
-                </button>
-                <button
+                </Button>
+                <Button
+                  animated={false}
                   onClick={() => onCommentSubmit(comment.review, comment._id)}
                   disabled={isSubmittingComment || !commentText.trim()}
                   className='rounded-sm bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50'
                 >
                   {isSubmittingComment ? 'Đang gửi...' : 'Gửi'}
-                </button>
+                </Button>
               </div>
             </div>
           )}

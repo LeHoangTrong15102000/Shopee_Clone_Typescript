@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 
 interface LiveQAAnswer {
   question_id: string
@@ -34,17 +35,16 @@ export default function LiveQASection({
       )}
     >
       {newQuestionCount > 0 && (
-        <div
-          className='flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/30'
+        <Button
+          variant='ghost'
+          animated={false}
+          className='flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/30'
           onClick={onViewQuestions}
-          role='button'
-          tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && onViewQuestions?.()}
         >
           <span className='text-lg'>❓</span>
           <span className='font-medium text-blue-600 dark:text-blue-400'>{newQuestionCount} câu hỏi mới</span>
           <span className='ml-auto text-xs text-gray-400 dark:text-gray-500'>Nhấn để xem ↓</span>
-        </div>
+        </Button>
       )}
       {newAnswers.length > 0 && (
         <div className='mt-2 space-y-1'>

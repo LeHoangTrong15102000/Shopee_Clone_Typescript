@@ -106,15 +106,17 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
           >
             <div className='sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800'>
               <h2 className='text-lg font-semibold dark:text-gray-100'>{t('aside filter.search filter')}</h2>
-              <button
+              <Button
+                variant='icon'
+                animated={false}
                 onClick={onClose}
-                className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
+                className='p-1'
                 aria-label='Close filter drawer'
               >
                 <svg className='h-6 w-6 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             </div>
             <div className='p-4 text-[rgba(0,0,0,.8)] dark:text-gray-200'>
               <Link
@@ -239,7 +241,10 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
                   <div className='mt-1 min-h-5 text-center text-sm text-red-600 dark:text-red-400'>
                     {errors.price_min?.message}
                   </div>
-                  <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'>
+                  <Button
+                    variant='primary'
+                    className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
+                  >
                     áp dụng
                   </Button>
                   <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
@@ -251,8 +256,9 @@ const MobileFilterDrawer = ({ isOpen, onClose, categories }: MobileFilterDrawerP
               <RatingStars />
               <div className='my-4 h-px bg-gray-300 dark:bg-slate-600' />
               <Button
+                variant='primary'
                 onClick={handleRemoveAsideFilter}
-                className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
+                className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
               >
                 xóa tất cả
               </Button>

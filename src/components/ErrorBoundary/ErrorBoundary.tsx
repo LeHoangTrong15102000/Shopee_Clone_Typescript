@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react'
 import path from 'src/constant/path'
+import Button from 'src/components/Button'
 
 interface Props {
   children?: ReactNode
@@ -44,17 +45,18 @@ export default class ErrorBoundary extends Component<Props, State> {
               </pre>
             </div>
           )}
-          <button className='mt-5'>
-            <a
-              href={path.home} // cho redirect về Home
-              className='group relative inline-block text-sm font-medium text-orange focus:ring-3 focus:outline-hidden active:text-orange-500'
-            >
-              <span className='absolute inset-0 translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] transition-transform group-hover:translate-x-0 group-hover:translate-y-0' />
-              <span className='relative block border border-current bg-orange px-8 py-3'>
-                <span className='text-white'>Go Home</span>
-              </span>
-            </a>
-          </button>
+          <Button
+            variant='primary'
+            animated={false}
+            className='mt-5'
+            onClick={() => {
+              window.location.href = path.home
+            }}
+          >
+            <span className='relative block border border-current bg-orange px-8 py-3'>
+              <span className='text-white'>Go Home</span>
+            </span>
+          </Button>
         </main>
       )
     }

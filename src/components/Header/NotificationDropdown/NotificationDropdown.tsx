@@ -4,6 +4,7 @@ import NotificationItem from './NotificationItem'
 import NotificationBadge from './NotificationBadge'
 import useNotifications from 'src/hooks/useNotifications'
 import path from 'src/constant/path'
+import Button from 'src/components/Button'
 
 const NotificationDropdown = () => {
   const { notifications, unreadCount, markAsRead, clearAll, isConnected } = useNotifications()
@@ -63,12 +64,14 @@ const NotificationDropdown = () => {
           <Link to={path.notifications} className='text-sm text-orange hover:text-[#d73527]'>
             Xem tất cả thông báo
           </Link>
-          <button
+          <Button
+            variant='ghost'
+            animated={false}
             onClick={handleClearAll}
             className='text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
           >
             Đánh dấu đã đọc tất cả
-          </button>
+          </Button>
         </div>
       )}
     </div>
@@ -76,7 +79,11 @@ const NotificationDropdown = () => {
 
   return (
     <Popover className='relative' renderPopover={renderNotifications()} placement='bottom-end'>
-      <button className='relative flex items-center justify-center text-white transition-colors hover:text-white/80'>
+      <Button
+        variant='icon'
+        animated={false}
+        className='relative flex items-center justify-center text-white transition-colors hover:text-white/80'
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -92,7 +99,7 @@ const NotificationDropdown = () => {
           />
         </svg>
         <NotificationBadge count={unreadCount} />
-      </button>
+      </Button>
     </Popover>
   )
 }

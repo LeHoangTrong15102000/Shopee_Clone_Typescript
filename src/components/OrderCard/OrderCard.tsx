@@ -171,7 +171,8 @@ const OrderCard = memo(function OrderCard({
         <div className='mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3 dark:border-slate-700'>
           <div className='flex items-center gap-2'>
             {isTrackable && onToggleTracking && (
-              <button
+              <Button
+                animated={false}
                 type='button'
                 onClick={() => onToggleTracking(order._id)}
                 className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-all hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
@@ -197,7 +198,7 @@ const OrderCard = memo(function OrderCard({
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
                 </svg>
-              </button>
+              </Button>
             )}
           </div>
           <div className='flex items-center gap-2'>

@@ -90,7 +90,11 @@ const EmptyCartState = ({
           }}
           style={{ borderRadius: '4px' }}
         >
-          <Button className='flex h-10 w-full items-center justify-center rounded-sm bg-red-500 text-center text-sm text-white uppercase transition-all hover:bg-red-600 sm:mt-0 sm:w-[168px]'>
+          <Button
+            variant='danger'
+            animated={false}
+            className='flex h-10 w-full items-center justify-center rounded-sm text-center text-sm uppercase sm:mt-0 sm:w-[168px]'
+          >
             Mua ngay
           </Button>
         </motion.div>

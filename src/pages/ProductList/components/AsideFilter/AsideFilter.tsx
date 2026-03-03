@@ -221,8 +221,9 @@ const AsideFilter = ({ categories }: Props) => {
             {errors.price_min?.message}
           </div>
           <Button
+            variant='primary'
             aria-label='Áp dụng bộ lọc giá'
-            className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
+            className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
           >
             áp dụng
           </Button>
@@ -238,9 +239,10 @@ const AsideFilter = ({ categories }: Props) => {
       {/* Button Xóa tất cả filter */}
       <div className='my-4 h-px bg-gray-300 dark:bg-slate-600'></div>
       <Button
+        variant='primary'
         onClick={handleRemoveAsideFilter}
         aria-label='Xóa tất cả bộ lọc'
-        className='flex w-full items-center justify-center bg-orange p-2 text-sm text-white uppercase hover:bg-orange/80 dark:bg-orange-500 dark:hover:bg-orange-400'
+        className='flex w-full items-center justify-center p-2 text-sm uppercase dark:bg-orange-500 dark:hover:bg-orange-400'
       >
         xóa tất cả
       </Button>

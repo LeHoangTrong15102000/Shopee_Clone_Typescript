@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void
@@ -80,7 +81,8 @@ export default function MessageInput({ onSendMessage, onTypingStart, onTypingSto
               : 'border-gray-300 bg-white text-gray-900 focus:border-orange dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
           )}
         />
-        <button
+        <Button
+          animated={false}
           onClick={handleSubmit}
           disabled={!inputValue.trim() || disabled}
           className={classNames(
@@ -93,7 +95,7 @@ export default function MessageInput({ onSendMessage, onTypingStart, onTypingSto
           <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8' />
           </svg>
-        </button>
+        </Button>
       </div>
     </div>
   )

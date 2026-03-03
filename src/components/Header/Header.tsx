@@ -9,6 +9,7 @@ import NavHeader from '../NavHeader'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 import { SearchBar, CartDropdown } from './components'
 import MobileNavigationDrawer from '../MobileNavigationDrawer'
+import Button from 'src/components/Button'
 
 const Header = () => {
   const [filters, setFilters] = useProductQueryStates()
@@ -73,10 +74,12 @@ const Header = () => {
             <SearchBar filters={filters} setFilters={setFilters} />
           </div>
           {/* Hamburger menu button */}
-          <button
+          <Button
+            variant='icon'
+            animated={false}
             onClick={() => setIsDrawerOpen(true)}
             className='shrink-0 p-1 hover:text-white/70'
-            aria-label='Open navigation menu'
+            ariaLabel='Open navigation menu'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -88,7 +91,7 @@ const Header = () => {
             >
               <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* Mobile Navigation Drawer */}

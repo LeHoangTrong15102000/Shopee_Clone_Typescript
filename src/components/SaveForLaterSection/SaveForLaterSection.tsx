@@ -7,6 +7,7 @@ import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import path from 'src/constant/path'
+import Button from 'src/components/Button'
 
 interface SaveForLaterSectionProps {
   savedItems: SavedItem[]
@@ -107,7 +108,8 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
     <div className='mt-6 rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800'>
       {/* Header */}
       <div className='mb-4 flex items-center justify-between'>
-        <button
+        <Button
+          animated={false}
           onClick={() => setIsExpanded(!isExpanded)}
           className='flex items-center gap-2 text-gray-700 transition-colors hover:text-[#ee4d2d] dark:text-gray-200'
         >
@@ -125,14 +127,15 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
           </motion.svg>
-        </button>
+        </Button>
         {savedItems.length > 0 && (
-          <button
+          <Button
+            animated={false}
             onClick={onClear}
             className='text-sm text-gray-500 transition-colors hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400'
           >
             Xóa tất cả
-          </button>
+          </Button>
         )}
       </div>
 
@@ -194,20 +197,25 @@ const SaveForLaterSection = memo(({ savedItems, onMoveToCart, onRemove, onClear 
 
                     {/* Action Buttons */}
                     <div className='mt-2 flex items-center gap-3'>
-                      <motion.button
-                        onClick={() => onMoveToCart(item)}
-                        className='rounded-sm bg-[#ee4d2d] px-3 py-1.5 text-sm text-white transition-colors hover:bg-[#d73211]'
+                      <motion.div
                         whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                         whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                       >
-                        Thêm vào giỏ
-                      </motion.button>
-                      <button
+                        <Button
+                          animated={false}
+                          onClick={() => onMoveToCart(item)}
+                          className='rounded-sm bg-[#ee4d2d] px-3 py-1.5 text-sm text-white transition-colors hover:bg-[#d73211]'
+                        >
+                          Thêm vào giỏ
+                        </Button>
+                      </motion.div>
+                      <Button
+                        animated={false}
                         onClick={() => onRemove(item.product._id)}
                         className='text-sm text-gray-500 transition-colors hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400'
                       >
                         Xóa
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </motion.div>

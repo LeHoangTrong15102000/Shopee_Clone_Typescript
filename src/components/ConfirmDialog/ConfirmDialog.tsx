@@ -179,11 +179,12 @@ const ConfirmDialog = ({
                   {cancelText}
                 </Button>
                 <Button
+                  variant='danger'
                   type='button'
                   disabled={isLoading}
                   isLoading={isLoading}
                   onClick={onConfirm}
-                  className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 font-medium ${config.buttonClass}`}
+                  className='flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 font-medium'
                 >
                   {confirmText}
                 </Button>

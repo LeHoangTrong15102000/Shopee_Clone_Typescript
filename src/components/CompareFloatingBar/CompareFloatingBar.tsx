@@ -1,6 +1,7 @@
 import { memo, useState, useCallback } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import Button from 'src/components/Button'
 import { useProductComparison } from 'src/hooks/useProductComparison'
 
 interface CompareFloatingBarProps {
@@ -41,7 +42,8 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
         className
       )}
     >
-      <button
+      <Button
+        animated={false}
         onClick={handleToggleExpand}
         className='absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-t-lg bg-white px-4 py-1 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]'
         aria-label={isExpanded ? 'Thu gọn thanh so sánh' : 'Mở rộng thanh so sánh'}
@@ -57,7 +59,7 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
         >
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 15l7-7 7 7' />
         </svg>
-      </button>
+      </Button>
 
       <div className='container mx-auto px-4 py-3'>
         <div className='flex items-center justify-between gap-4'>
@@ -73,7 +75,8 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
                   alt={product.name}
                   className='h-10 w-10 rounded-lg border border-gray-200 object-cover sm:h-14 sm:w-14'
                 />
-                <button
+                <Button
+                  animated={false}
                   onClick={() => handleRemoveFromCompare(product._id)}
                   className='absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-gray-800 text-white opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100'
                   aria-label={`Xóa ${product.name} khỏi so sánh`}
@@ -81,7 +84,7 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
                   <svg className='h-3 w-3' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
                 <div
                   className='pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'
                   role='tooltip'
@@ -113,13 +116,14 @@ function CompareFloatingBar({ className, comparePath = '/compare' }: CompareFloa
           </div>
 
           <div className='flex shrink-0 items-center gap-3'>
-            <button
+            <Button
+              animated={false}
               onClick={handleClearCompare}
               className='px-4 py-2 text-sm text-gray-600 transition-colors hover:text-gray-800'
               aria-label='Xóa tất cả sản phẩm khỏi danh sách so sánh'
             >
               Xóa tất cả
-            </button>
+            </Button>
             <Link
               to={comparePath}
               className={classNames(

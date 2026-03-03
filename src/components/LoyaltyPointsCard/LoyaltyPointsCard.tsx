@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { LoyaltyPoints } from 'src/types/loyalty.type'
 import { formatCurrency } from 'src/utils/utils'
+import Button from 'src/components/Button'
 
 interface LoyaltyPointsCardProps {
   points: LoyaltyPoints
@@ -98,13 +99,14 @@ export default function LoyaltyPointsCard({
           <CoinIcon className='h-8 w-8 drop-shadow-md' />
           <span className='text-lg font-bold text-white drop-shadow-xs'>Shopee Xu</span>
         </div>
-        <motion.button
-          className='rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs transition-colors hover:bg-white/30'
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Lịch sử
-        </motion.button>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            animated={false}
+            className='rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs transition-colors hover:bg-white/30'
+          >
+            Lịch sử
+          </Button>
+        </motion.div>
       </div>
 
       {/* Main points display */}

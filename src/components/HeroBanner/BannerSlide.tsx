@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import Button from 'src/components/Button'
 import type { BannerSlide as BannerSlideType } from './types'
 
 interface Props {
@@ -33,12 +34,15 @@ const BannerSlide = ({ slide, isActive }: Props) => {
         <div className='max-w-md text-white'>
           <h2 className='mb-2 text-2xl leading-tight font-bold drop-shadow-lg md:text-3xl'>{slide.title}</h2>
           <p className='mb-4 text-sm leading-relaxed opacity-90 drop-shadow-md md:text-base'>{slide.subtitle}</p>
-          <button className='inline-flex transform items-center rounded-full bg-white px-6 py-2 font-medium text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100'>
+          <Button
+            animated={false}
+            className='inline-flex transform items-center rounded-full bg-white px-6 py-2 font-medium text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100'
+          >
             <span>Mua ngay</span>
             <svg className='ml-2 h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 

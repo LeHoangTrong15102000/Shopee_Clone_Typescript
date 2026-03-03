@@ -6,6 +6,7 @@ import { ExtendedPurchase } from 'src/types/purchases.type'
 import { ShippingMethod } from 'src/types/checkout.type'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import { ShippingIcon } from 'src/components/Icons'
+import Button from 'src/components/Button'
 
 interface OrderSummaryProps {
   items: ExtendedPurchase[]
@@ -153,7 +154,8 @@ const OrderSummary = memo(function OrderSummary({
 
           {/* Expand/Collapse button */}
           {hiddenItemsCount > 0 && (
-            <button
+            <Button
+              animated={false}
               type='button'
               onClick={() => setIsExpanded(!isExpanded)}
               className='flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-orange hover:bg-orange/5 hover:text-orange dark:border-slate-600 dark:text-gray-300 dark:hover:text-orange-400'
@@ -183,7 +185,7 @@ const OrderSummary = memo(function OrderSummary({
                   Xem thêm {hiddenItemsCount} sản phẩm
                 </>
               )}
-            </button>
+            </Button>
           )}
         </div>
 
@@ -206,7 +208,9 @@ const OrderSummary = memo(function OrderSummary({
               </div>
             </div>
             {onRemoveVoucher && (
-              <button
+              <Button
+                variant='ghost'
+                animated={false}
                 type='button'
                 onClick={onRemoveVoucher}
                 className='rounded-sm p-1 text-green-600 transition-colors hover:bg-green-100 hover:text-red-500'
@@ -215,7 +219,7 @@ const OrderSummary = memo(function OrderSummary({
                 <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             )}
           </motion.div>
         )}

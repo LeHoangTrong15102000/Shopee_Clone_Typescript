@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Button from 'src/components/Button'
 import BannerSlide from './BannerSlide'
 import BannerIndicators from './BannerIndicators'
 import { BannerSlide as BannerSlideType } from './types'
@@ -91,7 +92,8 @@ const HeroBanner = () => {
       </div>
 
       {/* Navigation Arrows */}
-      <button
+      <Button
+        animated={false}
         onClick={goToPrevSlide}
         className='absolute top-1/2 left-4 z-10 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-200 hover:bg-white'
         aria-label='Previous slide'
@@ -99,9 +101,10 @@ const HeroBanner = () => {
         <svg className='h-5 w-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
-      </button>
+      </Button>
 
-      <button
+      <Button
+        animated={false}
         onClick={goToNextSlide}
         className='absolute top-1/2 right-4 z-10 flex h-10 w-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-200 hover:bg-white'
         aria-label='Next slide'
@@ -109,7 +112,7 @@ const HeroBanner = () => {
         <svg className='h-5 w-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
         </svg>
-      </button>
+      </Button>
 
       {/* Slide Indicators */}
       <BannerIndicators slides={bannerSlides} currentSlide={currentSlide} onSlideChange={goToSlide} />

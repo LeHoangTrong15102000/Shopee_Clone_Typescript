@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import useSocket from 'src/hooks/useSocket'
 import { SocketEvent, InventoryAlertPayload } from 'src/types/socket.types'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 interface RealTimeStockAlertProps {
   productIds: string[]
@@ -144,7 +145,8 @@ export default function RealTimeStockAlert({ productIds, onStockChange }: RealTi
                   : `Số lượng tồn kho đã thay đổi: ${alert.productName} còn ${alert.newStock} sản phẩm`}
               </p>
             </div>
-            <button
+            <Button
+              animated={false}
               onClick={() => setAlerts((prev) => prev.filter((a) => a.id !== alert.id))}
               className='text-gray-400 transition-colors hover:text-gray-600'
               aria-label='Đóng thông báo'
@@ -152,7 +154,7 @@ export default function RealTimeStockAlert({ productIds, onStockChange }: RealTi
               <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
               </svg>
-            </button>
+            </Button>
           </motion.div>
         ))}
       </AnimatePresence>

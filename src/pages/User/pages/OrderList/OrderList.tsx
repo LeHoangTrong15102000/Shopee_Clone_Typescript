@@ -7,6 +7,7 @@ import orderApi from 'src/apis/order.api'
 import { OrderStatus, Order } from 'src/types/checkout.type'
 import OrderCard from 'src/components/OrderCard'
 import LiveOrderTracker from 'src/components/LiveOrderTracker'
+import Button from 'src/components/Button'
 import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
 import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
 import { useIsMobile } from 'src/hooks/useIsMobile'
@@ -107,11 +108,13 @@ export default function OrderList() {
       {/* Tabs */}
       <div className='sticky top-0 z-20 scrollbar-hide flex items-center overflow-x-auto rounded-t-sm bg-white shadow-xs dark:bg-slate-800'>
         {orderTabs.map((tab) => (
-          <button
+          <Button
             key={tab.status}
+            variant='ghost'
+            animated={false}
             onClick={() => handleTabChange(tab.status)}
             className={classNames(
-              'flex min-w-18 flex-1 items-center justify-center bg-white px-2 py-3 text-center text-xs whitespace-nowrap transition-all hover:text-orange sm:min-w-0 sm:px-3 sm:py-4 sm:text-sm dark:bg-slate-800 dark:hover:text-orange-400',
+              'flex min-w-18 flex-1 items-center justify-center rounded-none px-2 py-3 text-center text-xs whitespace-nowrap hover:text-orange sm:min-w-0 sm:px-3 sm:py-4 sm:text-sm dark:hover:text-orange-400',
               {
                 'border-b-2 border-b-orange font-medium text-orange dark:border-b-orange-400 dark:text-orange-400':
                   activeTab === tab.status,
@@ -121,7 +124,7 @@ export default function OrderList() {
             )}
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -249,19 +252,23 @@ export default function OrderList() {
               />
 
               <div className='mt-5 flex justify-end gap-3'>
-                <button
+                <Button
+                  variant='secondary'
+                  animated={false}
                   onClick={handleCloseModal}
-                  className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
+                  className='cursor-pointer rounded-xl px-5 py-2.5 text-sm font-medium'
                 >
                   Quay lại
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant='danger'
+                  animated={false}
                   onClick={handleConfirmCancel}
                   disabled={cancelMutation.isPending}
-                  className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-red-900/30'
+                  className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 text-sm font-medium hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30'
                 >
                   {cancelMutation.isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

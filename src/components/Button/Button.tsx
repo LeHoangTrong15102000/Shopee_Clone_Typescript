@@ -1,8 +1,9 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react'
 import { Link } from 'react-router'
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline'
-type ButtonSize = 'sm' | 'md' | 'lg'
+export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline' | 'icon'
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ButtonShape = 'default' | 'rounded' | 'pill'
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-orange text-white hover:bg-orange/90',
@@ -10,13 +11,32 @@ const variantClasses: Record<ButtonVariant, string> = {
     'bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700',
   danger: 'bg-red-500 text-white hover:bg-red-600',
   ghost: 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700',
-  outline: 'border border-orange text-orange bg-transparent hover:bg-orange/5'
+  outline: 'border border-orange text-orange bg-transparent hover:bg-orange/5',
+  icon: 'rounded-full p-2 bg-transparent hover:bg-gray-100 dark:hover:bg-slate-700'
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
+  xs: 'px-2 py-0.5 text-xs',
   sm: 'px-3 py-1 text-xs',
   md: 'px-5 py-2 text-sm',
   lg: 'px-6 py-3 text-base'
+}
+
+const shapeClasses: Record<ButtonShape, string> = {
+  default: 'rounded-sm',
+  rounded: 'rounded-md',
+  pill: 'rounded-full'
+}
+
+const focusClasses: Record<ButtonVariant, string> = {
+  primary: 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange',
+  danger: 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange',
+  outline: 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange',
+  secondary:
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:focus-visible:outline-gray-500',
+  ghost:
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:focus-visible:outline-gray-500',
+  icon: 'focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2'
 }
 
 interface BaseButtonProps {
@@ -26,6 +46,8 @@ interface BaseButtonProps {
   ariaLabel?: string
   variant?: ButtonVariant
   size?: ButtonSize
+  shape?: ButtonShape
+  animated?: boolean
 }
 
 interface ButtonAsButton extends BaseButtonProps, ButtonHTMLAttributes<HTMLButtonElement> {
@@ -42,17 +64,24 @@ interface ButtonAsLink extends BaseButtonProps {
 type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
-  const { className, isLoading, children, ariaLabel, variant, size, ...rest } = props
+  const { className, isLoading, children, ariaLabel, variant, size, shape, animated = true, ...rest } = props
 
   const getClassName = (addHoverTransition = false) => {
-    const classes: string[] = [
-      'outline-hidden focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange'
-    ]
+    const classes: string[] = ['outline-hidden focus:outline-hidden']
+    // Per-variant focus classes, or default orange outline
+    if (variant) {
+      classes.push(focusClasses[variant])
+    } else {
+      classes.push('focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange')
+    }
     if (variant) {
       classes.push(variantClasses[variant])
     }
     if (size) {
       classes.push(sizeClasses[size])
+    }
+    if (shape) {
+      classes.push(shapeClasses[shape])
     }
     if (className) {
       classes.push(className)
@@ -76,7 +105,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
     return (
       <Link
         to={to}
-        className={getClassName(true)}
+        className={getClassName(animated)}
         data-testid='link'
         ref={ref as React.Ref<HTMLAnchorElement>}
         {...linkRest}
@@ -111,7 +140,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
   return (
     <button
       type='button'
-      className={getClassName(true)}
+      className={getClassName(animated)}
       disabled={isDisabled}
       aria-label={ariaLabel}
       aria-busy={isLoading}

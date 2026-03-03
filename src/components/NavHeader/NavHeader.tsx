@@ -17,6 +17,7 @@ import useInventoryAlerts from 'src/hooks/useInventoryAlerts'
 import { loadLanguage, locales } from 'src/i18n/i18n'
 import { getAvatarUrl } from 'src/utils/utils'
 import NotificationList from '../NotificationList'
+import Button from 'src/components/Button'
 
 interface NavHeaderProps {
   compact?: boolean
@@ -156,18 +157,20 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
           renderPopover={
             <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
               <div className='flex flex-col py-1 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""]'>
-                <button
+                <Button
+                  animated={false}
                   onClick={() => handleTranslateLanguage('vi')}
                   className='block w-full px-6 py-3 text-left text-xs text-gray-900 hover:bg-slate-100 hover:text-cyan-500 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   Tiếng Việt
-                </button>
-                <button
+                </Button>
+                <Button
+                  animated={false}
                   onClick={() => handleTranslateLanguage('en')}
                   className='block w-full px-6 py-3 text-left text-xs text-gray-900 hover:bg-slate-100 hover:text-cyan-500 dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   English
-                </button>
+                </Button>
               </div>
             </div>
           }
@@ -500,18 +503,20 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                   'flex flex-col py-1 before:absolute before:top-0 before:left-0 before:h-[13px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""]'
                 )}
               >
-                <button
+                <Button
+                  animated={false}
                   onClick={() => handleTranslateLanguage('vi')}
                   className='block w-full px-8 py-3 text-left text-xs text-gray-900 hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   Tiếng Việt
-                </button>
-                <button
+                </Button>
+                <Button
+                  animated={false}
                   onClick={() => handleTranslateLanguage('en')}
                   className='block w-full px-8 py-3 text-left text-xs text-gray-900 hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:text-gray-100 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                 >
                   English
-                </button>
+                </Button>
               </div>
             </div>
           }
@@ -566,12 +571,13 @@ const NavHeader = ({ compact = false }: NavHeaderProps) => {
                   >
                     Đơn Mua
                   </Link>
-                  <button
+                  <Button
+                    animated={false}
                     onClick={() => handleLogout()}
                     className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
                   >
                     Đăng Xuất
-                  </button>
+                  </Button>
                 </div>
               </div>
             }

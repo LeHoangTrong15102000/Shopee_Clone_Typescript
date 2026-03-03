@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { InventoryAlertPayload } from 'src/types/socket.types'
+import Button from 'src/components/Button'
 
 interface InventoryAlertBadgeProps {
   alerts: InventoryAlertPayload[]
@@ -44,12 +45,13 @@ export default function InventoryAlertBadge({ alerts, unreadCount, onClear, clas
           <div className='flex items-center justify-between border-b border-gray-100 px-3 py-2 sm:px-4 dark:border-slate-700'>
             <span className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-200'>Cảnh báo tồn kho</span>
             {onClear && (
-              <button
+              <Button
+                animated={false}
                 onClick={onClear}
                 className='text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
               >
                 Xóa tất cả
-              </button>
+              </Button>
             )}
           </div>
           <div className='max-h-60 overflow-y-auto'>

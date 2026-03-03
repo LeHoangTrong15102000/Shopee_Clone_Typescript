@@ -7,6 +7,7 @@ import { useProductComparison } from 'src/hooks/useProductComparison'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import ProductRating from 'src/components/ProductRating'
+import Button from 'src/components/Button'
 import path from 'src/constant/path'
 
 interface ComparisonTableProps {
@@ -194,13 +195,14 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
       )}
 
       <div className='mb-4 flex justify-end'>
-        <button
+        <Button
+          animated={false}
           onClick={clearCompare}
           className='text-sm text-gray-500 transition-colors hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
           aria-label='Xóa tất cả sản phẩm khỏi bảng so sánh'
         >
           Xóa tất cả
-        </button>
+        </Button>
       </div>
 
       {/* Mobile card layout */}
@@ -222,7 +224,8 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 />
                 <span className='line-clamp-2 text-sm font-medium dark:text-gray-200'>{product.name}</span>
               </Link>
-              <button
+              <Button
+                animated={false}
                 onClick={() => removeFromCompare(product._id)}
                 className='shrink-0 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700'
                 aria-label={`Xóa ${product.name} khỏi so sánh`}
@@ -235,7 +238,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             </div>
             <div className='space-y-2 text-sm'>
               <div className='flex justify-between'>
@@ -273,7 +276,8 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                 className='relative min-w-[200px] border-b p-3 text-center dark:border-slate-700'
                 role='columnheader'
               >
-                <button
+                <Button
+                  animated={false}
                   onClick={() => removeFromCompare(product._id)}
                   className='absolute top-2 right-2 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-slate-700'
                   aria-label={`Xóa ${product.name} khỏi so sánh`}
@@ -287,7 +291,7 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
                   >
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                   </svg>
-                </button>
+                </Button>
               </th>
             ))}
           </tr>
@@ -547,20 +551,22 @@ function ComparisonTable({ className, onAddToCart }: ComparisonTableProps) {
             {compareList.map((product) => (
               <td key={product._id} className='p-3 text-center' role='cell'>
                 <div className='flex flex-col gap-2'>
-                  <button
+                  <Button
+                    animated={false}
                     onClick={() => handleAddToCart(product)}
                     className='w-full rounded-sm bg-orange px-4 py-2 text-sm text-white transition-colors hover:bg-[#d73211]'
                     aria-label={`Thêm ${product.name} vào giỏ hàng`}
                   >
                     Thêm vào giỏ
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    animated={false}
                     onClick={() => removeFromCompare(product._id)}
                     className='w-full rounded-sm border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                     aria-label={`Xóa ${product.name} khỏi bảng so sánh`}
                   >
                     Xóa khỏi so sánh
-                  </button>
+                  </Button>
                 </div>
               </td>
             ))}

@@ -322,11 +322,12 @@ const AddressBook = () => {
         </div>
         <div className='flex flex-wrap items-center justify-center gap-2 sm:justify-end sm:gap-3'>
           {rawAddresses.length > 0 && (
-            <button
+            <Button
               onClick={() => {
                 setIsSelectionMode(!isSelectionMode)
                 setSelectedIds(new Set())
               }}
+              animated={false}
               className={`group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl px-3 text-xs font-medium transition-all duration-300 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm ${
                 isSelectionMode
                   ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange/25'
@@ -342,10 +343,11 @@ const AddressBook = () => {
                 />
               </svg>
               <span>{isSelectionMode ? 'Hủy chọn' : 'Chọn nhiều'}</span>
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             onClick={handleAddNew}
+            animated={false}
             className='group relative flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-3 text-xs font-medium text-white shadow-lg shadow-orange/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange/40 sm:h-10 sm:gap-2 sm:px-5 sm:text-sm'
           >
             <span className='absolute inset-0 bg-linear-to-r from-orange-600 via-orange-600 to-orange-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
@@ -358,7 +360,7 @@ const AddressBook = () => {
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
             </svg>
             <span className='relative z-10'>Thêm địa chỉ mới</span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -388,14 +390,16 @@ const AddressBook = () => {
               className='w-full rounded-lg border border-gray-300 py-2.5 pr-4 pl-10 text-sm transition-colors focus:border-orange focus:ring-1 focus:ring-orange/30 focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:focus:border-orange-400 dark:focus:ring-orange-400/30'
             />
             {searchQuery && (
-              <button
+              <Button
                 onClick={() => setSearchQuery('')}
+                variant='ghost'
+                animated={false}
                 className='absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
               >
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
                 </svg>
-              </button>
+              </Button>
             )}
           </div>
 
@@ -406,9 +410,11 @@ const AddressBook = () => {
               const count = addressCounts[type]
               const config = type === 'all' ? null : ADDRESS_TYPE_CONFIG[type]
               return (
-                <button
+                <Button
                   key={type}
                   onClick={() => setFilterType(type)}
+                  variant='ghost'
+                  animated={false}
                   className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                     isActive
                       ? 'bg-orange text-white shadow-md dark:bg-orange-400'
@@ -422,7 +428,7 @@ const AddressBook = () => {
                   >
                     {count}
                   </span>
-                </button>
+                </Button>
               )
             })}
           </div>
@@ -775,21 +781,27 @@ const AddressCard = ({
         <div className='mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:pt-4 dark:border-slate-600'>
           <div className='flex items-center gap-2'>
             {!isDefault && (
-              <button
+              <Button
                 onClick={() => onSetDefault(address._id)}
+                variant='outline'
+                size='sm'
+                animated={false}
                 className='inline-flex items-center gap-1 rounded-lg border border-orange/30 bg-orange/5 px-2.5 py-1.5 text-xs font-medium text-orange transition-all hover:border-orange hover:bg-orange hover:text-white! sm:gap-1.5 sm:px-3 sm:text-sm dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-400 dark:hover:border-orange-400 dark:hover:bg-orange-400 dark:hover:text-white!'
               >
                 <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                 </svg>
                 Đặt mặc định
-              </button>
+              </Button>
             )}
           </div>
 
           <div className='flex items-center gap-2'>
-            <button
+            <Button
               onClick={() => onEdit(address)}
+              variant='secondary'
+              size='sm'
+              animated={false}
               className='inline-flex items-center gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 sm:gap-1.5 sm:px-3 sm:text-sm dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
             >
               <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -801,10 +813,13 @@ const AddressCard = ({
                 />
               </svg>
               Sửa
-            </button>
+            </Button>
             {!isDefault && (
-              <button
+              <Button
                 onClick={() => onDelete(address._id)}
+                variant='ghost'
+                size='sm'
+                animated={false}
                 className='inline-flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-100 sm:gap-1.5 sm:px-3 sm:text-sm dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50'
               >
                 <svg className='h-3.5 w-3.5 sm:h-4 sm:w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -816,7 +831,7 @@ const AddressCard = ({
                   />
                 </svg>
                 Xóa
-              </button>
+              </Button>
             )}
           </div>
         </div>

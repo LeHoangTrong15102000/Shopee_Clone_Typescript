@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import Button from 'src/components/Button'
 
 interface ErrorFallbackProps {
   error?: Error | null
@@ -100,10 +101,12 @@ export default function ErrorFallback({
 
       {/* Retry Button */}
       {showRetry && resetErrorBoundary && (
-        <button
+        <Button
+          variant='primary'
+          animated={false}
           onClick={handleRetry}
           disabled={isRetrying}
-          className='flex items-center gap-2 rounded-xs bg-orange px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#d73211] active:scale-95 disabled:cursor-not-allowed disabled:opacity-70'
+          className='flex items-center gap-2 rounded-xs px-6 py-2 text-sm font-medium'
         >
           {isRetrying ? (
             <>
@@ -129,7 +132,7 @@ export default function ErrorFallback({
               <span>{retryText}</span>
             </>
           )}
-        </button>
+        </Button>
       )}
     </motion.div>
   )
