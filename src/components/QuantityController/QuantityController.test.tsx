@@ -333,7 +333,7 @@ describe('QuantityController Component Unit Tests', () => {
     test('should be keyboard navigable', async () => {
       const user = userEvent.setup()
 
-      const { container } = render(<QuantityController {...defaultProps} />)
+      render(<QuantityController {...defaultProps} />)
 
       const { decreaseButton, increaseButton } = getButtons()
       const input = screen.getByDisplayValue('1')
