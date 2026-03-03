@@ -45,4 +45,3 @@ const SortableAddressCard = ({ isDragging, ...props }: SortableAddressCardProps)
 }
 
 export default SortableAddressCard
-

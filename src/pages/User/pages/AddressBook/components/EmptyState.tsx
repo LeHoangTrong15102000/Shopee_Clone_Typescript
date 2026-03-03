@@ -115,4 +115,3 @@ const EmptyState = ({ onAddNew }: EmptyStateProps) => {
 }
 
 export default EmptyState
-

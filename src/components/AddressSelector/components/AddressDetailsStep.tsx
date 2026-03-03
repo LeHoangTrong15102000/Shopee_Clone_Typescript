@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { UseFormReturn } from 'react-hook-form'
 import Input from 'src/components/Input'
 import { AddressType } from 'src/types/checkout.type'
-import { AddressSchemaFormData, ADDRESS_TYPE_OPTIONS } from '../addressForm.constants'
+import { ADDRESS_TYPE_OPTIONS, AddressSchemaFormData } from '../addressForm.constants'
 
 interface AddressDetailsStepProps {
   form: UseFormReturn<AddressSchemaFormData>
@@ -31,7 +31,13 @@ export default function AddressDetailsStep({
   } = form
 
   return (
-    <motion.div key='step3' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className='space-y-4'>
+    <motion.div
+      key='step3'
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className='space-y-4'
+    >
       <div className='mb-4'>
         <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Chi tiết địa chỉ</h4>
         <p className='text-sm text-gray-500 dark:text-gray-400'>Nhập địa chỉ cụ thể và loại địa chỉ</p>
@@ -69,8 +75,18 @@ export default function AddressDetailsStep({
                     onClick={() => onStreetSelect(suggestion)}
                     className='flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-orange/5 dark:text-gray-200 dark:hover:bg-orange/10'
                   >
-                    <svg className='h-4 w-4 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                    <svg
+                      className='h-4 w-4 text-gray-400 dark:text-gray-500'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                      />
                     </svg>
                     {suggestion}
                   </button>
@@ -84,10 +100,18 @@ export default function AddressDetailsStep({
 
       {/* Address Preview */}
       {addressPreview && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='rounded-lg bg-gray-50 p-3 dark:bg-slate-700'>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className='rounded-lg bg-gray-50 p-3 dark:bg-slate-700'
+        >
           <div className='flex items-start gap-2'>
             <svg className='mt-0.5 h-5 w-5 shrink-0 text-orange' fill='currentColor' viewBox='0 0 20 20'>
-              <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
+              <path
+                fillRule='evenodd'
+                d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z'
+                clipRule='evenodd'
+              />
             </svg>
             <div>
               <p className='text-xs font-medium text-gray-500 dark:text-gray-400'>Địa chỉ đầy đủ</p>
@@ -123,7 +147,11 @@ export default function AddressDetailsStep({
       {/* Custom Label for "Other" type */}
       <AnimatePresence>
         {watchedAddressType === 'other' && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
             <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>Nhãn tùy chỉnh</label>
             <Input
               type='text'
@@ -147,9 +175,7 @@ export default function AddressDetailsStep({
           className='h-5 w-5 rounded-sm border-gray-300 text-orange focus:ring-orange dark:border-slate-500 dark:bg-slate-700'
         />
         <label htmlFor='isDefault' className='flex-1'>
-          <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>
-            Đặt làm địa chỉ mặc định
-          </span>
+          <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>Đặt làm địa chỉ mặc định</span>
           <span className='text-xs text-gray-500 dark:text-gray-400'>
             Địa chỉ này sẽ được chọn tự động khi thanh toán
           </span>

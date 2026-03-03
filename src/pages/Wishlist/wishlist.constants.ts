@@ -1,17 +1,10 @@
 import {
-  IconBell,
-  IconChartBar,
-  IconClock,
   IconClipboard,
+  IconClock,
   IconCurrencyDollar,
   IconFire,
-  IconFolder,
-  IconHeart,
-  IconLightning,
-  IconShoppingBag,
   IconSparkles,
   IconStar,
-  IconTag,
   IconTrendingDown,
   IconTrendingUp,
   IconTrophy
@@ -66,4 +59,3 @@ export const fadeInUp = {
   hidden: { opacity: 0, y: 15 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
 }
-

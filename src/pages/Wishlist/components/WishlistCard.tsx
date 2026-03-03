@@ -1,12 +1,19 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router'
+import Button from 'src/components/Button'
 import ImageWithFallback from 'src/components/ImageWithFallback'
 import ProductRating from 'src/components/ProductRating'
-import Button from 'src/components/Button'
 import path from 'src/constant/path'
 import { Product } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
-import { categoryIconComponents, IconCube, IconFire, IconLightning, IconShoppingCart, IconSparkles } from './WishlistIcons'
+import {
+  categoryIconComponents,
+  IconCube,
+  IconFire,
+  IconLightning,
+  IconShoppingCart,
+  IconSparkles
+} from './WishlistIcons'
 
 interface WishlistCardProps {
   item: {
@@ -114,7 +121,10 @@ export default function WishlistCard({
       </motion.div>
 
       {/* Product Image */}
-      <Link to={getProductLink(item.product)} className='relative block w-full cursor-pointer overflow-hidden pt-[100%]'>
+      <Link
+        to={getProductLink(item.product)}
+        className='relative block w-full cursor-pointer overflow-hidden pt-[100%]'
+      >
         <ImageWithFallback
           src={item.product.image}
           alt={item.product.name}
@@ -184,4 +194,3 @@ export default function WishlistCard({
     </motion.div>
   )
 }
-

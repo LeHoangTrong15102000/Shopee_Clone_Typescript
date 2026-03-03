@@ -43,4 +43,3 @@ const NoResultsState = ({ searchQuery, filterType, onClear }: NoResultsStateProp
 }
 
 export default NoResultsState
-

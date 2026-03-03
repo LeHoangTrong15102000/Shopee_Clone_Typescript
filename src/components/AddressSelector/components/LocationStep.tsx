@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { UseFormReturn } from 'react-hook-form'
-import { vietnamProvinces, District, Ward } from 'src/data/vietnamLocations'
+import { District, vietnamProvinces, Ward } from 'src/data/vietnamLocations'
 import { AddressSchemaFormData } from '../addressForm.constants'
 
 interface LocationStepProps {
@@ -48,7 +48,13 @@ export default function LocationStep({
   } = form
 
   return (
-    <motion.div key='step2' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className='space-y-4'>
+    <motion.div
+      key='step2'
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className='space-y-4'
+    >
       <div className='mb-4'>
         <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Địa chỉ giao hàng</h4>
         <p className='text-sm text-gray-500 dark:text-gray-400'>Chọn khu vực giao hàng của bạn</p>
@@ -70,7 +76,9 @@ export default function LocationStep({
             >
               <option value=''>Chọn tỉnh/thành</option>
               {vietnamProvinces.map((province) => (
-                <option key={province.id} value={province.id}>{province.name}</option>
+                <option key={province.id} value={province.id}>
+                  {province.name}
+                </option>
               ))}
             </select>
             <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
@@ -96,7 +104,9 @@ export default function LocationStep({
             >
               <option value=''>{isLoadingDistricts ? 'Đang tải...' : 'Chọn quận/huyện'}</option>
               {districts.map((district) => (
-                <option key={district.id} value={district.id}>{district.name}</option>
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
               ))}
             </select>
             <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
@@ -122,7 +132,9 @@ export default function LocationStep({
             >
               <option value=''>{isLoadingWards ? 'Đang tải...' : 'Chọn phường/xã'}</option>
               {wards.map((ward) => (
-                <option key={ward.id} value={ward.id}>{ward.name}</option>
+                <option key={ward.id} value={ward.id}>
+                  {ward.name}
+                </option>
               ))}
             </select>
             <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
@@ -143,4 +155,3 @@ export default function LocationStep({
     </motion.div>
   )
 }
-

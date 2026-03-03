@@ -1,13 +1,13 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { memo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Address } from 'src/types/checkout.type'
-import { useAddressForm } from './useAddressForm'
-import AddressFormHeader from './components/AddressFormHeader'
-import StepIndicator from './components/StepIndicator'
-import ContactInfoStep from './components/ContactInfoStep'
-import LocationStep from './components/LocationStep'
 import AddressDetailsStep from './components/AddressDetailsStep'
 import AddressFormFooter from './components/AddressFormFooter'
+import AddressFormHeader from './components/AddressFormHeader'
+import ContactInfoStep from './components/ContactInfoStep'
+import LocationStep from './components/LocationStep'
+import StepIndicator from './components/StepIndicator'
+import { useAddressForm } from './useAddressForm'
 
 interface AddressFormProps {
   address: Address | null
@@ -117,4 +117,3 @@ const AddressForm = memo(function AddressForm({ address, onClose, onSuccess }: A
 })
 
 export default AddressForm
-

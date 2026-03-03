@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { ReactNode } from 'react'
 import Button from 'src/components/Button'
+import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 interface EmptyStateProps {
   icon?: ReactNode

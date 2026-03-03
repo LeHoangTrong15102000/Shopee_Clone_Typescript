@@ -60,7 +60,9 @@ export default function WishlistStats({
           <IconTag className='h-5 w-5' />
         </div>
         <div>
-          <div className='text-xl font-bold text-emerald-500 dark:text-emerald-400'>₫{formatCurrency(totalSavings)}</div>
+          <div className='text-xl font-bold text-emerald-500 dark:text-emerald-400'>
+            ₫{formatCurrency(totalSavings)}
+          </div>
           <div className='text-xs text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
         </div>
       </motion.div>
@@ -79,4 +81,3 @@ export default function WishlistStats({
     </motion.div>
   )
 }
-

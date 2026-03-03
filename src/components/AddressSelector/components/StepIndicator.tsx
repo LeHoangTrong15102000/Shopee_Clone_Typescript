@@ -8,7 +8,12 @@ interface StepIndicatorProps {
   onStepClick: (step: number) => void
 }
 
-export default function StepIndicator({ currentStep, stepProgress, canProceedToStep, onStepClick }: StepIndicatorProps) {
+export default function StepIndicator({
+  currentStep,
+  stepProgress,
+  canProceedToStep,
+  onStepClick
+}: StepIndicatorProps) {
   return (
     <div className='border-b border-gray-100 bg-linear-to-b from-gray-50/80 to-white px-4 py-5 sm:px-6 sm:py-6 dark:border-slate-700 dark:from-slate-700/50 dark:to-slate-800'>
       <div className='flex items-center justify-center'>
@@ -114,4 +119,3 @@ export default function StepIndicator({ currentStep, stepProgress, canProceedToS
     </div>
   )
 }
-

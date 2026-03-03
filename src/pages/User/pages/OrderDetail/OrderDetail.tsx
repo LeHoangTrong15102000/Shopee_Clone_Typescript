@@ -1,223 +1,50 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
-import { toast } from 'react-toastify'
-import orderApi from 'src/apis/order.api'
-import orderTrackingApi from 'src/apis/orderTracking.api'
-import Button from 'src/components/Button'
-import ImageWithFallback from 'src/components/ImageWithFallback'
-import OrderStatusTracker from 'src/components/OrderStatusTracker'
-import OrderTrackingTimeline from 'src/components/OrderTrackingTimeline'
-import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
-import { orderStatusFromNumber } from 'src/constant/order'
-import useOrderTracking from 'src/hooks/useOrderTracking'
-import { ANIMATION_DURATION, STAGGER_DELAY } from 'src/styles/animations/motion.config'
-import { Order } from 'src/types/checkout.type'
-import { formatCurrency } from 'src/utils/utils'
-
-// Page-level stagger container
-const pageContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: STAGGER_DELAY.slow, delayChildren: 0.1 }
-  }
-}
-
-// Section stagger item with fadeInUp
-const sectionVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] } }
-}
-
-// Order items container with faster stagger
-const itemsContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: STAGGER_DELAY.normal, delayChildren: 0.05 }
-  }
-}
-
-// Individual order item
-const orderItemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] } }
-}
-
-// Status badge animation with scale-in
-const statusBadgeVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] }
-  }
-}
-
-// Modal variants with improved entrance
-const modalBackdropVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: ANIMATION_DURATION.fast } },
-  exit: { opacity: 0, transition: { duration: ANIMATION_DURATION.fast } }
-}
-
-const modalContentVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: ANIMATION_DURATION.normal, ease: [0.25, 0.46, 0.45, 0.94] }
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.95,
-    y: 10,
-    transition: { duration: ANIMATION_DURATION.fast }
-  }
-}
-
-// Reduced motion variants
-const reducedMotionVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.1 } }
-}
-
-function getStatusDisplay(status: OrderStatus) {
-  const config = ORDER_STATUS_CONFIG[status]
-  if (!config) {
-    return {
-      label: status,
-      color: 'text-gray-700 dark:text-gray-300',
-      bgColor: 'bg-gray-100 dark:bg-gray-800',
-      icon: status
-    }
-  }
-  return {
-    label: config.label,
-    color: `${config.color.light} dark:${config.color.dark}`,
-    bgColor: `${config.bgColor.light} dark:${config.bgColor.dark}`,
-    icon: config.icon
-  }
-}
-
-const paymentMethodLabels: Record<string, string> = {
-  cod: 'Thanh toán khi nhận hàng (COD)',
-  bank_transfer: 'Chuyển khoản ngân hàng',
-  e_wallet: 'Ví điện tử',
-  credit_card: 'Thẻ tín dụng/Ghi nợ'
-}
+import { Link } from 'react-router'
+import { OrderStatus } from 'src/config/orderStatus'
+import { ANIMATION_DURATION } from 'src/styles/animations/motion.config'
+import CancelOrderModal from './components/CancelOrderModal'
+import OrderActionButtons from './components/OrderActionButtons'
+import OrderDetailItems from './components/OrderDetailItems'
+import OrderSummarySection from './components/OrderSummarySection'
+import OrderTimeline from './components/OrderTimeline'
+import ReturnOrderModal from './components/ReturnOrderModal'
+import {
+  formatDate,
+  getStatusDisplay,
+  pageContainerVariants,
+  paymentMethodLabels,
+  reducedMotionVariants,
+  sectionVariants,
+  statusBadgeVariants
+} from './orderDetail.constants'
+import { useOrderDetail } from './useOrderDetail'
 
 export default function OrderDetail() {
-  const { orderId } = useParams<{ orderId: string }>()
-  const [searchParams] = useSearchParams()
-  const statusParam = searchParams.get('status')
-  const statusString = statusParam ? orderStatusFromNumber(Number(statusParam)) : undefined
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const [showCancelModal, setShowCancelModal] = useState(false)
-  const [cancelReason, setCancelReason] = useState('')
-  const [showReturnModal, setShowReturnModal] = useState(false)
-  const [returnReason, setReturnReason] = useState('')
-  const [returnReasonError, setReturnReasonError] = useState('')
+  const {
+    order,
+    tracking,
+    isLoading,
+    navigate,
+    currentStatus,
+    isSubscribed,
+    stepTimestamps,
+    showCancelModal,
+    setShowCancelModal,
+    cancelReason,
+    setCancelReason,
+    showReturnModal,
+    setShowReturnModal,
+    returnReason,
+    setReturnReason,
+    returnReasonError,
+    setReturnReasonError,
+    cancelMutation,
+    returnMutation,
+    handleCancelOrder,
+    handleReturnOrder
+  } = useOrderDetail()
+
   const shouldReduceMotion = useReducedMotion()
-
-  // WebSocket: Real-time order status tracking
-  const { currentStatus, isSubscribed, statusHistory } = useOrderTracking(orderId)
-
-  const { data: orderData, isLoading } = useQuery({
-    queryKey: ['order', orderId],
-    queryFn: () => orderApi.getOrderById(orderId as string),
-    enabled: !!orderId
-  })
-
-  const { data: trackingData } = useQuery({
-    queryKey: ['orderTracking', orderId, statusString],
-    queryFn: () =>
-      orderTrackingApi.getTracking({ order_id: orderId, status: statusString || orderData?.data.data.status }),
-    enabled: !!orderId && (!!statusString || !!orderData)
-  })
-
-  const cancelMutation = useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason: string }) => orderApi.cancelOrder(id, reason),
-    onSuccess: () => {
-      toast.success('Hủy đơn hàng thành công')
-      queryClient.invalidateQueries({ queryKey: ['order', orderId] })
-      queryClient.invalidateQueries({ queryKey: ['orders'] })
-      setShowCancelModal(false)
-    },
-    onError: () => {
-      toast.error('Hủy đơn hàng thất bại')
-    }
-  })
-
-  const returnMutation = useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason: string }) => orderApi.returnOrder(id, reason),
-    onSuccess: () => {
-      toast.success('Yêu cầu trả hàng thành công')
-      queryClient.invalidateQueries({ queryKey: ['order', orderId] })
-      queryClient.invalidateQueries({ queryKey: ['orders'] })
-      setShowReturnModal(false)
-      setReturnReason('')
-      setReturnReasonError('')
-    },
-    onError: () => {
-      toast.error('Yêu cầu trả hàng thất bại')
-    }
-  })
-
-  const order = orderData?.data.data
-  const tracking = trackingData?.data.data
-
-  // Build stepTimestamps from tracking timeline + websocket statusHistory
-  const stepTimestamps = useMemo(() => {
-    const timestamps: Record<string, string> = {}
-    // From tracking API timeline
-    if (tracking?.timeline) {
-      for (const event of tracking.timeline) {
-        timestamps[event.status] = event.timestamp
-      }
-    }
-    // Override/add from real-time websocket statusHistory
-    for (const entry of statusHistory) {
-      timestamps[entry.status] = entry.updated_at
-    }
-    // Fallback: if order is delivered but no delivered timestamp, use order.updatedAt
-    const effectiveStatus = currentStatus || order?.status
-    if (effectiveStatus === 'delivered' && !timestamps['delivered'] && order?.updatedAt) {
-      timestamps['delivered'] = order.updatedAt
-    }
-    return timestamps
-  }, [tracking?.timeline, statusHistory, currentStatus, order?.status, order?.updatedAt])
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  const handleCancelOrder = () => {
-    if (orderId) {
-      cancelMutation.mutate({ id: orderId, reason: cancelReason })
-    }
-  }
-
-  const handleReturnOrder = () => {
-    if (!returnReason.trim()) {
-      setReturnReasonError('Vui lòng nhập lý do trả hàng')
-      return
-    }
-    if (orderId) {
-      setReturnReasonError('')
-      returnMutation.mutate({ id: orderId, reason: returnReason })
-    }
-  }
 
   if (isLoading) {
     return (
@@ -240,8 +67,6 @@ export default function OrderDetail() {
 
   const status = getStatusDisplay(order.status as OrderStatus)
   const canCancel = ['pending', 'confirmed'].includes(order.status)
-
-  // Return eligibility: delivered within 7 days
   const isDelivered = order.status === 'delivered'
   const deliveredDaysAgo = isDelivered
     ? Math.floor((Date.now() - new Date(order.updatedAt).getTime()) / (1000 * 60 * 60 * 24))
@@ -249,7 +74,6 @@ export default function OrderDetail() {
   const canReturn = isDelivered && deliveredDaysAgo <= 7
   const isReturnExpired = isDelivered && deliveredDaysAgo > 7
 
-  // Select variants based on reduced motion preference
   const containerVariants = shouldReduceMotion ? reducedMotionVariants : pageContainerVariants
   const sectionItemVariants = shouldReduceMotion ? reducedMotionVariants : sectionVariants
 
@@ -280,7 +104,6 @@ export default function OrderDetail() {
               Mã đơn hàng: <span className='font-medium'>{order._id.slice(-8).toUpperCase()}</span>
             </p>
           </div>
-          {/* Status badge with subtle styling */}
           <motion.div
             variants={shouldReduceMotion ? reducedMotionVariants : statusBadgeVariants}
             className={`flex items-center gap-2 rounded-full px-4 py-2 ${status.bgColor} border border-current/10`}
@@ -290,26 +113,16 @@ export default function OrderDetail() {
         </div>
       </motion.div>
 
-      {/* Order Tracking Timeline */}
-      {tracking && (
-        <motion.div
-          variants={sectionItemVariants}
-          className='overflow-hidden rounded-xl bg-white shadow-xs transition-all duration-200 hover:shadow-md dark:border dark:border-slate-700 dark:bg-slate-800'
-        >
-          <OrderTrackingTimeline tracking={tracking} />
-        </motion.div>
-      )}
-
-      {/* Real-time Order Status Tracker (WebSocket) */}
-      <motion.div variants={sectionItemVariants}>
-        <OrderStatusTracker
-          currentStatus={currentStatus || order.status}
-          isSubscribed={isSubscribed}
-          orderTotal={order.total}
-          stepTimestamps={stepTimestamps}
-          className='mt-4'
-        />
-      </motion.div>
+      {/* Order Tracking Timeline + Status Tracker */}
+      <OrderTimeline
+        tracking={tracking}
+        currentStatus={currentStatus}
+        isSubscribed={isSubscribed}
+        orderStatus={order.status}
+        orderTotal={order.total}
+        stepTimestamps={stepTimestamps}
+        shouldReduceMotion={shouldReduceMotion}
+      />
 
       {/* Shipping Address */}
       <motion.div
@@ -370,7 +183,7 @@ export default function OrderDetail() {
       </motion.div>
 
       {/* Order Items */}
-      <OrderItems order={order} shouldReduceMotion={shouldReduceMotion} />
+      <OrderDetailItems order={order} shouldReduceMotion={shouldReduceMotion} />
 
       {/* Payment & Shipping Info */}
       <motion.div variants={sectionItemVariants} className='grid gap-4 md:grid-cols-2'>
@@ -420,71 +233,7 @@ export default function OrderDetail() {
       </motion.div>
 
       {/* Order Summary */}
-      <motion.div
-        variants={sectionItemVariants}
-        whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
-        transition={{ duration: ANIMATION_DURATION.fast }}
-        className='relative overflow-hidden rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
-      >
-        <div className='absolute top-0 right-0 left-0 h-0.5 bg-linear-to-r from-emerald-400 via-teal-500 to-cyan-500' />
-        <h2 className='mb-4 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
-          <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-200/40 dark:shadow-emerald-800/30'>
-            <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
-              />
-            </svg>
-          </span>
-          Tổng cộng
-        </h2>
-        <div className='space-y-3 text-sm'>
-          <div className='flex items-center justify-between'>
-            <span className='text-gray-500 dark:text-gray-300'>Tạm tính</span>
-            <span className='text-gray-700 dark:text-gray-200'>₫{formatCurrency(order.subtotal)}</span>
-          </div>
-          <div className='flex items-center justify-between'>
-            <span className='text-gray-500 dark:text-gray-300'>Phí vận chuyển</span>
-            <span className='text-gray-700 dark:text-gray-200'>₫{formatCurrency(order.shippingFee)}</span>
-          </div>
-          {order.discount > 0 && (
-            <div className='flex items-center justify-between text-green-600 dark:text-green-400'>
-              <span className='flex items-center gap-1'>
-                <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z'
-                  />
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M6 6h.008v.008H6V6z' />
-                </svg>
-                Giảm giá voucher
-              </span>
-              <span className='font-medium'>-₫{formatCurrency(order.discount)}</span>
-            </div>
-          )}
-          {order.coinsDiscount > 0 && (
-            <div className='flex items-center justify-between text-amber-600 dark:text-amber-400'>
-              <span className='flex items-center gap-1'>
-                <svg className='h-3.5 w-3.5' fill='currentColor' viewBox='0 0 20 20'>
-                  <path d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.798 7.45c.512-.67 1.135-.95 1.702-.95s1.19.28 1.702.95a.75.75 0 001.192-.91C12.637 5.55 11.5 5 10.5 5s-2.137.55-2.894 1.54A5.205 5.205 0 006.83 8H5.75a.75.75 0 000 1.5h.77a6.333 6.333 0 000 1h-.77a.75.75 0 000 1.5h1.08c.183.528.442 1.023.776 1.46.757.99 1.894 1.54 2.894 1.54s2.137-.55 2.894-1.54a.75.75 0 00-1.192-.91c-.512.67-1.135.95-1.702.95s-1.19-.28-1.702-.95a3.505 3.505 0 01-.343-.55h1.795a.75.75 0 000-1.5H8.026a4.835 4.835 0 010-1h2.224a.75.75 0 000-1.5H8.455c.098-.195.212-.38.343-.55z' />
-                </svg>
-                Giảm giá xu ({order.coinsUsed} xu)
-              </span>
-              <span className='font-medium'>-₫{formatCurrency(order.coinsDiscount)}</span>
-            </div>
-          )}
-          <div className='border-t-2 border-dashed border-gray-200 pt-3 dark:border-slate-600'>
-            <div className='flex items-center justify-between'>
-              <span className='text-base font-semibold text-gray-900 dark:text-gray-100'>Tổng tiền</span>
-              <span className='bg-linear-to-r from-orange to-rose-500 bg-clip-text text-2xl font-bold text-transparent'>
-                ₫{formatCurrency(order.total)}
-              </span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+      <OrderSummarySection order={order} shouldReduceMotion={shouldReduceMotion} />
 
       {/* Order Info */}
       <motion.div
@@ -550,44 +299,14 @@ export default function OrderDetail() {
       </motion.div>
 
       {/* Actions */}
-      {(canCancel || canReturn || isReturnExpired) && (
-        <motion.div
-          variants={sectionItemVariants}
-          className='flex flex-col justify-end gap-3 sm:flex-row sm:items-center'
-        >
-          {isReturnExpired && <span className='text-sm text-gray-400 dark:text-gray-500'>Đã quá hạn trả hàng</span>}
-          {canReturn && (
-            <motion.div
-              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-              transition={{ duration: ANIMATION_DURATION.fast }}
-            >
-              <Button
-                onClick={() => setShowReturnModal(true)}
-                aria-label='Trả hàng/Hoàn tiền'
-                className='cursor-pointer rounded-xl border-2 border-amber-400/80 bg-white px-6 py-2.5 font-medium text-amber-600 transition-all duration-200 hover:border-amber-500 hover:bg-amber-50 hover:shadow-md hover:shadow-amber-100/50 dark:border-amber-500/40 dark:bg-slate-800 dark:text-amber-400 dark:hover:border-amber-400 dark:hover:bg-amber-950/20 dark:hover:shadow-amber-900/20'
-              >
-                Trả hàng/Hoàn tiền
-              </Button>
-            </motion.div>
-          )}
-          {canCancel && (
-            <motion.div
-              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-              transition={{ duration: ANIMATION_DURATION.fast }}
-            >
-              <Button
-                onClick={() => setShowCancelModal(true)}
-                aria-label='Hủy đơn hàng'
-                className='cursor-pointer rounded-xl border-2 border-red-400/80 bg-white px-6 py-2.5 font-medium text-red-500 transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:shadow-md hover:shadow-red-100/50 dark:border-red-500/40 dark:bg-slate-800 dark:text-red-400 dark:hover:border-red-400 dark:hover:bg-red-950/20 dark:hover:shadow-red-900/20'
-              >
-                Hủy đơn hàng
-              </Button>
-            </motion.div>
-          )}
-        </motion.div>
-      )}
+      <OrderActionButtons
+        canCancel={canCancel}
+        canReturn={canReturn}
+        isReturnExpired={isReturnExpired}
+        shouldReduceMotion={shouldReduceMotion}
+        onShowCancelModal={() => setShowCancelModal(true)}
+        onShowReturnModal={() => setShowReturnModal(true)}
+      />
 
       {/* Cancel Modal */}
       <AnimatePresence>
@@ -624,292 +343,6 @@ export default function OrderDetail() {
           />
         )}
       </AnimatePresence>
-    </motion.div>
-  )
-}
-
-function OrderItems({ order, shouldReduceMotion }: { order: Order; shouldReduceMotion: boolean | null }) {
-  const containerVariants = shouldReduceMotion ? reducedMotionVariants : itemsContainerVariants
-  const itemVariants = shouldReduceMotion ? reducedMotionVariants : orderItemVariants
-
-  return (
-    <motion.div
-      variants={shouldReduceMotion ? reducedMotionVariants : sectionVariants}
-      whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
-      transition={{ duration: ANIMATION_DURATION.fast }}
-      className='relative overflow-hidden rounded-xl bg-white p-5 shadow-xs transition-all duration-200 dark:border dark:border-slate-700 dark:bg-slate-800'
-    >
-      <div className='absolute top-0 right-0 left-0 h-0.5 bg-linear-to-r from-orange via-amber-500 to-yellow-400' />
-      <h2 className='mb-4 flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100'>
-        <span className='inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-orange to-amber-600 shadow-md shadow-orange-200/40 dark:shadow-orange-800/30'>
-          <svg className='h-4 w-4 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
-            />
-          </svg>
-        </span>
-        Sản phẩm
-        <span className='ml-auto text-xs font-normal text-gray-400 dark:text-gray-500'>
-          {order.items.length} sản phẩm
-        </span>
-      </h2>
-      <motion.div variants={containerVariants} initial='hidden' animate='visible' className='space-y-3'>
-        {order.items.map((item, index) => (
-          <motion.div
-            key={index}
-            variants={itemVariants}
-            whileHover={
-              shouldReduceMotion
-                ? {}
-                : {
-                    scale: 1.01,
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.08)'
-                  }
-            }
-            transition={{ duration: ANIMATION_DURATION.fast }}
-            className='flex gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-2.5 transition-all duration-200 hover:border-orange/20 sm:gap-4 sm:p-3 dark:border-slate-600/50 dark:bg-slate-700/30 dark:hover:border-orange-500/20'
-          >
-            <div className='h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 shadow-xs sm:h-24 sm:w-24 sm:rounded-xl dark:border-slate-600'>
-              <ImageWithFallback
-                src={item.product?.image || ''}
-                alt={item.product?.name || 'Product'}
-                className='h-full w-full object-cover'
-              />
-            </div>
-            <div className='flex min-w-0 flex-1 flex-col justify-between'>
-              <div>
-                <Link
-                  to={`/${item.product?.name?.replace(/\s+/g, '-')}-i-${item.product?._id}`}
-                  className='line-clamp-2 text-sm leading-snug font-medium text-gray-900 transition-colors duration-200 hover:text-orange sm:text-base dark:text-gray-100 dark:hover:text-orange-400'
-                >
-                  {item.product?.name || 'Sản phẩm'}
-                </Link>
-                <p className='mt-1 flex items-center gap-1 text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
-                  <svg
-                    className='h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    strokeWidth={1.5}
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25'
-                    />
-                  </svg>
-                  x{item.buyCount}
-                </p>
-              </div>
-              <div className='mt-1.5 flex flex-col gap-1 sm:mt-2 sm:flex-row sm:items-center sm:gap-2'>
-                <div className='flex items-center gap-2'>
-                  {item.priceBeforeDiscount > item.price && (
-                    <span className='text-xs text-gray-400 line-through dark:text-gray-500'>
-                      ₫{formatCurrency(item.priceBeforeDiscount)}
-                    </span>
-                  )}
-                  <span className='text-sm font-semibold text-orange sm:text-base dark:text-orange-400'>
-                    ₫{formatCurrency(item.price)}
-                  </span>
-                </div>
-                <div className='flex items-baseline gap-1.5 sm:ml-auto'>
-                  <span className='text-xs text-gray-400 dark:text-gray-500'>Thành tiền:</span>
-                  <span className='text-sm font-bold text-orange sm:text-base dark:text-orange-400'>
-                    ₫{formatCurrency(item.price * item.buyCount)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </motion.div>
-  )
-}
-
-interface CancelOrderModalProps {
-  cancelReason: string
-  setCancelReason: (reason: string) => void
-  onClose: () => void
-  onConfirm: () => void
-  isPending: boolean
-  shouldReduceMotion: boolean | null
-}
-
-function CancelOrderModal({
-  cancelReason,
-  setCancelReason,
-  onClose,
-  onConfirm,
-  isPending,
-  shouldReduceMotion
-}: CancelOrderModalProps) {
-  return (
-    <motion.div
-      variants={shouldReduceMotion ? reducedMotionVariants : modalBackdropVariants}
-      initial='hidden'
-      animate='visible'
-      exit='exit'
-      className='fixed inset-0 z-9999 flex items-center justify-center bg-black/60 backdrop-blur-xs'
-      onClick={onClose}
-    >
-      <motion.div
-        variants={shouldReduceMotion ? reducedMotionVariants : modalContentVariants}
-        initial='hidden'
-        animate='visible'
-        exit='exit'
-        onClick={(e) => e.stopPropagation()}
-        className='relative mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl dark:border dark:border-slate-700 dark:bg-slate-800'
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className='absolute top-4 right-4 cursor-pointer rounded-full p-1 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
-          aria-label='Đóng modal'
-        >
-          <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-            <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
-          </svg>
-        </button>
-        <div className='mb-4'>
-          <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Hành động này không thể hoàn tác</p>
-        </div>
-        <p className='mb-4 text-sm text-gray-600 dark:text-gray-300'>
-          Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.
-        </p>
-        <textarea
-          value={cancelReason}
-          onChange={(e) => setCancelReason(e.target.value)}
-          placeholder='Lý do hủy đơn (không bắt buộc)'
-          className='w-full resize-none rounded-xl border border-gray-200 p-3 text-sm transition-all duration-200 focus:border-orange focus:ring-2 focus:ring-orange/20 focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-orange-400'
-          rows={3}
-        />
-        <div className='mt-5 flex justify-end gap-3'>
-          <motion.div
-            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-            transition={{ duration: ANIMATION_DURATION.fast }}
-          >
-            <Button
-              onClick={onClose}
-              className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
-            >
-              Đóng
-            </Button>
-          </motion.div>
-          <motion.div
-            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-            transition={{ duration: ANIMATION_DURATION.fast }}
-          >
-            <Button
-              onClick={onConfirm}
-              disabled={isPending}
-              className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 font-medium text-white transition-all duration-200 hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-red-900/30'
-            >
-              {isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
-            </Button>
-          </motion.div>
-        </div>
-      </motion.div>
-    </motion.div>
-  )
-}
-
-interface ReturnOrderModalProps {
-  returnReason: string
-  setReturnReason: (reason: string) => void
-  returnReasonError: string
-  onClose: () => void
-  onConfirm: () => void
-  isPending: boolean
-  shouldReduceMotion: boolean | null
-}
-
-function ReturnOrderModal({
-  returnReason,
-  setReturnReason,
-  returnReasonError,
-  onClose,
-  onConfirm,
-  isPending,
-  shouldReduceMotion
-}: ReturnOrderModalProps) {
-  return (
-    <motion.div
-      variants={shouldReduceMotion ? reducedMotionVariants : modalBackdropVariants}
-      initial='hidden'
-      animate='visible'
-      exit='exit'
-      className='fixed inset-0 z-9999 flex items-center justify-center bg-black/60 backdrop-blur-xs'
-      onClick={onClose}
-    >
-      <motion.div
-        variants={shouldReduceMotion ? reducedMotionVariants : modalContentVariants}
-        initial='hidden'
-        animate='visible'
-        exit='exit'
-        onClick={(e) => e.stopPropagation()}
-        className='relative mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl dark:border dark:border-slate-700 dark:bg-slate-800'
-      >
-        <button
-          onClick={onClose}
-          className='absolute top-4 right-4 cursor-pointer rounded-full p-1 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
-          aria-label='Đóng modal'
-        >
-          <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-            <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
-          </svg>
-        </button>
-        <div className='mb-4'>
-          <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Trả hàng/Hoàn tiền</h3>
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            Vui lòng cho chúng tôi biết lý do bạn muốn trả hàng
-          </p>
-        </div>
-        <textarea
-          value={returnReason}
-          onChange={(e) => setReturnReason(e.target.value)}
-          placeholder='Nhập lý do trả hàng (bắt buộc)'
-          className={`w-full resize-none rounded-xl border p-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-hidden dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 ${
-            returnReasonError
-              ? 'border-red-300 focus:border-red-400 focus:ring-red-200/20 dark:border-red-600 dark:focus:border-red-500'
-              : 'border-gray-200 focus:border-orange focus:ring-orange/20 dark:border-slate-600 dark:focus:border-orange-400'
-          }`}
-          rows={3}
-        />
-        {returnReasonError && <p className='mt-1.5 text-xs text-red-500 dark:text-red-400'>{returnReasonError}</p>}
-        <div className='mt-5 flex justify-end gap-3'>
-          <motion.div
-            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-            transition={{ duration: ANIMATION_DURATION.fast }}
-          >
-            <Button
-              onClick={onClose}
-              className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:border-slate-500 dark:hover:bg-slate-700'
-            >
-              Đóng
-            </Button>
-          </motion.div>
-          <motion.div
-            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-            transition={{ duration: ANIMATION_DURATION.fast }}
-          >
-            <Button
-              onClick={onConfirm}
-              disabled={isPending}
-              className='cursor-pointer rounded-xl bg-linear-to-r from-amber-500 to-orange-600 px-5 py-2.5 font-medium text-white transition-all duration-200 hover:from-amber-600 hover:to-orange-700 hover:shadow-lg hover:shadow-amber-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:shadow-amber-900/30'
-            >
-              {isPending ? 'Đang xử lý...' : 'Xác nhận trả hàng'}
-            </Button>
-          </motion.div>
-        </div>
-      </motion.div>
     </motion.div>
   )
 }

@@ -171,4 +171,3 @@ export function useWishlist(activeFilter: string, activeSort: string) {
     addToCartMutation
   }
 }
-

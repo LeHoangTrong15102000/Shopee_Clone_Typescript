@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { AddressType } from 'src/types/checkout.type'
+import { z } from 'zod'
 
 export const addressSchema = z.object({
   fullName: z.string().min(1, 'Vui lòng nhập họ tên').max(100, 'Họ tên tối đa 100 ký tự'),
@@ -71,4 +71,3 @@ export const formatPhoneNumber = (value: string): string => {
   if (cleaned.length <= 7) return `${cleaned.slice(0, 4)} ${cleaned.slice(4)}`
   return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7, 10)}`
 }
-

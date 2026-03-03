@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { Address, AddressFormData, AddressType } from 'src/types/checkout.type'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import addressApi from 'src/apis/address.api'
 import {
-  vietnamProvinces,
+  District,
   getDistrictsByProvince,
   getWardsByDistrict,
   streetSuggestions,
-  District,
+  vietnamProvinces,
   Ward
 } from 'src/data/vietnamLocations'
+import { Address, AddressFormData, AddressType } from 'src/types/checkout.type'
 import { addressSchema, AddressSchemaFormData } from './addressForm.constants'
 
 export function useAddressForm(address: Address | null, onSuccess: () => void) {
@@ -173,7 +173,8 @@ export function useAddressForm(address: Address | null, onSuccess: () => void) {
 
   const canProceedToStep = (step: number) => {
     if (step === 1) return true
-    if (step === 2) return watchedFullName && watchedPhone && !form.formState.errors.fullName && !form.formState.errors.phone
+    if (step === 2)
+      return watchedFullName && watchedPhone && !form.formState.errors.fullName && !form.formState.errors.phone
     if (step === 3) return stepProgress >= 2
     return false
   }
@@ -230,4 +231,3 @@ export function useAddressForm(address: Address | null, onSuccess: () => void) {
     isLoading
   }
 }
-

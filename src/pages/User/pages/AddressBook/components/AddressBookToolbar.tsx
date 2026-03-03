@@ -112,15 +112,8 @@ const AddressBookToolbar = ({
           >
             <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
               <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300'>
-                <ShopeeCheckbox
-                  checked={selectedCount === totalSelectableCount}
-                  onChange={onSelectAll}
-                  size='sm'
-                />
-                <span
-                  className='cursor-pointer hover:text-orange dark:hover:text-orange-400'
-                  onClick={onSelectAll}
-                >
+                <ShopeeCheckbox checked={selectedCount === totalSelectableCount} onChange={onSelectAll} size='sm' />
+                <span className='cursor-pointer hover:text-orange dark:hover:text-orange-400' onClick={onSelectAll}>
                   Chọn tất cả
                 </span>
               </div>
@@ -142,4 +135,3 @@ const AddressBookToolbar = ({
 }
 
 export default AddressBookToolbar
-

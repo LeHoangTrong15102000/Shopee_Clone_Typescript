@@ -15,7 +15,13 @@ export default function ContactInfoStep({ form }: ContactInfoStepProps) {
   } = form
 
   return (
-    <motion.div key='step1' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className='space-y-4'>
+    <motion.div
+      key='step1'
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className='space-y-4'
+    >
       <div className='mb-4'>
         <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Thông tin liên hệ</h4>
         <p className='text-sm text-gray-500 dark:text-gray-400'>Nhập thông tin người nhận hàng</p>
@@ -71,12 +77,9 @@ export default function ContactInfoStep({ form }: ContactInfoStepProps) {
             )}
           />
           {errors.phone && <p className='mt-1 text-xs text-red-500'>{errors.phone.message}</p>}
-          <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
-            Định dạng: 0901234567 hoặc +84901234567
-          </p>
+          <p className='mt-1 text-xs text-gray-400 dark:text-gray-500'>Định dạng: 0901234567 hoặc +84901234567</p>
         </div>
       </div>
     </motion.div>
   )
 }
-
