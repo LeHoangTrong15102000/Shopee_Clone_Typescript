@@ -1,465 +1,61 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Fragment, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Fragment, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router'
-import { toast } from 'react-toastify'
-import productApi from 'src/apis/product.api'
-import purchaseApi from 'src/apis/purchases.api'
-import wishlistApi from 'src/apis/wishlist.api'
-import ImageWithFallback from 'src/components/ImageWithFallback'
-import ProductRating from 'src/components/ProductRating'
 import WishlistPriceAlert from 'src/components/WishlistPriceAlert'
-import path from 'src/constant/path'
-import { purchasesStatus } from 'src/constant/purchase'
-import { useIsMobile } from 'src/hooks/useIsMobile'
-import { Product } from 'src/types/product.type'
-import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import Button from 'src/components/Button'
-
-// Mock categories for visual enhancement
-const mockCategories = ['Điện tử', 'Thời trang', 'Gia dụng', 'Làm đẹp', 'Thể thao', 'Sách', 'Đồ chơi', 'Phụ kiện']
-
-// SVG Icon components (Heroicons outline style)
-const IconHeart = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
-    />
-  </svg>
-)
-const IconCurrencyDollar = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-    />
-  </svg>
-)
-const IconTag = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z'
-    />
-    <path strokeLinecap='round' strokeLinejoin='round' d='M6 6h.008v.008H6V6z' />
-  </svg>
-)
-const IconChartBar = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z'
-    />
-  </svg>
-)
-const IconBell = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
-    />
-  </svg>
-)
-const IconTarget = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path strokeLinecap='round' strokeLinejoin='round' d='M12 21a9 9 0 100-18 9 9 0 000 18z' />
-    <path strokeLinecap='round' strokeLinejoin='round' d='M12 15a3 3 0 100-6 3 3 0 000 6z' />
-  </svg>
-)
-const IconFolder = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z'
-    />
-  </svg>
-)
-const IconCube = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9'
-    />
-  </svg>
-)
-const IconShoppingCart = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-5.98.572l-.003.048m5.983-.62h9.338a2.25 2.25 0 002.227-1.932l.857-6A2.25 2.25 0 0017.668 4.5H7.5m0 9.75v-9.75'
-    />
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M7.5 18.75a.75.75 0 100-1.5.75.75 0 000 1.5zm9 0a.75.75 0 100-1.5.75.75 0 000 1.5z'
-    />
-  </svg>
-)
-const IconLightning = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z'
-    />
-  </svg>
-)
-const IconStar = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-    />
-  </svg>
-)
-const IconTrendingUp = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941'
-    />
-  </svg>
-)
-const IconTrendingDown = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181'
-    />
-  </svg>
-)
-const IconClock = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' />
-  </svg>
-)
-const IconFire = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z'
-    />
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1.001A3.75 3.75 0 0012 18z'
-    />
-  </svg>
-)
-const IconSparkles = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z'
-    />
-  </svg>
-)
-const IconTrophy = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0116.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228M18.75 4.236V2.721'
-    />
-  </svg>
-)
-const IconClipboard = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z'
-    />
-  </svg>
-)
-const IconMagnifyingGlass = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
-    />
-  </svg>
-)
-const IconShoppingBag = ({ className = 'h-5 w-5' }: { className?: string }) => (
-  <svg className={className} fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
-    />
-  </svg>
-)
-
-// Category icon components mapping
-const categoryIconComponents: Record<string, React.FC<{ className?: string }>> = {
-  'Thời trang nam': IconShoppingBag,
-  'Thời trang nữ': IconSparkles,
-  'Điện tử': IconLightning,
-  'Phụ kiện': IconCube,
-  'Gia dụng': IconFolder,
-  'Làm đẹp': IconStar,
-  'Thể thao': IconTrophy,
-  Sách: IconClipboard,
-  'Đồ chơi': IconHeart
-}
-
-// Sort options
-const sortOptions = [
-  { id: 'newest', label: 'Mới nhất', Icon: IconClock },
-  { id: 'price-asc', label: 'Giá thấp → cao', Icon: IconTrendingUp },
-  { id: 'price-desc', label: 'Giá cao → thấp', Icon: IconTrendingDown },
-  { id: 'discount', label: 'Giảm giá nhiều', Icon: IconFire },
-  { id: 'bestseller', label: 'Bán chạy', Icon: IconStar }
-]
-
-// Filter pills data
-const filterPills = [
-  { id: 'all', label: 'Tất cả', Icon: IconClipboard },
-  { id: 'sale', label: 'Giảm giá sốc', Icon: IconFire },
-  { id: 'bestseller', label: 'Bán chạy', Icon: IconStar },
-  { id: 'new', label: 'Mới thêm', Icon: IconSparkles },
-  { id: 'lowprice', label: 'Giá thấp', Icon: IconCurrencyDollar },
-  { id: 'highrating', label: 'Đánh giá cao', Icon: IconTrophy }
-]
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.04 }
-  }
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
-}
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-}
+import path from 'src/constant/path'
+import { useIsMobile } from 'src/hooks/useIsMobile'
+import { formatCurrency } from 'src/utils/utils'
+import { useWishlist } from './useWishlist'
+import { containerVariants, fadeInUp, itemVariants } from './wishlist.constants'
+import {
+  categoryIconComponents,
+  IconBell,
+  IconCube,
+  IconFire,
+  IconFolder,
+  IconHeart,
+  IconMagnifyingGlass,
+  IconSparkles,
+  IconStar,
+  IconTarget,
+  IconTrendingDown,
+  IconTrendingUp
+} from './components/WishlistIcons'
+import WishlistCard from './components/WishlistCard'
+import WishlistStats from './components/WishlistStats'
+import WishlistFilters from './components/WishlistFilters'
+import WishlistSkeletonLoader from './components/WishlistSkeletonLoader'
 
 export default function Wishlist() {
-  const queryClient = useQueryClient()
   const [activeFilter, setActiveFilter] = useState('all')
   const [activeSort, setActiveSort] = useState('newest')
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const isMobile = useIsMobile()
 
+  const {
+    allWishlistItems,
+    wishlistItems,
+    productIds,
+    totalValue,
+    totalSavings,
+    insights,
+    isLoading,
+    isRecentlyAdded,
+    isTrending,
+    getStockStatus,
+    getDiscountPercent,
+    removeMutation,
+    addToCartMutation
+  } = useWishlist(activeFilter, activeSort)
+
   const activeContainerVariants = isMobile ? undefined : containerVariants
   const activeFadeInUp = isMobile ? undefined : fadeInUp
 
-  // Fetch real products from API
-  const { data: productsData } = useQuery({
-    queryKey: ['products', { limit: 30, sort_by: 'sold' }],
-    queryFn: () => productApi.getProducts({ limit: 30, sort_by: 'sold' as const })
-  })
-
-  // Fetch wishlist data (mock fallback since API not deployed)
-  const { data: wishlistData, isLoading } = useQuery({
-    queryKey: ['wishlist'],
-    queryFn: () => wishlistApi.getWishlist({ page: 1, limit: 50 })
-  })
-
-  // Merge: create wishlist items from real products or API wishlist
-  const allWishlistItems = useMemo(() => {
-    const apiWishlistItems = wishlistData?.data.data.wishlist ?? []
-    const realProducts = productsData?.data.data.products ?? []
-
-    // If we have real wishlist items with valid product data, use them
-    if (apiWishlistItems.length > 0 && apiWishlistItems[0].product?.image) {
-      return apiWishlistItems
-    }
-
-    // Otherwise, create mock wishlist entries from real products
-    if (realProducts.length > 0) {
-      return realProducts.slice(0, 28).map((product, index) => ({
-        _id: `wishlist-${product._id}`,
-        user: 'current-user',
-        product,
-        addedAt: new Date(Date.now() - index * 24 * 60 * 60 * 1000).toISOString(),
-        mockCategory: mockCategories[index % mockCategories.length]
-      }))
-    }
-
-    return apiWishlistItems
-  }, [wishlistData, productsData])
-
-  // Filter & Sort logic
-  const wishlistItems = useMemo(() => {
-    let items = [...allWishlistItems]
-
-    // Apply filter
-    if (activeFilter === 'sale') {
-      items = items.filter((i) => i.product.price_before_discount > i.product.price)
-    } else if (activeFilter === 'bestseller') {
-      items = items.filter((i) => i.product.sold >= 2000)
-    } else if (activeFilter === 'new') {
-      const threeDaysAgo = Date.now() - 3 * 24 * 60 * 60 * 1000
-      items = items.filter((i) => new Date(i.addedAt).getTime() > threeDaysAgo)
-    } else if (activeFilter === 'lowprice') {
-      items = items.filter((i) => i.product.price < 300000)
-    } else if (activeFilter === 'highrating') {
-      items = items.filter((i) => i.product.rating >= 4.5)
-    }
-
-    // Apply sort
-    if (activeSort === 'price-asc') items.sort((a, b) => a.product.price - b.product.price)
-    else if (activeSort === 'price-desc') items.sort((a, b) => b.product.price - a.product.price)
-    else if (activeSort === 'discount') {
-      items.sort((a, b) => {
-        const dA = a.product.price_before_discount - a.product.price
-        const dB = b.product.price_before_discount - b.product.price
-        return dB - dA
-      })
-    } else if (activeSort === 'bestseller') items.sort((a, b) => b.product.sold - a.product.sold)
-    else items.sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime())
-
-    return items
-  }, [allWishlistItems, activeFilter, activeSort])
-
-  // Extract product IDs for real-time price monitoring
-  const productIds = useMemo(() => allWishlistItems.map((item) => item.product._id), [allWishlistItems])
-
-  // Stats
-  const totalValue = useMemo(
-    () => allWishlistItems.reduce((sum, item) => sum + item.product.price, 0),
-    [allWishlistItems]
-  )
-  const totalSavings = useMemo(
-    () => allWishlistItems.reduce((sum, item) => sum + (item.product.price_before_discount - item.product.price), 0),
-    [allWishlistItems]
-  )
-
-  // Insights
-  const insights = useMemo(() => {
-    if (allWishlistItems.length === 0) return null
-    const catCount: Record<string, number> = {}
-    let totalDiscount = 0
-    let discountItems = 0
-    allWishlistItems.forEach((item) => {
-      const cat = item.product.category?.name || (item as { mockCategory?: string }).mockCategory || 'Khác'
-      catCount[cat] = (catCount[cat] || 0) + 1
-      if (item.product.price_before_discount > item.product.price) {
-        totalDiscount += Math.round(
-          ((item.product.price_before_discount - item.product.price) / item.product.price_before_discount) * 100
-        )
-        discountItems++
-      }
-    })
-    const topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]
-    return {
-      topCategory: topCat ? topCat[0] : 'N/A',
-      topCategoryCount: topCat ? topCat[1] : 0,
-      avgDiscount: discountItems > 0 ? Math.round(totalDiscount / discountItems) : 0,
-      priceDropCount: allWishlistItems.filter(
-        (i) =>
-          i.product.price_before_discount > i.product.price &&
-          Math.round(((i.product.price_before_discount - i.product.price) / i.product.price_before_discount) * 100) >=
-            30
-      ).length
-    }
-  }, [allWishlistItems])
-
-  // Badge helpers
-  const isRecentlyAdded = (addedAt: string) => {
-    return Date.now() - new Date(addedAt).getTime() < 3 * 24 * 60 * 60 * 1000
-  }
-  const isTrending = (product: Product) => product.sold >= 3000 && product.rating >= 4.5
-  const getStockStatus = (product: Product) => {
-    if (product.quantity <= 0) return { label: 'Hết hàng', color: 'bg-red-500' }
-    if (product.quantity <= 20) return { label: 'Sắp hết', color: 'bg-amber-500' }
-    return null
-  }
-  const getDiscountPercent = (product: Product) => {
-    if (product.price_before_discount <= product.price) return 0
-    return Math.round(((product.price_before_discount - product.price) / product.price_before_discount) * 100)
-  }
-
-  // Mutations
-  const removeMutation = useMutation({
-    mutationFn: (productId: string) => wishlistApi.removeFromWishlist(productId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] })
-      toast.success('Đã xóa khỏi danh sách yêu thích')
-    }
-  })
-
-  const addToCartMutation = useMutation({
-    mutationFn: (productId: string) => purchaseApi.addToCart({ product_id: productId, buy_count: 1 }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-      toast.success('Đã thêm vào giỏ hàng')
-    }
-  })
-
-  const getProductLink = (product: Product) => `${path.home}${generateNameId({ name: product.name, id: product._id })}`
-
-  // Skeleton Loading State
   if (isLoading) {
-    return (
-      <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-16 dark:bg-slate-900'>
-        <div className='container'>
-          {/* Skeleton Stats Header */}
-          <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3'>
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className='flex items-center gap-4 rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='h-12 w-12 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                <div className='flex-1'>
-                  <div className='mb-2 h-6 w-20 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
-                  <div className='h-4 w-24 animate-pulse rounded-sm bg-gray-100 dark:bg-slate-600' />
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Skeleton Filter Pills */}
-          <div className='mb-6 flex gap-2 overflow-x-auto pb-2'>
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className='h-8 w-20 shrink-0 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-            ))}
-          </div>
-          {/* Skeleton Product Grid */}
-          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-            {[...Array(10)].map((_, i) => (
-              <div
-                key={i}
-                className='overflow-hidden rounded-lg bg-white shadow-xs dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='aspect-square w-full animate-pulse bg-gray-200 dark:bg-slate-700' />
-                <div className='p-3'>
-                  <div className='mb-2 h-4 w-full animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
-                  <div className='mb-3 h-4 w-3/4 animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
-                  <div className='mb-2 h-5 w-1/2 animate-pulse rounded-sm bg-gray-100 dark:bg-slate-600' />
-                  <div className='h-8 w-full animate-pulse rounded-sm bg-gray-200 dark:bg-slate-700' />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
+    return <WishlistSkeletonLoader />
   }
 
   return (
@@ -472,7 +68,6 @@ export default function Wishlist() {
       <div className='container'>
         {allWishlistItems.length > 0 ? (
           <Fragment>
-            {/* Real-time price monitoring */}
             <WishlistPriceAlert productIds={productIds} />
 
             {/* Wishlist Hero Banner */}
@@ -482,12 +77,9 @@ export default function Wishlist() {
               animate={isMobile ? undefined : 'visible'}
               className='relative mb-6 overflow-hidden rounded-xl bg-linear-to-r from-[#ee4d2d] via-[#ff6b4a] to-[#ff8c6b] shadow-lg dark:from-orange-700 dark:via-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'
             >
-              {/* Decorative blurred circles */}
               <div className='pointer-events-none absolute -top-10 -right-10 h-48 w-48 rounded-full bg-white/10 blur-2xl' />
               <div className='pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/5 blur-2xl' />
-
               <div className='relative z-10 flex flex-col items-center gap-4 px-6 py-7 sm:flex-row sm:justify-between sm:px-8 sm:py-8'>
-                {/* Left content */}
                 <div className='flex items-center gap-4 text-center sm:text-left'>
                   <div className='hidden h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs sm:flex'>
                     <IconHeart className='h-7 w-7 text-white' />
@@ -507,8 +99,6 @@ export default function Wishlist() {
                     </p>
                   </div>
                 </div>
-
-                {/* Right decorative icons */}
                 <div className='hidden items-center gap-3 md:flex'>
                   <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-xs'>
                     <IconStar className='h-5 w-5 text-yellow-200' />
@@ -523,68 +113,15 @@ export default function Wishlist() {
               </div>
             </motion.div>
 
-            {/* Stats Header - 4 Cards */}
-            <motion.div
-              variants={activeContainerVariants}
-              initial={isMobile ? false : 'hidden'}
-              animate={isMobile ? undefined : 'visible'}
-              className='mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4'
-            >
-              <motion.div
-                variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-red-500 text-white shadow-xs shadow-orange-500/30'>
-                  <IconHeart className='h-5 w-5' />
-                </div>
-                <div>
-                  <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>{allWishlistItems.length}</div>
-                  <div className='text-xs text-gray-500 dark:text-gray-400'>Yêu thích</div>
-                </div>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-blue-400 to-indigo-500 text-white shadow-xs shadow-blue-500/30'>
-                  <IconCurrencyDollar className='h-5 w-5' />
-                </div>
-                <div>
-                  <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>
-                    ₫{formatCurrency(totalValue)}
-                  </div>
-                  <div className='text-xs text-gray-500 dark:text-gray-400'>Tổng giá trị</div>
-                </div>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-teal-500 text-white shadow-xs shadow-emerald-500/30'>
-                  <IconTag className='h-5 w-5' />
-                </div>
-                <div>
-                  <div className='text-xl font-bold text-emerald-500 dark:text-emerald-400'>
-                    ₫{formatCurrency(totalSavings)}
-                  </div>
-                  <div className='text-xs text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
-                </div>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className='flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50'
-              >
-                <div className='flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-violet-400 to-purple-500 text-white shadow-xs shadow-violet-500/30'>
-                  <IconChartBar className='h-5 w-5' />
-                </div>
-                <div>
-                  <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>
-                    {insights?.avgDiscount || 0}%
-                  </div>
-                  <div className='text-xs text-gray-500 dark:text-gray-400'>TB giảm giá</div>
-                </div>
-              </motion.div>
-            </motion.div>
+            <WishlistStats
+              itemCount={allWishlistItems.length}
+              totalValue={totalValue}
+              totalSavings={totalSavings}
+              avgDiscount={insights?.avgDiscount || 0}
+              itemVariants={itemVariants}
+              containerVariants={activeContainerVariants}
+              isMobile={isMobile}
+            />
 
             {/* Wishlist Insights Banner */}
             {insights && (
@@ -619,72 +156,14 @@ export default function Wishlist() {
               </motion.div>
             )}
 
-            {/* Filter Pills + Sort */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className='mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'
-            >
-              <div className='scrollbar-hide flex gap-2 overflow-x-auto pb-1'>
-                {filterPills.map((pill) => (
-                  <Button
-                    animated={false}
-                    key={pill.id}
-                    onClick={() => setActiveFilter(pill.id)}
-                    className={`inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:focus:ring-orange-400 ${
-                      activeFilter === pill.id
-                        ? 'bg-[#ee4d2d] text-white shadow-md shadow-orange-500/25 dark:bg-orange-500'
-                        : 'border border-gray-200 bg-white text-gray-600 hover:border-[#ee4d2d] hover:text-[#ee4d2d] dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-orange-400 dark:hover:text-orange-400'
-                    }`}
-                  >
-                    <pill.Icon className='h-3.5 w-3.5' />
-                    {pill.label}
-                  </Button>
-                ))}
-              </div>
-              {/* Sort dropdown */}
-              <div className='relative shrink-0'>
-                <Button
-                  animated={false}
-                  onClick={() => setShowSortDropdown(!showSortDropdown)}
-                  className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-600 transition-colors hover:border-[#ee4d2d] focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:hover:border-orange-400 dark:focus:ring-orange-400'
-                >
-                  <span>Sắp xếp: {sortOptions.find((s) => s.id === activeSort)?.label}</span>
-                  <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
-                  </svg>
-                </Button>
-                <AnimatePresence>
-                  {showSortDropdown && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      className='absolute top-full right-0 z-30 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-slate-600 dark:bg-slate-800 dark:shadow-slate-900/50'
-                    >
-                      {sortOptions.map((opt) => (
-                        <Button
-                          animated={false}
-                          key={opt.id}
-                          onClick={() => {
-                            setActiveSort(opt.id)
-                            setShowSortDropdown(false)
-                          }}
-                          className={`flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-sm transition-colors focus:ring-2 focus:ring-orange-500 focus:outline-hidden focus:ring-inset dark:focus:ring-orange-400 ${
-                            activeSort === opt.id
-                              ? 'bg-orange-50 font-medium text-[#ee4d2d] dark:bg-orange-900/20 dark:text-orange-400'
-                              : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-700'
-                          }`}
-                        >
-                          <opt.Icon className='h-4 w-4' /> {opt.label}
-                        </Button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
+            <WishlistFilters
+              activeFilter={activeFilter}
+              activeSort={activeSort}
+              showSortDropdown={showSortDropdown}
+              onFilterChange={setActiveFilter}
+              onSortChange={setActiveSort}
+              onToggleSortDropdown={() => setShowSortDropdown(!showSortDropdown)}
+            />
 
             {/* Results count */}
             {activeFilter !== 'all' && (
@@ -705,155 +184,22 @@ export default function Wishlist() {
               key={activeFilter + activeSort}
               className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
             >
-              {wishlistItems.map((item) => {
-                const categoryName =
-                  item.product.category?.name || (item as { mockCategory?: string }).mockCategory || 'Sản phẩm'
-                const discount = getDiscountPercent(item.product)
-                const stock = getStockStatus(item.product)
-                const recent = isRecentlyAdded(item.addedAt)
-                const trending = isTrending(item.product)
-                return (
-                  <motion.div
-                    key={item._id}
-                    variants={itemVariants}
-                    layout
-                    transition={{ duration: 0.2 }}
-                    onMouseEnter={() => setHoveredCardId(item._id)}
-                    onMouseLeave={() => setHoveredCardId(null)}
-                    className='group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-slate-900/70'
-                  >
-                    {/* Top-left badges stack */}
-                    <div className='absolute top-2 left-2 z-10 flex flex-col gap-1'>
-                      {recent && (
-                        <span className='inline-flex items-center gap-0.5 rounded-sm bg-linear-to-r from-blue-500 to-cyan-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs'>
-                          <IconSparkles className='h-2.5 w-2.5' /> MỚI
-                        </span>
-                      )}
-                      {trending && (
-                        <span className='inline-flex items-center gap-0.5 rounded-sm bg-linear-to-r from-amber-500 to-orange-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs'>
-                          <IconFire className='h-2.5 w-2.5' /> HOT
-                        </span>
-                      )}
-                      {stock && (
-                        <span
-                          className={`rounded-sm ${stock.color} px-1.5 py-0.5 text-[9px] font-bold text-white shadow-xs`}
-                        >
-                          {stock.label}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Discount badge - top right */}
-                    {discount > 0 && (
-                      <div className='absolute top-0 right-0 z-10'>
-                        <div className='relative inline-flex items-center gap-0.5 rounded-bl-lg bg-[#ee4d2d] px-2 py-1 text-[11px] font-bold text-white dark:bg-orange-500'>
-                          -{discount}%{discount >= 30 && <IconLightning className='h-2.5 w-2.5' />}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Delete button overlay - visible on hover */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: hoveredCardId === item._id ? 1 : 0,
-                        scale: hoveredCardId === item._id ? 1 : 0.8
-                      }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <Button
-                        animated={false}
-                        onClick={() => removeMutation.mutate(item.product._id)}
-                        className='absolute right-2 bottom-[calc(100%-2rem)] z-20 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-gray-400 shadow-md backdrop-blur-xs transition-all duration-150 hover:bg-red-500 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-1 focus:outline-hidden active:scale-90 dark:bg-slate-700/90 dark:shadow-slate-900/50'
-                        aria-label='Xóa khỏi yêu thích'
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth={1.5}
-                          stroke='currentColor'
-                          className='h-3.5 w-3.5'
-                        >
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
-                        </svg>
-                      </Button>
-                    </motion.div>
-
-                    {/* Product Image */}
-                    <Link
-                      to={getProductLink(item.product)}
-                      className='relative block w-full cursor-pointer overflow-hidden pt-[100%]'
-                    >
-                      <ImageWithFallback
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className='absolute top-0 left-0 h-full w-full bg-white object-cover transition-transform duration-500 group-hover:scale-110 dark:bg-slate-700'
-                        loading='lazy'
-                      />
-                      <div className='absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-                      {/* Heart icon overlay on hover */}
-                      <div className='absolute bottom-2 left-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-                        <div className='flex h-7 w-7 items-center justify-center rounded-full bg-white/80 backdrop-blur-xs dark:bg-slate-800/80'>
-                          <svg className='h-4 w-4 text-red-500' fill='currentColor' viewBox='0 0 24 24'>
-                            <path d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
-                          </svg>
-                        </div>
-                      </div>
-                    </Link>
-
-                    {/* Product Info */}
-                    <div className='p-3'>
-                      <Link
-                        to={getProductLink(item.product)}
-                        className='line-clamp-2 min-h-10 cursor-pointer text-xs leading-relaxed text-gray-800 transition-colors duration-150 hover:text-[#ee4d2d] dark:text-gray-100 dark:hover:text-orange-400'
-                      >
-                        {item.product.name}
-                      </Link>
-
-                      {/* Category Tag with icon */}
-                      <div className='mt-1.5'>
-                        <span className='inline-flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-[10px] text-gray-500 dark:bg-slate-700/50 dark:text-gray-400'>
-                          {(() => {
-                            const CatIcon = categoryIconComponents[categoryName] || IconCube
-                            return <CatIcon className='h-3 w-3' />
-                          })()}{' '}
-                          {categoryName}
-                        </span>
-                      </div>
-
-                      {/* Price */}
-                      <div className='mt-2 flex items-baseline gap-1.5'>
-                        <span className='truncate text-sm font-bold text-[#ee4d2d] dark:text-orange-400'>
-                          ₫{formatCurrency(item.product.price)}
-                        </span>
-                        {discount > 0 && (
-                          <span className='truncate text-[10px] text-gray-400 line-through dark:text-gray-500'>
-                            ₫{formatCurrency(item.product.price_before_discount)}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Rating & Sold */}
-                      <div className='mt-1.5 flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400'>
-                        <ProductRating rating={item.product.rating} />
-                        <span>Đã bán {formatNumberToSocialStyle(item.product.sold)}</span>
-                      </div>
-
-                      {/* Add to Cart Button */}
-                      <Button
-                        animated={false}
-                        onClick={() => addToCartMutation.mutate(item.product._id)}
-                        className='mt-2.5 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] py-2 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:from-[#d73211] hover:to-[#ee4d2d] hover:shadow-md hover:shadow-orange-500/20 focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:outline-hidden active:scale-95 dark:from-orange-500 dark:to-orange-400 dark:shadow-slate-900/50 dark:hover:from-orange-600 dark:hover:to-orange-500 dark:focus:ring-orange-400'
-                        aria-label='Thêm vào giỏ hàng'
-                      >
-                        <IconShoppingCart className='h-3.5 w-3.5' />
-                        Thêm vào giỏ
-                      </Button>
-                    </div>
-                  </motion.div>
-                )
-              })}
+              {wishlistItems.map((item) => (
+                <WishlistCard
+                  key={item._id}
+                  item={item}
+                  hoveredCardId={hoveredCardId}
+                  onMouseEnter={() => setHoveredCardId(item._id)}
+                  onMouseLeave={() => setHoveredCardId(null)}
+                  onRemove={() => removeMutation.mutate(item.product._id)}
+                  onAddToCart={() => addToCartMutation.mutate(item.product._id)}
+                  isRecentlyAdded={isRecentlyAdded}
+                  isTrending={isTrending}
+                  getStockStatus={getStockStatus}
+                  getDiscountPercent={getDiscountPercent}
+                  itemVariants={itemVariants}
+                />
+              ))}
             </motion.div>
 
             {/* Empty filter result */}
@@ -881,7 +227,6 @@ export default function Wishlist() {
               animate={isMobile ? undefined : 'visible'}
               className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2'
             >
-              {/* Price Alert Banner */}
               <div className='overflow-hidden rounded-xl bg-linear-to-br from-[#ee4d2d] to-[#ff6b4a] p-5 shadow-lg dark:from-orange-600 dark:to-orange-500 dark:shadow-slate-900/50'>
                 <div className='flex items-center gap-3'>
                   <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
@@ -899,8 +244,6 @@ export default function Wishlist() {
                   Bật thông báo
                 </Button>
               </div>
-
-              {/* Savings Goal Banner */}
               <div className='overflow-hidden rounded-xl bg-linear-to-br from-emerald-500 to-teal-500 p-5 shadow-lg dark:from-emerald-600 dark:to-teal-600 dark:shadow-slate-900/50'>
                 <div className='flex items-center gap-3'>
                   <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-white'>
@@ -913,7 +256,6 @@ export default function Wishlist() {
                     </p>
                   </div>
                 </div>
-                {/* Progress bar */}
                 <div className='mt-3 h-2 w-full overflow-hidden rounded-full bg-white/20'>
                   <motion.div
                     initial={{ width: 0 }}
