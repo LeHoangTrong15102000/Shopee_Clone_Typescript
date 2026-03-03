@@ -134,7 +134,9 @@ const ChangePassword = () => {
             </svg>
           </div>
           <div>
-            <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>{t('changePassword.title')}</h1>
+            <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>
+              {t('changePassword.title')}
+            </h1>
             <div className='mt-0.75 text-[.875rem] text-gray-500 dark:text-gray-400'>
               {t('changePassword.description')}
             </div>

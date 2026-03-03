@@ -205,7 +205,12 @@ const PaymentForm = memo(function PaymentForm({
 
   if (paymentStatus === 'error') {
     return (
-      <ErrorFeedback title={t('status.failed')} message={errorMessage} retryLabel={t('buttons.retry')} onRetry={handleRetry} />
+      <ErrorFeedback
+        title={t('status.failed')}
+        message={errorMessage}
+        retryLabel={t('buttons.retry')}
+        onRetry={handleRetry}
+      />
     )
   }
 

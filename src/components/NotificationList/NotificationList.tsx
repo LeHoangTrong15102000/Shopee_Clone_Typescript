@@ -111,11 +111,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
         </div>
 
         {/* Notification List */}
-        <ul
-          role='list'
-          aria-label={t('listLabel')}
-          className='mt-5 max-h-[300px] overflow-x-hidden overflow-y-auto'
-        >
+        <ul role='list' aria-label={t('listLabel')} className='mt-5 max-h-[300px] overflow-x-hidden overflow-y-auto'>
           {notifications.map((notification, _index) => (
             <li
               key={notification._id}

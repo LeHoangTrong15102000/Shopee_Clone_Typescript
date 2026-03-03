@@ -40,9 +40,7 @@ const Footer = () => {
         >
           <div className='grid grid-cols-1 gap-4 border-b border-orange-200/40 pb-8 lg:grid-cols-3 dark:border-slate-700/50'>
             <div className='lg:col-span-1'>
-              <div className='text-sm font-semibold text-gray-800 dark:text-gray-100'>
-                {t('footer.copyright')}
-              </div>
+              <div className='text-sm font-semibold text-gray-800 dark:text-gray-100'>{t('footer.copyright')}</div>
             </div>
             <div className='lg:col-span-2'>
               <div className='text-sm leading-relaxed text-gray-600 dark:text-gray-300'>
@@ -148,9 +146,7 @@ const Footer = () => {
                 </div>
                 {/* Bottom copyright */}
                 <div className='mt-4 border-t border-orange-200/20 pt-4 dark:border-slate-700/30'>
-                  <div className='text-xs text-gray-500 dark:text-gray-500'>
-                    {t('footer.copyright')}
-                  </div>
+                  <div className='text-xs text-gray-500 dark:text-gray-500'>{t('footer.copyright')}</div>
                 </div>
               </div>
             </motion.div>

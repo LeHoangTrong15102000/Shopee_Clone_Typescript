@@ -175,7 +175,9 @@ export default function LiveOrderTracker({
             </div>
             <div>
               <h4 className='font-semibold text-white'>{t('tracking.title')}</h4>
-              <p className='text-xs text-white/80'>{t('tracking.trackingNumber')}: {trackingNumber}</p>
+              <p className='text-xs text-white/80'>
+                {t('tracking.trackingNumber')}: {trackingNumber}
+              </p>
             </div>
           </div>
 

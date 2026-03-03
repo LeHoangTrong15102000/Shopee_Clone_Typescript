@@ -236,7 +236,9 @@ const CartItemList = ({
           <div className='flex shrink-0 items-center justify-center pr-3'>
             <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
           </div>
-          <span className='font-medium text-black dark:text-gray-100'>{t('list.selectAll')} ({extendedPurchases.length})</span>
+          <span className='font-medium text-black dark:text-gray-100'>
+            {t('list.selectAll')} ({extendedPurchases.length})
+          </span>
         </div>
 
         {extendedPurchases.length > 0 && (
@@ -384,7 +386,9 @@ const CartItemList = ({
                     </div>
 
                     <div className='mt-2 flex items-center justify-end'>
-                      <span className='mr-2 text-sm text-gray-500 dark:text-gray-400'>{t('summary.totalPayment')}:</span>
+                      <span className='mr-2 text-sm text-gray-500 dark:text-gray-400'>
+                        {t('summary.totalPayment')}:
+                      </span>
                       <motion.span
                         className='font-medium text-[#ee4d2d]'
                         key={purchase.buy_count}

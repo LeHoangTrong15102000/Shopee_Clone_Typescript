@@ -105,9 +105,7 @@ const PaymentMethodSelector = memo(function PaymentMethodSelector({
             <p>
               {t('methodSelector.accountHolder')}: <span className='font-medium'>SHOPEE CLONE</span>
             </p>
-            <p className='mt-2 text-xs text-blue-600 dark:text-blue-400'>
-              * {t('methodSelector.transferNote')}
-            </p>
+            <p className='mt-2 text-xs text-blue-600 dark:text-blue-400'>* {t('methodSelector.transferNote')}</p>
           </div>
         </motion.div>
       )}

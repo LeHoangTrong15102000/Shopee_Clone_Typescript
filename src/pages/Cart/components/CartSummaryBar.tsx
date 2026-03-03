@@ -64,7 +64,8 @@ const CartSummaryBar = ({
         <div className='flex flex-col justify-end'>
           <div className='flex flex-wrap items-center sm:justify-end md:justify-end'>
             <div className='text-sm text-gray-700 sm:text-sm dark:text-gray-200'>
-              {t('summary.totalPayment')} ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount} {t('summary.products')}):{' '}
+              {t('summary.totalPayment')} ({isAllChecked ? extendedPurchases.length : checkedPurchaseCount}{' '}
+              {t('summary.products')}):{' '}
             </div>
             <motion.div
               className='ml-2 text-xl font-medium text-[#ee4d2d] sm:text-xl md:text-2xl'

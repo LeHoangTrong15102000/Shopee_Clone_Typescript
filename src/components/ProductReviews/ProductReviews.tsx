@@ -112,7 +112,9 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
   return (
     <div className='rounded-sm bg-white p-4 shadow-sm md:p-8 dark:bg-slate-800'>
       {/* Header */}
-      <h2 className='mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200'>{t('reviews.title').toUpperCase()}</h2>
+      <h2 className='mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200'>
+        {t('reviews.title').toUpperCase()}
+      </h2>
 
       {/* Stats Overview */}
       {stats && (
@@ -338,7 +340,9 @@ const ReviewItem = ({
               <svg className='h-4 w-4 fill-current' viewBox='0 0 20 20'>
                 <path d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' />
               </svg>
-              <span>{t('reviews.helpful')} ({review.helpful_count})</span>
+              <span>
+                {t('reviews.helpful')} ({review.helpful_count})
+              </span>
             </Button>
 
             <Button

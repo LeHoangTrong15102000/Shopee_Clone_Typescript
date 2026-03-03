@@ -109,12 +109,12 @@ const BankTransferPayment = memo(function BankTransferPayment({
       >
         <div className='rounded-xl bg-blue-50 p-4 dark:bg-blue-900/30'>
           <h4 className='font-medium text-blue-900 dark:text-blue-300'>{t('bankTransfer.title')}</h4>
-          <p className='mt-1 text-sm text-blue-700 dark:text-blue-200'>
-            {t('bankTransfer.selectBankDescription')}
-          </p>
+          <p className='mt-1 text-sm text-blue-700 dark:text-blue-200'>{t('bankTransfer.selectBankDescription')}</p>
         </div>
         <div className='space-y-4'>
-          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>{t('bankTransfer.selectBank')}</label>
+          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            {t('bankTransfer.selectBank')}
+          </label>
           <BankDropdown
             selectedBank={selectedBank}
             onSelectBank={handleSelectBank}
@@ -158,9 +158,7 @@ const BankTransferPayment = memo(function BankTransferPayment({
         </div>
         <div className='text-center'>
           <h4 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('bankTransfer.expiredTitle')}</h4>
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            {t('bankTransfer.expiredMessage')}
-          </p>
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>{t('bankTransfer.expiredMessage')}</p>
         </div>
       </motion.div>
     )

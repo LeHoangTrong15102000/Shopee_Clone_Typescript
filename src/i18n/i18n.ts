@@ -35,7 +35,19 @@ export const resources = {
 
 export const defaultNS = 'home'
 
-const allNamespaces = ['common', 'home', 'product', 'nav', 'auth', 'cart', 'user', 'payment', 'notification', 'chat', 'order'] as const
+const allNamespaces = [
+  'common',
+  'home',
+  'product',
+  'nav',
+  'auth',
+  'cart',
+  'user',
+  'payment',
+  'notification',
+  'chat',
+  'order'
+] as const
 
 // Khởi tạo i18n chỉ khi không phải test environment
 // Sử dụng import.meta.env của Vite thay vì process.env
@@ -75,20 +87,31 @@ export async function loadLanguage(lng: string): Promise<void> {
   }
 
   // Dynamically import English translations
-  const [commonModule, homeModule, productModule, navModule, authModule, cartModule, userModule, paymentModule, notificationModule, chatModule, orderModule] =
-    await Promise.all([
-      import('src/locales/en/common.json'),
-      import('src/locales/en/home.json'),
-      import('src/locales/en/product.json'),
-      import('src/locales/en/nav.json'),
-      import('src/locales/en/auth.json'),
-      import('src/locales/en/cart.json'),
-      import('src/locales/en/user.json'),
-      import('src/locales/en/payment.json'),
-      import('src/locales/en/notification.json'),
-      import('src/locales/en/chat.json'),
-      import('src/locales/en/order.json')
-    ])
+  const [
+    commonModule,
+    homeModule,
+    productModule,
+    navModule,
+    authModule,
+    cartModule,
+    userModule,
+    paymentModule,
+    notificationModule,
+    chatModule,
+    orderModule
+  ] = await Promise.all([
+    import('src/locales/en/common.json'),
+    import('src/locales/en/home.json'),
+    import('src/locales/en/product.json'),
+    import('src/locales/en/nav.json'),
+    import('src/locales/en/auth.json'),
+    import('src/locales/en/cart.json'),
+    import('src/locales/en/user.json'),
+    import('src/locales/en/payment.json'),
+    import('src/locales/en/notification.json'),
+    import('src/locales/en/chat.json'),
+    import('src/locales/en/order.json')
+  ])
 
   i18n.addResourceBundle(lng, 'common', commonModule.default, true, true)
   i18n.addResourceBundle(lng, 'home', homeModule.default, true, true)

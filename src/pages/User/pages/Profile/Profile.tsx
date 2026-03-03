@@ -241,10 +241,10 @@ const Profile = () => {
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <h1 className='text-base font-medium text-gray-700 capitalize sm:text-lg dark:text-gray-200'>{t('profile.title')}</h1>
-        <div className='mt-0.75 text-xs sm:text-[.875rem] dark:text-gray-300'>
-          {t('profile.description')}
-        </div>
+        <h1 className='text-base font-medium text-gray-700 capitalize sm:text-lg dark:text-gray-200'>
+          {t('profile.title')}
+        </h1>
+        <div className='mt-0.75 text-xs sm:text-[.875rem] dark:text-gray-300'>{t('profile.description')}</div>
       </motion.div>
       {/* Form và Avatar */}
       <FormProvider {...methods}>

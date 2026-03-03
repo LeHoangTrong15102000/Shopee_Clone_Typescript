@@ -65,62 +65,62 @@ const NavHeaderFull = ({
 const AuthenticatedLeftSection = () => {
   const { t } = useTranslation('nav')
   return (
-  <div className='hidden items-center justify-center md:flex'>
-    <Link to='https://banhang.shopee.vn/' className='ml-2 hidden lg:block'>
-      <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+    <div className='hidden items-center justify-center md:flex'>
+      <Link to='https://banhang.shopee.vn/' className='ml-2 hidden lg:block'>
+        <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
+          <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+        </div>
+      </Link>
+      <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
+      <Popover
+        as='span'
+        enableArrow={false}
+        placement='bottom-start'
+        className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
+        renderPopover={<AppDownloadPopover />}
+      >
+        <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
+      </Popover>
+      <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
+      <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
+        <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
       </div>
-    </Link>
-    <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
-    <Popover
-      as='span'
-      enableArrow={false}
-      placement='bottom-start'
-      className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
-      renderPopover={<AppDownloadPopover />}
-    >
-      <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
-    </Popover>
-    <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
-    <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
-      <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
+      <SocialLinks />
     </div>
-    <SocialLinks />
-  </div>
   )
 }
 
 const UnauthenticatedLeftSection = () => {
   const { t } = useTranslation('nav')
   return (
-  <div className='hidden items-center justify-center md:flex'>
-    <Link to='https://banhang.shopee.vn/' className='mr-2 ml-2 hidden lg:block'>
-      <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+    <div className='hidden items-center justify-center md:flex'>
+      <Link to='https://banhang.shopee.vn/' className='mr-2 ml-2 hidden lg:block'>
+        <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
+          <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+        </div>
+      </Link>
+      <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
+      <Link to='https://shopee.vn/seller/signup' className='mr-2 ml-1 hidden lg:block'>
+        <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
+          <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+        </div>
+      </Link>
+      <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
+      <Popover
+        as='span'
+        enableArrow={false}
+        placement='bottom-start'
+        className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
+        renderPopover={<AppDownloadPopover />}
+      >
+        <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
+      </Popover>
+      <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
+      <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
+        <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
       </div>
-    </Link>
-    <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
-    <Link to='https://shopee.vn/seller/signup' className='mr-2 ml-1 hidden lg:block'>
-      <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
-        <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
-      </div>
-    </Link>
-    <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
-    <Popover
-      as='span'
-      enableArrow={false}
-      placement='bottom-start'
-      className='mx-2 flex hidden cursor-pointer items-center py-1 hover:text-white/70 lg:flex'
-      renderPopover={<AppDownloadPopover />}
-    >
-      <span className='mx-1 text-sm capitalize'>{t('header.downloadApp')}</span>
-    </Popover>
-    <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
-    <div className='ml-2 flex hidden items-center py-1 hover:text-white/70 lg:flex'>
-      <span className='mx-1 text-sm capitalize'>{t('header.connect')}</span>
+      <SocialLinks />
     </div>
-    <SocialLinks />
-  </div>
   )
 }
 
@@ -164,61 +164,61 @@ interface NotificationBellProps {
 const NotificationBell = ({ isAuthenticated, unreadCount }: NotificationBellProps) => {
   const { t } = useTranslation('nav')
   return (
-  <Popover
-    as='span'
-    className={classNames('relative flex cursor-pointer items-center py-1 hover:text-white/70')}
-    renderPopover={<NotificationPopover isAuthenticated={isAuthenticated} variant='full' />}
-  >
-    <div className='relative'>
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        fill='none'
-        viewBox='0 0 24 24'
-        strokeWidth={1.5}
-        stroke='currentColor'
-        className={`h-5 w-5 transition-transform duration-200 md:h-[22px] md:w-[22px] ${
-          isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
-        }`}
-      >
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
-        />
-      </svg>
-      {isAuthenticated && unreadCount > 0 && (
-        <span className='absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-orange bg-white text-[10px] font-medium text-orange md:text-xs'>
-          {unreadCount > 9 ? '9+' : unreadCount}
-        </span>
-      )}
-    </div>
-    <span className='mx-1 hidden text-xs capitalize md:inline md:text-sm'>{t('header.notification')}</span>
-  </Popover>
+    <Popover
+      as='span'
+      className={classNames('relative flex cursor-pointer items-center py-1 hover:text-white/70')}
+      renderPopover={<NotificationPopover isAuthenticated={isAuthenticated} variant='full' />}
+    >
+      <div className='relative'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className={`h-5 w-5 transition-transform duration-200 md:h-[22px] md:w-[22px] ${
+            isAuthenticated && unreadCount > 0 ? 'animate-[bell-shake_1s_ease-in-out_infinite]' : ''
+          }`}
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+          />
+        </svg>
+        {isAuthenticated && unreadCount > 0 && (
+          <span className='absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-orange bg-white text-[10px] font-medium text-orange md:text-xs'>
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
+      </div>
+      <span className='mx-1 hidden text-xs capitalize md:inline md:text-sm'>{t('header.notification')}</span>
+    </Popover>
   )
 }
 
 const SupportLink = () => {
   const { t } = useTranslation('nav')
   return (
-  <Link to={path.login} className='mt-px hidden md:block'>
-    <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        fill='none'
-        viewBox='0 0 24 24'
-        strokeWidth={1.5}
-        stroke='currentColor'
-        className='h-5 w-5 md:h-[22px] md:w-[22px]'
-      >
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          d='M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z'
-        />
-      </svg>
-      <span className='mx-1 text-sm capitalize'>{t('header.support')}</span>
-    </div>
-  </Link>
+    <Link to={path.login} className='mt-px hidden md:block'>
+      <div className='mr-3 flex cursor-pointer items-center py-1 hover:text-white/70'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='h-5 w-5 md:h-[22px] md:w-[22px]'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z'
+          />
+        </svg>
+        <span className='mx-1 text-sm capitalize'>{t('header.support')}</span>
+      </div>
+    </Link>
   )
 }
 
@@ -292,60 +292,60 @@ interface UserMenuProps {
 const UserMenu = ({ profile, handleLogout }: UserMenuProps) => {
   const { t } = useTranslation('nav')
   return (
-  <Popover
-    as='span'
-    placement='bottom-start'
-    renderPopover={
-      <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
-        <div
-          className={classNames(
-            'before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""]'
-          )}
-        >
-          <Link
-            to={path.profile}
-            className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+    <Popover
+      as='span'
+      placement='bottom-start'
+      renderPopover={
+        <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
+          <div
+            className={classNames(
+              'before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""]'
+            )}
           >
-            {t('header.myAccount')}
-          </Link>
-          <Link
-            to={path.historyPurchases}
-            className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
-          >
-            {t('header.myOrders')}
-          </Link>
-          <Button
-            animated={false}
-            onClick={() => handleLogout()}
-            className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
-          >
-            {t('header.logout')}
-          </Button>
+            <Link
+              to={path.profile}
+              className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+            >
+              {t('header.myAccount')}
+            </Link>
+            <Link
+              to={path.historyPurchases}
+              className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+            >
+              {t('header.myOrders')}
+            </Link>
+            <Button
+              animated={false}
+              onClick={() => handleLogout()}
+              className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+            >
+              {t('header.logout')}
+            </Button>
+          </div>
         </div>
+      }
+      className={classNames('ml-2 flex cursor-pointer items-center py-1 hover:text-white/70 md:ml-5')}
+    >
+      <div className='h-6 w-6 shrink-0 md:mr-2 md:h-7 md:w-7'>
+        <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
       </div>
-    }
-    className={classNames('ml-2 flex cursor-pointer items-center py-1 hover:text-white/70 md:ml-5')}
-  >
-    <div className='h-6 w-6 shrink-0 md:mr-2 md:h-7 md:w-7'>
-      <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
-    </div>
-    <span className='hidden max-w-none truncate text-sm md:inline'>{profile?.email}</span>
-  </Popover>
+      <span className='hidden max-w-none truncate text-sm md:inline'>{profile?.email}</span>
+    </Popover>
   )
 }
 
 const AuthLinks = () => {
   const { t } = useTranslation('nav')
   return (
-  <div className='mt-[1.5px] flex items-center text-xs md:text-sm'>
-    <Link to={path.register} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
-      {t('header.register')}
-    </Link>
-    <div className='h-4 border-r border-r-white/40'></div>
-    <Link to={path.login} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
-      {t('header.login')}
-    </Link>
-  </div>
+    <div className='mt-[1.5px] flex items-center text-xs md:text-sm'>
+      <Link to={path.register} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
+        {t('header.register')}
+      </Link>
+      <div className='h-4 border-r border-r-white/40'></div>
+      <Link to={path.login} className='mx-2 capitalize hover:text-white/70 md:mx-3'>
+        {t('header.login')}
+      </Link>
+    </div>
   )
 }
 
