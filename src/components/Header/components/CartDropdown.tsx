@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Popover from 'src/components/Popover'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import noproduct from 'src/assets/images/img-product-incart.png'
@@ -13,10 +14,11 @@ interface CartDropdownProps {
 }
 
 const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) => {
+  const { t } = useTranslation('cart')
   return (
     <div className='flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:col-span-1 md:gap-3'>
       {/* Wishlist Icon */}
-      <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label='Danh sách yêu thích'>
+      <Link to={path.wishlist} className='text-white hover:text-white/80' aria-label={t('aria.wishlist')}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -40,7 +42,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
             <div className='relative max-w-[280px] rounded-xs border border-gray-200 bg-white text-sm shadow-md md:max-w-[400px] dark:border-slate-700 dark:bg-slate-800'>
               {purchasesInCart && purchasesInCart.length > 0 ? (
                 <div className='p-[10px]'>
-                  <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>sản phẩm mới thêm</div>
+                  <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>{t('dropdown.newlyAdded')}</div>
                   <div className='mt-5'>
                     {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase) => (
                       <Link
@@ -68,14 +70,14 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
                   </div>
                   <div className='mt-6 flex items-center justify-between text-gray-500 dark:text-gray-400'>
                     <div className='text-xs capitalize'>
-                      {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} thêm hàng
-                      vào giỏ
+                      {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''}{' '}
+                      {t('dropdown.moreItems')}
                     </div>
                     <Link
                       to={path.cart}
                       className='hover:bg-opacity-90 rounded-xs bg-[#ee4d2d] px-4 py-2 text-xs text-white capitalize md:text-sm'
                     >
-                      xem giỏ hàng
+                      {t('dropdown.viewCart')}
                     </Link>
                   </div>
                 </div>
@@ -83,7 +85,7 @@ const CartDropdown = ({ purchasesInCart, isAuthenticated }: CartDropdownProps) =
                 <div className='flex h-[200px] w-[280px] grow flex-col items-center justify-center p-2 md:h-[250px] md:w-[400px]'>
                   <img src={noproduct} alt='no purchase' className='h-16 w-16 md:h-24 md:w-24' />
                   <span className='mt-5 text-xs text-black/80 capitalize md:text-sm dark:text-gray-300'>
-                    Chưa có sản phẩm
+                    {t('dropdown.noProducts')}
                   </span>
                 </div>
               )}

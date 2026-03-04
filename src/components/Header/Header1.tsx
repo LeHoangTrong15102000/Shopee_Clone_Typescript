@@ -2,6 +2,7 @@ import { Tooltip } from '@heroui/tooltip'
 import { Link } from 'react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AppContext } from 'src/contexts/app.context'
 import Popover from '../Popover'
 import authApi from 'src/apis/auth.api'
@@ -19,6 +20,7 @@ import Button from 'src/components/Button'
 const MAX_PURCHASES = 5
 
 const Header1 = () => {
+  const { t } = useTranslation('cart')
   const { setIsAuthenticated, isAuthenticated, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
   const { onSubmitSearch, register } = useSearchProducts()
@@ -69,12 +71,12 @@ const Header1 = () => {
           {/* search */}
 
           <form className='col-span-8 md:col-span-9' onSubmit={onSubmitSearch}>
-            <Tooltip content='Lịch sử tìm kiếm'>
+            <Tooltip content={t('nav:header.search')}>
               <div className='flex rounded-xs bg-white p-1 dark:bg-slate-800'>
                 <input
                   type='text'
                   className='grow border-none bg-transparent px-2 py-1.5 text-xs text-[rgba(0,0,0,.95)] outline-hidden md:px-3 md:py-2 md:text-sm dark:text-gray-100 dark:placeholder-gray-500'
-                  placeholder='Đăng ký và nhận voucher bạn mới đến 70k!'
+                  placeholder={t('nav:header.searchPlaceholder')}
                   {...register('name')}
                 />
                 {/* Nút tìm kiếm  */}
@@ -112,7 +114,9 @@ const Header1 = () => {
                 <div className='relative max-w-[280px] rounded-xs border border-gray-200 bg-white text-sm shadow-md md:max-w-[400px] dark:border-slate-700 dark:bg-slate-800'>
                   {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className='py-[10px] pl-[10px]'>
-                      <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>sản phẩm mới thêm</div>
+                      <div className='text-[rgba(0,0,0,.26)] capitalize dark:text-gray-400'>
+                        {t('cart:dropdown.newlyAdded')}
+                      </div>
                       {/* danh sách hàng trong cart */}
                       <div className='mt-5'>
                         {/* In PurchaseInCart trong giỏ hàng */}
@@ -144,21 +148,23 @@ const Header1 = () => {
                       {/* số lượng hàng & button xem giỏ hàng */}
                       <div className='mt-6 flex items-center justify-between text-gray-500 dark:text-gray-400'>
                         <div className='text-xs capitalize'>
-                          {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} thêm
-                          hàng vào giỏ
+                          {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''}{' '}
+                          {t('cart:dropdown.moreItems')}
                         </div>
                         <Link
                           to={path.cart}
                           className='hover:bg-opacity-90 rounded-xs bg-orange px-4 py-2 text-white capitalize'
                         >
-                          xem giỏ hàng
+                          {t('cart:dropdown.viewCart')}
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <div className='flex h-[200px] w-[280px] grow flex-col items-center justify-center p-2 md:h-[250px] md:w-[400px]'>
                       <img src={noproduct} alt='no purchase' className='h-24 w-24' />
-                      <span className='mt-5 text-black/80 capitalize dark:text-gray-300'>Chưa có sản phẩm</span>
+                      <span className='mt-5 text-black/80 capitalize dark:text-gray-300'>
+                        {t('cart:dropdown.noProducts')}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -167,7 +173,7 @@ const Header1 = () => {
               <Link
                 to={path.cart}
                 className='relative'
-                aria-label={`${purchasesInCart?.length || 0} sản phẩm trong giỏ hàng`}
+                aria-label={t('cart:aria.cartItems', { count: purchasesInCart?.length || 0 })}
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'

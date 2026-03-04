@@ -108,8 +108,8 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      expect(screen.getByText('Kênh người bán')).toBeInTheDocument()
-      expect(screen.getByText('Trở thành người bán shopee')).toBeInTheDocument()
+      const sellerLinks = screen.getAllByText('header.sellerChannel')
+      expect(sellerLinks.length).toBeGreaterThanOrEqual(2)
     })
 
     test('should render download app popover', () => {
@@ -119,7 +119,7 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      expect(screen.getByText('Tải ứng dụng')).toBeInTheDocument()
+      expect(screen.getByText('header.downloadApp')).toBeInTheDocument()
     })
 
     test('should render social media links', () => {
@@ -150,15 +150,15 @@ describe('NavHeader Component Unit Tests', () => {
       )
 
       // Click on notification bell - find by cursor-pointer span
-      const notificationElement = screen.getByText('Thông báo').closest('span')
+      const notificationElement = screen.getByText('header.notification').closest('span')
       if (notificationElement) {
         await user.click(notificationElement)
 
         await waitFor(() => {
           expect(screen.getByText('Đăng nhập để xem Thông báo')).toBeInTheDocument()
-          // Check that both register and login links exist (there will be duplicates - main nav and dropdown)
-          const registerLinks = screen.getAllByRole('link', { name: 'Đăng ký' })
-          const loginLinks = screen.getAllByRole('link', { name: 'Đăng nhập' })
+          // NotificationPopover has hardcoded Vietnamese text, AuthLinks uses i18n keys
+          const registerLinks = screen.getAllByRole('link', { name: /Đăng ký|header\.register/ })
+          const loginLinks = screen.getAllByRole('link', { name: /Đăng nhập|header\.login/ })
           expect(registerLinks.length).toBeGreaterThanOrEqual(1)
           expect(loginLinks.length).toBeGreaterThanOrEqual(1)
         })
@@ -181,8 +181,8 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      expect(screen.getByText('Kênh người bán')).toBeInTheDocument()
-      expect(screen.queryByText('Trở thành người bán shopee')).not.toBeInTheDocument()
+      expect(screen.getByText('header.sellerChannel')).toBeInTheDocument()
+      expect(screen.queryByText('header.becomeShopee')).not.toBeInTheDocument()
     })
 
     test('should show notification badge when user has unread notifications', async () => {
@@ -217,9 +217,9 @@ describe('NavHeader Component Unit Tests', () => {
         await user.click(profileElement)
 
         await waitFor(() => {
-          expect(screen.getByText('Tài Khoản Của Tôi')).toBeInTheDocument()
-          expect(screen.getByText('Đơn Mua')).toBeInTheDocument()
-          expect(screen.getByText('Đăng Xuất')).toBeInTheDocument()
+          expect(screen.getByText('header.myAccount')).toBeInTheDocument()
+          expect(screen.getByText('header.myOrders')).toBeInTheDocument()
+          expect(screen.getByText('header.logout')).toBeInTheDocument()
         })
       }
     })
@@ -354,7 +354,7 @@ describe('NavHeader Component Unit Tests', () => {
         await user.click(profileElement)
 
         await waitFor(async () => {
-          const logoutButton = screen.getByText('Đăng Xuất')
+          const logoutButton = screen.getByText('header.logout')
           await user.click(logoutButton)
         })
       }
@@ -382,7 +382,7 @@ describe('NavHeader Component Unit Tests', () => {
       )
 
       // Click notification bell by finding notification text
-      const notificationElement = screen.getByText('Thông báo').closest('span')
+      const notificationElement = screen.getByText('header.notification').closest('span')
       if (notificationElement) {
         await user.click(notificationElement)
         expect(notificationElement).toBeInTheDocument()
@@ -396,7 +396,7 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      const sellerLink = screen.getByText('Kênh người bán').closest('a')
+      const sellerLink = screen.getAllByText('header.sellerChannel')[0].closest('a')
       expect(sellerLink).toHaveAttribute('href', 'https://banhang.shopee.vn/')
     })
   })
@@ -410,7 +410,7 @@ describe('NavHeader Component Unit Tests', () => {
       )
 
       // Check for lg:block classes that hide on mobile
-      const sellerLink = screen.getByText('Kênh người bán').closest('a')
+      const sellerLink = screen.getAllByText('header.sellerChannel')[0].closest('a')
       expect(sellerLink).toHaveClass('hidden', 'lg:block')
     })
 
@@ -421,7 +421,7 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      const notificationText = screen.getByText('Thông báo')
+      const notificationText = screen.getByText('header.notification')
       expect(notificationText).toHaveClass('hidden', 'md:inline')
     })
 

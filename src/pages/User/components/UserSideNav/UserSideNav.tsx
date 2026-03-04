@@ -54,7 +54,7 @@ const UserSideNav = () => {
                 />
               </svg>
               {/* Title Sửa hồ sơ */}
-              <span className='text-[#888] capitalize dark:text-gray-400'>Sửa hồ sơ</span>
+              <span className='text-[#888] capitalize dark:text-gray-400'>{t('sideNav.editProfile')}</span>
             </Link>
           </div>
         </div>
@@ -237,7 +237,7 @@ const UserSideNav = () => {
                       />
                     </svg>
                   </div>
-                  <span className='font-medium capitalize'>Đơn hàng</span>
+                  <span className='font-medium capitalize'>{t('sideNav.orders')}</span>
                 </div>
               </>
             )}
@@ -279,7 +279,7 @@ const UserSideNav = () => {
                       />
                     </svg>
                   </div>
-                  <span className='font-medium capitalize'>Điểm danh</span>
+                  <span className='font-medium capitalize'>{t('sideNav.dailyCheckIn')}</span>
                 </div>
               </>
             )}
@@ -364,7 +364,7 @@ const UserSideNav = () => {
                       />
                     </svg>
                   </div>
-                  <span className='font-medium capitalize'>Thông báo</span>
+                  <span className='font-medium capitalize'>{t('sideNav.notifications')}</span>
                 </div>
               </>
             )}

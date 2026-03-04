@@ -511,13 +511,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        '❌ Không thể thêm vào giỏ hàng',
-        expect.objectContaining({
-          autoClose: expect.any(Number),
-          position: expect.any(String)
-        })
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_ERROR, expect.any(Object))
     })
   })
 

@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Link, useMatch } from 'react-router'
 
 const RegisterHeader = () => {
-  const isRegister = Boolean(useMatch('/register')) // nếu nó match thì là Đăng ký || Đăng nhập
+  const { t } = useTranslation('auth')
+  const isRegister = Boolean(useMatch('/register'))
   return (
     <header className='bg-white py-2 md:py-5 dark:bg-slate-800'>
       {/* container -> max-w-7xl mx-auto px-4 */}
@@ -16,14 +18,14 @@ const RegisterHeader = () => {
             </svg>
           </Link>
           <div className='ml-2 text-base text-gray-900 sm:ml-4 sm:text-xl lg:text-2xl dark:text-gray-100'>
-            {isRegister ? 'Đăng ký' : 'Đăng nhập'}
+            {isRegister ? t('register.title') : t('login.title')}
           </div>
         </nav>
         <Link
           to='/'
           className='flex min-h-[44px] items-center text-sm text-[#ee4d2d] sm:text-[15px] dark:text-orange-400'
         >
-          Bạn cần giúp đỡ?
+          {t('needHelp')}
         </Link>
       </div>
     </header>

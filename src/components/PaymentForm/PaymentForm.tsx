@@ -1,9 +1,9 @@
-import { memo, useState, useCallback } from 'react'
+import { memo, useState, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, TFunction } from 'react-i18next'
 import Button from 'src/components/Button'
 import CreditCardForm, { PaymentFormData } from './CreditCardForm'
 import BankTransferPayment from './BankTransferPayment'
@@ -18,26 +18,27 @@ interface PaymentFormProps {
   amount?: number
 }
 
-const paymentSchema = z.object({
-  cardNumber: z
-    .string()
-    .min(1, 'Vui lòng nhập số thẻ')
-    .regex(/^[\d\s]{16,19}$/, 'Số thẻ không hợp lệ'),
-  cardHolder: z
-    .string()
-    .min(1, 'Vui lòng nhập tên chủ thẻ')
-    .min(2, 'Tên chủ thẻ tối thiểu 2 ký tự')
-    .max(50, 'Tên chủ thẻ tối đa 50 ký tự'),
-  expiryDate: z
-    .string()
-    .min(1, 'Vui lòng nhập ngày hết hạn')
-    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, 'Định dạng MM/YY'),
-  cvv: z
-    .string()
-    .min(1, 'Vui lòng nhập CVV')
-    .regex(/^[0-9]{3,4}$/, 'CVV không hợp lệ'),
-  saveCard: z.boolean().optional()
-})
+const createPaymentSchema = (t: TFunction) =>
+  z.object({
+    cardNumber: z
+      .string()
+      .min(1, t('creditCard.validation.cardNumberRequired'))
+      .regex(/^[\d\s]{16,19}$/, t('creditCard.validation.cardNumber')),
+    cardHolder: z
+      .string()
+      .min(1, t('creditCard.validation.cardholderName'))
+      .min(2, t('creditCard.validation.cardholderNameMin'))
+      .max(50, t('creditCard.validation.cardholderNameMax')),
+    expiryDate: z
+      .string()
+      .min(1, t('creditCard.validation.expiryDateRequired'))
+      .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, t('creditCard.validation.expiryDate')),
+    cvv: z
+      .string()
+      .min(1, t('creditCard.validation.cvvRequired'))
+      .regex(/^[0-9]{3,4}$/, t('creditCard.validation.cvv')),
+    saveCard: z.boolean().optional()
+  })
 
 const PaymentTabIcon = ({ type }: { type: string }) => {
   const icons: Record<string, React.ReactNode> = {
@@ -156,6 +157,8 @@ const PaymentForm = memo(function PaymentForm({
   const [activeTab, setActiveTab] = useState<PaymentMethodTab>('credit_card')
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+
+  const paymentSchema = useMemo(() => createPaymentSchema(t), [t])
 
   const paymentTabs: { id: PaymentMethodTab; label: string }[] = [
     { id: 'credit_card', label: t('tabs.creditCard') },

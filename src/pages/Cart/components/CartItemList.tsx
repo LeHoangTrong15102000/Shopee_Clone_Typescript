@@ -159,7 +159,7 @@ const CartItemList = ({
                         product={purchase.product}
                         max={purchase.product.quantity}
                         value={purchase.buy_count}
-                        classNameWrapper='flex items-center'
+                        classNameWrapper='flex items-center justify-center'
                         onIncrease={(value) =>
                           handleQuantity(index, value, purchase.buy_count < purchase.product.quantity)
                         }

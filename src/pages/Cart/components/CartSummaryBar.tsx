@@ -92,11 +92,11 @@ const CartSummaryBar = ({
                         </span>
                       </div>
                       <div className='flex justify-between text-sm'>
-                        <span className='text-gray-600 dark:text-gray-300'>Voucher giảm giá</span>
+                        <span className='text-gray-600 dark:text-gray-300'>{t('summary.voucherDiscount')}</span>
                         <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
-                        <span className='text-gray-600 dark:text-gray-300'>Giảm giá sản phẩm</span>
+                        <span className='text-gray-600 dark:text-gray-300'>{t('summary.productDiscount')}</span>
                         <span className='text-red-500'>-₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</span>
                       </div>
                       <div className='flex justify-between text-sm'>
@@ -105,7 +105,7 @@ const CartSummaryBar = ({
                       </div>
                       <hr className='my-2 border-gray-200 dark:border-slate-700' />
                       <div className='flex justify-between text-sm'>
-                        <span className='text-gray-600 dark:text-gray-300'>Tổng số tiền</span>
+                        <span className='text-gray-600 dark:text-gray-300'>{t('summary.totalAmount')}</span>
                         <span className='font-medium text-gray-900 dark:text-gray-100'>
                           ₫{formatCurrency(totalCheckedPurchasePrice)}
                         </span>

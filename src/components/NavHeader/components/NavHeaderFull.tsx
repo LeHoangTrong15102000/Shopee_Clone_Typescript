@@ -296,7 +296,7 @@ const UserMenu = ({ profile, handleLogout }: UserMenuProps) => {
       as='span'
       placement='bottom-start'
       renderPopover={
-        <div className='relative rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
+        <div className='relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-all dark:border-slate-700 dark:bg-slate-800'>
           <div
             className={classNames(
               'before:absolute before:top-0 before:left-0 before:h-[15px] before:w-full before:-translate-y-full before:bg-transparent before:content-[""]'
@@ -304,7 +304,7 @@ const UserMenu = ({ profile, handleLogout }: UserMenuProps) => {
           >
             <Link
               to={path.profile}
-              className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+              className='block w-full rounded-t-lg bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
             >
               {t('header.myAccount')}
             </Link>
@@ -317,7 +317,7 @@ const UserMenu = ({ profile, handleLogout }: UserMenuProps) => {
             <Button
               animated={false}
               onClick={() => handleLogout()}
-              className='block w-full bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
+              className='block w-full rounded-b-lg bg-white px-4 py-3 text-left text-xs hover:bg-slate-100 hover:text-cyan-500 md:text-sm dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-cyan-400'
             >
               {t('header.logout')}
             </Button>

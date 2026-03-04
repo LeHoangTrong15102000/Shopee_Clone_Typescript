@@ -376,13 +376,7 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith(
-        '❌ Không thể cập nhật số lượng',
-        expect.objectContaining({
-          autoClose: expect.any(Number),
-          position: expect.any(String)
-        })
-      )
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.UPDATE_QUANTITY_ERROR, expect.any(Object))
     })
   })
 

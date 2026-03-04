@@ -11,6 +11,7 @@ import { useOptimisticRemoveFromCart } from '../useOptimisticRemoveFromCart'
 import { ExtendedPurchase, Purchase } from 'src/types/purchases.type'
 import { Product } from 'src/types/product.type'
 import { QUERY_KEYS } from '../../shared/types'
+import { TOAST_MESSAGES } from '../../shared/constants'
 
 vi.mock('src/apis/purchases.api', () => ({
   default: {
@@ -186,7 +187,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(toast.success).toHaveBeenCalledWith('🛒 Đã thêm vào giỏ hàng!', expect.any(Object))
+      expect(toast.success).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_SUCCESS, expect.any(Object))
     })
   })
 
@@ -215,7 +216,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith('❌ Không thể thêm vào giỏ hàng', expect.any(Object))
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_ERROR, expect.any(Object))
     })
 
     test('should show error toast on rollback', async () => {
@@ -239,7 +240,7 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith('❌ Không thể thêm vào giỏ hàng', expect.any(Object))
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.ADD_TO_CART_ERROR, expect.any(Object))
     })
   })
 
@@ -390,7 +391,7 @@ describe('useOptimisticUpdateQuantity', () => {
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
-      expect(toast.error).toHaveBeenCalledWith('❌ Không thể cập nhật số lượng', expect.any(Object))
+      expect(toast.error).toHaveBeenCalledWith(TOAST_MESSAGES.UPDATE_QUANTITY_ERROR, expect.any(Object))
     })
 
     test('should restore original buy_count in context on rollback', async () => {
@@ -706,7 +707,7 @@ describe('useOptimisticRemoveFromCart', () => {
       })
 
       expect(toast.success).toHaveBeenCalledWith(
-        expect.stringContaining('Đã xóa'),
+        TOAST_MESSAGES.REMOVE_FROM_CART_SUCCESS(1),
         expect.objectContaining({
           onClick: expect.any(Function)
         })

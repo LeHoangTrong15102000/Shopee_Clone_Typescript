@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Popover from 'src/components/Popover'
 import { getAvatarUrl } from 'src/utils/utils'
 import path from 'src/constant/path'
@@ -12,6 +13,7 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
+  const { t } = useTranslation('nav')
   return (
     <div className='flex shrink-0 items-center justify-end space-x-2 md:col-span-1 md:space-x-3'>
       {/* User Menu - Hiện trên mobile */}
@@ -30,20 +32,20 @@ const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
                   to={path.profile}
                   className='block w-full bg-white px-4 py-3 text-left text-sm text-gray-800 hover:bg-slate-100 hover:text-cyan-500 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700'
                 >
-                  Tài Khoản Của Tôi
+                  {t('header.myAccount')}
                 </Link>
                 <Link
                   to={path.historyPurchases}
                   className='block w-full bg-white px-4 py-3 text-left text-sm text-gray-800 hover:bg-slate-100 hover:text-cyan-500 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700'
                 >
-                  Đơn Mua
+                  {t('header.myOrders')}
                 </Link>
                 <Button
                   animated={false}
                   onClick={() => onLogout()}
                   className='block w-full bg-white px-4 py-3 text-left text-sm text-gray-800 hover:bg-slate-100 hover:text-cyan-500 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700'
                 >
-                  Đăng Xuất
+                  {t('header.logout')}
                 </Button>
               </div>
             </div>
@@ -65,7 +67,7 @@ const UserMenu = ({ isAuthenticated, profile, onLogout }: UserMenuProps) => {
       {!isAuthenticated && (
         <div className='flex items-center text-xs md:hidden'>
           <Link to={path.login} className='hover:text-white/70'>
-            Đăng nhập
+            {t('header.login')}
           </Link>
         </div>
       )}

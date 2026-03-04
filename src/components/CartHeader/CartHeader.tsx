@@ -160,7 +160,7 @@ const CartShoppingFlow = () => {
             </li>
             <li>
               <span className='font-medium text-gray-800 dark:text-gray-200' aria-current='page'>
-                {t('steps.cart')}
+                {t('breadcrumb.cart')}
               </span>
             </li>
           </ol>
