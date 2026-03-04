@@ -108,8 +108,8 @@ describe('NavHeader Component Unit Tests', () => {
         </TestWrapper>
       )
 
-      const sellerLinks = screen.getAllByText('header.sellerChannel')
-      expect(sellerLinks.length).toBeGreaterThanOrEqual(2)
+      expect(screen.getByText('header.sellerChannel')).toBeInTheDocument()
+      expect(screen.getByText('header.becomeSeller')).toBeInTheDocument()
     })
 
     test('should render download app popover', () => {
