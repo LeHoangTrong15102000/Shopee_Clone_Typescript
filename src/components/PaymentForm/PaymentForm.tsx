@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useTranslation, TFunction } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import Button from 'src/components/Button'
 import CreditCardForm, { PaymentFormData } from './CreditCardForm'
 import BankTransferPayment from './BankTransferPayment'
@@ -18,7 +19,7 @@ interface PaymentFormProps {
   amount?: number
 }
 
-const createPaymentSchema = (t: TFunction) =>
+const createPaymentSchema = (t: TFunction<'payment'>) =>
   z.object({
     cardNumber: z
       .string()
