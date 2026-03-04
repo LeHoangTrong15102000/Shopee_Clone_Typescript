@@ -102,7 +102,7 @@ const UnauthenticatedLeftSection = () => {
       <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
       <Link to='https://shopee.vn/seller/signup' className='mr-2 ml-1 hidden lg:block'>
         <div className='flex cursor-pointer items-center py-1 hover:text-white/70'>
-          <span className='mx-1 text-sm capitalize'>{t('header.sellerChannel')}</span>
+          <span className='mx-1 text-sm capitalize'>{t('header.becomeSeller')}</span>
         </div>
       </Link>
       <div className='hidden h-4 border-r border-r-white/40 lg:block'></div>
