@@ -28,5 +28,7 @@
   "sort.price": "Price",
   "sort.priceHighToLow": "Price: High to Low",
   "sort.priceLowToHigh": "Price: Low to High",
-  "sort.sortBy": "Sort by"
+  "sort.sortBy": "Sort by",
+  "search.suggestions": "Search suggestions",
+  "search.tryKeywords": "Try searching with different keywords"
 }

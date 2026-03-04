@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { Address, ShippingMethod, PaymentMethodType } from 'src/types/checkout.type'
 import AddressSelector from 'src/components/AddressSelector'
 import ShippingMethodSelector from 'src/components/ShippingMethodSelector'
@@ -51,6 +52,7 @@ export const CheckoutFormSections = ({
   onCoinsChange,
   onNoteChange
 }: CheckoutFormSectionsProps) => {
+  const { t } = useTranslation('checkout')
   return (
     <div className='space-y-4 md:space-y-6 lg:col-span-2'>
       {/* Address Section */}
@@ -60,7 +62,7 @@ export const CheckoutFormSections = ({
         transition={{ delay: 0.15 }}
         className={sectionClass}
       >
-        <SectionHeader number={1} title='Địa chỉ giao hàng' />
+        <SectionHeader number={1} title={t('checkout:section.address')} />
         <AddressSelector selectedAddressId={selectedAddress?._id || null} onSelect={onAddressSelect} />
       </motion.div>
 
@@ -71,7 +73,7 @@ export const CheckoutFormSections = ({
         transition={{ delay: 0.2 }}
         className={sectionClass}
       >
-        <SectionHeader number={2} title='Phương thức vận chuyển' />
+        <SectionHeader number={2} title={t('checkout:section.shipping')} />
         <ShippingMethodSelector selectedMethodId={selectedShippingMethod?._id || null} onSelect={onShippingSelect} />
       </motion.div>
 
@@ -82,7 +84,7 @@ export const CheckoutFormSections = ({
         transition={{ delay: 0.25 }}
         className={sectionClass}
       >
-        <SectionHeader number={3} title='Phương thức thanh toán' />
+        <SectionHeader number={3} title={t('checkout:section.payment')} />
         <PaymentMethodSelector selectedMethodType={selectedPaymentMethod} onSelect={onPaymentSelect} />
         <SecurityBadge />
       </motion.div>
@@ -94,19 +96,19 @@ export const CheckoutFormSections = ({
         transition={{ delay: 0.3 }}
         className={sectionClass}
       >
-        <SectionHeader number={4} title='Mã giảm giá & Shopee Xu' />
+        <SectionHeader number={4} title={t('checkout:section.voucher')} />
         <div className='mb-4'>
-          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Mã voucher</label>
+          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>{t('checkout:voucher.label')}</label>
           <div className='flex flex-col gap-2 sm:flex-row'>
             <input
               type='text'
               value={voucherCode}
               onChange={(e) => onVoucherCodeChange(e.target.value)}
-              placeholder='Nhập mã voucher'
+              placeholder={t('checkout:voucher.placeholder')}
               className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 dark:placeholder-gray-400'
             />
             <Button onClick={onApplyVoucher} className='rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'>
-              Áp dụng
+              {t('checkout:voucher.apply')}
             </Button>
           </div>
           <AnimatePresence>
@@ -117,13 +119,13 @@ export const CheckoutFormSections = ({
                 exit={{ opacity: 0, height: 0 }}
                 className='mt-2 text-sm text-green-600 dark:text-green-400'
               >
-                ✓ Đã áp dụng giảm ₫{voucherDiscount.toLocaleString()}
+                {t('checkout:voucher.applied', { amount: voucherDiscount.toLocaleString() })}
               </motion.p>
             )}
           </AnimatePresence>
         </div>
         <div>
-          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Sử dụng Shopee Xu</label>
+          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>{t('checkout:coins.label')}</label>
           <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
             <input
               type='number'
@@ -133,7 +135,7 @@ export const CheckoutFormSections = ({
               max={10000}
               className='w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-orange focus:outline-hidden sm:w-32 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
             />
-            <span className='text-sm text-gray-500 dark:text-gray-400'>Bạn có 10,000 xu (tối đa 10,000 xu)</span>
+            <span className='text-sm text-gray-500 dark:text-gray-400'>{t('checkout:coins.info')}</span>
           </div>
         </div>
       </motion.div>
@@ -145,11 +147,11 @@ export const CheckoutFormSections = ({
         transition={{ delay: 0.35 }}
         className={sectionClass}
       >
-        <SectionHeader number={5} title='Ghi chú đơn hàng' />
+        <SectionHeader number={5} title={t('checkout:section.note')} />
         <textarea
           value={note}
           onChange={(e) => onNoteChange(e.target.value)}
-          placeholder='Ghi chú cho người bán (không bắt buộc)'
+          placeholder={t('checkout:note.placeholder')}
           rows={3}
           className='w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 dark:placeholder-gray-400'
         />

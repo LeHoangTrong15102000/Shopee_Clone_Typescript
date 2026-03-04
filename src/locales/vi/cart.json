@@ -52,5 +52,7 @@
   "toast.restoreItems": "Đã khôi phục sản phẩm",
   "toast.saveForLaterAlreadySaved": "Sản phẩm đã được lưu trước đó",
   "toast.saveForLaterSuccess": "Đã lưu để mua sau",
-  "toast.updateQuantityError": "Không thể cập nhật số lượng"
+  "toast.updateQuantityError": "Không thể cập nhật số lượng",
+  "sync.syncing": "Đang đồng bộ...",
+  "sync.synced": "Đã đồng bộ"
 }

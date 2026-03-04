@@ -28,5 +28,7 @@
   "sort.price": "Giá",
   "sort.priceHighToLow": "Giá: Cao đến Thấp",
   "sort.priceLowToHigh": "Giá: Thấp đến Cao",
-  "sort.sortBy": "Sắp xếp theo"
+  "sort.sortBy": "Sắp xếp theo",
+  "search.suggestions": "Gợi ý tìm kiếm",
+  "search.tryKeywords": "Thử tìm kiếm với từ khóa khác"
 }

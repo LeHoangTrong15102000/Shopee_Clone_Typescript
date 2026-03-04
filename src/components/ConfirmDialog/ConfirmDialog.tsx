@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import Button from 'src/components/Button'
@@ -59,14 +60,18 @@ const ConfirmDialog = ({
   onConfirm,
   title,
   message,
-  confirmText = 'Xác nhận',
-  cancelText = 'Hủy',
+  confirmText,
+  cancelText,
   variant = 'danger',
   isLoading = false
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation('common')
   const reducedMotion = useReducedMotion()
   const cancelButtonRef = useRef<HTMLButtonElement>(null)
   const config = variantConfig[variant]
+
+  const resolvedConfirmText = confirmText || t('confirm.defaultConfirm')
+  const resolvedCancelText = cancelText || t('confirm.defaultCancel')
 
   // Body scroll lock
   useEffect(() => {
@@ -176,7 +181,7 @@ const ConfirmDialog = ({
                   onClick={onClose}
                   className='flex-1 rounded-md px-4 py-2 font-medium'
                 >
-                  {cancelText}
+                  {resolvedCancelText}
                 </Button>
                 <Button
                   variant='danger'
@@ -186,7 +191,7 @@ const ConfirmDialog = ({
                   onClick={onConfirm}
                   className='flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 font-medium'
                 >
-                  {confirmText}
+                  {resolvedConfirmText}
                 </Button>
               </div>
             </motion.div>

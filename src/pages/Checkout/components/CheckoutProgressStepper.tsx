@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 export const CHECKOUT_STEPS = [
-  { id: 1, name: 'Địa chỉ', icon: 'location' },
-  { id: 2, name: 'Vận chuyển', icon: 'truck' },
-  { id: 3, name: 'Thanh toán', icon: 'payment' },
-  { id: 4, name: 'Xác nhận', icon: 'check' }
+  { id: 1, name: 'address', icon: 'location' },
+  { id: 2, name: 'shipping', icon: 'truck' },
+  { id: 3, name: 'payment', icon: 'payment' },
+  { id: 4, name: 'confirm', icon: 'check' }
 ]
 
 interface CheckoutProgressStepperProps {
@@ -12,6 +13,7 @@ interface CheckoutProgressStepperProps {
 }
 
 export const CheckoutProgressStepper = ({ currentStep }: CheckoutProgressStepperProps) => {
+  const { t } = useTranslation('checkout')
   return (
     <div className='mb-6 md:mb-8'>
       <div className='mx-auto flex max-w-2xl items-center justify-center'>
@@ -40,7 +42,7 @@ export const CheckoutProgressStepper = ({ currentStep }: CheckoutProgressStepper
                   currentStep >= step.id ? 'text-orange' : 'text-gray-400 dark:text-gray-300'
                 }`}
               >
-                {step.name}
+                {t(`checkout:step.${step.name}`)}
               </span>
             </div>
             {index < CHECKOUT_STEPS.length - 1 && (

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import ReactDOM from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Product } from 'src/types/product.type'
 import { useFocusTrap } from 'src/hooks/useFocusTrap'
@@ -16,6 +17,7 @@ interface Props {
 const root = document.querySelector('body') as HTMLElement
 
 const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: Props) => {
+  const { t } = useTranslation('common')
   const modalRef = useRef<HTMLDivElement>(null)
   useFocusTrap({ isOpen: open, containerRef: modalRef, onClose: handleIsCancel })
 
@@ -59,7 +61,7 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
           animate={open ? { x: [0, -5, 5, -5, 5, 0] } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Bạn chắc chắn muốn bỏ sản phẩm này?
+          {t('deleteModal.title')}
         </motion.div>
         <div id='delete-modal-description' className='mt-10 text-base text-black/80 dark:text-gray-300'>
           {product?.name}
@@ -70,14 +72,14 @@ const DeleteModal = ({ open = false, handleIsAgree, handleIsCancel, product }: P
             onClick={handleDelete}
             className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm px-5 text-[14px] shadow-xs'
           >
-            Có
+            {t('deleteModal.yes')}
           </Button>
           <Button
             variant='secondary'
             onClick={handleCancel}
             className='h-[40px] max-w-[220px] min-w-[70px] grow rounded-sm border border-gray-300 px-5 text-[14px] text-black shadow-xs dark:border-slate-600 dark:text-gray-200'
           >
-            Không
+            {t('deleteModal.no')}
           </Button>
         </div>
       </motion.div>

@@ -1,4 +1,5 @@
 import { memo, useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
@@ -11,6 +12,7 @@ interface DailyCheckInProps {
 }
 
 const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps) {
+  const { t } = useTranslation('checkin')
   const { streak, totalCoins, canCheckInToday, checkIn, getMonthCalendar, nextReward, streakProgress } =
     useDailyCheckIn()
 
@@ -28,30 +30,17 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
 
     const reward = await checkIn()
     if (reward) {
-      toast.success(`🎉 Điểm danh thành công! +${reward.value} xu`, {
+      toast.success(t('toast.success', { value: reward.value }), {
         autoClose: 3000,
         position: 'top-center'
       })
     }
     setIsChecking(false)
-  }, [canCheckInToday, isChecking, checkIn])
+  }, [canCheckInToday, isChecking, checkIn, t])
 
   const calendar = getMonthCalendar(currentMonth.year, currentMonth.month)
-  const monthNames = [
-    'Tháng 1',
-    'Tháng 2',
-    'Tháng 3',
-    'Tháng 4',
-    'Tháng 5',
-    'Tháng 6',
-    'Tháng 7',
-    'Tháng 8',
-    'Tháng 9',
-    'Tháng 10',
-    'Tháng 11',
-    'Tháng 12'
-  ]
-  const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
+  const monthNames = t('months', { returnObjects: true }) as string[]
+  const dayNames = t('days', { returnObjects: true }) as string[]
 
   const firstDayOfMonth = new Date(currentMonth.year, currentMonth.month, 1).getDay()
 
@@ -84,8 +73,8 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
       <div className='bg-linear-to-r from-orange to-[#ff6633] p-4 text-white'>
         <div className='flex items-center justify-between'>
           <div>
-            <h3 className='text-base font-bold md:text-lg'>Điểm danh hàng ngày</h3>
-            <p className='text-sm text-white/80'>Điểm danh mỗi ngày để nhận xu</p>
+            <h3 className='text-base font-bold md:text-lg'>{t('title')}</h3>
+            <p className='text-sm text-white/80'>{t('subtitle')}</p>
           </div>
           <div className='text-right'>
             <div className='flex items-center gap-1'>
@@ -94,7 +83,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
               </svg>
               <span className='text-lg font-bold md:text-xl'>{totalCoins}</span>
             </div>
-            <p className='text-xs text-white/70'>Xu của bạn</p>
+            <p className='text-xs text-white/70'>{t('yourCoins')}</p>
           </div>
         </div>
       </div>
@@ -116,12 +105,12 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
               />
             </svg>
             <div>
-              <p className='font-medium text-gray-900 dark:text-gray-100'>Chuỗi {streak.current} ngày</p>
-              <p className='text-xs text-gray-600 dark:text-gray-300'>Kỷ lục: {streak.longest} ngày</p>
+              <p className='font-medium text-gray-900 dark:text-gray-100'>{t('streak', { count: streak.current })}</p>
+              <p className='text-xs text-gray-600 dark:text-gray-300'>{t('record', { count: streak.longest })}</p>
             </div>
           </div>
           <div className='text-right'>
-            <p className='text-sm text-gray-600 dark:text-gray-300'>Phần thưởng tiếp theo</p>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>{t('nextReward')}</p>
             <p className='font-bold text-orange dark:text-orange-400'>+{nextReward.value} xu</p>
           </div>
         </div>
@@ -148,7 +137,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                       : 'text-gray-500 dark:text-gray-300'
                   )}
                 >
-                  {milestone} ngày
+                  {t('milestone', { count: milestone })}
                 </div>
               </div>
             ))}
@@ -180,10 +169,10 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     />
                     <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' />
                   </svg>
-                  Đang điểm danh...
+                  {t('checkingIn')}
                 </span>
               ) : (
-                `Điểm danh nhận ${nextReward.value} xu`
+                t('checkInButton', { value: nextReward.value })
               )}
             </Button>
           </motion.div>
@@ -233,7 +222,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     transition={{ delay: 0.2 }}
                     className='bg-linear-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-lg font-bold text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400'
                   >
-                    Đã điểm danh hôm nay
+                    {t('checkedIn')}
                   </motion.span>
                   <motion.p
                     initial={{ opacity: 0 }}
@@ -241,7 +230,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                     transition={{ delay: 0.4 }}
                     className='mt-0.5 text-xs text-emerald-600/70 dark:text-emerald-400/70'
                   >
-                    Quay lại vào ngày mai nhé!
+                    {t('comeBackTomorrow')}
                   </motion.p>
                 </div>
               </div>
@@ -267,7 +256,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
           >
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
           </svg>
-          {showCalendar ? 'Ẩn lịch' : 'Xem lịch điểm danh'}
+          {showCalendar ? t('hideCalendar') : t('showCalendar')}
         </Button>
       </div>
 
@@ -288,7 +277,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                   animated={false}
                   onClick={goToPrevMonth}
                   className='cursor-pointer rounded-sm p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
-                  aria-label='Tháng trước'
+                  aria-label={t('prevMonth')}
                 >
                   <svg className='h-5 w-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
@@ -301,7 +290,7 @@ const DailyCheckIn = memo(function DailyCheckIn({ className }: DailyCheckInProps
                   animated={false}
                   onClick={goToNextMonth}
                   className='cursor-pointer rounded-sm p-1 hover:bg-gray-100 dark:hover:bg-slate-700'
-                  aria-label='Tháng sau'
+                  aria-label={t('nextMonth')}
                 >
                   <svg className='h-5 w-5 dark:text-gray-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />

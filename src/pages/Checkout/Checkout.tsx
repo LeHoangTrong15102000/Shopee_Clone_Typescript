@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { useCheckout } from './useCheckout'
 import { CheckoutProgressStepper } from './components/CheckoutProgressStepper'
 import { CheckoutFormSections } from './components/CheckoutFormSections'
@@ -6,6 +7,7 @@ import { CheckoutSidebar } from './components/CheckoutSidebar'
 import OrderPreview from 'src/components/OrderPreview'
 
 const Checkout = () => {
+  const { t } = useTranslation('checkout')
   const {
     selectedAddress,
     selectedShippingMethod,
@@ -64,10 +66,10 @@ const Checkout = () => {
             </div>
             <div className='min-w-0 flex-1'>
               <h1 className='truncate text-base leading-tight font-bold text-white sm:text-lg md:text-2xl'>
-                Thanh toán
+                {t('checkout:title')}
               </h1>
               <p className='mt-0.5 truncate text-[11px] leading-snug text-white/80 sm:text-xs md:text-sm'>
-                Hoàn tất đơn hàng của bạn
+                {t('checkout:subtitle')}
               </p>
             </div>
           </div>

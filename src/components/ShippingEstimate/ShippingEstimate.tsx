@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { addDays, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import classNames from 'classnames'
@@ -22,9 +23,9 @@ interface ShippingEstimateProps {
 }
 
 const defaultShippingOptions: ShippingOption[] = [
-  { id: 'instant', name: 'Hỏa tốc', price: 45000, estimated_days: { min: 0, max: 1 } },
-  { id: 'express', name: 'Giao hàng nhanh', price: 25000, estimated_days: { min: 1, max: 2 } },
-  { id: 'standard', name: 'Giao hàng tiết kiệm', price: 15000, estimated_days: { min: 3, max: 5 } }
+  { id: 'instant', name: 'option.instant', price: 45000, estimated_days: { min: 0, max: 1 } },
+  { id: 'express', name: 'option.express', price: 25000, estimated_days: { min: 1, max: 2 } },
+  { id: 'standard', name: 'option.standard', price: 15000, estimated_days: { min: 3, max: 5 } }
 ]
 
 const formatDeliveryDate = (daysFromNow: number): string => {
@@ -32,14 +33,17 @@ const formatDeliveryDate = (daysFromNow: number): string => {
   return format(date, 'dd/MM', { locale: vi })
 }
 
-const getDeliveryDateRange = (estimated_days: { min: number; max: number }): string => {
+const getDeliveryDateRange = (
+  estimated_days: { min: number; max: number },
+  t: (key: string, options?: Record<string, unknown>) => string
+): string => {
   const minDate = formatDeliveryDate(estimated_days.min)
   const maxDate = formatDeliveryDate(estimated_days.max)
 
   if (estimated_days.min === estimated_days.max) {
-    return `Nhận hàng vào ${minDate}`
+    return t('deliverOn', { date: minDate })
   }
-  return `Nhận hàng từ ${minDate} - ${maxDate}`
+  return t('deliverRange', { minDate, maxDate })
 }
 
 function ShippingEstimate({
@@ -49,6 +53,7 @@ function ShippingEstimate({
   onShippingSelect,
   className
 }: ShippingEstimateProps) {
+  const { t } = useTranslation('shipping')
   const [address, setAddress] = useState(selectedAddress)
   const [selectedOptionId, setSelectedOptionId] = useState<string>(defaultShippingOptions[0].id)
   const [isEditingAddress, setIsEditingAddress] = useState(false)
@@ -81,12 +86,12 @@ function ShippingEstimate({
         <svg className='h-5 w-5 text-[#ee4d2d]' fill='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
           <path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' />
         </svg>
-        <span className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300'>Vận chuyển</span>
+        <span className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300'>{t('title')}</span>
       </div>
 
       {/* Product Location */}
       <div className='mb-3 flex items-center gap-2 text-xs text-gray-600 sm:text-sm dark:text-gray-400'>
-        <span>Từ:</span>
+        <span>{t('from')}</span>
         <span className='font-medium'>{productLocation}</span>
       </div>
 
@@ -95,7 +100,7 @@ function ShippingEstimate({
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2 text-xs sm:text-sm'>
             <label htmlFor='delivery-address' className='text-gray-600 dark:text-gray-400'>
-              Đến:
+              {t('to')}
             </label>
             {isEditingAddress ? (
               <input
@@ -106,12 +111,12 @@ function ShippingEstimate({
                 onBlur={() => setIsEditingAddress(false)}
                 onKeyDown={(e) => e.key === 'Enter' && setIsEditingAddress(false)}
                 className='rounded-sm border border-gray-300 px-2 py-1.5 text-xs focus:border-[#ee4d2d] focus:outline-hidden sm:text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-gray-200'
-                placeholder='Nhập địa chỉ giao hàng'
-                aria-label='Địa chỉ giao hàng'
+                placeholder={t('addressPlaceholder')}
+                aria-label={t('addressAria')}
                 autoFocus
               />
             ) : (
-              <span className='font-medium'>{address || 'Chưa có địa chỉ'}</span>
+              <span className='font-medium'>{address || t('noAddress')}</span>
             )}
           </div>
           <Button
@@ -120,7 +125,7 @@ function ShippingEstimate({
             className='text-sm text-[#ee4d2d] hover:underline'
             aria-expanded={isEditingAddress}
           >
-            {isEditingAddress ? 'Xong' : 'Thay đổi'}
+            {isEditingAddress ? t('done') : t('change')}
           </Button>
         </div>
       </div>
@@ -128,7 +133,7 @@ function ShippingEstimate({
       {/* Shipping Options */}
       <div className='space-y-2'>
         <span id='shipping-options-label' className='text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300'>
-          Phương thức vận chuyển:
+          {t('methodLabel')}
         </span>
         <div role='radiogroup' aria-labelledby='shipping-options-label' className='space-y-2'>
           {defaultShippingOptions.map((option) => {
@@ -157,14 +162,14 @@ function ShippingEstimate({
                   <div>
                     <div className='flex items-center gap-2'>
                       <span className='text-sm font-medium text-gray-800 sm:text-base dark:text-gray-200'>
-                        {option.name}
+                        {t(option.name)}
                       </span>
                       {option.id === 'instant' && (
-                        <span className='rounded-sm bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>Nhanh nhất</span>
+                        <span className='rounded-sm bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>{t('fastest')}</span>
                       )}
                     </div>
                     <span id={deliveryDateId} className='text-xs text-gray-500 dark:text-gray-400'>
-                      {getDeliveryDateRange(option.estimated_days)}
+                      {getDeliveryDateRange(option.estimated_days, t)}
                     </span>
                   </div>
                 </div>
@@ -179,7 +184,7 @@ function ShippingEstimate({
       {selectedOption && (
         <div className='mt-4 border-t border-gray-200 pt-3 dark:border-slate-700' aria-live='polite'>
           <div className='flex items-center justify-between text-xs sm:text-sm'>
-            <span className='text-gray-600 dark:text-gray-400'>Phí vận chuyển:</span>
+            <span className='text-gray-600 dark:text-gray-400'>{t('shippingFee')}</span>
             <span className='font-medium text-[#ee4d2d]'>₫{formatCurrency(selectedOption.price)}</span>
           </div>
         </div>

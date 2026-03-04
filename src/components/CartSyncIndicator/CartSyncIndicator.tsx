@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface CartSyncIndicatorProps {
   isSyncing: boolean
@@ -8,6 +9,7 @@ interface CartSyncIndicatorProps {
 }
 
 export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, className }: CartSyncIndicatorProps) {
+  const { t } = useTranslation('cart')
   const [showSynced, setShowSynced] = useState(false)
   const [prevTimestamp, setPrevTimestamp] = useState<string | null>(null)
 
@@ -33,7 +35,7 @@ export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, classN
         )}
       >
         <span>🔄</span>
-        <span>Đang đồng bộ...</span>
+        <span>{t('sync.syncing')}</span>
       </div>
     )
   }
@@ -42,7 +44,7 @@ export default function CartSyncIndicator({ isSyncing, lastSyncTimestamp, classN
     return (
       <div className={classNames('inline-flex animate-fade-in items-center gap-1 text-xs text-green-600', className)}>
         <span>✓</span>
-        <span>Đã đồng bộ</span>
+        <span>{t('sync.synced')}</span>
       </div>
     )
   }

@@ -52,5 +52,7 @@
   "toast.restoreItems": "Items restored",
   "toast.saveForLaterAlreadySaved": "Product already saved",
   "toast.saveForLaterSuccess": "Saved for later",
-  "toast.updateQuantityError": "Cannot update quantity"
+  "toast.updateQuantityError": "Cannot update quantity",
+  "sync.syncing": "Syncing...",
+  "sync.synced": "Synced"
 }

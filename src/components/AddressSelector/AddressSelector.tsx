@@ -1,4 +1,5 @@
 import { memo, useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Address } from 'src/types/checkout.type'
@@ -12,6 +13,7 @@ interface AddressSelectorProps {
 }
 
 const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSelect }: AddressSelectorProps) {
+  const { t } = useTranslation('address')
   const [showForm, setShowForm] = useState(false)
   const [editingAddress, setEditingAddress] = useState<Address | null>(null)
   const queryClient = useQueryClient()
@@ -80,12 +82,12 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
           variant='ghost'
           animated={false}
           className='flex items-center gap-1 text-sm text-orange hover:text-orange/80 dark:hover:text-orange-400/80'
-          aria-label='Thêm địa chỉ mới'
+          aria-label={t('addNew')}
         >
           <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
           </svg>
-          Thêm địa chỉ mới
+          {t('addNew')}
         </Button>
       </div>
 
@@ -105,9 +107,9 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
             />
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
           </svg>
-          <p className='mt-2 text-gray-500 dark:text-gray-400'>Bạn chưa có địa chỉ nào</p>
+          <p className='mt-2 text-gray-500 dark:text-gray-400'>{t('noAddress')}</p>
           <Button onClick={handleAddNew} className='mt-4 rounded-lg bg-orange px-4 py-2 text-white hover:bg-orange/90'>
-            Thêm địa chỉ đầu tiên
+            {t('addFirst')}
           </Button>
         </div>
       ) : (
@@ -130,7 +132,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
             >
               {address.isDefault && (
                 <span className='absolute top-2 right-2 rounded-sm bg-orange/10 px-2 py-0.5 text-xs text-orange'>
-                  Mặc định
+                  {t('default')}
                 </span>
               )}
 
@@ -164,7 +166,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                       animated={false}
                       className='text-sm text-blue-600 hover:underline dark:text-blue-400'
                     >
-                      Sửa
+                      {t('edit')}
                     </Button>
                     {!address.isDefault && (
                       <>
@@ -178,7 +180,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                           animated={false}
                           className='text-sm text-gray-600 hover:underline dark:text-gray-300'
                         >
-                          Đặt mặc định
+                          {t('setDefault')}
                         </Button>
                         <Button
                           onClick={(e) => {
@@ -190,7 +192,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                           animated={false}
                           className='text-sm text-red-600 hover:underline dark:text-red-400'
                         >
-                          Xóa
+                          {t('delete')}
                         </Button>
                       </>
                     )}

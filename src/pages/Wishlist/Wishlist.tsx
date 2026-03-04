@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Fragment, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import WishlistPriceAlert from 'src/components/WishlistPriceAlert'
 import Button from 'src/components/Button'
@@ -29,6 +30,7 @@ import WishlistFilters from './components/WishlistFilters'
 import WishlistSkeletonLoader from './components/WishlistSkeletonLoader'
 
 export default function Wishlist() {
+  const { t } = useTranslation('wishlist')
   const [activeFilter, setActiveFilter] = useState('all')
   const [activeSort, setActiveSort] = useState('newest')
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
@@ -61,8 +63,8 @@ export default function Wishlist() {
   return (
     <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-16 dark:bg-slate-900'>
       <Helmet>
-        <title>Sản phẩm yêu thích | Shopee Clone</title>
-        <meta name='description' content='Danh sách sản phẩm yêu thích của bạn' />
+        <title>{t('pageTitle')}</title>
+        <meta name='description' content={t('pageDescription')} />
       </Helmet>
 
       <div className='container'>
@@ -88,14 +90,14 @@ export default function Wishlist() {
                     <div className='mb-1 flex items-center justify-center gap-2 sm:justify-start'>
                       <IconSparkles className='h-4 w-4 text-yellow-200' />
                       <span className='text-[11px] font-semibold tracking-wider text-white/80 uppercase'>
-                        Danh sách yêu thích
+                        {t('headerLabel')}
                       </span>
                     </div>
                     <h2 className='text-xl font-bold drop-shadow-xs sm:text-2xl'>
-                      Theo dõi {allWishlistItems.length} sản phẩm bạn yêu thích
+                      {t('headerTitle', { count: allWishlistItems.length })}
                     </h2>
                     <p className='mt-1 max-w-md text-xs text-white/80 sm:text-sm'>
-                      Quản lý, so sánh giá và nhận thông báo khi có ưu đãi tốt nhất
+                      {t('headerSubtitle')}
                     </p>
                   </div>
                 </div>
@@ -133,10 +135,10 @@ export default function Wishlist() {
               >
                 <div className='flex flex-wrap items-center gap-4 text-sm'>
                   <span className='inline-flex items-center gap-1.5 font-medium text-purple-700 dark:text-purple-300'>
-                    <IconTrendingUp className='h-4 w-4' /> Insights:
+                    <IconTrendingUp className='h-4 w-4' /> {t('insights')}
                   </span>
                   <span className='inline-flex items-center gap-1 text-gray-600 dark:text-gray-300'>
-                    Danh mục yêu thích nhất:{' '}
+                    {t('topCategory')}{' '}
                     <span className='inline-flex items-center gap-1 font-semibold text-purple-600 dark:text-purple-400'>
                       {(() => {
                         const CatIcon = categoryIconComponents[insights.topCategory] || IconCube
@@ -149,7 +151,7 @@ export default function Wishlist() {
                   <span className='hidden text-gray-300 sm:inline dark:text-gray-600'>|</span>
                   {insights.priceDropCount > 0 && (
                     <span className='inline-flex items-center gap-1 font-semibold text-green-600 dark:text-green-400'>
-                      <IconFire className='h-3.5 w-3.5' /> {insights.priceDropCount} sản phẩm giảm &gt;30%
+                      <IconFire className='h-3.5 w-3.5' /> {t('priceDropCount', { count: insights.priceDropCount })}
                     </span>
                   )}
                 </div>
@@ -172,7 +174,7 @@ export default function Wishlist() {
                 animate={{ opacity: 1 }}
                 className='mb-4 text-sm text-gray-500 dark:text-gray-400'
               >
-                Hiển thị {wishlistItems.length} / {allWishlistItems.length} sản phẩm
+                {t('showingResults', { shown: wishlistItems.length, total: allWishlistItems.length })}
               </motion.div>
             )}
 
@@ -208,14 +210,14 @@ export default function Wishlist() {
                 <div className='mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-slate-700 dark:text-gray-500'>
                   <IconMagnifyingGlass className='h-7 w-7' />
                 </div>
-                <p className='text-gray-500 dark:text-gray-400'>Không tìm thấy sản phẩm phù hợp</p>
+                <p className='text-gray-500 dark:text-gray-400'>{t('noFilterResults')}</p>
                 <Button
                   variant='ghost'
                   animated={false}
                   onClick={() => setActiveFilter('all')}
                   className='mt-3 cursor-pointer rounded-sm text-sm text-[#ee4d2d] hover:underline focus:ring-2 focus:ring-orange-500 focus:outline-hidden dark:text-orange-400 dark:focus:ring-orange-400'
                 >
-                  Xem tất cả
+                  {t('viewAll')}
                 </Button>
               </motion.div>
             )}
@@ -233,15 +235,15 @@ export default function Wishlist() {
                     <IconBell className='h-6 w-6' />
                   </div>
                   <div className='text-white'>
-                    <h3 className='text-sm font-semibold'>Theo dõi giá sản phẩm</h3>
-                    <p className='mt-0.5 text-xs text-white/80'>Nhận thông báo ngay khi giá giảm!</p>
+                    <h3 className='text-sm font-semibold'>{t('priceTracking.title')}</h3>
+                    <p className='mt-0.5 text-xs text-white/80'>{t('priceTracking.subtitle')}</p>
                   </div>
                 </div>
                 <Button
                   animated={false}
                   className='mt-3 cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-[#ee4d2d] transition-all duration-200 hover:bg-white/90 hover:shadow-md focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-orange-500 focus:outline-hidden dark:text-orange-600'
                 >
-                  Bật thông báo
+                  {t('priceTracking.enable')}
                 </Button>
               </div>
               <div className='overflow-hidden rounded-xl bg-linear-to-br from-emerald-500 to-teal-500 p-5 shadow-lg dark:from-emerald-600 dark:to-teal-600 dark:shadow-slate-900/50'>
@@ -250,9 +252,9 @@ export default function Wishlist() {
                     <IconTarget className='h-6 w-6' />
                   </div>
                   <div className='text-white'>
-                    <h3 className='text-sm font-semibold'>Mục tiêu tiết kiệm</h3>
+                    <h3 className='text-sm font-semibold'>{t('savingsGoal.title')}</h3>
                     <p className='mt-0.5 text-xs text-white/80'>
-                      Bạn đã tiết kiệm ₫{formatCurrency(totalSavings)} từ {allWishlistItems.length} sản phẩm
+                      {t('savingsGoal.subtitle', { amount: formatCurrency(totalSavings), count: allWishlistItems.length })}
                     </p>
                   </div>
                 </div>
@@ -265,9 +267,7 @@ export default function Wishlist() {
                   />
                 </div>
                 <p className='mt-1 text-[10px] text-white/70'>
-                  Tiết kiệm{' '}
-                  {totalValue + totalSavings > 0 ? Math.round((totalSavings / (totalValue + totalSavings)) * 100) : 0}%
-                  so với giá gốc
+                  {t('savingsGoal.percent', { percent: totalValue + totalSavings > 0 ? Math.round((totalSavings / (totalValue + totalSavings)) * 100) : 0 })}
                 </p>
               </div>
             </motion.div>
@@ -280,13 +280,13 @@ export default function Wishlist() {
               className='mt-6'
             >
               <h3 className='mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300'>
-                <IconFolder className='h-4 w-4' /> Phân loại yêu thích
+                <IconFolder className='h-4 w-4' /> {t('categoryBreakdown')}
               </h3>
               <div className='scrollbar-hide flex gap-2 overflow-x-auto pb-2'>
                 {Object.entries(
                   allWishlistItems.reduce<Record<string, number>>((acc, item) => {
                     const cat =
-                      item.product.category?.name || (item as { mockCategory?: string }).mockCategory || 'Khác'
+                      item.product.category?.name || (item as { mockCategory?: string }).mockCategory || t('categoryOther')
                     acc[cat] = (acc[cat] || 0) + 1
                     return acc
                   }, {})
@@ -351,10 +351,10 @@ export default function Wishlist() {
             </motion.div>
 
             <h3 className='mb-2 text-xl font-semibold text-gray-800 md:text-2xl dark:text-gray-100'>
-              Chưa có sản phẩm yêu thích
+              {t('empty.title')}
             </h3>
             <p className='mx-auto mb-6 max-w-md text-sm text-gray-500 dark:text-gray-400'>
-              Hãy khám phá và thêm những sản phẩm bạn yêu thích vào danh sách để theo dõi giá và mua sắm dễ dàng hơn
+              {t('empty.subtitle')}
             </p>
             <Link
               to={path.home}
@@ -368,7 +368,7 @@ export default function Wishlist() {
                   d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
                 />
               </svg>
-              Mua sắm ngay
+              {t('empty.shopNow')}
             </Link>
           </motion.div>
         )}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { LoyaltyPoints } from 'src/types/loyalty.type'
@@ -46,6 +47,7 @@ export default function LoyaltyPointsCard({
   nextRewardThreshold = 1000,
   className = ''
 }: LoyaltyPointsCardProps) {
+  const { t } = useTranslation('checkin')
   const [displayPoints, setDisplayPoints] = useState(points.available_points)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -97,14 +99,14 @@ export default function LoyaltyPointsCard({
       <div className='relative flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <CoinIcon className='h-8 w-8 drop-shadow-md' />
-          <span className='text-lg font-bold text-white drop-shadow-xs'>Shopee Xu</span>
+          <span className='text-lg font-bold text-white drop-shadow-xs'>{t('loyalty.title')}</span>
         </div>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             animated={false}
             className='rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs transition-colors hover:bg-white/30'
           >
-            Lịch sử
+            {t('loyalty.history')}
           </Button>
         </motion.div>
       </div>
@@ -120,19 +122,19 @@ export default function LoyaltyPointsCard({
           >
             {formatCurrency(displayPoints)}
           </motion.span>
-          <span className='text-sm font-medium text-white/80'>xu khả dụng</span>
+          <span className='text-sm font-medium text-white/80'>{t('loyalty.available')}</span>
         </div>
 
         {/* Points breakdown */}
         <div className='mt-3 flex gap-4 text-xs text-white/90'>
           <div className='flex flex-col'>
             <span className='font-medium'>{formatCurrency(points.total_points)}</span>
-            <span className='text-white/70'>Tổng xu</span>
+            <span className='text-white/70'>{t('loyalty.totalPoints')}</span>
           </div>
           <div className='h-8 w-px bg-white/30' />
           <div className='flex flex-col'>
             <span className='font-medium'>{formatCurrency(points.pending_points)}</span>
-            <span className='text-white/70'>Đang chờ</span>
+            <span className='text-white/70'>{t('loyalty.pendingPoints')}</span>
           </div>
         </div>
       </div>
@@ -140,9 +142,11 @@ export default function LoyaltyPointsCard({
       {/* Progress bar to next reward */}
       <div className='relative mt-4'>
         <div className='flex items-center justify-between text-xs text-white/90'>
-          <span>Tiến độ đến phần thưởng</span>
+          <span>{t('loyalty.progressLabel')}</span>
           <span className='font-medium'>
-            {pointsToNextReward > 0 ? `Còn ${formatCurrency(pointsToNextReward)} xu` : 'Đủ điều kiện!'}
+            {pointsToNextReward > 0
+              ? t('loyalty.remaining', { count: formatCurrency(pointsToNextReward) })
+              : t('loyalty.eligible')}
           </span>
         </div>
         <div className='mt-2 h-2 overflow-hidden rounded-full bg-white/30'>
@@ -176,9 +180,13 @@ export default function LoyaltyPointsCard({
               />
             </svg>
             <div className='flex-1 text-xs text-white'>
-              <span className='font-semibold'>{formatCurrency(points.expiring_soon.points)} xu</span> sẽ hết hạn vào{' '}
-              <span className='font-semibold'>{formatDate(points.expiring_soon.expire_date)}</span>
-              {daysUntilExpiry <= 3 && <span className='ml-1 text-yellow-200'>({daysUntilExpiry} ngày nữa!)</span>}
+              {t('loyalty.expiryWarning', {
+                count: formatCurrency(points.expiring_soon.points),
+                date: formatDate(points.expiring_soon.expire_date)
+              })}
+              {daysUntilExpiry <= 3 && (
+                <span className='ml-1 text-yellow-200'>({t('loyalty.expiryDays', { count: daysUntilExpiry })})</span>
+              )}
             </div>
           </motion.div>
         )}

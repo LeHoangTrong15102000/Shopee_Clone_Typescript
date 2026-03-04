@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePWAInstall } from 'src/hooks/usePWAInstall'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
@@ -7,6 +8,7 @@ import Button from 'src/components/Button'
 const AUTO_HIDE_DELAY = 10000 // 10 seconds
 
 export default function PWAInstallPrompt() {
+  const { t } = useTranslation('common')
   const { isInstallable, promptInstall, dismissPrompt } = usePWAInstall()
   const prefersReducedMotion = useReducedMotion()
   const [isVisible, setIsVisible] = useState(false)
@@ -61,7 +63,7 @@ export default function PWAInstallPrompt() {
 
             <div className='min-w-0 flex-1'>
               <h3 className='truncate text-sm font-semibold text-gray-900 dark:text-gray-100'>Shopee Clone</h3>
-              <p className='text-xs text-gray-500 dark:text-gray-400'>Cài đặt ứng dụng để trải nghiệm tốt hơn</p>
+              <p className='text-xs text-gray-500 dark:text-gray-400'>{t('pwa.subtitle')}</p>
             </div>
 
             <div className='flex shrink-0 flex-col gap-2'>
@@ -71,7 +73,7 @@ export default function PWAInstallPrompt() {
                 onClick={handleInstall}
                 className='rounded-sm px-3 py-1.5 text-xs font-medium'
               >
-                Cài đặt
+                {t('pwa.install')}
               </Button>
               <Button
                 variant='ghost'
@@ -79,7 +81,7 @@ export default function PWAInstallPrompt() {
                 onClick={handleDismiss}
                 className='rounded-sm px-3 py-1.5 text-xs font-medium'
               >
-                Để sau
+                {t('pwa.later')}
               </Button>
             </div>
           </div>
