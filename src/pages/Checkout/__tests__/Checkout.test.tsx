@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HelmetProvider } from 'react-helmet-async'
 import Checkout from '../Checkout'
 import { ExtendedPurchase } from 'src/types/purchases.type'
 import { Product } from 'src/types/product.type'
@@ -129,9 +130,11 @@ const createWrapper = (initialPurchases: ExtendedPurchase[] = []) => {
   useCartStore.setState({ items: initialPurchases })
   return ({ children }: { children: React.ReactNode }) => {
     return (
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={['/checkout']}>{children}</MemoryRouter>
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter initialEntries={['/checkout']}>{children}</MemoryRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
     )
   }
 }
