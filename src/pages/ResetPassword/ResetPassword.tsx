@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { toast } from 'react-toastify'
 import passwordResetApi from 'src/apis/password-reset.api'
@@ -11,22 +12,24 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import i18n from 'src/i18n/i18n'
 import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
 import { z } from 'zod'
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-    confirmPassword: z.string().min(1, 'Xác nhận mật khẩu là bắt buộc')
+    password: z.string().min(6, i18n.t('validation:resetPassword.minLength')),
+    confirmPassword: z.string().min(1, i18n.t('validation:resetPassword.confirmRequired'))
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Mật khẩu xác nhận không khớp',
+    message: i18n.t('validation:resetPassword.mismatch'),
     path: ['confirmPassword']
   })
 
 type FormData = z.infer<typeof resetPasswordSchema>
 
 const ResetPassword = () => {
+  const { t } = useTranslation('auth')
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const token = searchParams.get('token')
@@ -56,10 +59,10 @@ const ResetPassword = () => {
     resetPasswordMutation.mutate(data, {
       onSuccess: () => {
         setIsSuccess(true)
-        toast.success('Đặt lại mật khẩu thành công', { autoClose: 3000 })
+        toast.success(t('resetPassword.toast.success'), { autoClose: 3000 })
       },
       onError: () => {
-        toast.error('Có lỗi xảy ra, vui lòng thử lại', { autoClose: 2000 })
+        toast.error(t('resetPassword.toast.error'), { autoClose: 2000 })
       }
     })
   })
@@ -86,8 +89,8 @@ const ResetPassword = () => {
         }}
       />
       <Helmet>
-        <title>Đặt lại mật khẩu | Shopee Clone</title>
-        <meta name='description' content='Đặt lại mật khẩu - Shopee Clone' />
+        <title>{t('resetPassword.meta.title')}</title>
+        <meta name='description' content={t('resetPassword.meta.description')} />
       </Helmet>
       <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
@@ -106,12 +109,12 @@ const ResetPassword = () => {
                     </svg>
                   </div>
                   <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
-                    Link đặt lại mật khẩu không hợp lệ
+                    {t('resetPassword.invalidLink.title')}
                   </h3>
-                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>Link đã hết hạn hoặc không hợp lệ</p>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>{t('resetPassword.invalidLink.message')}</p>
                   <div className='mt-6'>
                     <Link to={path.forgotPassword} className='text-sm text-orange dark:text-orange-400'>
-                      Yêu cầu đặt lại mật khẩu mới
+                      {t('resetPassword.invalidLink.requestNew')}
                     </Link>
                   </div>
                 </div>
@@ -126,15 +129,15 @@ const ResetPassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                     </svg>
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Đặt lại mật khẩu thành công</h3>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('resetPassword.success.title')}</h3>
                   <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                    Đang chuyển hướng đến trang đăng nhập...
+                    {t('resetPassword.success.message')}
                   </p>
                 </motion.div>
               ) : (
                 <form onSubmit={onSubmit} noValidate>
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
-                    <div className='text-2xl text-gray-900 dark:text-gray-100'>Đặt lại mật khẩu</div>
+                    <div className='text-2xl text-gray-900 dark:text-gray-100'>{t('resetPassword.title')}</div>
                   </motion.div>
 
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
@@ -146,7 +149,7 @@ const ResetPassword = () => {
                       value={watchPassword}
                       autoComplete='new-password'
                       register={register}
-                      placeholder='Mật khẩu mới'
+                      placeholder={t('resetPassword.newPassword')}
                       errorMessage={errors.password?.message}
                     />
                   </motion.div>
@@ -160,7 +163,7 @@ const ResetPassword = () => {
                       value={watchConfirmPassword}
                       autoComplete='new-password'
                       register={register}
-                      placeholder='Xác nhận mật khẩu'
+                      placeholder={t('resetPassword.confirmPassword')}
                       errorMessage={errors.confirmPassword?.message}
                     />
                   </motion.div>
@@ -173,7 +176,7 @@ const ResetPassword = () => {
                         type='submit'
                         className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm text-white uppercase hover:bg-red-600'
                       >
-                        Đặt lại mật khẩu
+                        {t('resetPassword.submit')}
                       </Button>
                     </div>
                   </motion.div>
@@ -181,7 +184,7 @@ const ResetPassword = () => {
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
                     <div className='mt-6 text-center'>
                       <Link to={path.login} className='text-sm text-orange dark:text-orange-400'>
-                        Quay lại đăng nhập
+                        {t('resetPassword.backToLogin')}
                       </Link>
                     </div>
                   </motion.div>

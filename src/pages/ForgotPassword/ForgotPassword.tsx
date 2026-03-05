@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
 import passwordResetApi from 'src/apis/password-reset.api'
@@ -11,16 +12,18 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constant/path'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import i18n from 'src/i18n/i18n'
 import { STAGGER_DELAY, staggerContainer, staggerItem } from 'src/styles/animations'
 import { z } from 'zod'
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email('Email không hợp lệ')
+  email: z.string().email(i18n.t('validation:forgotPassword.emailInvalid'))
 })
 
 type FormData = z.infer<typeof forgotPasswordSchema>
 
 const ForgotPassword = () => {
+  const { t } = useTranslation('auth')
   const [isSubmitted, setIsSubmitted] = useState(false)
   const reducedMotion = useReducedMotion()
   const containerVariants = staggerContainer(STAGGER_DELAY.normal)
@@ -45,10 +48,10 @@ const ForgotPassword = () => {
     forgotPasswordMutation.mutate(data, {
       onSuccess: () => {
         setIsSubmitted(true)
-        toast.success('Vui lòng kiểm tra email để đặt lại mật khẩu', { autoClose: 3000 })
+        toast.success(t('forgotPassword.toast.success'), { autoClose: 3000 })
       },
       onError: () => {
-        toast.error('Có lỗi xảy ra, vui lòng thử lại', { autoClose: 2000 })
+        toast.error(t('forgotPassword.toast.error'), { autoClose: 2000 })
       }
     })
   })
@@ -65,8 +68,8 @@ const ForgotPassword = () => {
         }}
       />
       <Helmet>
-        <title>Quên mật khẩu | Shopee Clone</title>
-        <meta name='description' content='Quên mật khẩu - Shopee Clone' />
+        <title>{t('forgotPassword.meta.title')}</title>
+        <meta name='description' content={t('forgotPassword.meta.description')} />
       </Helmet>
       <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
@@ -80,9 +83,9 @@ const ForgotPassword = () => {
               {!isSubmitted ? (
                 <form onSubmit={onSubmit} noValidate>
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
-                    <div className='text-2xl text-gray-900 dark:text-gray-100'>Quên mật khẩu</div>
+                    <div className='text-2xl text-gray-900 dark:text-gray-100'>{t('forgotPassword.title')}</div>
                     <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                      Nhập email của bạn để nhận link đặt lại mật khẩu
+                      {t('forgotPassword.subtitle')}
                     </p>
                   </motion.div>
 
@@ -108,7 +111,7 @@ const ForgotPassword = () => {
                         type='submit'
                         className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm text-white uppercase hover:bg-red-600'
                       >
-                        Gửi yêu cầu
+                        {t('forgotPassword.submit')}
                       </Button>
                     </div>
                   </motion.div>
@@ -116,7 +119,7 @@ const ForgotPassword = () => {
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
                     <div className='mt-6 text-center'>
                       <Link to={path.login} className='text-sm text-orange dark:text-orange-400'>
-                        Quay lại đăng nhập
+                        {t('forgotPassword.backToLogin')}
                       </Link>
                     </div>
                   </motion.div>
@@ -132,13 +135,13 @@ const ForgotPassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                     </svg>
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>Kiểm tra email của bạn</h3>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('forgotPassword.success.title')}</h3>
                   <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                    Vui lòng kiểm tra email để đặt lại mật khẩu
+                    {t('forgotPassword.success.message')}
                   </p>
                   <div className='mt-6'>
                     <Link to={path.login} className='text-sm text-orange dark:text-orange-400'>
-                      Quay lại đăng nhập
+                      {t('forgotPassword.backToLogin')}
                     </Link>
                   </div>
                 </motion.div>
