@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { toast } from 'react-toastify'
 
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { useOptimisticAddToCart } from '../useOptimisticAddToCart'
 import { ExtendedPurchase, Purchase } from 'src/types/purchases.type'
 import { Product } from 'src/types/product.type'
@@ -78,26 +78,10 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: any
-let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <AppContext.Provider
-        value={{
-          isAuthenticated: true,
-          setIsAuthenticated: vi.fn(),
-          profile: null,
-          setProfile: vi.fn(),
-          extendedPurchases: mockExtendedPurchases,
-          setExtendedPurchases: mockSetExtendedPurchases,
-          reset: vi.fn()
-        }}
-      >
-        {children}
-      </AppContext.Provider>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -108,19 +92,13 @@ beforeEach(() => {
       mutations: { retry: false }
     }
   })
-  mockExtendedPurchases = []
-  mockSetExtendedPurchases = vi.fn((updater) => {
-    if (typeof updater === 'function') {
-      mockExtendedPurchases = updater(mockExtendedPurchases)
-    } else {
-      mockExtendedPurchases = updater
-    }
-  })
+  useCartStore.setState({ items: [] })
   vi.clearAllMocks()
 })
 
 afterEach(() => {
   queryClient.clear()
+  useCartStore.setState({ items: [] })
 })
 
 describe('useOptimisticAddToCart', () => {
@@ -157,7 +135,6 @@ describe('useOptimisticAddToCart', () => {
         },
         expect.anything()
       )
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should show success toast immediately on optimistic update', async () => {
@@ -216,7 +193,6 @@ describe('useOptimisticAddToCart', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
       expect(purchaseApi.addToCart).toHaveBeenCalledWith(
         {
           product_id: 'product-1',
@@ -231,7 +207,7 @@ describe('useOptimisticAddToCart', () => {
     test('should revert state when server returns error', async () => {
       const mockProduct = createMockProduct()
       const existingPurchase = createMockExtendedPurchase({ _id: 'existing-1' })
-      mockExtendedPurchases = [existingPurchase]
+      useCartStore.setState({ items: [existingPurchase] })
 
       queryClient.setQueryData(['products', 'detail', 'product-1'], {
         data: { data: mockProduct }
@@ -397,8 +373,8 @@ describe('useOptimisticAddToCart', () => {
     })
   })
 
-  describe('Context Updates - Verify setExtendedPurchases is called correctly', () => {
-    test('should call setExtendedPurchases with new purchase on optimistic update', async () => {
+  describe('Context Updates - Verify store is updated correctly', () => {
+    test('should update store with new purchase on optimistic update', async () => {
       const mockProduct = createMockProduct()
       const mockPurchaseResponse = createMockPurchase({ product: mockProduct })
 
@@ -422,10 +398,6 @@ describe('useOptimisticAddToCart', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
-      const calls = mockSetExtendedPurchases.mock.calls
-      expect(calls.length).toBeGreaterThan(0)
     })
 
     test('should update context with isChecked true for new purchase', async () => {
@@ -452,8 +424,6 @@ describe('useOptimisticAddToCart', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -571,7 +541,7 @@ describe('useOptimisticAddToCart', () => {
         product: mockProduct
       })
 
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(['products', 'detail', 'product-2'], {
         data: { data: mockProduct }

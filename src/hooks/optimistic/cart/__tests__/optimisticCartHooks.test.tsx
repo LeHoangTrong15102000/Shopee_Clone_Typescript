@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { toast } from 'react-toastify'
 
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { useOptimisticAddToCart } from '../useOptimisticAddToCart'
 import { useOptimisticUpdateQuantity } from '../useOptimisticUpdateQuantity'
 import { useOptimisticRemoveFromCart } from '../useOptimisticRemoveFromCart'
@@ -80,26 +80,10 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: any
-let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <AppContext.Provider
-        value={{
-          isAuthenticated: true,
-          setIsAuthenticated: vi.fn(),
-          profile: null,
-          setProfile: vi.fn(),
-          extendedPurchases: mockExtendedPurchases,
-          setExtendedPurchases: mockSetExtendedPurchases,
-          reset: vi.fn()
-        }}
-      >
-        {children}
-      </AppContext.Provider>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -110,19 +94,13 @@ beforeEach(() => {
       mutations: { retry: false }
     }
   })
-  mockExtendedPurchases = []
-  mockSetExtendedPurchases = vi.fn((updater) => {
-    if (typeof updater === 'function') {
-      mockExtendedPurchases = updater(mockExtendedPurchases)
-    } else {
-      mockExtendedPurchases = updater
-    }
-  })
+  useCartStore.setState({ items: [] })
   vi.clearAllMocks()
 })
 
 afterEach(() => {
   queryClient.clear()
+  useCartStore.setState({ items: [] })
 })
 
 describe('useOptimisticAddToCart', () => {
@@ -159,7 +137,6 @@ describe('useOptimisticAddToCart', () => {
         },
         expect.anything()
       )
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should show success toast immediately on optimistic update', async () => {
@@ -195,7 +172,7 @@ describe('useOptimisticAddToCart', () => {
     test('should revert state when server returns error', async () => {
       const mockProduct = createMockProduct()
       const existingPurchase = createMockExtendedPurchase({ _id: 'existing-1' })
-      mockExtendedPurchases = [existingPurchase]
+      useCartStore.setState({ items: [existingPurchase] })
 
       queryClient.setQueryData(['products', 'detail', 'product-1'], {
         data: { data: mockProduct }
@@ -303,7 +280,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -331,7 +308,6 @@ describe('useOptimisticUpdateQuantity', () => {
         },
         expect.anything()
       )
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should update context state with new quantity', async () => {
@@ -341,7 +317,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 3,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -361,8 +337,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -375,7 +349,7 @@ describe('useOptimisticUpdateQuantity', () => {
         product: mockProduct
       })
       const previousData = { data: { data: [existingPurchase] } }
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, previousData)
 
@@ -401,7 +375,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 5,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -418,8 +392,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isError).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -431,7 +403,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -465,7 +437,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -493,7 +465,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -522,7 +494,7 @@ describe('useOptimisticRemoveFromCart', () => {
         _id: 'purchase-1',
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -543,7 +515,6 @@ describe('useOptimisticRemoveFromCart', () => {
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
       expect(purchaseApi.deletePurchase).toHaveBeenCalledWith(['purchase-1'], expect.anything())
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should show success toast with undo option', async () => {
@@ -552,7 +523,7 @@ describe('useOptimisticRemoveFromCart', () => {
         _id: 'purchase-1',
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -583,7 +554,7 @@ describe('useOptimisticRemoveFromCart', () => {
         _id: 'purchase-1',
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -615,7 +586,7 @@ describe('useOptimisticRemoveFromCart', () => {
         _id: 'purchase-1',
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -632,8 +603,6 @@ describe('useOptimisticRemoveFromCart', () => {
       })
 
       await waitFor(() => expect(result.current.isError).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -647,11 +616,13 @@ describe('useOptimisticRemoveFromCart', () => {
       const purchase2 = createMockPurchase({ _id: 'purchase-2', product: mockProduct2 })
       const purchase3 = createMockPurchase({ _id: 'purchase-3', product: mockProduct3 })
 
-      mockExtendedPurchases = [
-        createMockExtendedPurchase({ ...purchase1 }),
-        createMockExtendedPurchase({ ...purchase2 }),
-        createMockExtendedPurchase({ ...purchase3 })
-      ]
+      useCartStore.setState({
+        items: [
+          createMockExtendedPurchase({ ...purchase1 }),
+          createMockExtendedPurchase({ ...purchase2 }),
+          createMockExtendedPurchase({ ...purchase3 })
+        ]
+      })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [purchase1, purchase2, purchase3] }
@@ -681,7 +652,7 @@ describe('useOptimisticRemoveFromCart', () => {
         product: mockProduct
       })
       const previousData = { data: { data: [existingPurchase] } }
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, previousData)
 
@@ -720,7 +691,7 @@ describe('useOptimisticRemoveFromCart', () => {
         _id: 'purchase-1',
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }

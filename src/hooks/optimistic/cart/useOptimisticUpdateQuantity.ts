@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useContext } from 'react'
-import { produce } from 'immer'
 
 import purchaseApi from 'src/apis/purchases.api'
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { Purchase } from 'src/types/purchases.type'
 import { UpdateQuantityPayload, UpdateQuantityContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
 import { updatePurchasesCache, showErrorToast, logOptimisticError } from '../shared/utils'
@@ -12,7 +10,7 @@ import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticUpdateQuantity = () => {
   const queryClient = useQueryClient()
-  const { setExtendedPurchases } = useContext(AppContext)
+  const updateQuantity = useCartStore((s) => s.updateQuantity)
   const { invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
@@ -38,15 +36,7 @@ export const useOptimisticUpdateQuantity = () => {
       }))
 
       // Cập nhật context state optimistically
-      setExtendedPurchases(
-        produce((draft) => {
-          const item = draft.find((p) => p.product._id === product_id)
-          if (item) {
-            item.buy_count = buy_count
-            item.disabled = false // Không disable UI trong optimistic mode
-          }
-        })
-      )
+      updateQuantity(product_id, buy_count)
 
       return { previousData: previousData as PurchasesQueryData | undefined, product_id }
     },
@@ -58,20 +48,14 @@ export const useOptimisticUpdateQuantity = () => {
       }
 
       // Rollback context state
-      setExtendedPurchases(
-        produce((draft) => {
-          const item = draft.find((p) => p.product._id === context?.product_id)
-          if (item && context?.previousData) {
-            const originalItem = (context.previousData as PurchasesQueryData | undefined)?.data?.data?.find(
-              (p: Purchase) => p.product._id === context.product_id
-            )
-            if (originalItem) {
-              item.buy_count = originalItem.buy_count
-              item.disabled = false
-            }
-          }
-        })
-      )
+      if (context?.previousData && context?.product_id) {
+        const originalItem = (context.previousData as PurchasesQueryData | undefined)?.data?.data?.find(
+          (p: Purchase) => p.product._id === context.product_id
+        )
+        if (originalItem) {
+          updateQuantity(context.product_id, originalItem.buy_count)
+        }
+      }
 
       showErrorToast(TOAST_MESSAGES.UPDATE_QUANTITY_ERROR)
       logOptimisticError('Update quantity', err, context)

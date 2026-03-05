@@ -1,13 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import purchaseApi from 'src/apis/purchases.api'
 import path from 'src/constant/path'
 import { purchasesStatus } from 'src/constant/purchase'
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore, useCartItems, useCheckedItems, useIsAllChecked } from 'src/stores/cart.store'
 
 import { formatCurrency, generateNameId } from 'src/utils/utils'
-import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import noproduct from '../../assets/images/img-product-incart.png'
@@ -30,7 +29,13 @@ export type { ExtendedPurchase, InlineStockAlertState }
 const Cart = () => {
   const { t } = useTranslation('cart')
   // const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
-  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
+  const extendedPurchases = useCartItems()
+  const setItems = useCartStore((s) => s.setItems)
+  const toggleCheck = useCartStore((s) => s.toggleCheck)
+  const selectAll = useCartStore((s) => s.selectAll)
+  const updateQuantity = useCartStore((s) => s.updateQuantity)
+  const isAllChecked = useIsAllChecked()
+  const checkedPurchases = useCheckedItems()
   const queryClient = useQueryClient()
 
   // State for inline stock alerts on individual cart items
@@ -82,12 +87,7 @@ const Cart = () => {
 
   const purchasesInCart = purchasesInCartData?.data.data
   // console.log(purchasesInCart)
-  // Tạo 1 biến isAllChecked để khi mà mỗi purchas trong cart checked thì isAllChecked sẽ trả về true
-  const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.isChecked), [extendedPurchases])
-  const checkedPurchases = useMemo(
-    () => extendedPurchases.filter((purchase) => purchase.isChecked),
-    [extendedPurchases]
-  )
+  // isAllChecked and checkedPurchases are now from Zustand selectors (useIsAllChecked, useCheckedItems)
   // console.log(checkedPurchases)
   const checkedPurchaseCount = checkedPurchases.length
 
@@ -155,33 +155,32 @@ const Cart = () => {
   // Khi mà khởi tạo component thì sẽ thực hiện gán giá trị vào extendedPurchase
   useEffect(() => {
     // set chỗ này thì chúng ta dùng một cái map()
-    setExtendedPurchases((prev) => {
-      // prev sẽ là giá trị mới nhất của thằng purchasesInCart
-      // sẽ sử dụng _keyby của lodash để lấy ra cái purchase cần tìm của chúng ta
-      const extendedPurchasesObject = keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử và cả object sản phẩm đó sẽ là value
-      /**
-       * Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
-       */
-      return (
-        purchasesInCart?.map((purchase) => {
-          const isChoosenPurchaseIdFromLocation = choosenPurchaseIdFromLocation === purchase._id // Nếu cái này là true thì nó sẽ checked
-          return {
-            ...purchase,
-            disabled: false,
-            isChecked: isChoosenPurchaseIdFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.isChecked) // ban đầu nếu mà thằng này không có thì nó sẽ trả về false
-          }
-        }) || []
-      )
-    })
+    const prev = useCartStore.getState().items
+    // prev sẽ là giá trị mới nhất của thằng purchasesInCart
+    // sẽ sử dụng _keyby của lodash để lấy ra cái purchase cần tìm của chúng ta
+    const extendedPurchasesObject = keyBy(prev, '_id') // nó sẽ lấy value của '_id' làm key chỗ mỗi phần tử và cả object sản phẩm đó sẽ là value
+    /**
+     * Boolean(extendedPurchasesObject[purchase._id]?.isChecked)
+     */
+    const newItems =
+      purchasesInCart?.map((purchase) => {
+        const isChoosenPurchaseIdFromLocation = choosenPurchaseIdFromLocation === purchase._id // Nếu cái này là true thì nó sẽ checked
+        return {
+          ...purchase,
+          disabled: false,
+          isChecked: isChoosenPurchaseIdFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.isChecked) // ban đầu nếu mà thằng này không có thì nó sẽ trả về false
+        }
+      }) || []
+    setItems(newItems)
     // Sau khi nhấn vào `mua ngay` thì nó sẽ chạy lại cái useEffect và biến handler sẽ chạy
     const handler = setTimeout(
       () =>
-        // Khi mà change cái checked thì setExtendedPurchases thay đổi làm useEffect chạy lại
+        // Khi mà change cái checked thì setItems thay đổi làm useEffect chạy lại
         navigate(pathname, { state: null, replace: true }), // thay thế cái state trên URL
       500
     )
     return () => clearTimeout(handler)
-  }, [purchasesInCart, choosenPurchaseIdFromLocation, setExtendedPurchases, pathname, navigate])
+  }, [purchasesInCart, choosenPurchaseIdFromLocation, setItems, pathname, navigate])
 
   // clean-up func khi mà F5 lại sẽ xóa cái state được lưu trên router
   useEffect(() => {
@@ -193,36 +192,25 @@ const Cart = () => {
   // func xử lý checked cho 1 sản phẩm
   const handleChecked = useCallback(
     (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setExtendedPurchases(
-        produce((draft) => {
-          draft[purchaseIndex].isChecked = event.target.checked
-        })
-      )
+      toggleCheck(purchaseIndex, event.target.checked)
     },
-    [setExtendedPurchases]
+    [toggleCheck]
   )
 
   // func xử lý checkedAll khi nhấn vào nhiều sản phẩm
   const handleCheckedAll = useCallback(() => {
-    setExtendedPurchases((prev) => {
-      if (prev.length === 0) return prev
-      return prev.map((purchase) => ({
-        ...purchase,
-        isChecked: !isAllChecked
-      }))
-    })
-  }, [isAllChecked, setExtendedPurchases])
+    selectAll(!isAllChecked)
+  }, [isAllChecked, selectAll])
 
   // Func xử lý onchange input
   const handleTypeQuantity = useCallback(
     (purchaseIndex: number) => (value: number) => {
-      setExtendedPurchases(
-        produce((draft) => {
-          draft[purchaseIndex].buy_count = value
-        })
-      )
+      const purchase = extendedPurchases[purchaseIndex]
+      if (purchase) {
+        updateQuantity(purchase.product._id, value)
+      }
     },
-    [setExtendedPurchases]
+    [extendedPurchases, updateQuantity]
   )
 
   // func xử lý sự kiện onIncrease và onDecrease của cái QuantityController trong Cart với Optimistic Updates

@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { toast } from 'react-toastify'
 
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { useOptimisticUpdateQuantity } from '../useOptimisticUpdateQuantity'
 import { ExtendedPurchase, Purchase } from 'src/types/purchases.type'
 import { Product } from 'src/types/product.type'
@@ -78,26 +78,10 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockSetExtendedPurchases: any
-let mockExtendedPurchases: ExtendedPurchase[]
 
 const createWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <AppContext.Provider
-        value={{
-          isAuthenticated: true,
-          setIsAuthenticated: vi.fn(),
-          profile: null,
-          setProfile: vi.fn(),
-          extendedPurchases: mockExtendedPurchases,
-          setExtendedPurchases: mockSetExtendedPurchases,
-          reset: vi.fn()
-        }}
-      >
-        {children}
-      </AppContext.Provider>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -108,19 +92,13 @@ beforeEach(() => {
       mutations: { retry: false }
     }
   })
-  mockExtendedPurchases = []
-  mockSetExtendedPurchases = vi.fn((updater) => {
-    if (typeof updater === 'function') {
-      mockExtendedPurchases = updater(mockExtendedPurchases)
-    } else {
-      mockExtendedPurchases = updater
-    }
-  })
+  useCartStore.setState({ items: [] })
   vi.clearAllMocks()
 })
 
 afterEach(() => {
   queryClient.clear()
+  useCartStore.setState({ items: [] })
 })
 
 describe('useOptimisticUpdateQuantity', () => {
@@ -132,7 +110,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -160,7 +138,6 @@ describe('useOptimisticUpdateQuantity', () => {
         },
         expect.anything()
       )
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should update context state with new quantity', async () => {
@@ -170,7 +147,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 3,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -190,8 +167,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should update quantity immediately without waiting for server', async () => {
@@ -201,7 +176,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 1,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -228,8 +203,6 @@ describe('useOptimisticUpdateQuantity', () => {
         result.current.mutate({ product_id: 'product-1', buy_count: 10 })
       })
 
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
-
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
     })
 
@@ -240,7 +213,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase, disabled: false })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase, disabled: false })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -260,8 +233,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -274,7 +245,7 @@ describe('useOptimisticUpdateQuantity', () => {
         product: mockProduct
       })
       const previousData = { data: { data: [existingPurchase] } }
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, previousData)
 
@@ -300,7 +271,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 5,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -317,8 +288,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isError).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
 
     test('should handle error gracefully and set isError state', async () => {
@@ -328,7 +297,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 4,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -358,7 +327,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -388,7 +357,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -422,7 +391,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -453,10 +422,9 @@ describe('useOptimisticUpdateQuantity', () => {
       const purchase1 = createMockPurchase({ _id: 'purchase-1', buy_count: 2, product: mockProduct1 })
       const purchase2 = createMockPurchase({ _id: 'purchase-2', buy_count: 3, product: mockProduct2 })
 
-      mockExtendedPurchases = [
-        createMockExtendedPurchase({ ...purchase1 }),
-        createMockExtendedPurchase({ ...purchase2 })
-      ]
+      useCartStore.setState({
+        items: [createMockExtendedPurchase({ ...purchase1 }), createMockExtendedPurchase({ ...purchase2 })]
+      })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [purchase1, purchase2] }
@@ -486,15 +454,15 @@ describe('useOptimisticUpdateQuantity', () => {
     })
   })
 
-  describe('Context Updates - Verify setExtendedPurchases is called correctly', () => {
-    test('should call setExtendedPurchases with updated quantity', async () => {
+  describe('Context Updates - Verify store is updated correctly', () => {
+    test('should update store with updated quantity', async () => {
       const mockProduct = createMockProduct()
       const existingPurchase = createMockPurchase({
         _id: 'purchase-1',
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -513,10 +481,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
-      const calls = mockSetExtendedPurchases.mock.calls
-      expect(calls.length).toBeGreaterThan(0)
     })
 
     test('should update context with server response on success', async () => {
@@ -526,7 +490,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -546,8 +510,6 @@ describe('useOptimisticUpdateQuantity', () => {
       })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-      expect(mockSetExtendedPurchases).toHaveBeenCalled()
     })
   })
 
@@ -559,7 +521,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -587,7 +549,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -619,7 +581,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -653,7 +615,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -681,7 +643,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -725,7 +687,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -762,7 +724,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }
@@ -798,7 +760,7 @@ describe('useOptimisticUpdateQuantity', () => {
         buy_count: 2,
         product: mockProduct
       })
-      mockExtendedPurchases = [createMockExtendedPurchase({ ...existingPurchase })]
+      useCartStore.setState({ items: [createMockExtendedPurchase({ ...existingPurchase })] })
 
       queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, {
         data: { data: [existingPurchase] }

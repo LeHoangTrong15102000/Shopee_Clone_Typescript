@@ -1,15 +1,13 @@
 import { createContext, useState, useMemo, useCallback } from 'react'
-import { ExtendedPurchase } from 'src/types/purchases.type'
 import { User } from 'src/types/user.type'
 import { getAccessTokenFromLS, getProfileFromLS } from 'src/utils/auth'
+import { useCartStore } from 'src/stores/cart.store'
 
 interface AppContextInterface {
   isAuthenticated: boolean
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
   profile: User | null
   setProfile: React.Dispatch<React.SetStateAction<User | null>>
-  extendedPurchases: ExtendedPurchase[]
-  setExtendedPurchases: React.Dispatch<React.SetStateAction<ExtendedPurchase[]>>
   reset: () => void
 }
 
@@ -20,8 +18,6 @@ export const getInitialAppContext: () => AppContextInterface = () => ({
   setIsAuthenticated: () => null,
   profile: getProfileFromLS(), // ban đầu cho nó giá trị khởi tạo là null, lấy ra user từ localStorage
   setProfile: () => null,
-  extendedPurchases: [], // ban đầu sẽ cho nó là 1 cái arr rỗng
-  setExtendedPurchases: () => null,
   reset: () => null
 })
 
@@ -33,15 +29,15 @@ export const AppContext = createContext<AppContextInterface>(initialAppContext) 
 // Khi mà không truyền vào provider cái value thì giá trị khởi tạo sẽ được dùng
 export const AppProvider = ({ children }: { children: React.ReactNode; defaultValue?: AppContextInterface }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
-  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases)
   const [profile, setProfile] = useState<AppContextInterface['profile']>(initialAppContext.profile)
 
   // Mỗi khi mà clearLS thì hàm reset này nó sẽ gọi lại
   const reset = useCallback(() => {
     // Không nên reset lại bằng giá trị của initalAppContext
     setIsAuthenticated(false)
-    setExtendedPurchases([])
     setProfile(null)
+    // Clear cart state in Zustand store
+    useCartStore.getState().clearCart()
   }, [])
 
   const value = useMemo(
@@ -50,11 +46,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode; defaultVa
       setIsAuthenticated,
       profile,
       setProfile,
-      extendedPurchases,
-      setExtendedPurchases,
       reset
     }),
-    [isAuthenticated, profile, extendedPurchases, reset]
+    [isAuthenticated, profile, reset]
   )
 
   return (

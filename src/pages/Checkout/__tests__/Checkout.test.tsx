@@ -3,10 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AppContext, getInitialAppContext } from 'src/contexts/app.context'
 import Checkout from '../Checkout'
 import { ExtendedPurchase } from 'src/types/purchases.type'
 import { Product } from 'src/types/product.type'
+import { useCartStore } from 'src/stores/cart.store'
 
 // Mock react-toastify
 vi.mock('react-toastify', () => ({
@@ -124,22 +124,13 @@ const createMockExtendedPurchase = (overrides: Partial<ExtendedPurchase> = {}): 
 })
 
 let queryClient: QueryClient
-let mockExtendedPurchases: ExtendedPurchase[]
-let mockSetExtendedPurchases: any
 
 const createWrapper = (initialPurchases: ExtendedPurchase[] = []) => {
+  useCartStore.setState({ items: initialPurchases })
   return ({ children }: { children: React.ReactNode }) => {
-    const contextValue = {
-      ...getInitialAppContext(),
-      isAuthenticated: true,
-      extendedPurchases: initialPurchases,
-      setExtendedPurchases: mockSetExtendedPurchases
-    }
     return (
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={['/checkout']}>
-          <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
-        </MemoryRouter>
+        <MemoryRouter initialEntries={['/checkout']}>{children}</MemoryRouter>
       </QueryClientProvider>
     )
   }
@@ -152,19 +143,13 @@ beforeEach(() => {
       mutations: { retry: false }
     }
   })
-  mockExtendedPurchases = [createMockExtendedPurchase()]
-  mockSetExtendedPurchases = vi.fn((updater) => {
-    if (typeof updater === 'function') {
-      mockExtendedPurchases = updater(mockExtendedPurchases)
-    } else {
-      mockExtendedPurchases = updater
-    }
-  })
+  useCartStore.setState({ items: [] })
   vi.clearAllMocks()
 })
 
 afterEach(() => {
   queryClient.clear()
+  useCartStore.setState({ items: [] })
 })
 
 describe('Checkout Page', () => {
@@ -184,7 +169,7 @@ describe('Checkout Page', () => {
 
     test('should render checkout page with checked items', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -197,7 +182,7 @@ describe('Checkout Page', () => {
 
     test('should render progress stepper', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -212,7 +197,7 @@ describe('Checkout Page', () => {
 
     test('should render section headers', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -224,7 +209,7 @@ describe('Checkout Page', () => {
 
     test('should render security badge', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -236,7 +221,7 @@ describe('Checkout Page', () => {
   describe('Voucher & Coins', () => {
     test('should render voucher input field', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -250,7 +235,7 @@ describe('Checkout Page', () => {
       const user = userEvent.setup()
 
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       const voucherInput = await screen.findByPlaceholderText('Nhập mã voucher')
@@ -269,7 +254,7 @@ describe('Checkout Page', () => {
       const user = userEvent.setup()
 
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       const voucherInput = await screen.findByPlaceholderText('Nhập mã voucher')
@@ -288,7 +273,7 @@ describe('Checkout Page', () => {
       const user = userEvent.setup()
 
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       const voucherInput = await screen.findByPlaceholderText('Nhập mã voucher')
@@ -308,7 +293,7 @@ describe('Checkout Page', () => {
   describe('Form Validation', () => {
     test('should disable place order button when address is not selected', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       // Wait for the page to render
@@ -323,7 +308,7 @@ describe('Checkout Page', () => {
 
     test('should have place order button in the page', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {
@@ -335,7 +320,7 @@ describe('Checkout Page', () => {
   describe('Order Summary', () => {
     test('should display product information in order summary', async () => {
       render(<Checkout />, {
-        wrapper: createWrapper(mockExtendedPurchases)
+        wrapper: createWrapper([createMockExtendedPurchase()])
       })
 
       await waitFor(() => {

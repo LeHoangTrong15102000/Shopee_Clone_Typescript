@@ -1,8 +1,8 @@
-import { useState, useContext, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore, useCartItems, useCheckedItems } from 'src/stores/cart.store'
 import { Address, ShippingMethod, PaymentMethodType, CreateOrderBody } from 'src/types/checkout.type'
 import checkoutApi from 'src/apis/checkout.api'
 import path from 'src/constant/path'
@@ -14,7 +14,10 @@ const CHECKOUT_SESSION_KEY = 'checkout_items'
 export const useCheckout = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
+  const extendedPurchases = useCartItems()
+  const setExtendedPurchases = useCartStore((s) => s.setItems)
+  const clearCheckedItems = useCartStore((s) => s.clearCheckedItems)
+  const checkedItems = useCheckedItems()
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
@@ -30,8 +33,6 @@ export const useCheckout = () => {
       }
     }
   }, [])
-
-  const checkedItems = useMemo(() => extendedPurchases.filter((item) => item.isChecked), [extendedPurchases])
 
   useEffect(() => {
     if (checkedItems.length > 0) {
@@ -63,7 +64,7 @@ export const useCheckout = () => {
     onSuccess: () => {
       toast.success('Đặt hàng thành công!')
       sessionStorage.removeItem(CHECKOUT_SESSION_KEY)
-      setExtendedPurchases((prev) => prev.filter((item) => !item.isChecked))
+      clearCheckedItems()
       queryClient.invalidateQueries({ queryKey: ['purchases'] })
       navigate(`/user/purchase?status=1`)
     },

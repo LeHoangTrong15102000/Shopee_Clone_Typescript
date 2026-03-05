@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useContext } from 'react'
 
 import purchaseApi from 'src/apis/purchases.api'
 import { purchasesStatus } from 'src/constant/purchase'
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { Purchase } from 'src/types/purchases.type'
 import { useQueryInvalidation } from '../../useQueryInvalidation'
 import { TOAST_MESSAGES } from '../shared/constants'
@@ -20,7 +19,9 @@ import {
 
 export const useOptimisticAddToCart = () => {
   const queryClient = useQueryClient()
-  const { setExtendedPurchases } = useContext(AppContext)
+  const addOptimisticItem = useCartStore((s) => s.addOptimisticItem)
+  const replaceTempItems = useCartStore((s) => s.replaceTempItems)
+  const removeTempItems = useCartStore((s) => s.removeTempItems)
   const { invalidateCart, invalidateProductDetail } = useQueryInvalidation()
 
   return useMutation({
@@ -51,13 +52,12 @@ export const useOptimisticAddToCart = () => {
         }))
 
         // Cập nhật context state optimistically
-        setExtendedPurchases((prev) => [
-          ...prev,
+        addOptimisticItem(
           createExtendedPurchase(optimisticPurchase, {
             disabled: false,
             isChecked: true
           })
-        ])
+        )
 
         // Hiển thị feedback ngay lập tức
         showSuccessToast(TOAST_MESSAGES.ADD_TO_CART_SUCCESS)
@@ -79,7 +79,7 @@ export const useOptimisticAddToCart = () => {
 
       // Rollback context state
       if (context?.optimisticPurchase) {
-        setExtendedPurchases((prev) => prev.filter((item) => !item._id.startsWith('temp-')))
+        removeTempItems()
       }
 
       // Hiển thị lỗi
@@ -102,13 +102,7 @@ export const useOptimisticAddToCart = () => {
       }))
 
       // Cập nhật context với data thật
-      setExtendedPurchases((prev) =>
-        prev.map((item) =>
-          item._id.startsWith('temp-')
-            ? createExtendedPurchase(realPurchase, { disabled: false, isChecked: true })
-            : item
-        )
-      )
+      replaceTempItems(realPurchase)
     },
 
     onSettled: (_data, _error, variables) => {

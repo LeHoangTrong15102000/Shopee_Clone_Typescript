@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useContext } from 'react'
 import { toast } from 'react-toastify'
 
 import purchaseApi from 'src/apis/purchases.api'
-import { AppContext } from 'src/contexts/app.context'
+import { useCartStore } from 'src/stores/cart.store'
 import { Purchase } from 'src/types/purchases.type'
 import { RemoveFromCartContext, PurchasesQueryData, QUERY_KEYS } from '../shared/types'
 import {
@@ -20,7 +19,8 @@ import { useQueryInvalidation } from '../../useQueryInvalidation'
 
 export const useOptimisticRemoveFromCart = () => {
   const queryClient = useQueryClient()
-  const { setExtendedPurchases } = useContext(AppContext)
+  const removeItems = useCartStore((s) => s.removeItems)
+  const restoreItems = useCartStore((s) => s.restoreItems)
   const { invalidateCart } = useQueryInvalidation()
 
   return useMutation({
@@ -49,7 +49,7 @@ export const useOptimisticRemoveFromCart = () => {
       }))
 
       // Cập nhật context state optimistically
-      setExtendedPurchases((prev) => prev.filter((item) => !purchaseIds.includes(item._id)))
+      removeItems(purchaseIds)
 
       // Hiển thị thông báo với option undo
       const undoToast = toast.success(TOAST_MESSAGES.REMOVE_FROM_CART_SUCCESS(purchaseIds.length), {
@@ -60,12 +60,10 @@ export const useOptimisticRemoveFromCart = () => {
           // Undo functionality
           if (previousData) {
             queryClient.setQueryData(QUERY_KEYS.PURCHASES_IN_CART, previousData)
-            setExtendedPurchases((prev) => {
-              const restoredItems = removedItems.map((item: Purchase) =>
-                createExtendedPurchase(item, { disabled: false, isChecked: false })
-              )
-              return [...prev, ...restoredItems]
-            })
+            const restoredItems = removedItems.map((item: Purchase) =>
+              createExtendedPurchase(item, { disabled: false, isChecked: false })
+            )
+            restoreItems(restoredItems)
             toast.dismiss(undoToast)
             showInfoToast(TOAST_MESSAGES.RESTORE_ITEMS)
           }
@@ -82,12 +80,10 @@ export const useOptimisticRemoveFromCart = () => {
 
         // Khôi phục context state
         if (context.removedItems) {
-          setExtendedPurchases((prev) => {
-            const restoredItems = context.removedItems!.map((item: Purchase) =>
-              createExtendedPurchase(item, { disabled: false, isChecked: false })
-            )
-            return [...prev, ...restoredItems]
-          })
+          const restoredItems = context.removedItems.map((item: Purchase) =>
+            createExtendedPurchase(item, { disabled: false, isChecked: false })
+          )
+          restoreItems(restoredItems)
         }
       }
 
