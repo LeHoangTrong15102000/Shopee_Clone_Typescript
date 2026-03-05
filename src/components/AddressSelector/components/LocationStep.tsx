@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { UseFormReturn } from 'react-hook-form'
 import { District, vietnamProvinces, Ward } from 'src/data/vietnamLocations'
 import { AddressSchemaFormData } from '../addressForm.constants'
@@ -41,6 +42,7 @@ export default function LocationStep({
   onDistrictChange,
   onWardChange
 }: LocationStepProps) {
+  const { t } = useTranslation('address')
   const {
     register,
     watch,
@@ -56,15 +58,15 @@ export default function LocationStep({
       className='space-y-4'
     >
       <div className='mb-4'>
-        <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Địa chỉ giao hàng</h4>
-        <p className='text-sm text-gray-500 dark:text-gray-400'>Chọn khu vực giao hàng của bạn</p>
+        <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>{t('location.title')}</h4>
+        <p className='text-sm text-gray-500 dark:text-gray-400'>{t('location.subtitle')}</p>
       </div>
 
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
         {/* Province Select */}
         <div>
           <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
-            Tỉnh/Thành phố <span className='text-red-500'>*</span>
+            {t('form.province')} <span className='text-red-500'>*</span>
           </label>
           <div className='relative'>
             <select
@@ -74,7 +76,7 @@ export default function LocationStep({
                 errors.provinceId ? 'border-red-300' : 'border-gray-300 focus:border-orange dark:border-slate-600'
               }`}
             >
-              <option value=''>Chọn tỉnh/thành</option>
+              <option value=''>{t('location.selectProvince')}</option>
               {vietnamProvinces.map((province) => (
                 <option key={province.id} value={province.id}>
                   {province.name}
@@ -91,7 +93,7 @@ export default function LocationStep({
         {/* District Select */}
         <div>
           <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
-            Quận/Huyện <span className='text-red-500'>*</span>
+            {t('form.district')} <span className='text-red-500'>*</span>
           </label>
           <div className='relative'>
             <select
@@ -102,7 +104,7 @@ export default function LocationStep({
                 errors.districtId ? 'border-red-300' : 'border-gray-300 focus:border-orange dark:border-slate-600'
               }`}
             >
-              <option value=''>{isLoadingDistricts ? 'Đang tải...' : 'Chọn quận/huyện'}</option>
+              <option value=''>{isLoadingDistricts ? t('location.loading') : t('location.selectDistrict')}</option>
               {districts.map((district) => (
                 <option key={district.id} value={district.id}>
                   {district.name}
@@ -119,7 +121,7 @@ export default function LocationStep({
         {/* Ward Select */}
         <div>
           <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
-            Phường/Xã <span className='text-red-500'>*</span>
+            {t('form.ward')} <span className='text-red-500'>*</span>
           </label>
           <div className='relative'>
             <select
@@ -130,7 +132,7 @@ export default function LocationStep({
                 errors.wardId ? 'border-red-300' : 'border-gray-300 focus:border-orange dark:border-slate-600'
               }`}
             >
-              <option value=''>{isLoadingWards ? 'Đang tải...' : 'Chọn phường/xã'}</option>
+              <option value=''>{isLoadingWards ? t('location.loading') : t('location.selectWard')}</option>
               {wards.map((ward) => (
                 <option key={ward.id} value={ward.id}>
                   {ward.name}

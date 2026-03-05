@@ -85,18 +85,18 @@ const ChangePassword = () => {
 
   // Password requirements for security tips card
   const passwordRequirements = [
-    { label: 'Ít nhất 6 ký tự', check: (watchedNewPassword?.length ?? 0) >= 6 },
+    { label: t('changePassword.requirements.minLength'), check: (watchedNewPassword?.length ?? 0) >= 6 },
     {
-      label: 'Chứa ít nhất 1 chữ hoa',
+      label: t('changePassword.requirements.uppercase'),
       check: /[A-Z]/.test(watchedNewPassword ?? '')
     },
     {
-      label: 'Chứa ít nhất 1 chữ thường',
+      label: t('changePassword.requirements.lowercase'),
       check: /[a-z]/.test(watchedNewPassword ?? '')
     },
-    { label: 'Chứa ít nhất 1 số', check: /\d/.test(watchedNewPassword ?? '') },
+    { label: t('changePassword.requirements.number'), check: /\d/.test(watchedNewPassword ?? '') },
     {
-      label: 'Chứa ký tự đặc biệt (!@#$...)',
+      label: t('changePassword.requirements.special'),
       check: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/.test(watchedNewPassword ?? '')
     }
   ]
@@ -318,14 +318,19 @@ const ChangePassword = () => {
                   d='M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z'
                 />
               </svg>
-              <h3 className='text-sm font-semibold text-blue-700 dark:text-blue-300'>Yêu cầu mật khẩu</h3>
+              <h3 className='text-sm font-semibold text-blue-700 dark:text-blue-300'>
+                {t('changePassword.requirements.title')}
+              </h3>
             </div>
-            <ul className='space-y-2 text-xs text-gray-600 dark:text-gray-300' aria-label='Danh sách yêu cầu mật khẩu'>
+            <ul
+              className='space-y-2 text-xs text-gray-600 dark:text-gray-300'
+              aria-label={t('changePassword.requirements.aria')}
+            >
               {passwordRequirements.map((req, index) => (
                 <li
                   key={index}
                   className='flex items-center gap-2'
-                  aria-label={`${req.label}: ${req.check ? 'Đã đạt' : 'Chưa đạt'}`}
+                  aria-label={`${req.label}: ${req.check ? t('changePassword.requirements.met') : t('changePassword.requirements.notMet')}`}
                 >
                   {req.check ? (
                     <svg
@@ -358,9 +363,7 @@ const ChangePassword = () => {
             </ul>
             {/* Security tip */}
             <div className='mt-4 border-t border-blue-100 pt-3 dark:border-slate-600'>
-              <p className='text-xs text-gray-500 italic dark:text-gray-400'>
-                💡 Mẹo: Sử dụng mật khẩu khác nhau cho mỗi tài khoản để tăng cường bảo mật.
-              </p>
+              <p className='text-xs text-gray-500 italic dark:text-gray-400'>{t('changePassword.tip')}</p>
             </div>
           </div>
         </motion.div>

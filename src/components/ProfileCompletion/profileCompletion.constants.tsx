@@ -157,11 +157,11 @@ export const ProfileIcons = {
 }
 
 export const PROFILE_FIELDS = [
-  { key: 'name', label: 'Tên', weight: 20 },
-  { key: 'avatar', label: 'Ảnh đại diện', weight: 20 },
-  { key: 'phone', label: 'Số điện thoại', weight: 20 },
-  { key: 'address', label: 'Địa chỉ', weight: 20 },
-  { key: 'date_of_birth', label: 'Ngày sinh', weight: 20 }
+  { key: 'name', weight: 20 },
+  { key: 'avatar', weight: 20 },
+  { key: 'phone', weight: 20 },
+  { key: 'address', weight: 20 },
+  { key: 'date_of_birth', weight: 20 }
 ] as const
 
 export type ProfileFieldKey = (typeof PROFILE_FIELDS)[number]['key']

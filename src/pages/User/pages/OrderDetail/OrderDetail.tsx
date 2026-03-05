@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { OrderStatus } from 'src/config/orderStatus'
 import { ANIMATION_DURATION } from 'src/styles/animations/motion.config'
 import CancelOrderModal from './components/CancelOrderModal'
@@ -20,6 +21,7 @@ import {
 import { useOrderDetail } from './useOrderDetail'
 
 export default function OrderDetail() {
+  const { t } = useTranslation('order')
   const {
     order,
     tracking,
@@ -57,9 +59,9 @@ export default function OrderDetail() {
   if (!order) {
     return (
       <div className='flex min-h-[400px] flex-col items-center justify-center'>
-        <p className='text-gray-500 dark:text-gray-300'>Không tìm thấy đơn hàng</p>
+        <p className='text-gray-500 dark:text-gray-300'>{t('detail.notFound')}</p>
         <Link to='/user/purchase' className='mt-4 text-orange hover:underline dark:text-orange-400'>
-          Quay lại danh sách đơn hàng
+          {t('detail.backToOrders')}
         </Link>
       </div>
     )
@@ -92,16 +94,16 @@ export default function OrderDetail() {
               className='mb-2 flex cursor-pointer items-center gap-1.5 text-sm text-gray-500 transition-colors duration-200 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
               whileHover={shouldReduceMotion ? {} : { x: -3 }}
               transition={{ duration: ANIMATION_DURATION.fast }}
-              aria-label='Quay lại trang trước'
+              aria-label={t('detail.backAria')}
             >
               <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
               </svg>
-              Quay lại
+              {t('detail.back')}
             </motion.button>
-            <h1 className='text-xl font-bold text-gray-900 dark:text-gray-100'>Chi tiết đơn hàng</h1>
+            <h1 className='text-xl font-bold text-gray-900 dark:text-gray-100'>{t('detail.title')}</h1>
             <p className='mt-1 text-sm text-gray-500 dark:text-gray-300'>
-              Mã đơn hàng: <span className='font-medium'>{order._id.slice(-8).toUpperCase()}</span>
+              {t('detail.orderId')} <span className='font-medium'>{order._id.slice(-8).toUpperCase()}</span>
             </p>
           </div>
           <motion.div
@@ -141,7 +143,7 @@ export default function OrderDetail() {
               />
             </svg>
           </span>
-          Địa chỉ nhận hàng
+          {t('detail.shippingAddress')}
         </h2>
         <div className='ml-12 space-y-1.5 text-sm'>
           <p className='text-base font-semibold text-gray-900 dark:text-gray-100'>{order.shippingAddress.fullName}</p>
@@ -202,7 +204,7 @@ export default function OrderDetail() {
                 />
               </svg>
             </span>
-            Thanh toán
+            {t('detail.payment')}
           </h2>
           <p className='ml-10.5 text-sm text-gray-600 dark:text-gray-300'>
             {paymentMethodLabels[order.paymentMethod] || order.paymentMethod}
@@ -223,7 +225,7 @@ export default function OrderDetail() {
                 />
               </svg>
             </span>
-            Vận chuyển
+            {t('detail.shipping')}
           </h2>
           <div className='ml-10.5'>
             <p className='text-sm text-gray-600 dark:text-gray-300'>{order.shippingMethod.name}</p>
@@ -252,7 +254,7 @@ export default function OrderDetail() {
               />
             </svg>
           </span>
-          Thông tin đơn hàng
+          {t('detail.orderInfo')}
         </h2>
         <div className='grid gap-4 text-sm md:grid-cols-2'>
           <div className='flex items-center gap-2'>
@@ -270,7 +272,7 @@ export default function OrderDetail() {
               />
             </svg>
             <div>
-              <span className='text-gray-500 dark:text-gray-300'>Ngày đặt hàng:</span>
+              <span className='text-gray-500 dark:text-gray-300'>{t('detail.orderDate')}</span>
               <span className='ml-2 font-medium text-gray-900 dark:text-gray-100'>{formatDate(order.createdAt)}</span>
             </div>
           </div>
@@ -290,7 +292,7 @@ export default function OrderDetail() {
                 />
               </svg>
               <div>
-                <span className='text-gray-500 dark:text-gray-300'>Ghi chú:</span>
+                <span className='text-gray-500 dark:text-gray-300'>{t('detail.note')}</span>
                 <span className='ml-2 text-gray-900 dark:text-gray-100'>{order.note}</span>
               </div>
             </div>

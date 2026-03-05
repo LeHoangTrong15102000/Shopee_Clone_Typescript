@@ -182,7 +182,7 @@ const ProductList = () => {
             >
               <div className='flex items-center space-x-2'>
                 <div className='h-4 w-4 animate-spin rounded-full border-b-2 border-orange'></div>
-                <span className='text-sm text-gray-600 dark:text-gray-300'>Đang cập nhật...</span>
+                <span className='text-sm text-gray-600 dark:text-gray-300'>{t('updating')}</span>
               </div>
             </motion.div>
           )}
@@ -202,7 +202,7 @@ const ProductList = () => {
                   variant='secondary'
                   onClick={() => setIsFilterDrawerOpen(true)}
                   className='flex w-full items-center justify-center gap-2 rounded-xs shadow-xs focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:outline-hidden'
-                  ariaLabel='Mở bộ lọc sản phẩm'
+                  ariaLabel={t('filter.openFilter')}
                 >
                   <svg
                     enableBackground='new 0 0 15 15'
@@ -219,7 +219,7 @@ const ProductList = () => {
                       />
                     </g>
                   </svg>
-                  <span>Bộ lọc</span>
+                  <span>{t('filter.button')}</span>
                   {/* Badge hiển thị số filter đang active */}
                   {(filters.category || filters.price_min || filters.price_max || filters.rating_filter) && (
                     <span className='ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-orange text-xs text-white'>
@@ -321,12 +321,8 @@ const ProductList = () => {
                   />
                 </svg>
               </div>
-              <h3 className='mb-2 text-xl font-semibold text-gray-600 dark:text-gray-300'>
-                Không tìm thấy sản phẩm nào
-              </h3>
-              <p className='mb-6 text-gray-500 dark:text-gray-400'>
-                Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn
-              </p>
+              <h3 className='mb-2 text-xl font-semibold text-gray-600 dark:text-gray-300'>{t('empty.noProducts')}</h3>
+              <p className='mb-6 text-gray-500 dark:text-gray-400'>{t('empty.adjustFilters')}</p>
               <Button
                 variant='primary'
                 onClick={() => {
@@ -337,7 +333,7 @@ const ProductList = () => {
                 }}
                 className='rounded-xs px-6 py-3'
               >
-                Xem tất cả sản phẩm
+                {t('empty.viewAll')}
               </Button>
             </div>
           ))}

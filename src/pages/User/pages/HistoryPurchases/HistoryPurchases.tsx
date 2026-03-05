@@ -7,11 +7,13 @@ import ProductReviewModal from 'src/components/ProductReviewModal'
 import { usePurchaseStatus } from 'src/hooks/nuqs'
 import { useOrderFilter } from 'src/hooks/useOrderFilter'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
+import { useTranslation } from 'react-i18next'
 import { staggerContainer } from 'src/styles/animations'
 import { PurchaseListStatus, Purchase } from 'src/types/purchases.type'
 import { PurchaseTabBar, PurchaseItem } from './components'
 
 const HistoryPurchases = () => {
+  const { t } = useTranslation('user')
   const [status, setStatus] = usePurchaseStatus() // nuqs: typed integer, default 0 (all)
   const reducedMotion = useReducedMotion()
 
@@ -133,16 +135,14 @@ const HistoryPurchases = () => {
                         d='M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z'
                       />
                     </svg>
-                    <span className='text-sm font-medium dark:text-gray-300'>Không tìm thấy đơn hàng phù hợp</span>
-                    <span className='mt-1 text-xs text-gray-400'>
-                      Thử điều chỉnh bộ lọc hoặc tìm kiếm với từ khóa khác
-                    </span>
+                    <span className='text-sm font-medium dark:text-gray-300'>{t('history.noMatchingOrders')}</span>
+                    <span className='mt-1 text-xs text-gray-400'>{t('history.adjustFilters')}</span>
                     <button
                       type='button'
                       onClick={clearAllFilters}
                       className='mt-3 text-sm font-medium text-[#ee4d2d] underline transition-colors hover:text-[#d73211] dark:text-orange-400 dark:hover:text-orange-300'
                     >
-                      Xóa tất cả bộ lọc
+                      {t('history.clearAllFilters')}
                     </button>
                   </>
                 ) : (
@@ -161,7 +161,7 @@ const HistoryPurchases = () => {
                         d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z'
                       />
                     </svg>
-                    <span className='text-sm dark:text-gray-300'>Chưa có đơn hàng nào</span>
+                    <span className='text-sm dark:text-gray-300'>{t('history.noOrders')}</span>
                   </>
                 )}
               </motion.div>

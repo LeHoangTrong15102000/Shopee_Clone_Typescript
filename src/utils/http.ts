@@ -2,6 +2,7 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
+import i18n from 'src/i18n/i18n'
 import { AuthResponse, RefreshTokenResponse } from 'src/types/auth.type'
 import {
   clearLS,
@@ -133,9 +134,7 @@ export class Http {
           this.accessToken = ''
           this.refreshToken = ''
           const errorMessage =
-            error.response?.data?.data?.message ??
-            error.response?.data.message ??
-            'Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!'
+            error.response?.data?.data?.message ?? error.response?.data.message ?? i18n.t('common:session_expired')
           toast.error(errorMessage, { autoClose: 1000 })
           if (this.redirectOnTokenExpiry) {
             setTimeout(() => {

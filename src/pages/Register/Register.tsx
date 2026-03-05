@@ -201,14 +201,14 @@ const Register = () => {
 
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-6 flex flex-col items-center justify-center text-[13px] text-gray-700 dark:text-gray-300'>
-                  <div className='px-3'>Bằng việc đăng kí, bạn đã đồng ý với Shopee về</div>
+                  <div className='px-3'>{t('register.termsIntro')}</div>
                   <div>
                     <Link to={path.home} className='text-orange dark:text-orange-400'>
-                      Điều khoản dịch vụ
+                      {t('register.termsOfService')}
                     </Link>{' '}
                     &{' '}
                     <Link to={path.home} className='text-orange dark:text-orange-400'>
-                      Chính sách bảo mật
+                      {t('register.privacyPolicy')}
                     </Link>
                   </div>
                 </div>

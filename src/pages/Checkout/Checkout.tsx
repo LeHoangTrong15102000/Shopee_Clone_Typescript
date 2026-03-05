@@ -66,10 +66,10 @@ const Checkout = () => {
             </div>
             <div className='min-w-0 flex-1'>
               <h1 className='truncate text-base leading-tight font-bold text-white sm:text-lg md:text-2xl'>
-                {t('checkout:title')}
+                {t('title')}
               </h1>
               <p className='mt-0.5 truncate text-[11px] leading-snug text-white/80 sm:text-xs md:text-sm'>
-                {t('checkout:subtitle')}
+                {t('subtitle')}
               </p>
             </div>
           </div>

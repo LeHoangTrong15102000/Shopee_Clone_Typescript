@@ -1,36 +1,37 @@
 import { AddressType } from 'src/types/checkout.type'
 import { z } from 'zod'
+import i18n from 'src/i18n/i18n'
 
 export const addressSchema = z.object({
-  fullName: z.string().min(1, 'Vui lòng nhập họ tên').max(100, 'Họ tên tối đa 100 ký tự'),
+  fullName: z.string().min(1, i18n.t('address:form.fullName.required')).max(100, i18n.t('address:form.fullName.max')),
   phone: z
     .string()
-    .min(1, 'Vui lòng nhập số điện thoại')
-    .regex(/^(0|\+84)[0-9]{9,10}$/, 'Số điện thoại không hợp lệ (VD: 0901234567)'),
-  provinceId: z.string().min(1, 'Vui lòng chọn tỉnh/thành phố'),
-  province: z.string().min(1, 'Vui lòng chọn tỉnh/thành phố'),
-  districtId: z.string().min(1, 'Vui lòng chọn quận/huyện'),
-  district: z.string().min(1, 'Vui lòng chọn quận/huyện'),
-  wardId: z.string().min(1, 'Vui lòng chọn phường/xã'),
-  ward: z.string().min(1, 'Vui lòng chọn phường/xã'),
-  street: z.string().min(1, 'Vui lòng nhập địa chỉ cụ thể').max(200, 'Địa chỉ tối đa 200 ký tự'),
+    .min(1, i18n.t('address:form.phone.required'))
+    .regex(/^(0|\+84)[0-9]{9,10}$/, i18n.t('address:form.phone.invalid')),
+  provinceId: z.string().min(1, i18n.t('address:form.province.required')),
+  province: z.string().min(1, i18n.t('address:form.province.required')),
+  districtId: z.string().min(1, i18n.t('address:form.district.required')),
+  district: z.string().min(1, i18n.t('address:form.district.required')),
+  wardId: z.string().min(1, i18n.t('address:form.ward.required')),
+  ward: z.string().min(1, i18n.t('address:form.ward.required')),
+  street: z.string().min(1, i18n.t('address:form.street.required')).max(200, i18n.t('address:form.street.max')),
   addressType: z.enum(['home', 'office', 'other']),
-  label: z.string().max(50, 'Nhãn tối đa 50 ký tự').optional(),
+  label: z.string().max(50, i18n.t('address:form.label.max')).optional(),
   isDefault: z.boolean().optional()
 })
 
 export type AddressSchemaFormData = z.infer<typeof addressSchema>
 
 export const FORM_STEPS = [
-  { id: 1, title: 'Liên hệ' },
-  { id: 2, title: 'Địa chỉ' },
-  { id: 3, title: 'Chi tiết' }
+  { id: 1, titleKey: 'step.contact' },
+  { id: 2, titleKey: 'step.location' },
+  { id: 3, titleKey: 'step.details' }
 ]
 
-export const ADDRESS_TYPE_OPTIONS: { value: AddressType; label: string; icon: React.ReactNode }[] = [
+export const ADDRESS_TYPE_OPTIONS: { value: AddressType; labelKey: string; icon: React.ReactNode }[] = [
   {
     value: 'home',
-    label: 'Nhà riêng',
+    labelKey: 'type.home',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
         <path d='M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z' />
@@ -39,7 +40,7 @@ export const ADDRESS_TYPE_OPTIONS: { value: AddressType; label: string; icon: Re
   },
   {
     value: 'office',
-    label: 'Văn phòng',
+    labelKey: 'type.office',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
         <path
@@ -52,7 +53,7 @@ export const ADDRESS_TYPE_OPTIONS: { value: AddressType; label: string; icon: Re
   },
   {
     value: 'other',
-    label: 'Khác',
+    labelKey: 'type.other',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
         <path

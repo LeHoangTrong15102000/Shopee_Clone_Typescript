@@ -179,12 +179,10 @@ const ProductDetail = () => {
       <div className='bg-gray-200 py-6 dark:bg-slate-900'>
         <div className='container'>
           <div className='py-16 text-center'>
-            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>Có lỗi xảy ra</h1>
-            <p className='mb-6 text-gray-500 dark:text-gray-400'>
-              Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.
-            </p>
+            <h1 className='mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-200'>{t('error.title')}</h1>
+            <p className='mb-6 text-gray-500 dark:text-gray-400'>{t('error.loadFailed')}</p>
             <Button variant='primary' onClick={() => window.location.reload()} className='rounded-xs px-6 py-3'>
-              Thử lại
+              {t('error.retry')}
             </Button>
           </div>
         </div>

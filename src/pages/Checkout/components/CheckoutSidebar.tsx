@@ -51,9 +51,7 @@ export const CheckoutSidebar = ({
           className='rounded-xl border border-orange-100/30 bg-linear-to-br from-white via-orange-50/10 to-amber-50/10 p-4 shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
         >
           <div className='mb-4 flex items-center justify-between border-b border-gray-100 pb-4 dark:border-slate-700'>
-            <span className='text-base font-medium text-gray-700 md:text-lg dark:text-gray-200'>
-              {t('checkout:total')}
-            </span>
+            <span className='text-base font-medium text-gray-700 md:text-lg dark:text-gray-200'>{t('total')}</span>
             <span className='text-xl font-bold text-orange md:text-2xl'>₫{totalAmount.toLocaleString('vi-VN')}</span>
           </div>
 
@@ -72,7 +70,7 @@ export const CheckoutSidebar = ({
               />
             </svg>
             <span className='text-xs font-medium text-green-700 md:text-sm dark:text-green-300'>
-              {t('checkout:securePayment')}
+              {t('securePayment')}
             </span>
           </div>
 
@@ -81,16 +79,16 @@ export const CheckoutSidebar = ({
             disabled={!isFormValid}
             className='w-full rounded-xl bg-linear-to-r from-orange via-orange to-amber-500 py-3 text-base font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:from-orange-600 hover:via-orange-500 hover:to-amber-400 hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none md:py-4 md:text-lg dark:shadow-slate-900/50'
           >
-            {t('checkout:placeOrder')}
+            {t('placeOrder')}
           </Button>
 
           <p className='mt-3 text-center text-[10px] text-gray-500 md:text-xs dark:text-gray-400'>
-            {t('checkout:placeOrderHint')}
+            {t('placeOrderHint')}
           </p>
 
           <div className='mt-4 border-t border-gray-100 pt-4 dark:border-slate-700'>
             <p className='mb-2 text-center text-[10px] text-gray-500 md:text-xs dark:text-gray-400'>
-              {t('checkout:acceptedPayments')}
+              {t('acceptedPayments')}
             </p>
             <PaymentIcons />
           </div>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { FORM_STEPS } from '../addressForm.constants'
 
 interface StepIndicatorProps {
@@ -14,6 +15,8 @@ export default function StepIndicator({
   canProceedToStep,
   onStepClick
 }: StepIndicatorProps) {
+  const { t } = useTranslation('address')
+
   return (
     <div className='border-b border-gray-100 bg-linear-to-b from-gray-50/80 to-white px-4 py-5 sm:px-6 sm:py-6 dark:border-slate-700 dark:from-slate-700/50 dark:to-slate-800'>
       <div className='flex items-center justify-center'>
@@ -21,6 +24,7 @@ export default function StepIndicator({
           const isCompleted = stepProgress >= step.id && currentStep !== step.id
           const isCurrent = currentStep === step.id
           const canClick = canProceedToStep(step.id)
+          const stepTitle = t(step.titleKey as 'step.contact' | 'step.location' | 'step.details')
 
           return (
             <div key={step.id} className='flex items-center'>
@@ -29,7 +33,7 @@ export default function StepIndicator({
                 onClick={() => canClick && onStepClick(step.id)}
                 disabled={!canClick}
                 className='group flex flex-col items-center gap-2 rounded-lg p-1 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange/50 focus-visible:ring-offset-2'
-                aria-label={`Bước ${step.id}: ${step.title}`}
+                aria-label={t('stepAria', { step: step.id, title: stepTitle })}
                 aria-current={isCurrent ? 'step' : undefined}
               >
                 <motion.div
@@ -96,7 +100,7 @@ export default function StepIndicator({
                           : 'text-gray-400 dark:text-gray-500'
                   }`}
                 >
-                  {step.title}
+                  {stepTitle as string}
                 </motion.span>
               </button>
 

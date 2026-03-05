@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 
 interface PasswordStrengthMeterProps {
@@ -8,18 +9,33 @@ interface PasswordStrengthMeterProps {
 }
 
 interface StrengthLevel {
-  label: string
+  labelKey: string
   percent: number
   barColor: string
   textColor: string
 }
 
 const strengthLevels: StrengthLevel[] = [
-  { label: '', percent: 0, barColor: '#d1d5db', textColor: 'text-gray-400 dark:text-gray-500' },
-  { label: 'Yếu', percent: 25, barColor: '#ef4444', textColor: 'text-red-500 dark:text-red-400' },
-  { label: 'Trung bình', percent: 50, barColor: '#f97316', textColor: 'text-orange-500 dark:text-orange-400' },
-  { label: 'Khá', percent: 75, barColor: '#eab308', textColor: 'text-yellow-500 dark:text-yellow-400' },
-  { label: 'Mạnh', percent: 100, barColor: '#22c55e', textColor: 'text-green-500 dark:text-green-400' }
+  { labelKey: '', percent: 0, barColor: '#d1d5db', textColor: 'text-gray-400 dark:text-gray-500' },
+  { labelKey: 'passwordStrength.weak', percent: 25, barColor: '#ef4444', textColor: 'text-red-500 dark:text-red-400' },
+  {
+    labelKey: 'passwordStrength.fair',
+    percent: 50,
+    barColor: '#f97316',
+    textColor: 'text-orange-500 dark:text-orange-400'
+  },
+  {
+    labelKey: 'passwordStrength.good',
+    percent: 75,
+    barColor: '#eab308',
+    textColor: 'text-yellow-500 dark:text-yellow-400'
+  },
+  {
+    labelKey: 'passwordStrength.strong',
+    percent: 100,
+    barColor: '#22c55e',
+    textColor: 'text-green-500 dark:text-green-400'
+  }
 ]
 
 const calculateStrength = (password: string): number => {
@@ -42,6 +58,7 @@ const calculateStrength = (password: string): number => {
 }
 
 const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMeterProps) => {
+  const { t } = useTranslation('auth')
   const reducedMotion = useReducedMotion()
 
   const strength = useMemo(() => calculateStrength(password), [password])
@@ -52,12 +69,19 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
   }
 
   const currentLevel = strengthLevels[strength]
+  const labelKey = currentLevel.labelKey as
+    | 'passwordStrength.weak'
+    | 'passwordStrength.fair'
+    | 'passwordStrength.good'
+    | 'passwordStrength.strong'
+    | ''
+  const label = labelKey ? t(labelKey) : ''
 
   return (
     <div
       className={className}
       role='meter'
-      aria-label='Độ mạnh mật khẩu'
+      aria-label={t('passwordStrength.aria')}
       aria-valuenow={strength}
       aria-valuemin={0}
       aria-valuemax={4}
@@ -87,9 +111,9 @@ const PasswordStrengthMeter = ({ password, className = '' }: PasswordStrengthMet
       </div>
 
       {/* Strength label */}
-      {currentLevel.label && (
+      {label && (
         <div className={`mt-1.5 flex items-center justify-end gap-1 text-xs ${currentLevel.textColor}`}>
-          <span className={strength >= 4 ? 'font-semibold' : 'font-medium'}>{currentLevel.label}</span>
+          <span className={strength >= 4 ? 'font-semibold' : 'font-medium'}>{label}</span>
           {strength >= 4 &&
             (reducedMotion ? (
               <svg

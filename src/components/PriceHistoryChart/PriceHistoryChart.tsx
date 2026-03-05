@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import priceHistoryApi from 'src/apis/priceHistory.api'
@@ -14,32 +15,43 @@ interface PriceHistoryChartProps {
 
 type TimeRange = 7 | 30 | 90
 
-const TIME_RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
-  { value: 7, label: '7 ngày' },
-  { value: 30, label: '30 ngày' },
-  { value: 90, label: '90 ngày' }
-]
-
-const TREND_CONFIG = {
-  up: { color: 'text-red-500', bgColor: 'bg-red-50 dark:bg-red-900/30', icon: '↑', label: 'Tăng' },
-  down: { color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/30', icon: '↓', label: 'Giảm' },
-  stable: {
-    color: 'text-gray-500 dark:text-gray-400',
-    bgColor: 'bg-gray-50 dark:bg-slate-700',
-    icon: '→',
-    label: 'Ổn định'
-  }
-}
-
 const CHART_DESCRIPTION_ID = 'price-history-chart-description'
 
 const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: PriceHistoryChartProps) => {
+  const { t } = useTranslation('product')
   const [selectedDays, setSelectedDays] = useState<TimeRange>(30)
   const [targetPrice, setTargetPrice] = useState('')
   const [hoveredPoint, setHoveredPoint] = useState<PricePoint | null>(null)
   const [showAlertForm, setShowAlertForm] = useState(false)
 
   const queryClient = useQueryClient()
+
+  const TIME_RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
+    { value: 7, label: t('priceHistory.timeRange.7days') },
+    { value: 30, label: t('priceHistory.timeRange.30days') },
+    { value: 90, label: t('priceHistory.timeRange.90days') }
+  ]
+
+  const TREND_CONFIG = {
+    up: {
+      color: 'text-red-500',
+      bgColor: 'bg-red-50 dark:bg-red-900/30',
+      icon: '↑',
+      label: t('priceHistory.trend.up')
+    },
+    down: {
+      color: 'text-green-500',
+      bgColor: 'bg-green-50 dark:bg-green-900/30',
+      icon: '↓',
+      label: t('priceHistory.trend.down')
+    },
+    stable: {
+      color: 'text-gray-500 dark:text-gray-400',
+      bgColor: 'bg-gray-50 dark:bg-slate-700',
+      icon: '→',
+      label: t('priceHistory.trend.stable')
+    }
+  }
 
   const { data: priceHistoryData, isLoading } = useQuery({
     queryKey: ['price-history', productId, selectedDays],
@@ -49,13 +61,13 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
   const createAlertMutation = useMutation({
     mutationFn: priceHistoryApi.createPriceAlert,
     onSuccess: () => {
-      toast.success('Đã tạo thông báo giảm giá thành công!')
+      toast.success(t('priceHistory.toast.alertSuccess'))
       setTargetPrice('')
       setShowAlertForm(false)
       queryClient.invalidateQueries({ queryKey: ['price-alerts'] })
     },
     onError: () => {
-      toast.error('Có lỗi xảy ra khi tạo thông báo')
+      toast.error(t('priceHistory.toast.alertError'))
     }
   })
 
@@ -95,15 +107,15 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
   const handleCreateAlert = useCallback(() => {
     const price = Number(targetPrice)
     if (!price || price <= 0) {
-      toast.error('Vui lòng nhập giá hợp lệ')
+      toast.error(t('priceHistory.toast.invalidPrice'))
       return
     }
     if (price >= currentPrice) {
-      toast.error('Giá mục tiêu phải thấp hơn giá hiện tại')
+      toast.error(t('priceHistory.toast.priceTooHigh'))
       return
     }
     createAlertMutation.mutate({ product_id: productId, target_price: price })
-  }, [targetPrice, currentPrice, createAlertMutation, productId])
+  }, [targetPrice, currentPrice, createAlertMutation, productId, t])
 
   const handlePointMouseEnter = useCallback((point: PricePoint) => {
     setHoveredPoint(point)
@@ -138,14 +150,16 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
       className={`rounded-lg border border-gray-200 bg-white p-3 sm:p-4 dark:border-slate-700 dark:bg-slate-800 ${className}`}
     >
       <div className='mb-4 flex items-center justify-between'>
-        <h3 className='text-base font-semibold text-gray-800 sm:text-lg dark:text-gray-200'>Lịch sử giá</h3>
-        <div className='flex gap-1' role='group' aria-label='Chọn khoảng thời gian'>
+        <h3 className='text-base font-semibold text-gray-800 sm:text-lg dark:text-gray-200'>
+          {t('priceHistory.title')}
+        </h3>
+        <div className='flex gap-1' role='group' aria-label={t('priceHistory.timeRangeAria')}>
           {TIME_RANGE_OPTIONS.map((option) => (
             <Button
               animated={false}
               key={option.value}
               onClick={() => setSelectedDays(option.value)}
-              aria-label={`Xem lịch sử giá ${option.label}`}
+              aria-label={t('priceHistory.viewAria', { days: option.label })}
               aria-pressed={selectedDays === option.value}
               className={`rounded px-2 py-1 text-xs transition-colors sm:px-3 sm:text-sm ${
                 selectedDays === option.value
@@ -162,10 +176,10 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
       {priceHistory && (
         <>
           <div className='mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4'>
-            <PriceStatCard label='Giá hiện tại' value={currentPrice} highlight />
-            <PriceStatCard label='Giá thấp nhất' value={priceHistory.lowest_price} />
-            <PriceStatCard label='Giá cao nhất' value={priceHistory.highest_price} />
-            <PriceStatCard label='Giá trung bình' value={priceHistory.average_price} />
+            <PriceStatCard label={t('priceHistory.currentPrice')} value={currentPrice} highlight />
+            <PriceStatCard label={t('priceHistory.lowestPrice')} value={priceHistory.lowest_price} />
+            <PriceStatCard label={t('priceHistory.highestPrice')} value={priceHistory.highest_price} />
+            <PriceStatCard label={t('priceHistory.averagePrice')} value={priceHistory.average_price} />
           </div>
 
           <div className='mb-4 flex items-center gap-4'>
@@ -176,7 +190,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
             {discountFromHighest > 0 && (
               <div className='rounded-full bg-green-50 px-3 py-1 dark:bg-green-900/30'>
                 <span className='text-sm font-medium text-green-600 dark:text-green-400'>
-                  Giảm {discountFromHighest}% so với giá cao nhất
+                  {t('priceHistory.discountFromHighest', { percent: discountFromHighest })}
                 </span>
               </div>
             )}
@@ -185,15 +199,18 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
           {chartData && (
             <div className='relative mb-4'>
               <p id={CHART_DESCRIPTION_ID} className='sr-only'>
-                Biểu đồ lịch sử giá trong {selectedDays} ngày qua. Giá thấp nhất: {formatCurrency(chartData.minPrice)}₫,
-                giá cao nhất: {formatCurrency(chartData.maxPrice)}₫
+                {t('priceHistory.chartDescription', {
+                  days: selectedDays,
+                  min: formatCurrency(chartData.minPrice),
+                  max: formatCurrency(chartData.maxPrice)
+                })}
               </p>
               <svg
                 viewBox='0 0 100 100'
                 className='h-28 w-full sm:h-40'
                 preserveAspectRatio='none'
                 role='img'
-                aria-label={`Biểu đồ lịch sử giá sản phẩm trong ${selectedDays} ngày`}
+                aria-label={t('priceHistory.chartAria', { days: selectedDays })}
                 aria-describedby={CHART_DESCRIPTION_ID}
               >
                 <defs>
@@ -221,7 +238,10 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     onMouseLeave={handlePointMouseLeave}
                     role='button'
                     tabIndex={0}
-                    aria-label={`Giá ${formatCurrency(point.price)}₫ vào ngày ${formatDate(point.date)}`}
+                    aria-label={t('priceHistory.pricePointAria', {
+                      price: formatCurrency(point.price),
+                      date: formatDate(point.date)
+                    })}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         handlePointMouseEnter(point)
@@ -255,7 +275,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
               <Button
                 animated={false}
                 onClick={() => setShowAlertForm(true)}
-                aria-label='Mở form tạo thông báo khi giảm giá'
+                aria-label={t('priceHistory.openAlertFormAria')}
                 className='flex w-full items-center justify-center gap-2 rounded-lg border border-orange bg-orange/5 py-2 text-orange transition-colors hover:bg-orange/10'
               >
                 <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
@@ -266,20 +286,20 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'
                   />
                 </svg>
-                <span className='font-medium'>Thông báo khi giảm giá</span>
+                <span className='font-medium'>{t('priceHistory.alertButton')}</span>
               </Button>
             ) : (
-              <div className='space-y-3' role='form' aria-label='Form tạo thông báo giảm giá'>
+              <div className='space-y-3' role='form' aria-label={t('priceHistory.alertFormAria')}>
                 <div className='flex items-center gap-2'>
                   <label htmlFor='target-price-input' className='sr-only'>
-                    Giá mục tiêu
+                    {t('priceHistory.targetPriceLabel')}
                   </label>
                   <input
                     id='target-price-input'
                     type='number'
                     value={targetPrice}
                     onChange={(e) => setTargetPrice(e.target.value)}
-                    placeholder='Nhập giá mục tiêu'
+                    placeholder={t('priceHistory.targetPricePlaceholder')}
                     aria-describedby='target-price-description'
                     className='flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-orange focus:outline-hidden dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100'
                   />
@@ -292,24 +312,29 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
                     animated={false}
                     onClick={handleCreateAlert}
                     disabled={createAlertMutation.isPending}
-                    aria-label={createAlertMutation.isPending ? 'Đang tạo thông báo' : 'Tạo thông báo giảm giá'}
+                    aria-label={
+                      createAlertMutation.isPending
+                        ? t('priceHistory.creatingAlertAria')
+                        : t('priceHistory.createAlertAria')
+                    }
                     aria-busy={createAlertMutation.isPending}
                     className='flex-1 rounded-lg bg-orange py-2 text-sm font-medium text-white transition-colors hover:bg-orange/90 disabled:opacity-50'
                   >
-                    {createAlertMutation.isPending ? 'Đang tạo...' : 'Tạo thông báo'}
+                    {createAlertMutation.isPending ? t('priceHistory.creatingAlert') : t('priceHistory.createAlert')}
                   </Button>
                   <Button
                     animated={false}
                     onClick={handleCancelAlert}
-                    aria-label='Hủy tạo thông báo'
+                    aria-label={t('priceHistory.cancelAlertAria')}
                     className='rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700'
                   >
-                    Hủy
+                    {t('priceHistory.cancelAlert')}
                   </Button>
                 </div>
                 <p id='target-price-description' className='text-xs text-gray-500 dark:text-gray-400'>
-                  Bạn sẽ nhận được thông báo khi giá giảm xuống dưới{' '}
-                  {targetPrice ? formatCurrency(Number(targetPrice)) : '...'} ₫
+                  {t('priceHistory.targetPriceDescription', {
+                    price: targetPrice ? formatCurrency(Number(targetPrice)) : '...'
+                  })}
                 </p>
               </div>
             )}
@@ -318,7 +343,7 @@ const PriceHistoryChart = memo(({ productId, currentPrice, className = '' }: Pri
       )}
 
       {!priceHistory && !isLoading && (
-        <div className='py-8 text-center text-gray-500 dark:text-gray-400'>Chưa có dữ liệu lịch sử giá</div>
+        <div className='py-8 text-center text-gray-500 dark:text-gray-400'>{t('priceHistory.noData')}</div>
       )}
     </div>
   )

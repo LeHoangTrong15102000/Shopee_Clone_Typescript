@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import ProductRating from 'src/components/ProductRating'
 import OptimizedImage from 'src/components/OptimizedImage'
 import WishlistButton from 'src/components/WishlistButton'
@@ -13,6 +14,7 @@ interface ProductListItemProps {
 }
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
+  const { t } = useTranslation('product')
   const navigate = useNavigate()
 
   const handleProductClick = useCallback(() => {
@@ -91,7 +93,7 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
             <span className='text-xs text-gray-500 dark:text-gray-400'>({product.rating.toFixed(1)})</span>
           </div>
           <div className='text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
-            <span>Đã bán </span>
+            <span>{t('info.sold')} </span>
             <span className='font-medium'>{formatNumberToSocialStyle(product.sold)}</span>
           </div>
         </div>

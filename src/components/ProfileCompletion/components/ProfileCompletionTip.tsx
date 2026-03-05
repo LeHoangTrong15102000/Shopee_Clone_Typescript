@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import path from 'src/constant/path'
 
@@ -7,6 +8,8 @@ interface ProfileCompletionTipProps {
 }
 
 const ProfileCompletionTip = ({ reducedMotion }: ProfileCompletionTipProps) => {
+  const { t } = useTranslation('user')
+
   return (
     <motion.div
       initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -30,16 +33,14 @@ const ProfileCompletionTip = ({ reducedMotion }: ProfileCompletionTipProps) => {
         </svg>
       </motion.div>
       <div className='flex-1'>
-        <p className='text-sm font-semibold text-blue-700 dark:text-blue-200'>Mẹo nhỏ</p>
-        <p className='mt-0.5 text-xs text-blue-600/80 dark:text-blue-300/80'>
-          Hoàn thành hồ sơ để nhận ưu đãi và bảo mật tài khoản tốt hơn!
-        </p>
+        <p className='text-sm font-semibold text-blue-700 dark:text-blue-200'>{t('profileCompletion.tip.title')}</p>
+        <p className='mt-0.5 text-xs text-blue-600/80 dark:text-blue-300/80'>{t('profileCompletion.tip.message')}</p>
       </div>
       <Link
         to={path.profile}
         className='flex shrink-0 items-center gap-1 rounded-full bg-linear-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-300 hover:from-blue-600 hover:to-indigo-600 hover:shadow-lg hover:shadow-blue-200/50 dark:hover:shadow-blue-900/30'
       >
-        Hoàn thành ngay
+        {t('profileCompletion.tip.button')}
         <svg className='h-3 w-3' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
           <path strokeLinecap='round' strokeLinejoin='round' d='M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3' />
         </svg>

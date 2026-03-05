@@ -42,7 +42,7 @@ export const CheckoutProgressStepper = ({ currentStep }: CheckoutProgressStepper
                   currentStep >= step.id ? 'text-orange' : 'text-gray-400 dark:text-gray-300'
                 }`}
               >
-                {t(`checkout:step.${step.name}`)}
+                {t(`step.${step.name}` as 'step.address' | 'step.shipping' | 'step.payment' | 'step.confirm')}
               </span>
             </div>
             {index < CHECKOUT_STEPS.length - 1 && (

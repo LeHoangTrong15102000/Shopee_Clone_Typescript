@@ -53,5 +53,9 @@
   "filter.button": "Bộ lọc",
   "empty.noProducts": "Không tìm thấy sản phẩm nào",
   "empty.adjustFilters": "Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn",
-  "empty.viewAll": "Xem tất cả sản phẩm"
+  "empty.viewAll": "Xem tất cả sản phẩm",
+  "search.suggestion.tryThis": "Bạn có thể thử:",
+  "search.suggestion.checkSpelling": "Kiểm tra lỗi chính tả",
+  "search.suggestion.shorterKeywords": "Sử dụng từ khóa ngắn hơn",
+  "search.suggestion.popularKeywords": "Sử dụng từ khóa phổ biến hơn"
 }

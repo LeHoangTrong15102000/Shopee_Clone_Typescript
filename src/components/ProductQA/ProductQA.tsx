@@ -386,11 +386,11 @@ const QuestionItem = memo(function QuestionItem({
             </div>
           ) : (
             <p className='text-sm text-gray-500 dark:text-gray-400'>
-              {t('loginToReply.before')}{' '}
+              {t('loginToReply')}{' '}
               <a href='/login' className='text-orange-500 hover:text-orange-600'>
-                {t('loginToReply.link')}
+                {t('loginLink')}
               </a>{' '}
-              {t('loginToReply.after')}
+              {t('loginToReplyEnd')}
             </p>
           )}
         </div>

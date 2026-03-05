@@ -144,9 +144,7 @@ export default function LoyaltyPointsCard({
         <div className='flex items-center justify-between text-xs text-white/90'>
           <span>{t('loyalty.progressLabel')}</span>
           <span className='font-medium'>
-            {pointsToNextReward > 0
-              ? t('loyalty.remaining', { count: formatCurrency(pointsToNextReward) })
-              : t('loyalty.eligible')}
+            {pointsToNextReward > 0 ? t('loyalty.remaining', { count: pointsToNextReward }) : t('loyalty.eligible')}
           </span>
         </div>
         <div className='mt-2 h-2 overflow-hidden rounded-full bg-white/30'>
@@ -181,7 +179,7 @@ export default function LoyaltyPointsCard({
             </svg>
             <div className='flex-1 text-xs text-white'>
               {t('loyalty.expiryWarning', {
-                count: formatCurrency(points.expiring_soon.points),
+                count: points.expiring_soon.points,
                 date: formatDate(points.expiring_soon.expire_date)
               })}
               {daysUntilExpiry <= 3 && (

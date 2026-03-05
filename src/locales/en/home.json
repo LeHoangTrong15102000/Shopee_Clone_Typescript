@@ -53,5 +53,9 @@
   "filter.button": "Filter",
   "empty.noProducts": "No products found",
   "empty.adjustFilters": "Try adjusting your filters or search keywords",
-  "empty.viewAll": "View all products"
+  "empty.viewAll": "View all products",
+  "search.suggestion.tryThis": "You can try:",
+  "search.suggestion.checkSpelling": "Check for spelling errors",
+  "search.suggestion.shorterKeywords": "Use shorter keywords",
+  "search.suggestion.popularKeywords": "Use more popular keywords"
 }

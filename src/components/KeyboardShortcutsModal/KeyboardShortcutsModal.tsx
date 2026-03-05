@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { ANIMATION_DURATION, ANIMATION_EASING } from 'src/styles/animations'
@@ -66,6 +67,7 @@ const groupShortcutsByCategory = (shortcuts: DisplayShortcut[]): Record<string, 
 }
 
 const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcutsModalProps) => {
+  const { t } = useTranslation('common')
   const prefersReducedMotion = useReducedMotion()
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -150,14 +152,14 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
           >
             <div className='mb-6 flex items-center justify-between'>
               <h2 id='keyboard-shortcuts-title' className='text-xl font-semibold text-gray-900 dark:text-gray-100'>
-                Phím tắt
+                {t('keyboard.title')}
               </h2>
               <Button
                 variant='icon'
                 animated={false}
                 onClick={onClose}
                 className='p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'
-                aria-label='Đóng'
+                aria-label={t('keyboard.close')}
               >
                 <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
@@ -186,7 +188,7 @@ const KeyboardShortcutsModal = ({ isOpen, onClose, shortcuts }: KeyboardShortcut
                               </kbd>
                               {/* Show "then" separator for sequence shortcuts */}
                               {shortcut.keys && keyIndex < arr.length - 1 && (
-                                <span className='text-xs text-gray-400 dark:text-gray-500'>rồi</span>
+                                <span className='text-xs text-gray-400 dark:text-gray-500'>{t('keyboard.then')}</span>
                               )}
                             </span>
                           ))}

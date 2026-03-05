@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 interface CongratulatoryPanelProps {
   reducedMotion: boolean
 }
 
 const CongratulatoryPanel = ({ reducedMotion }: CongratulatoryPanelProps) => {
+  const { t } = useTranslation('user')
+
   return (
     <motion.div
       className='hidden w-44 shrink-0 flex-col items-center justify-center gap-3 rounded-2xl border border-amber-200/50 bg-linear-to-br from-amber-50 via-yellow-50 to-orange-50 p-4 md:flex md:w-40 lg:w-48 lg:p-5 dark:border-amber-700/40 dark:from-amber-900/30 dark:via-yellow-900/30 dark:to-orange-900/30'
@@ -33,14 +36,16 @@ const CongratulatoryPanel = ({ reducedMotion }: CongratulatoryPanelProps) => {
         </svg>
       </motion.div>
       <div className='text-center'>
-        <p className='text-sm font-bold text-amber-700 dark:text-amber-300'>Xuất sắc!</p>
+        <p className='text-sm font-bold text-amber-700 dark:text-amber-300'>{t('profileCompletion.congrats.title')}</p>
         <p className='mt-1 text-[11px] leading-relaxed text-amber-600/80 dark:text-amber-400/80'>
-          Hồ sơ hoàn chỉnh giúp bạn nhận được nhiều ưu đãi hơn
+          {t('profileCompletion.congrats.message')}
         </p>
       </div>
       <div className='flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-amber-100 px-3 py-1.5 dark:border-amber-600/30 dark:bg-amber-800/40'>
         <div className='h-2 w-2 animate-pulse rounded-full bg-amber-500' aria-hidden='true' />
-        <span className='text-[10px] font-semibold text-amber-700 dark:text-amber-300'>Đã xác minh</span>
+        <span className='text-[10px] font-semibold text-amber-700 dark:text-amber-300'>
+          {t('profileCompletion.congrats.verified')}
+        </span>
       </div>
     </motion.div>
   )

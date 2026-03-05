@@ -1,9 +1,13 @@
+import { useTranslation } from 'react-i18next'
+
 interface AddressFormHeaderProps {
   isEditing: boolean
   onClose: () => void
 }
 
 export default function AddressFormHeader({ isEditing, onClose }: AddressFormHeaderProps) {
+  const { t } = useTranslation('address')
+
   return (
     <div className='relative bg-linear-to-r from-orange to-orange/80 px-6 py-5'>
       <div
@@ -26,14 +30,14 @@ export default function AddressFormHeader({ isEditing, onClose }: AddressFormHea
             </svg>
           </div>
           <div>
-            <h3 className='text-xl font-bold text-white'>{isEditing ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}</h3>
-            <p className='text-sm text-white/80'>Điền thông tin giao hàng của bạn</p>
+            <h3 className='text-xl font-bold text-white'>{isEditing ? t('header.editTitle') : t('header.addTitle')}</h3>
+            <p className='text-sm text-white/80'>{t('header.subtitle')}</p>
           </div>
         </div>
         <button
           onClick={onClose}
           className='flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-xs transition-all hover:scale-105 hover:bg-white/30'
-          aria-label='Đóng'
+          aria-label={t('header.close')}
         >
           <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />

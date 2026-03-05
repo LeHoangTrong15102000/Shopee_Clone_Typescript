@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 interface BenefitsPanelProps {
   reducedMotion: boolean
@@ -23,8 +24,8 @@ const BENEFITS = [
         />
       </svg>
     ),
-    title: 'Bảo mật tài khoản',
-    desc: 'Xác minh danh tính, bảo vệ tài khoản'
+    titleKey: 'profileCompletion.benefits.security.title',
+    descKey: 'profileCompletion.benefits.security.desc'
   },
   {
     id: 'rewards',
@@ -44,8 +45,8 @@ const BENEFITS = [
         />
       </svg>
     ),
-    title: 'Nhận ưu đãi',
-    desc: 'Voucher và khuyến mãi dành riêng'
+    titleKey: 'profileCompletion.benefits.rewards.title',
+    descKey: 'profileCompletion.benefits.rewards.desc'
   },
   {
     id: 'shipping',
@@ -65,12 +66,14 @@ const BENEFITS = [
         />
       </svg>
     ),
-    title: 'Giao hàng nhanh hơn',
-    desc: 'Địa chỉ sẵn sàng, đặt hàng nhanh'
+    titleKey: 'profileCompletion.benefits.shipping.title',
+    descKey: 'profileCompletion.benefits.shipping.desc'
   }
 ]
 
 const BenefitsPanel = ({ reducedMotion }: BenefitsPanelProps) => {
+  const { t } = useTranslation('user')
+
   return (
     <motion.div
       className='hidden w-44 shrink-0 flex-col gap-3 md:flex md:w-40 lg:w-48'
@@ -79,7 +82,7 @@ const BenefitsPanel = ({ reducedMotion }: BenefitsPanelProps) => {
       transition={{ duration: 0.5, delay: 0.4 }}
     >
       <h4 className='text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400'>
-        Lợi ích khi hoàn thành
+        {t('profileCompletion.benefits.title')}
       </h4>
       {BENEFITS.map((item, i) => (
         <motion.div
@@ -93,8 +96,22 @@ const BenefitsPanel = ({ reducedMotion }: BenefitsPanelProps) => {
             {item.icon}
           </div>
           <div>
-            <p className='text-xs font-semibold text-gray-700 dark:text-gray-200'>{item.title}</p>
-            <p className='mt-0.5 text-[10px] leading-tight text-gray-500 dark:text-gray-400'>{item.desc}</p>
+            <p className='text-xs font-semibold text-gray-700 dark:text-gray-200'>
+              {t(
+                item.titleKey as
+                  | 'profileCompletion.benefits.security.title'
+                  | 'profileCompletion.benefits.rewards.title'
+                  | 'profileCompletion.benefits.shipping.title'
+              )}
+            </p>
+            <p className='mt-0.5 text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
+              {t(
+                item.descKey as
+                  | 'profileCompletion.benefits.security.desc'
+                  | 'profileCompletion.benefits.rewards.desc'
+                  | 'profileCompletion.benefits.shipping.desc'
+              )}
+            </p>
           </div>
         </motion.div>
       ))}

@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { UseFormReturn } from 'react-hook-form'
 import Input from 'src/components/Input'
 import { AddressType } from 'src/types/checkout.type'
@@ -25,6 +26,7 @@ export default function AddressDetailsStep({
   onStreetSelect,
   onTypeSelect
 }: AddressDetailsStepProps) {
+  const { t } = useTranslation('address')
   const {
     register,
     formState: { errors }
@@ -39,20 +41,20 @@ export default function AddressDetailsStep({
       className='space-y-4'
     >
       <div className='mb-4'>
-        <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Chi tiết địa chỉ</h4>
-        <p className='text-sm text-gray-500 dark:text-gray-400'>Nhập địa chỉ cụ thể và loại địa chỉ</p>
+        <h4 className='text-lg font-medium text-gray-800 dark:text-gray-100'>{t('details.title')}</h4>
+        <p className='text-sm text-gray-500 dark:text-gray-400'>{t('details.subtitle')}</p>
       </div>
 
       {/* Street Address with Autocomplete */}
       <div>
         <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Địa chỉ cụ thể <span className='text-red-500'>*</span>
+          {t('form.street')} <span className='text-red-500'>*</span>
         </label>
         <div className='relative'>
           <input
             type='text'
             {...register('street')}
-            placeholder='Số nhà, tên đường...'
+            placeholder={t('details.streetPlaceholder')}
             onFocus={() => onShowStreetSuggestions(true)}
             onBlur={() => setTimeout(() => onShowStreetSuggestions(false), 200)}
             className={`w-full rounded-lg border px-3 py-2.5 transition-colors focus:outline-hidden dark:bg-slate-700 dark:text-gray-100 ${
@@ -67,7 +69,9 @@ export default function AddressDetailsStep({
                 exit={{ opacity: 0, y: -10 }}
                 className='absolute top-full right-0 left-0 z-10 mt-1 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-700'
               >
-                <div className='p-2 text-xs font-medium text-gray-500 dark:text-gray-400'>Gợi ý địa chỉ</div>
+                <div className='p-2 text-xs font-medium text-gray-500 dark:text-gray-400'>
+                  {t('details.streetSuggestions')}
+                </div>
                 {filteredStreetSuggestions.map((suggestion, index) => (
                   <button
                     key={index}
@@ -114,7 +118,7 @@ export default function AddressDetailsStep({
               />
             </svg>
             <div>
-              <p className='text-xs font-medium text-gray-500 dark:text-gray-400'>Địa chỉ đầy đủ</p>
+              <p className='text-xs font-medium text-gray-500 dark:text-gray-400'>{t('details.fullAddress')}</p>
               <p className='text-sm text-gray-700 dark:text-gray-200'>{addressPreview}</p>
             </div>
           </div>
@@ -123,7 +127,9 @@ export default function AddressDetailsStep({
 
       {/* Address Type Selection */}
       <div>
-        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>Loại địa chỉ</label>
+        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+          {t('details.addressType')}
+        </label>
         <div className='flex flex-wrap gap-2'>
           {ADDRESS_TYPE_OPTIONS.map((option) => (
             <button
@@ -137,7 +143,7 @@ export default function AddressDetailsStep({
               }`}
             >
               {option.icon}
-              {option.label}
+              {t(option.labelKey as keyof typeof import('src/locales/en/address.json'))}
             </button>
           ))}
         </div>
@@ -152,10 +158,12 @@ export default function AddressDetailsStep({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>Nhãn tùy chỉnh</label>
+            <label className='mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+              {t('details.customLabel')}
+            </label>
             <Input
               type='text'
-              placeholder='VD: Nhà bà ngoại, Nhà bạn...'
+              placeholder={t('details.customLabelPlaceholder')}
               register={register}
               name='label'
               errorMessage={errors.label?.message}
@@ -175,10 +183,8 @@ export default function AddressDetailsStep({
           className='h-5 w-5 rounded-sm border-gray-300 text-orange focus:ring-orange dark:border-slate-500 dark:bg-slate-700'
         />
         <label htmlFor='isDefault' className='flex-1'>
-          <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>Đặt làm địa chỉ mặc định</span>
-          <span className='text-xs text-gray-500 dark:text-gray-400'>
-            Địa chỉ này sẽ được chọn tự động khi thanh toán
-          </span>
+          <span className='block text-sm font-medium text-gray-700 dark:text-gray-200'>{t('details.setDefault')}</span>
+          <span className='text-xs text-gray-500 dark:text-gray-400'>{t('details.setDefaultHint')}</span>
         </label>
       </div>
 
@@ -199,8 +205,8 @@ export default function AddressDetailsStep({
                 d='M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7'
               />
             </svg>
-            <p className='mt-2 text-sm font-medium text-gray-600 dark:text-gray-300'>Xem trên bản đồ</p>
-            <p className='text-xs text-gray-400 dark:text-gray-500'>Tính năng sẽ sớm ra mắt</p>
+            <p className='mt-2 text-sm font-medium text-gray-600 dark:text-gray-300'>{t('details.viewOnMap')}</p>
+            <p className='text-xs text-gray-400 dark:text-gray-500'>{t('details.comingSoon')}</p>
             <button
               type='button'
               className='mt-3 inline-flex items-center gap-1 rounded-lg bg-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 dark:bg-slate-600 dark:text-gray-300'
@@ -214,7 +220,7 @@ export default function AddressDetailsStep({
                   d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
                 />
               </svg>
-              Ghim vị trí
+              {t('details.pinLocation')}
             </button>
           </div>
         </div>

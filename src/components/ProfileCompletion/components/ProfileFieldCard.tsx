@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import path from 'src/constant/path'
 import { PROFILE_FIELDS, ProfileIcons, ShimmerEffect, FloatingParticle } from '../profileCompletion.constants'
@@ -9,6 +10,8 @@ interface ProfileFieldCardProps {
 }
 
 const ProfileFieldCard = ({ completedFields, reducedMotion }: ProfileFieldCardProps) => {
+  const { t } = useTranslation('user')
+
   return (
     <div className='w-full grow'>
       <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2'>
@@ -56,14 +59,21 @@ const ProfileFieldCard = ({ completedFields, reducedMotion }: ProfileFieldCardPr
               <span
                 className={`flex-1 text-sm font-semibold whitespace-nowrap ${isComplete ? 'text-emerald-700 dark:text-emerald-200' : 'text-gray-700 dark:text-gray-200'}`}
               >
-                {field.label}
+                {t(
+                  `profileCompletion.fields.${field.key}` as
+                    | 'profileCompletion.fields.name'
+                    | 'profileCompletion.fields.avatar'
+                    | 'profileCompletion.fields.phone'
+                    | 'profileCompletion.fields.address'
+                    | 'profileCompletion.fields.date_of_birth'
+                )}
               </span>
 
               {/* Status indicator */}
               {isComplete ? (
                 <motion.div
                   className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-teal-500 shadow-md'
-                  aria-label='Đã hoàn thành'
+                  aria-label={t('profileCompletion.fieldCompleted')}
                   initial={reducedMotion ? {} : { scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 25, delay: 0.1 * index }}
@@ -84,7 +94,7 @@ const ProfileFieldCard = ({ completedFields, reducedMotion }: ProfileFieldCardPr
                   to={path.profile}
                   className='group relative flex shrink-0 items-center gap-1 overflow-hidden rounded-full bg-linear-to-r from-orange-500 to-amber-500 px-2.5 py-1 text-xs font-semibold text-white transition-all duration-300 hover:from-orange-600 hover:to-amber-600 hover:shadow-lg hover:shadow-orange-200/50 dark:hover:shadow-orange-900/30'
                 >
-                  <span className='relative z-10'>Cập nhật</span>
+                  <span className='relative z-10'>{t('profileCompletion.fieldUpdate')}</span>
                   <svg
                     className='relative z-10 h-3 w-3 transition-transform group-hover:translate-x-0.5'
                     fill='none'

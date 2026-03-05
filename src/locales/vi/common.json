@@ -60,5 +60,7 @@
   "pwa.install": "Cài đặt",
   "pwa.later": "Để sau",
   "keyboard.title": "Phím tắt",
+  "keyboard.close": "Đóng",
+  "keyboard.then": "rồi",
   "session_expired": "Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!"
 }

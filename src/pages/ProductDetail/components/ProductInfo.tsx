@@ -1,4 +1,5 @@
 import { motion, Variants } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import ProductRating from 'src/components/ProductRating'
 import ShareButton from 'src/components/ShareButton'
 import ViewerCountBadge from 'src/components/ViewerCountBadge'
@@ -31,6 +32,7 @@ const ProductInfo = ({
   isPopular,
   infoContainerVariants
 }: ProductInfoProps) => {
+  const { t } = useTranslation('product')
   return (
     <motion.div
       variants={reducedMotion ? undefined : infoContainerVariants}
@@ -63,13 +65,13 @@ const ProductInfo = ({
             <span className='mr-1 border-b border-b-black/90 text-black/90 dark:border-b-gray-300 dark:text-gray-200'>
               3k
             </span>
-            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>Đánh giá</span>
+            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>{t('info.reviews')}</span>
           </div>
           <div className='mx-4 h-7 w-px bg-gray-300/80 dark:bg-slate-600'></div>
           {/* Sold */}
           <div className='flex items-center'>
             <span className='mr-1 text-black/90 dark:text-gray-200'>{formatNumberToSocialStyle(product.sold)}</span>
-            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>Đã bán</span>
+            <span className='text-sm text-black/60 capitalize dark:text-gray-400'>{t('info.sold')}</span>
           </div>
           {/* Share & Report */}
           <div className='ml-auto flex items-center gap-3'>
@@ -85,7 +87,7 @@ const ProductInfo = ({
               animated={false}
               className='text-sm text-black/60 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'
             >
-              Tố cáo
+              {t('info.report')}
             </Button>
           </div>
         </div>
@@ -99,7 +101,9 @@ const ProductInfo = ({
                 {/* Original Price */}
                 <div
                   className='mr-3 text-sm text-[#929292] line-through md:text-base dark:text-gray-400'
-                  aria-label={`Giá gốc ${formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)} đồng`}
+                  aria-label={t('info.originalPriceAria', {
+                    price: formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)
+                  })}
                 >
                   ₫{formatCurrency(livePriceBeforeDiscount ?? product?.price_before_discount)}
                 </div>
@@ -115,7 +119,7 @@ const ProductInfo = ({
                   />
                   <div className='ml-4 rounded-sm bg-orange px-1 py-0.5 text-xs font-semibold text-white uppercase'>
                     {rateSale(livePrice ?? product?.price, livePriceBeforeDiscount ?? product?.price_before_discount)}{' '}
-                    giảm
+                    {t('info.discount')}
                   </div>
                 </div>
               </div>

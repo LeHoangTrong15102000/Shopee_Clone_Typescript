@@ -35,7 +35,7 @@ const formatDeliveryDate = (daysFromNow: number): string => {
 
 const getDeliveryDateRange = (
   estimated_days: { min: number; max: number },
-  t: (key: string, options?: Record<string, unknown>) => string
+  t: ReturnType<typeof import('react-i18next').useTranslation<'shipping'>>['t']
 ): string => {
   const minDate = formatDeliveryDate(estimated_days.min)
   const maxDate = formatDeliveryDate(estimated_days.max)
@@ -162,7 +162,7 @@ function ShippingEstimate({
                   <div>
                     <div className='flex items-center gap-2'>
                       <span className='text-sm font-medium text-gray-800 sm:text-base dark:text-gray-200'>
-                        {t(option.name)}
+                        {t(option.name as 'option.instant' | 'option.express' | 'option.standard')}
                       </span>
                       {option.id === 'instant' && (
                         <span className='rounded-sm bg-[#ee4d2d] px-1.5 py-0.5 text-xs text-white'>{t('fastest')}</span>

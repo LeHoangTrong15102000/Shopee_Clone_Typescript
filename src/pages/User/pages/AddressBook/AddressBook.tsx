@@ -3,6 +3,8 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
+import i18n from 'src/i18n/i18n'
 import AddressForm from 'src/components/AddressSelector/AddressForm'
 import Button from 'src/components/Button'
 import { AddressType } from 'src/types/checkout.type'
@@ -16,7 +18,7 @@ import { useAddressBook } from './useAddressBook'
 
 const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.ReactNode; color: string }> = {
   home: {
-    label: 'Nhà riêng',
+    label: i18n.t('address:type.home'),
     color: 'blue',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
@@ -25,7 +27,7 @@ const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.Reac
     )
   },
   office: {
-    label: 'Văn phòng',
+    label: i18n.t('address:type.office'),
     color: 'purple',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
@@ -38,7 +40,7 @@ const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.Reac
     )
   },
   other: {
-    label: 'Khác',
+    label: i18n.t('address:type.other'),
     color: 'gray',
     icon: (
       <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>
@@ -53,6 +55,7 @@ const ADDRESS_TYPE_CONFIG: Record<AddressType, { label: string; icon: React.Reac
 }
 
 const AddressBook = () => {
+  const { t } = useTranslation(['user', 'address'])
   const {
     showForm,
     editingAddress,
@@ -115,15 +118,15 @@ const AddressBook = () => {
   return (
     <div className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
       <Helmet>
-        <title>Địa chỉ của tôi | Shopee Clone</title>
-        <meta name='description' content='Quản lý địa chỉ giao hàng của bạn' />
+        <title>{t('user:address.meta.title')}</title>
+        <meta name='description' content={t('user:address.meta.description')} />
       </Helmet>
       {/* Header */}
       <div className='flex flex-col gap-4 border-b border-b-gray-100 py-6 sm:flex-row sm:items-center sm:justify-between dark:border-b-slate-600'>
         <div className='text-center sm:text-left'>
-          <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>Địa chỉ của tôi</h1>
+          <h1 className='text-lg font-medium text-gray-700 capitalize dark:text-gray-200'>{t('user:address.title')}</h1>
           <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-            Quản lý địa chỉ giao hàng của bạn ({rawAddresses.length} địa chỉ)
+            {t('user:address.subtitle', { count: rawAddresses.length })}
           </div>
         </div>
         <div className='flex flex-wrap items-center justify-center gap-2 sm:justify-end sm:gap-3'>
@@ -145,7 +148,7 @@ const AddressBook = () => {
                   d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
                 />
               </svg>
-              <span>{isSelectionMode ? 'Hủy chọn' : 'Chọn nhiều'}</span>
+              <span>{isSelectionMode ? t('user:address.cancelSelect') : t('user:address.selectMultiple')}</span>
             </Button>
           )}
           <Button
@@ -162,7 +165,7 @@ const AddressBook = () => {
             >
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
             </svg>
-            <span className='relative z-10'>Thêm địa chỉ mới</span>
+            <span className='relative z-10'>{t('address:addNew')}</span>
           </Button>
         </div>
       </div>
@@ -210,7 +213,7 @@ const AddressBook = () => {
                       clipRule='evenodd'
                     />
                   </svg>
-                  Địa chỉ mặc định
+                  {t('user:address.defaultAddress')}
                 </h3>
                 <AddressCard
                   address={defaultAddress}
@@ -245,8 +248,10 @@ const AddressBook = () => {
                       d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
                     />
                   </svg>
-                  Địa chỉ khác ({otherAddresses.length})
-                  {!isSelectionMode && <span className='ml-auto text-xs text-gray-400'>Kéo thả để sắp xếp</span>}
+                  {t('user:address.otherAddresses', { count: otherAddresses.length })}
+                  {!isSelectionMode && (
+                    <span className='ml-auto text-xs text-gray-400'>{t('user:address.dragToReorder')}</span>
+                  )}
                 </h3>
                 <DndContext
                   sensors={isSelectionMode ? [] : sensors}
@@ -330,8 +335,8 @@ const AddressBook = () => {
             onConfirm={confirmBulkDelete}
             onCancel={() => setShowBulkDeleteConfirm(false)}
             isLoading={deleteMutation.isPending}
-            title={`Xóa ${selectedIds.size} địa chỉ`}
-            message={`Bạn có chắc chắn muốn xóa ${selectedIds.size} địa chỉ đã chọn? Hành động này không thể hoàn tác.`}
+            title={t('user:address.bulkDeleteTitle', { count: selectedIds.size })}
+            message={t('user:address.bulkDeleteMessage', { count: selectedIds.size })}
           />
         )}
       </AnimatePresence>

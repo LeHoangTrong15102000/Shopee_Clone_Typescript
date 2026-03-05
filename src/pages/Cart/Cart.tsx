@@ -15,6 +15,7 @@ import { useOptimisticUpdateQuantity, useOptimisticRemoveFromCart, TOAST_MESSAGE
 import useCartSync from 'src/hooks/useCartSync'
 import CartSyncIndicator from 'src/components/CartSyncIndicator'
 import RealTimeStockAlert from 'src/components/RealTimeStockAlert'
+import { useTranslation } from 'react-i18next'
 import { useSaveForLater, SavedItem } from 'src/hooks/useSaveForLater'
 import SaveForLaterSection from 'src/components/SaveForLaterSection'
 import useAnimatedNumber from 'src/hooks/useAnimatedNumber'
@@ -27,6 +28,7 @@ export type { ExtendedPurchase, InlineStockAlertState }
 
 // isAuthenticated mới vào được cái page này
 const Cart = () => {
+  const { t } = useTranslation('cart')
   // const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const queryClient = useQueryClient()
@@ -276,7 +278,7 @@ const Cart = () => {
 
       if (existingInCart) {
         removeFromSaved(item.product._id)
-        toast.info('Sản phẩm đã có trong giỏ hàng', { position: 'top-center', autoClose: 1500 })
+        toast.info(t('toast.alreadyInCart'), { position: 'top-center', autoClose: 1500 })
       } else {
         addToCartMutation.mutate(
           { product_id: item.product._id, buy_count: item.originalBuyCount },

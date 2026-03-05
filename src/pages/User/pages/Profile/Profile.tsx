@@ -266,7 +266,7 @@ const Profile = () => {
             {/* Tên đăng nhập */}
             <div className='mt-1 flex flex-col flex-wrap sm:mt-4 sm:flex-row'>
               <div className='truncate pt-1 text-sm text-gray-500 capitalize sm:w-[30%] sm:pt-3 sm:text-right sm:text-base dark:text-gray-400'>
-                Tên đăng nhập
+                {t('profile.username')}
               </div>
               <div className='sm:w-[70%] sm:pl-5'>
                 <div className='pt-1 text-sm text-gray-500 sm:pt-3 sm:text-base dark:text-gray-400'>
@@ -343,8 +343,8 @@ const Profile = () => {
               {/* Input file */}
               <InputFile onChange={(value) => handleChangeFile(value)} />
               <div className='mt-1'>
-                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>Dung lượng file tối đa 1 MB</div>
-                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>Định dạng:.JPEG,.PNG</div>
+                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>{t('profile.maxFileSize')}</div>
+                <div className='text-xs text-gray-400 sm:text-[0.875rem]'>{t('profile.fileFormat')}</div>
                 <div></div>
               </div>
             </div>

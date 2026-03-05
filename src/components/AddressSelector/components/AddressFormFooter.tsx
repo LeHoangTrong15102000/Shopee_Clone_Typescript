@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 
 interface AddressFormFooterProps {
@@ -21,6 +22,8 @@ export default function AddressFormFooter({
   onClose,
   onSubmit
 }: AddressFormFooterProps) {
+  const { t } = useTranslation('address')
+
   return (
     <div className='flex items-center justify-between border-t border-gray-100 bg-linear-to-b from-white to-gray-50 px-6 py-4 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800/50'>
       <div>
@@ -33,7 +36,7 @@ export default function AddressFormFooter({
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
             </svg>
-            Quay lại
+            {t('footer.back')}
           </Button>
         )}
       </div>
@@ -43,7 +46,7 @@ export default function AddressFormFooter({
           onClick={onClose}
           className='rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 hover:shadow-sm dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
         >
-          Hủy
+          {t('footer.cancel')}
         </Button>
         {currentStep < 3 ? (
           <Button
@@ -52,7 +55,7 @@ export default function AddressFormFooter({
             disabled={!canProceedToNext}
             className='inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-orange to-orange/90 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange/30 transition-all hover:shadow-xl hover:shadow-orange/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
           >
-            <span className='inline-flex items-center leading-none'>Tiếp tục</span>
+            <span className='inline-flex items-center leading-none'>{t('footer.next')}</span>
             <svg className='h-4 w-4 shrink-0' fill='none' stroke='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
             </svg>
@@ -68,7 +71,7 @@ export default function AddressFormFooter({
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
             </svg>
-            {isEditing ? 'Cập nhật' : 'Thêm địa chỉ'}
+            {isEditing ? t('footer.update') : t('footer.add')}
           </Button>
         )}
       </div>

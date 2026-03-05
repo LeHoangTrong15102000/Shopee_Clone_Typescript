@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { User } from 'src/types/user.type'
 import { PROFILE_FIELDS, isFieldComplete } from './profileCompletion.constants'
@@ -16,6 +17,7 @@ interface ProfileCompletionProps {
 }
 
 const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCompletionProps) => {
+  const { t } = useTranslation('user')
   const reducedMotion = useReducedMotion()
 
   const { percentage, completedFields, incompleteFields } = useMemo(() => {
@@ -72,10 +74,10 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
                   d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                 />
               </svg>
-              Hồ sơ đã hoàn thành
+              {t('profileCompletion.completed')}
             </span>
           ) : (
-            `Hoàn thành hồ sơ: ${percentage}%`
+            t('profileCompletion.progress', { percent: percentage })
           )}
         </div>
         <div
@@ -84,7 +86,7 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
           aria-valuenow={percentage}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Tiến độ hoàn thành hồ sơ: ${percentage}%`}
+          aria-label={t('profileCompletion.progressAria', { percent: percentage })}
         >
           <motion.div
             className='h-full rounded-full bg-linear-to-r from-[#ee4d2d] to-[#ff6633]'
@@ -114,11 +116,11 @@ const ProfileCompletion = ({ user, className = '', compact = false }: ProfileCom
         </div>
         <div className='relative flex items-center justify-between'>
           <div>
-            <h3 className='text-lg font-bold text-white'>Tiến độ hoàn thành hồ sơ</h3>
+            <h3 className='text-lg font-bold text-white'>{t('profileCompletion.title')}</h3>
             <p className='mt-1 text-sm text-white/80'>
               {percentage === 100
-                ? 'Tuyệt vời! Hồ sơ đã hoàn chỉnh'
-                : `Còn ${incompleteFields.length} mục cần cập nhật`}
+                ? t('profileCompletion.complete')
+                : t('profileCompletion.remaining', { count: incompleteFields.length })}
             </p>
           </div>
           {percentage === 100 && (

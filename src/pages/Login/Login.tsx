@@ -199,7 +199,7 @@ const Login = () => {
                     to={path.forgotPassword}
                     className='text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                   >
-                    Quên mật khẩu?
+                    {t('login.forgotPassword')}
                   </Link>
                 </div>
               </motion.div>
@@ -208,7 +208,7 @@ const Login = () => {
               <motion.div variants={reducedMotion ? undefined : staggerItem}>
                 <div className='mt-4 flex items-center gap-3'>
                   <div className='h-px flex-1 bg-gray-200 dark:bg-slate-600' />
-                  <span className='text-sm text-gray-400 select-none dark:text-gray-500'>HOẶC</span>
+                  <span className='text-sm text-gray-400 select-none dark:text-gray-500'>{t('login.or')}</span>
                   <div className='h-px flex-1 bg-gray-200 dark:bg-slate-600' />
                 </div>
               </motion.div>

@@ -60,5 +60,7 @@
   "pwa.install": "Install",
   "pwa.later": "Later",
   "keyboard.title": "Keyboard Shortcuts",
+  "keyboard.close": "Close",
+  "keyboard.then": "then",
   "session_expired": "Your session has expired. Please log in again!"
 }

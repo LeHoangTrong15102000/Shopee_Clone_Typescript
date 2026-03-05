@@ -90,7 +90,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
 
       {/* Suggestions section */}
       <motion.div className='mx-auto mt-6 max-w-md' variants={listVariants}>
-        <p className='mb-3 font-medium text-gray-600 dark:text-gray-300'>Bạn có thể thử:</p>
+        <p className='mb-3 font-medium text-gray-600 dark:text-gray-300'>{t('search.suggestion.tryThis')}</p>
         <ul className='mb-6 space-y-2 text-left text-gray-500 dark:text-gray-400'>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
@@ -104,7 +104,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
                 clipRule='evenodd'
               />
             </svg>
-            <span>Kiểm tra lỗi chính tả</span>
+            <span>{t('search.suggestion.checkSpelling')}</span>
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
@@ -118,7 +118,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
                 clipRule='evenodd'
               />
             </svg>
-            <span>Sử dụng từ khóa ngắn hơn</span>
+            <span>{t('search.suggestion.shorterKeywords')}</span>
           </motion.li>
           <motion.li className='flex items-center gap-2' variants={listItemVariants}>
             <svg
@@ -132,7 +132,7 @@ const SearchNoResults = memo(function SearchNoResults({ searchTerm, onPopularSea
                 clipRule='evenodd'
               />
             </svg>
-            <span>Sử dụng từ khóa phổ biến hơn</span>
+            <span>{t('search.suggestion.popularKeywords')}</span>
           </motion.li>
         </ul>
       </motion.div>

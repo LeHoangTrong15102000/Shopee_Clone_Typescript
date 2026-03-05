@@ -2,6 +2,7 @@
 
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import path from 'src/constant/path'
 import { useProductQueryStates } from 'src/hooks/nuqs'
 
@@ -12,6 +13,7 @@ interface Props {
 
 const RANGE = 2
 const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
+  const { t } = useTranslation('common')
   const [filters] = useProductQueryStates()
 
   const filtersAsStrings = Object.fromEntries(
@@ -82,7 +84,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
                 page: pageNumber.toString()
               }).toString()
             }}
-            aria-label={`Trang ${pageNumber}`}
+            aria-label={t('pagination.page', { page: pageNumber })}
             aria-current={pageNumber === safePage ? 'page' : undefined}
             className={classNames(
               'flex cursor-pointer items-center justify-center px-2 py-2 text-sm transition-all duration-150 md:px-4 md:py-3 md:text-[18px]',
@@ -107,7 +109,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
     >
       {safePage === 1 ? (
         <span
-          aria-label='Trang trước'
+          aria-label={t('pagination.prev')}
           aria-disabled='true'
           className='flex cursor-not-allowed items-center justify-center rounded-tl-sm rounded-bl-sm border-transparent px-2 py-2 opacity-40 transition-opacity duration-150 md:px-4 md:py-3'
         >
@@ -150,7 +152,7 @@ const Pagination = ({ pageSize = 20, basePath = path.home }: Props) => {
       {renderPagination()}
       {safePage === safePageSize ? (
         <span
-          aria-label='Trang sau'
+          aria-label={t('pagination.next')}
           aria-disabled='true'
           className='flex cursor-not-allowed items-center justify-center rounded-tr-sm rounded-br-sm border-transparent px-2 py-2 opacity-40 transition-opacity duration-150 md:px-4 md:py-3'
         >

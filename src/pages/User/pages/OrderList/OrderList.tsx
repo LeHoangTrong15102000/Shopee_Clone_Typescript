@@ -11,18 +11,30 @@ import Button from 'src/components/Button'
 import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
 import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
 import { useIsMobile } from 'src/hooks/useIsMobile'
+import { useTranslation } from 'react-i18next'
 
-const orderTabs: { status: number; label: string }[] = [
-  { status: ordersStatus.all, label: 'Tất cả' },
-  { status: ordersStatus.pending, label: 'Chờ xác nhận' },
-  { status: ordersStatus.confirmed, label: 'Đã xác nhận' },
-  { status: ordersStatus.shipping, label: 'Đang giao' },
-  { status: ordersStatus.delivered, label: 'Đã giao' },
-  { status: ordersStatus.cancelled, label: 'Đã hủy' },
-  { status: ordersStatus.returned, label: 'Trả hàng' }
+const orderTabKeys = [
+  'tabs.all',
+  'tabs.pending',
+  'tabs.confirmed',
+  'tabs.shipping',
+  'tabs.delivered',
+  'tabs.cancelled',
+  'tabs.returned'
+] as const
+
+const orderTabStatuses = [
+  ordersStatus.all,
+  ordersStatus.pending,
+  ordersStatus.confirmed,
+  ordersStatus.shipping,
+  ordersStatus.delivered,
+  ordersStatus.cancelled,
+  ordersStatus.returned
 ]
 
 export default function OrderList() {
+  const { t } = useTranslation('order')
   const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useOrderStatus() // nuqs: syncs numeric status with URL query param ?status=0,1,2,...
   const [page, setPage] = useState(1)
@@ -65,12 +77,12 @@ export default function OrderList() {
   const cancelMutation = useMutation({
     mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) => orderApi.cancelOrder(orderId, reason),
     onSuccess: () => {
-      toast.success('Hủy đơn hàng thành công')
+      toast.success(t('cancel.success'))
       queryClient.invalidateQueries({ queryKey: ['orders'] })
       handleCloseModal()
     },
     onError: () => {
-      toast.error('Hủy đơn hàng thất bại')
+      toast.error(t('cancel.error'))
     }
   })
 
@@ -95,7 +107,7 @@ export default function OrderList() {
   }
 
   const handleReorder = (_order: Order) => {
-    toast.info('Tính năng mua lại đang được phát triển')
+    toast.info(t('reorder.developing'))
   }
 
   const handleTabChange = (status: number) => {
@@ -107,23 +119,23 @@ export default function OrderList() {
     <div className='space-y-4'>
       {/* Tabs */}
       <div className='sticky top-0 z-20 scrollbar-hide flex items-center overflow-x-auto rounded-t-sm bg-white shadow-xs dark:bg-slate-800'>
-        {orderTabs.map((tab) => (
+        {orderTabStatuses.map((status, index) => (
           <Button
-            key={tab.status}
+            key={status}
             variant='ghost'
             animated={false}
-            onClick={() => handleTabChange(tab.status)}
+            onClick={() => handleTabChange(status)}
             className={classNames(
               'flex min-w-18 flex-1 items-center justify-center rounded-none px-2 py-3 text-center text-xs whitespace-nowrap hover:text-orange sm:min-w-0 sm:px-3 sm:py-4 sm:text-sm dark:hover:text-orange-400',
               {
                 'border-b-2 border-b-orange font-medium text-orange dark:border-b-orange-400 dark:text-orange-400':
-                  activeTab === tab.status,
+                  activeTab === status,
                 'border-b-2 border-b-gray-200 text-gray-900 dark:border-b-slate-600 dark:text-gray-100':
-                  activeTab !== tab.status
+                  activeTab !== status
               }
             )}
           >
-            {tab.label}
+            {t(orderTabKeys[index])}
           </Button>
         ))}
       </div>
@@ -158,7 +170,7 @@ export default function OrderList() {
             className='flex flex-col items-center justify-center rounded-xl border border-orange-100/30 bg-linear-to-br from-white via-orange-50/20 to-amber-50/20 py-16 shadow-md dark:border-slate-600 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800'
           >
             <div className='text-6xl'>📦</div>
-            <p className='mt-4 text-gray-500 dark:text-gray-400'>Chưa có đơn hàng nào</p>
+            <p className='mt-4 text-gray-500 dark:text-gray-400'>{t('empty')}</p>
           </motion.div>
         ) : (
           <AnimatePresence mode='popLayout'>
@@ -195,14 +207,14 @@ export default function OrderList() {
             Trước
           </button>
           <span className='px-4 text-sm text-gray-600 dark:text-gray-400'>
-            Trang {page} / {pagination.totalPages}
+            {t('pagination.page', { page, total: pagination.totalPages })}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
             disabled={page === pagination.totalPages}
             className='rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:border-orange hover:bg-orange hover:text-white disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-white disabled:hover:text-gray-700 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-300 dark:disabled:hover:border-slate-600 dark:disabled:hover:bg-slate-800 dark:disabled:hover:text-gray-300'
           >
-            Sau
+            {t('pagination.next')}
           </button>
         </div>
       )}
@@ -229,24 +241,22 @@ export default function OrderList() {
               <button
                 onClick={handleCloseModal}
                 className='absolute top-4 right-4 cursor-pointer rounded-full p-1 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-slate-700 dark:hover:text-gray-300'
-                aria-label='Đóng modal'
+                aria-label={t('cancel.closeModal')}
               >
                 <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                   <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
                 </svg>
               </button>
               <div className='mb-4'>
-                <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>Hủy đơn hàng</h3>
-                <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Hành động này không thể hoàn tác</p>
+                <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100'>{t('cancel.title')}</h3>
+                <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>{t('cancel.irreversible')}</p>
               </div>
-              <p className='mb-4 text-sm text-gray-600 dark:text-gray-300'>
-                Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sau khi hủy sẽ không thể khôi phục.
-              </p>
+              <p className='mb-4 text-sm text-gray-600 dark:text-gray-300'>{t('cancel.confirm')}</p>
 
               <textarea
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
-                placeholder='Lý do hủy đơn (không bắt buộc)'
+                placeholder={t('cancel.reasonPlaceholder')}
                 className='w-full resize-none rounded-xl border border-gray-200 p-3 text-sm transition-all duration-200 focus:border-orange focus:ring-2 focus:ring-orange/20 focus:outline-hidden dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-orange-400'
                 rows={3}
               />
@@ -258,7 +268,7 @@ export default function OrderList() {
                   onClick={handleCloseModal}
                   className='cursor-pointer rounded-xl px-5 py-2.5 text-sm font-medium'
                 >
-                  Quay lại
+                  {t('cancel.back')}
                 </Button>
                 <Button
                   variant='danger'
@@ -267,7 +277,7 @@ export default function OrderList() {
                   disabled={cancelMutation.isPending}
                   className='cursor-pointer rounded-xl bg-linear-to-r from-red-500 to-rose-600 px-5 py-2.5 text-sm font-medium hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-200/50 dark:hover:shadow-red-900/30'
                 >
-                  {cancelMutation.isPending ? 'Đang xử lý...' : 'Xác nhận hủy'}
+                  {cancelMutation.isPending ? t('cancel.processing') : t('cancel.confirmButton')}
                 </Button>
               </div>
             </motion.div>
