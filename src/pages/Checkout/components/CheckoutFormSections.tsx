@@ -98,7 +98,9 @@ export const CheckoutFormSections = ({
       >
         <SectionHeader number={4} title={t('checkout:section.voucher')} />
         <div className='mb-4'>
-          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>{t('checkout:voucher.label')}</label>
+          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+            {t('checkout:voucher.label')}
+          </label>
           <div className='flex flex-col gap-2 sm:flex-row'>
             <input
               type='text'
@@ -125,7 +127,9 @@ export const CheckoutFormSections = ({
           </AnimatePresence>
         </div>
         <div>
-          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>{t('checkout:coins.label')}</label>
+          <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200'>
+            {t('checkout:coins.label')}
+          </label>
           <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
             <input
               type='number'

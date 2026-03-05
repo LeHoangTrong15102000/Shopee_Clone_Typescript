@@ -47,5 +47,13 @@
   "wishlist.addTitle": "Thêm vào yêu thích",
   "qa.newQuestions": "{{count}} câu hỏi mới",
   "qa.clickToView": "Nhấn để xem ↓",
-  "qa.seller": "Người bán"
+  "qa.seller": "Người bán",
+  "info.reviews": "Đánh giá",
+  "info.sold": "Đã bán",
+  "info.report": "Tố cáo",
+  "info.discount": "giảm",
+  "info.originalPriceAria": "Giá gốc {{price}} đồng",
+  "error.title": "Có lỗi xảy ra",
+  "error.loadFailed": "Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.",
+  "error.retry": "Thử lại"
 }

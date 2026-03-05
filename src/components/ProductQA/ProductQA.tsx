@@ -190,7 +190,9 @@ const ProductQA = memo(function ProductQA({ productId, className = '' }: Product
 
       {/* Sort Options */}
       <div className='mb-4 flex items-center justify-between border-b pb-3 dark:border-slate-700'>
-        <span className='text-sm text-gray-600 dark:text-gray-400'>{t('questionCount', { count: totalQuestions })}</span>
+        <span className='text-sm text-gray-600 dark:text-gray-400'>
+          {t('questionCount', { count: totalQuestions })}
+        </span>
         <div className='flex items-center space-x-2'>
           <label htmlFor='sort-select' className='text-sm text-gray-600 dark:text-gray-400'>
             {t('sortLabel')}

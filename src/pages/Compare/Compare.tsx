@@ -38,9 +38,7 @@ const Compare = () => {
                 {t('title')}
               </h1>
               <p className='mt-1 text-sm text-gray-500 sm:text-base dark:text-gray-400'>
-                {compareList.length > 0
-                  ? t('comparing', { count: compareList.length })
-                  : t('addToCompare')}
+                {compareList.length > 0 ? t('comparing', { count: compareList.length }) : t('addToCompare')}
               </p>
             </div>
             {compareList.length > 0 && (

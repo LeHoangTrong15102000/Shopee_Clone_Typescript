@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 import HeroBanner from 'src/components/HeroBanner'
 import { FlashSaleTimer } from 'src/components/FlashSale'
@@ -41,6 +42,7 @@ const sectionVariants = {
 }
 
 const Home = () => {
+  const { t } = useTranslation('home')
   // Lấy danh mục sản phẩm
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
@@ -79,11 +81,8 @@ const Home = () => {
   return (
     <div className='bg-gray-50 dark:bg-slate-900'>
       <Helmet>
-        <title>Shopee Clone - Mua Sắm Online Số 1 Việt Nam</title>
-        <meta
-          name='description'
-          content='Mua sắm trực tuyến hàng triệu sản phẩm ở tất cả ngành hàng. Giá tốt & Ưu đãi. Mua và bán online trong 30 giây. Shopee Đảm Bảo | Freeship Xtra | Hoàn Xu Xtra'
-        />
+        <title>{t('meta.title')}</title>
+        <meta name='description' content={t('meta.description')} />
       </Helmet>
 
       {/* Hero Banner */}
@@ -102,8 +101,10 @@ const Home = () => {
       >
         <div className='container py-6'>
           <div className='mb-6'>
-            <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>Danh Mục</h2>
-            <p className='text-gray-600 dark:text-gray-300'>Khám phá các danh mục sản phẩm hàng đầu</p>
+            <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>
+              {t('categories.title')}
+            </h2>
+            <p className='text-gray-600 dark:text-gray-300'>{t('categories.subtitle')}</p>
           </div>
           <motion.div
             className='grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8'
@@ -157,7 +158,7 @@ const Home = () => {
               to={`${path.products}?sort_by=sold&order=desc`}
               className='font-medium text-orange hover:text-[#d73527]'
             >
-              Xem tất cả →
+              {t('viewAll')}
             </Link>
           </div>
           <motion.div
@@ -198,7 +199,9 @@ const Home = () => {
                     </h3>
                     <div className='flex items-center justify-between'>
                       <span className='font-bold text-orange'>₫{product.price.toLocaleString()}</span>
-                      <span className='text-xs text-gray-500 dark:text-gray-400'>Đã bán {product.sold}</span>
+                      <span className='text-xs text-gray-500 dark:text-gray-400'>
+                        {t('sold', { count: product.sold })}
+                      </span>
                     </div>
                   </div>
                 </Link>
@@ -219,14 +222,16 @@ const Home = () => {
         <div className='container py-6'>
           <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>Sản Phẩm Mới</h2>
-              <p className='text-gray-600 dark:text-gray-300'>Những sản phẩm mới nhất được cập nhật</p>
+              <h2 className='mb-2 text-lg font-semibold text-gray-800 sm:text-xl dark:text-white'>
+                {t('newProducts.title')}
+              </h2>
+              <p className='text-gray-600 dark:text-gray-300'>{t('newProducts.subtitle')}</p>
             </div>
             <Link
               to={`${path.products}?sort_by=createdAt&order=desc`}
               className='font-medium text-orange hover:text-[#d73527] dark:hover:text-orange-400'
             >
-              Xem tất cả →
+              {t('viewAll')}
             </Link>
           </div>
           <motion.div
@@ -254,7 +259,7 @@ const Home = () => {
                       showSkeleton={true}
                     />
                     <div className='absolute top-2 right-2 rounded-sm bg-green-500 px-2 py-1 text-xs text-white'>
-                      Mới
+                      {t('badge.new')}
                     </div>
                   </div>
                   <div className='p-3'>
@@ -288,13 +293,13 @@ const Home = () => {
       >
         <div className='container py-12'>
           <div className='text-center text-white'>
-            <h2 className='mb-4 text-2xl font-bold md:text-3xl'>Khám phá hàng triệu sản phẩm với giá tốt nhất</h2>
-            <p className='mb-6 text-lg opacity-90'>Mua sắm thông minh, tiết kiệm hơn mỗi ngày</p>
+            <h2 className='mb-4 text-2xl font-bold md:text-3xl'>{t('cta.title')}</h2>
+            <p className='mb-6 text-lg opacity-90'>{t('cta.subtitle')}</p>
             <Link
               to={`${path.products}?sort_by=sold&order=desc`}
               className='inline-flex transform items-center rounded-full bg-white px-8 py-3 font-semibold text-orange transition-all duration-300 hover:scale-105 hover:bg-gray-100'
             >
-              <span>Mua sắm ngay</span>
+              <span>{t('cta.shopNow')}</span>
               <svg className='ml-2 h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
               </svg>

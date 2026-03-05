@@ -96,9 +96,7 @@ export default function Wishlist() {
                     <h2 className='text-xl font-bold drop-shadow-xs sm:text-2xl'>
                       {t('headerTitle', { count: allWishlistItems.length })}
                     </h2>
-                    <p className='mt-1 max-w-md text-xs text-white/80 sm:text-sm'>
-                      {t('headerSubtitle')}
-                    </p>
+                    <p className='mt-1 max-w-md text-xs text-white/80 sm:text-sm'>{t('headerSubtitle')}</p>
                   </div>
                 </div>
                 <div className='hidden items-center gap-3 md:flex'>
@@ -254,7 +252,10 @@ export default function Wishlist() {
                   <div className='text-white'>
                     <h3 className='text-sm font-semibold'>{t('savingsGoal.title')}</h3>
                     <p className='mt-0.5 text-xs text-white/80'>
-                      {t('savingsGoal.subtitle', { amount: formatCurrency(totalSavings), count: allWishlistItems.length })}
+                      {t('savingsGoal.subtitle', {
+                        amount: formatCurrency(totalSavings),
+                        count: allWishlistItems.length
+                      })}
                     </p>
                   </div>
                 </div>
@@ -267,7 +268,10 @@ export default function Wishlist() {
                   />
                 </div>
                 <p className='mt-1 text-[10px] text-white/70'>
-                  {t('savingsGoal.percent', { percent: totalValue + totalSavings > 0 ? Math.round((totalSavings / (totalValue + totalSavings)) * 100) : 0 })}
+                  {t('savingsGoal.percent', {
+                    percent:
+                      totalValue + totalSavings > 0 ? Math.round((totalSavings / (totalValue + totalSavings)) * 100) : 0
+                  })}
                 </p>
               </div>
             </motion.div>
@@ -286,7 +290,9 @@ export default function Wishlist() {
                 {Object.entries(
                   allWishlistItems.reduce<Record<string, number>>((acc, item) => {
                     const cat =
-                      item.product.category?.name || (item as { mockCategory?: string }).mockCategory || t('categoryOther')
+                      item.product.category?.name ||
+                      (item as { mockCategory?: string }).mockCategory ||
+                      t('categoryOther')
                     acc[cat] = (acc[cat] || 0) + 1
                     return acc
                   }, {})
@@ -353,9 +359,7 @@ export default function Wishlist() {
             <h3 className='mb-2 text-xl font-semibold text-gray-800 md:text-2xl dark:text-gray-100'>
               {t('empty.title')}
             </h3>
-            <p className='mx-auto mb-6 max-w-md text-sm text-gray-500 dark:text-gray-400'>
-              {t('empty.subtitle')}
-            </p>
+            <p className='mx-auto mb-6 max-w-md text-sm text-gray-500 dark:text-gray-400'>{t('empty.subtitle')}</p>
             <Link
               to={path.home}
               className='inline-flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-[#ee4d2d] to-[#ff6b4a] px-8 py-3 font-medium text-white transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/30 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:outline-hidden dark:from-orange-500 dark:to-orange-400 dark:focus:ring-orange-400'

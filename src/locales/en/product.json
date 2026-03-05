@@ -47,5 +47,13 @@
   "wishlist.addTitle": "Add to wishlist",
   "qa.newQuestions": "{{count}} new questions",
   "qa.clickToView": "Click to view ↓",
-  "qa.seller": "Seller"
+  "qa.seller": "Seller",
+  "info.reviews": "Reviews",
+  "info.sold": "Sold",
+  "info.report": "Report",
+  "info.discount": "off",
+  "info.originalPriceAria": "Original price {{price}} VND",
+  "error.title": "An error occurred",
+  "error.loadFailed": "Unable to load product information. Please try again later.",
+  "error.retry": "Retry"
 }

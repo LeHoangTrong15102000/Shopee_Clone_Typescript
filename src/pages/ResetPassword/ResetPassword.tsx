@@ -111,7 +111,9 @@ const ResetPassword = () => {
                   <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
                     {t('resetPassword.invalidLink.title')}
                   </h3>
-                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>{t('resetPassword.invalidLink.message')}</p>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
+                    {t('resetPassword.invalidLink.message')}
+                  </p>
                   <div className='mt-6'>
                     <Link to={path.forgotPassword} className='text-sm text-orange dark:text-orange-400'>
                       {t('resetPassword.invalidLink.requestNew')}
@@ -129,10 +131,10 @@ const ResetPassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                     </svg>
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('resetPassword.success.title')}</h3>
-                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                    {t('resetPassword.success.message')}
-                  </p>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
+                    {t('resetPassword.success.title')}
+                  </h3>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>{t('resetPassword.success.message')}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={onSubmit} noValidate>

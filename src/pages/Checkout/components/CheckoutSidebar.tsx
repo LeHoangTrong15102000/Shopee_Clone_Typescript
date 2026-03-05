@@ -51,7 +51,9 @@ export const CheckoutSidebar = ({
           className='rounded-xl border border-orange-100/30 bg-linear-to-br from-white via-orange-50/10 to-amber-50/10 p-4 shadow-lg md:p-6 dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 dark:shadow-slate-900/50'
         >
           <div className='mb-4 flex items-center justify-between border-b border-gray-100 pb-4 dark:border-slate-700'>
-            <span className='text-base font-medium text-gray-700 md:text-lg dark:text-gray-200'>{t('checkout:total')}</span>
+            <span className='text-base font-medium text-gray-700 md:text-lg dark:text-gray-200'>
+              {t('checkout:total')}
+            </span>
             <span className='text-xl font-bold text-orange md:text-2xl'>₫{totalAmount.toLocaleString('vi-VN')}</span>
           </div>
 

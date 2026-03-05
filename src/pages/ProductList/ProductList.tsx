@@ -22,6 +22,7 @@ import { useScrollRestoration } from 'src/hooks/useScrollRestoration'
 import { useViewMode } from 'src/hooks/useViewMode'
 import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import Loader from 'src/components/Loader'
 import Button from 'src/components/Button'
 
@@ -30,6 +31,7 @@ import Button from 'src/components/Button'
  * Tự động hủy request cũ khi queryConfig thay đổi (filter, search, pagination)
  */
 const ProductList = () => {
+  const { t } = useTranslation('home')
   const [filters, setFilters] = useProductQueryStates()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
@@ -143,12 +145,10 @@ const ProductList = () => {
       <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
         <div className='container'>
           <div className='py-12 text-center'>
-            <h2 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300'>
-              Có lỗi xảy ra khi tải danh sách sản phẩm
-            </h2>
-            <p className='mb-4 text-gray-500 dark:text-gray-400'>Vui lòng thử lại sau</p>
+            <h2 className='mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300'>{t('error.loadProducts')}</h2>
+            <p className='mb-4 text-gray-500 dark:text-gray-400'>{t('error.tryAgainLater')}</p>
             <Button variant='primary' onClick={() => window.location.reload()} className='rounded-xs px-6 py-2'>
-              Thử lại
+              {t('error.retry')}
             </Button>
           </div>
         </div>
@@ -166,8 +166,8 @@ const ProductList = () => {
   return (
     <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
       <Helmet>
-        <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : 'Tất cả sản phẩm | Shopee Clone'}</title>
-        <meta name='description' content='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng' />
+        <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : t('allProducts')}</title>
+        <meta name='description' content={t('allProductsMeta')} />
       </Helmet>
 
       <div className='container'>

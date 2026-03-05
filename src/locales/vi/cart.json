@@ -54,5 +54,6 @@
   "toast.saveForLaterSuccess": "Đã lưu để mua sau",
   "toast.updateQuantityError": "Không thể cập nhật số lượng",
   "sync.syncing": "Đang đồng bộ...",
-  "sync.synced": "Đã đồng bộ"
+  "sync.synced": "Đã đồng bộ",
+  "toast.alreadyInCart": "Sản phẩm đã có trong giỏ hàng"
 }

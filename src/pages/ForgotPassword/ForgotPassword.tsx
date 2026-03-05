@@ -84,9 +84,7 @@ const ForgotPassword = () => {
                 <form onSubmit={onSubmit} noValidate>
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
                     <div className='text-2xl text-gray-900 dark:text-gray-100'>{t('forgotPassword.title')}</div>
-                    <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                      {t('forgotPassword.subtitle')}
-                    </p>
+                    <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>{t('forgotPassword.subtitle')}</p>
                   </motion.div>
 
                   <motion.div variants={reducedMotion ? undefined : staggerItem}>
@@ -135,10 +133,10 @@ const ForgotPassword = () => {
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
                     </svg>
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>{t('forgotPassword.success.title')}</h3>
-                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
-                    {t('forgotPassword.success.message')}
-                  </p>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
+                    {t('forgotPassword.success.title')}
+                  </h3>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>{t('forgotPassword.success.message')}</p>
                   <div className='mt-6'>
                     <Link to={path.login} className='text-sm text-orange dark:text-orange-400'>
                       {t('forgotPassword.backToLogin')}
