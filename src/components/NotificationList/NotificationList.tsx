@@ -206,7 +206,7 @@ const NotificationList = ({ className }: NotificationListProps) => {
                 disabled={markAllAsReadMutation.isPending}
                 aria-label={t('markAllReadLabel', { count: unreadCount })}
                 aria-busy={markAllAsReadMutation.isPending}
-                variant='ghost'
+                variant='text'
                 animated={false}
                 className='text-orange transition-colors hover:text-orange/80 focus:underline focus:outline-hidden disabled:opacity-50 dark:hover:text-orange-400/80'
                 title={t('markAllRead')}

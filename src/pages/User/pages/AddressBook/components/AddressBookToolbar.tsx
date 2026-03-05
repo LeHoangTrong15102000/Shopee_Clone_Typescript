@@ -59,7 +59,7 @@ const AddressBookToolbar = ({
         {searchQuery && (
           <Button
             onClick={() => onSearchChange('')}
-            variant='ghost'
+            variant='text'
             animated={false}
             className='absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
           >

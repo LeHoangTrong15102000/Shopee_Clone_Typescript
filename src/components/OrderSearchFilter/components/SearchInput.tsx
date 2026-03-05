@@ -36,7 +36,7 @@ export default function SearchInput({ inputValue, onInputChange, onClearSearch }
       />
       {inputValue && (
         <Button
-          variant='ghost'
+          variant='text'
           animated={false}
           type='button'
           onClick={onClearSearch}

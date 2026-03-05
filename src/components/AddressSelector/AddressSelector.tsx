@@ -79,7 +79,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
         {/* Title removed - using SectionHeader in parent */}
         <Button
           onClick={handleAddNew}
-          variant='ghost'
+          variant='text'
           animated={false}
           className='flex items-center gap-1 text-sm text-orange hover:text-orange/80 dark:hover:text-orange-400/80'
           aria-label={t('addNew')}
@@ -161,7 +161,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                         e.stopPropagation()
                         handleEdit(address)
                       }}
-                      variant='ghost'
+                      variant='text'
                       size='sm'
                       animated={false}
                       className='text-sm text-blue-600 hover:underline dark:text-blue-400'
@@ -175,7 +175,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                             e.stopPropagation()
                             setDefaultMutation.mutate(address._id)
                           }}
-                          variant='ghost'
+                          variant='text'
                           size='sm'
                           animated={false}
                           className='text-sm text-gray-600 hover:underline dark:text-gray-300'
@@ -187,7 +187,7 @@ const AddressSelector = memo(function AddressSelector({ selectedAddressId, onSel
                             e.stopPropagation()
                             deleteMutation.mutate(address._id)
                           }}
-                          variant='ghost'
+                          variant='text'
                           size='sm'
                           animated={false}
                           className='text-sm text-red-600 hover:underline dark:text-red-400'

@@ -153,7 +153,7 @@ export const CVVTooltip = memo(function CVVTooltip({
         >
           <Button
             onClick={onClose}
-            variant='ghost'
+            variant='text'
             animated={false}
             className='absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400'
             aria-label='Đóng tooltip'

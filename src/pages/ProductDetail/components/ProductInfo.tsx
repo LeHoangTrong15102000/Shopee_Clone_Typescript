@@ -82,7 +82,7 @@ const ProductInfo = ({
               image={product.image}
             />
             <Button
-              variant='ghost'
+              variant='text'
               size='sm'
               animated={false}
               className='text-sm text-black/60 hover:text-orange dark:text-gray-400 dark:hover:text-orange-400'

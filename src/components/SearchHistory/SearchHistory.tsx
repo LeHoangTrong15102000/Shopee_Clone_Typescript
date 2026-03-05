@@ -36,7 +36,7 @@ const SearchHistory = memo(function SearchHistory({
           <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>{t('search.recentSearches')}</span>
             <Button
-              variant='ghost'
+              variant='text'
               size='xs'
               animated={false}
               onClick={onClearAll}

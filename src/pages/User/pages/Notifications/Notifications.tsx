@@ -288,7 +288,7 @@ const Notifications = () => {
           {/* Mark all as read button */}
           {unreadCount > 0 && (
             <Button
-              variant='ghost'
+              variant='text'
               animated={false}
               type='button'
               onClick={handleMarkAllAsRead}
@@ -306,7 +306,7 @@ const Notifications = () => {
         {FILTER_TABS.map((tab) => (
           <Button
             key={tab.key}
-            variant='ghost'
+            variant='text'
             animated={false}
             type='button'
             onClick={() => setActiveTab(tab.key)}

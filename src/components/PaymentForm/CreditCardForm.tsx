@@ -143,7 +143,7 @@ const CreditCardForm = memo(function CreditCardForm({ register, errors, watch }:
                 <Button
                   type='button'
                   onClick={toggleCvvTooltip}
-                  variant='ghost'
+                  variant='text'
                   animated={false}
                   className='flex items-center'
                   aria-label={t('creditCard.cvvTooltip')}

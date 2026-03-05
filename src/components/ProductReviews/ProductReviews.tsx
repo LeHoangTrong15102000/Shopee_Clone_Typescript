@@ -332,7 +332,7 @@ const ReviewItem = ({
           {/* Actions */}
           <div className='flex items-center space-x-4 text-sm'>
             <Button
-              variant='ghost'
+              variant='text'
               animated={false}
               onClick={() => onLike(review._id)}
               className={`flex items-center space-x-1 ${review.is_liked ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'} hover:text-red-500`}
@@ -346,7 +346,7 @@ const ReviewItem = ({
             </Button>
 
             <Button
-              variant='ghost'
+              variant='text'
               animated={false}
               onClick={() => onToggleComments(review._id)}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -355,7 +355,7 @@ const ReviewItem = ({
             </Button>
 
             <Button
-              variant='ghost'
+              variant='text'
               animated={false}
               onClick={() => onReply()}
               className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -462,7 +462,7 @@ const CommentItem = ({
           <div className='mt-1 flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400'>
             <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: dateLocale })}</span>
             <Button
-              variant='ghost'
+              variant='text'
               animated={false}
               onClick={() => onReply(comment._id)}
               className='hover:text-gray-700 dark:hover:text-gray-300'

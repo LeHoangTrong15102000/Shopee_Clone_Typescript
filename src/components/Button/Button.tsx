@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react'
 import { Link } from 'react-router'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline' | 'icon'
+export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline' | 'icon' | 'text'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 export type ButtonShape = 'default' | 'rounded' | 'pill'
 
@@ -12,7 +12,8 @@ const variantClasses: Record<ButtonVariant, string> = {
   danger: 'bg-red-500 text-white hover:bg-red-600',
   ghost: 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700',
   outline: 'border border-orange text-orange bg-transparent hover:bg-orange/5',
-  icon: 'rounded-full p-2 bg-transparent'
+  icon: 'rounded-full p-2 bg-transparent',
+  text: 'bg-transparent'
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -36,7 +37,8 @@ const focusClasses: Record<ButtonVariant, string> = {
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:focus-visible:outline-gray-500',
   ghost:
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:focus-visible:outline-gray-500',
-  icon: 'focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2'
+  icon: 'focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2',
+  text: 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:focus-visible:outline-gray-500'
 }
 
 interface BaseButtonProps {

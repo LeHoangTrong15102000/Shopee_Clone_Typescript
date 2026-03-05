@@ -45,14 +45,14 @@ const CartSummaryBar = ({
           <ShopeeCheckbox checked={isAllChecked} onChange={handleCheckedAll} size='md' />
         </div>
         <Button
-          variant='ghost'
+          variant='text'
           onClick={handleCheckedAll}
           className='mx-3 border-none bg-none text-sm capitalize hover:text-orange sm:text-sm dark:hover:text-orange-400'
         >
           {t('summary.selectAll')} ({extendedPurchases.length})
         </Button>
         <Button
-          variant='ghost'
+          variant='text'
           onClick={handleDeleteManyPurchases}
           className='mx-3 border-none bg-none text-sm capitalize hover:text-red-500 sm:text-sm'
         >

@@ -179,7 +179,7 @@ export default function ActiveFilterChips({
 
       {hasAnyFilter && (
         <Button
-          variant='ghost'
+          variant='text'
           animated={false}
           type='button'
           onClick={onClearAllFilters}

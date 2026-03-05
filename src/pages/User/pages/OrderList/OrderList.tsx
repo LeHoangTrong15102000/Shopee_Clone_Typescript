@@ -122,7 +122,7 @@ export default function OrderList() {
         {orderTabStatuses.map((status, index) => (
           <Button
             key={status}
-            variant='ghost'
+            variant='text'
             animated={false}
             onClick={() => handleTabChange(status)}
             className={classNames(

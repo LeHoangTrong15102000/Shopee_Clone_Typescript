@@ -210,7 +210,7 @@ export default function Wishlist() {
                 </div>
                 <p className='text-gray-500 dark:text-gray-400'>{t('noFilterResults')}</p>
                 <Button
-                  variant='ghost'
+                  variant='text'
                   animated={false}
                   onClick={() => setActiveFilter('all')}
                   className='mt-3 cursor-pointer rounded-sm text-sm text-[#ee4d2d] hover:underline focus:ring-2 focus:ring-orange-500 focus:outline-hidden dark:text-orange-400 dark:focus:ring-orange-400'
