@@ -204,6 +204,7 @@ export const IconShoppingBag = ({ className = 'h-5 w-5' }: { className?: string 
 )
 
 // Category icon components mapping
+// Keyed by both Vietnamese (from API) and English category names for i18n compatibility
 export const categoryIconComponents: Record<string, React.FC<{ className?: string }>> = {
   'Thời trang nam': IconShoppingBag,
   'Thời trang nữ': IconSparkles,
@@ -213,5 +214,15 @@ export const categoryIconComponents: Record<string, React.FC<{ className?: strin
   'Làm đẹp': IconStar,
   'Thể thao': IconTrophy,
   Sách: IconClipboard,
-  'Đồ chơi': IconHeart
+  'Đồ chơi': IconHeart,
+  // English aliases
+  "Men's Fashion": IconShoppingBag,
+  "Women's Fashion": IconSparkles,
+  Electronics: IconLightning,
+  Accessories: IconCube,
+  Household: IconFolder,
+  Beauty: IconStar,
+  Sports: IconTrophy,
+  Books: IconClipboard,
+  Toys: IconHeart
 }

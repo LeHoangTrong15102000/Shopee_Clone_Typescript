@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
+import { OrderStatus, getStatusLabel } from 'src/config/orderStatus'
 import { OrderTracking, getCarrierDisplayName } from 'src/types/orderTracking.type'
 
 interface OrderTrackingTimelineProps {
@@ -236,7 +236,7 @@ export default function OrderTrackingTimeline({ tracking, className }: OrderTrac
                       'text-red-600 dark:text-red-400': isError
                     })}
                   >
-                    {ORDER_STATUS_CONFIG[event.status as OrderStatus]?.label ?? event.status}
+                    {getStatusLabel(event.status as OrderStatus)}
                   </div>
                   <p className='mt-1 text-xs text-gray-600 md:text-sm dark:text-gray-300'>{event.description}</p>
                   {event.location && (

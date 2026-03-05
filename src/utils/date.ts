@@ -1,19 +1,20 @@
 /**
  * Date utility functions for the Shopee Clone application
  */
+import i18n from 'src/i18n/i18n'
 
 /**
- * Vietnamese day names
+ * Day i18n keys (indexed by JS getDay(): 0=Sun, 1=Mon, ...)
  */
-const VIETNAMESE_DAYS = ['CN', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7']
+const DAY_KEYS = ['days.sun', 'days.mon', 'days.tue', 'days.wed', 'days.thu', 'days.fri', 'days.sat']
 
 /**
- * Format a date to Vietnamese format with day name
+ * Format a date with localized day name
  * @param date - Date object to format
- * @returns formatted string, e.g., "Thứ 3, 11/02"
+ * @returns formatted string, e.g., "Tue, 11/02" or "Thứ 3, 11/02"
  */
 export function formatVietnameseDate(date: Date): string {
-  const dayName = VIETNAMESE_DAYS[date.getDay()]
+  const dayName = i18n.t(`common:${DAY_KEYS[date.getDay()]}` as never)
   const dd = String(date.getDate()).padStart(2, '0')
   const mm = String(date.getMonth() + 1).padStart(2, '0')
   return `${dayName}, ${dd}/${mm}`

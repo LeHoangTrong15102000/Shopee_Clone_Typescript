@@ -20,6 +20,19 @@
   "categoryOther": "Other",
   "empty.title": "No wishlist items yet",
   "empty.subtitle": "Explore and add products you love to track prices and shop more easily",
-  "empty.shopNow": "Shop now"
+  "empty.shopNow": "Shop now",
+  "stats.favorites": "Favorites",
+  "stats.totalValue": "Total value",
+  "stats.savings": "Savings",
+  "stats.avgDiscount": "Avg. discount",
+  "category.fashionMen": "Men's Fashion",
+  "category.fashionWomen": "Women's Fashion",
+  "category.electronics": "Electronics",
+  "category.accessories": "Accessories",
+  "category.household": "Household",
+  "category.beauty": "Beauty",
+  "category.sports": "Sports",
+  "category.books": "Books",
+  "category.toys": "Toys"
 }
 

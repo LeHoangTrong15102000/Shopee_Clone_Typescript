@@ -62,5 +62,15 @@
   "keyboard.title": "Keyboard Shortcuts",
   "keyboard.close": "Close",
   "keyboard.then": "then",
-  "session_expired": "Your session has expired. Please log in again!"
+  "session_expired": "Your session has expired. Please log in again!",
+  "time.justNow": "just now",
+  "time.minutesAgo": "{{count}} minutes ago",
+  "time.hoursAgo": "{{count}} hours ago",
+  "days.sun": "Sun",
+  "days.mon": "Mon",
+  "days.tue": "Tue",
+  "days.wed": "Wed",
+  "days.thu": "Thu",
+  "days.fri": "Fri",
+  "days.sat": "Sat"
 }

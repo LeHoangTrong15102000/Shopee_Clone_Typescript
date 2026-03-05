@@ -55,5 +55,6 @@
   "toast.updateQuantityError": "Không thể cập nhật số lượng",
   "sync.syncing": "Đang đồng bộ...",
   "sync.synced": "Đã đồng bộ",
-  "toast.alreadyInCart": "Sản phẩm đã có trong giỏ hàng"
+  "toast.alreadyInCart": "Sản phẩm đã có trong giỏ hàng",
+  "sync.updatedFromOtherDevice": "🔄 Giỏ hàng đã được cập nhật từ thiết bị khác"
 }

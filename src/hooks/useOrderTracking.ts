@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import useSocket from './useSocket'
 import { SocketEvent, OrderStatusUpdatedPayload } from 'src/types/socket.types'
 import { toast } from 'react-toastify'
+import i18n from 'src/i18n/i18n'
 
 interface OrderStatusHistoryEntry {
   status: string
@@ -16,15 +17,20 @@ interface UseOrderTrackingReturn {
   isSubscribed: boolean
 }
 
-const STATUS_MESSAGES: Record<string, string> = {
-  pending: 'Đơn hàng đang chờ xử lý',
-  confirmed: 'Đơn hàng đã được xác nhận',
-  processing: 'Đơn hàng đang được xử lý',
-  shipping: 'Đơn hàng đang được giao',
-  delivered: 'Đơn hàng đã giao thành công',
-  cancelled: 'Đơn hàng đã bị hủy',
-  returned: 'Đơn hàng đã được trả lại'
+const STATUS_I18N_KEYS: Record<string, string> = {
+  pending: 'tracking.statusPending',
+  confirmed: 'tracking.statusConfirmed',
+  processing: 'tracking.statusProcessing',
+  shipping: 'tracking.statusShipping',
+  delivered: 'tracking.statusDelivered',
+  cancelled: 'tracking.statusCancelled',
+  returned: 'tracking.statusReturned'
 }
+
+const getStatusMessage = (status: string): string =>
+  STATUS_I18N_KEYS[status]
+    ? (i18n.t(`order:${STATUS_I18N_KEYS[status]}` as never) as unknown as string)
+    : (i18n.t('order:tracking.statusFallback' as never, { status } as never) as unknown as string)
 
 const useOrderTracking = (orderId: string | undefined): UseOrderTrackingReturn => {
   const { socket, isConnected } = useSocket()
@@ -54,8 +60,8 @@ const useOrderTracking = (orderId: string | undefined): UseOrderTrackingReturn =
           }
         ])
 
-        // Show toast with Vietnamese message
-        const statusMsg = STATUS_MESSAGES[data.new_status] || `Trạng thái đơn hàng: ${data.new_status}`
+        // Show toast with translated message
+        const statusMsg = getStatusMessage(data.new_status)
         if (data.new_status === 'cancelled' || data.new_status === 'returned') {
           toast.warning(statusMsg, { autoClose: 5000 })
         } else if (data.new_status === 'delivered') {

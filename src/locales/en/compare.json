@@ -5,6 +5,20 @@
   "comparing": "Comparing {{count}} products",
   "addToCompare": "Add products to start comparing",
   "addProduct": "+ Add product",
-  "recentlyViewed": "Recently viewed products"
+  "recentlyViewed": "Recently viewed products",
+  "clearAll": "Clear all",
+  "compareNow": "Compare now ({{count}})",
+  "removedFromCompare": "Removed from compare list",
+  "addedToCompare": "Added to compare list",
+  "maxCompareReached": "Can only compare up to 4 products",
+  "addToCompareTitle": "Add to compare",
+  "removeFromCompareTitle": "Remove from compare",
+  "emptyState": "No products to compare yet",
+  "tableAriaLabel": "Product comparison table",
+  "removeAriaLabel": "Remove {{name}} from compare",
+  "compareAriaLabel": "Compare {{count}} products",
+  "clearAllAriaLabel": "Clear all products from compare list",
+  "addToCompareAriaLabel": "Add {{name}} to compare list",
+  "removeFromCompareAriaLabel": "Remove {{name}} from compare list"
 }
 

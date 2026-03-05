@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useEffect, useState, useRef, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ActivityItem {
   type: 'purchase' | 'review'
@@ -16,6 +17,7 @@ const MAX_QUEUE_SIZE = 20
 const DISPLAY_DURATION = 5000
 
 export default function ActivityFeedWidget({ latestActivity, className }: ActivityFeedWidgetProps) {
+  const { t } = useTranslation('common')
   const [visible, setVisible] = useState(false)
   const [currentActivity, setCurrentActivity] = useState<ActivityItem | null>(null)
   const queueRef = useRef<ActivityItem[]>([])
@@ -73,9 +75,9 @@ export default function ActivityFeedWidget({ latestActivity, className }: Activi
 
   const timeAgo = (() => {
     const diff = Math.floor((Date.now() - new Date(currentActivity.timestamp).getTime()) / 1000)
-    if (diff < 60) return 'vừa xong'
-    if (diff < 3600) return `${Math.floor(diff / 60)} phút trước`
-    return `${Math.floor(diff / 3600)} giờ trước`
+    if (diff < 60) return t('time.justNow')
+    if (diff < 3600) return t('time.minutesAgo', { count: Math.floor(diff / 60) })
+    return t('time.hoursAgo', { count: Math.floor(diff / 3600) })
   })()
 
   return (

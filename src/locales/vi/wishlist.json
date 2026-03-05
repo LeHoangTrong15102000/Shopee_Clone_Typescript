@@ -20,6 +20,19 @@
   "categoryOther": "Khác",
   "empty.title": "Chưa có sản phẩm yêu thích",
   "empty.subtitle": "Hãy khám phá và thêm những sản phẩm bạn yêu thích vào danh sách để theo dõi giá và mua sắm dễ dàng hơn",
-  "empty.shopNow": "Mua sắm ngay"
+  "empty.shopNow": "Mua sắm ngay",
+  "stats.favorites": "Yêu thích",
+  "stats.totalValue": "Tổng giá trị",
+  "stats.savings": "Tiết kiệm",
+  "stats.avgDiscount": "TB giảm giá",
+  "category.fashionMen": "Thời trang nam",
+  "category.fashionWomen": "Thời trang nữ",
+  "category.electronics": "Điện tử",
+  "category.accessories": "Phụ kiện",
+  "category.household": "Gia dụng",
+  "category.beauty": "Làm đẹp",
+  "category.sports": "Thể thao",
+  "category.books": "Sách",
+  "category.toys": "Đồ chơi"
 }
 

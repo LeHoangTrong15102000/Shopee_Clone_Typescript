@@ -62,5 +62,15 @@
   "keyboard.title": "Phím tắt",
   "keyboard.close": "Đóng",
   "keyboard.then": "rồi",
-  "session_expired": "Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!"
+  "session_expired": "Phiên đăng nhập đã hết hạn. Quý khách vui lòng đăng nhập lại!",
+  "time.justNow": "vừa xong",
+  "time.minutesAgo": "{{count}} phút trước",
+  "time.hoursAgo": "{{count}} giờ trước",
+  "days.sun": "CN",
+  "days.mon": "Thứ 2",
+  "days.tue": "Thứ 3",
+  "days.wed": "Thứ 4",
+  "days.thu": "Thứ 5",
+  "days.fri": "Thứ 6",
+  "days.sat": "Thứ 7"
 }

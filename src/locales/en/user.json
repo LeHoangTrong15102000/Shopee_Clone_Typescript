@@ -101,5 +101,10 @@
   "address.otherAddresses": "Other Addresses ({{count}})",
   "address.dragToReorder": "Drag to reorder",
   "address.bulkDeleteTitle": "Delete {{count}} addresses",
-  "address.bulkDeleteMessage": "Are you sure you want to delete {{count}} selected addresses? This action cannot be undone."
+  "address.bulkDeleteMessage": "Are you sure you want to delete {{count}} selected addresses? This action cannot be undone.",
+  "avatar.editTitle": "Edit Avatar",
+  "avatar.preview": "Preview:",
+  "avatar.maxSize": "Max file size 1 MB",
+  "avatar.invalidFormat": "Invalid file format. Only JPEG, PNG, WebP accepted",
+  "avatar.processingError": "An error occurred while processing image"
 }

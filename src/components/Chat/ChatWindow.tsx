@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import useChat from 'src/hooks/useChat'
 import useTypingIndicator from 'src/hooks/useTypingIndicator'
 import MessageList from './MessageList'
@@ -13,7 +14,8 @@ interface ChatWindowProps {
   currentUserId?: string
 }
 
-export default function ChatWindow({ conversationId, sellerName = 'Người bán', currentUserId }: ChatWindowProps) {
+export default function ChatWindow({ conversationId, sellerName, currentUserId }: ChatWindowProps) {
+  const { t } = useTranslation('chat')
   const [isMinimized, setIsMinimized] = useState(true)
   const { messages, currentChatId, isLoading, isConnected, joinChat, leaveChat, sendMessage } = useChat()
   const { typingUsers, startTyping, stopTyping } = useTypingIndicator(currentChatId)
@@ -41,9 +43,9 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
   }
 
   const getConnectionStatus = () => {
-    if (isLoading) return 'Kết nối...'
-    if (!isConnected) return 'Không có kết nối'
-    return 'Trực tuyến'
+    if (isLoading) return t('status.connecting')
+    if (!isConnected) return t('status.noConnection')
+    return t('status.online')
   }
 
   const getStatusColor = () => {
@@ -81,7 +83,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             </svg>
           </div>
           <div>
-            <h3 className='text-xs font-medium sm:text-sm'>{sellerName}</h3>
+            <h3 className='text-xs font-medium sm:text-sm'>{sellerName || t('defaultSeller')}</h3>
             <div className='flex items-center gap-1.5'>
               <span className={classNames('h-2 w-2 rounded-full', getStatusColor())} />
               <span className='text-xs text-white/80'>{getConnectionStatus()}</span>
@@ -93,7 +95,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             animated={false}
             onClick={handleToggle}
             className='rounded-sm p-1.5 transition-colors hover:bg-white/20'
-            title='Thu nhỏ'
+            title={t('button.minimize')}
           >
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M18 12H6' />
@@ -103,7 +105,7 @@ export default function ChatWindow({ conversationId, sellerName = 'Người bán
             animated={false}
             onClick={handleClose}
             className='rounded-sm p-1.5 transition-colors hover:bg-white/20'
-            title='Đóng'
+            title={t('button.close')}
           >
             <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />

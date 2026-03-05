@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import Button from 'src/components/Button'
 
 interface MessageInputProps {
@@ -10,6 +11,7 @@ interface MessageInputProps {
 }
 
 export default function MessageInput({ onSendMessage, onTypingStart, onTypingStop, disabled }: MessageInputProps) {
+  const { t } = useTranslation('chat')
   const [inputValue, setInputValue] = useState('')
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isTypingRef = useRef(false)
@@ -72,7 +74,7 @@ export default function MessageInput({ onSendMessage, onTypingStart, onTypingSto
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          placeholder='Nhập tin nhắn...'
+          placeholder={t('placeholder')}
           disabled={disabled}
           className={classNames(
             'flex-1 rounded-full border px-4 py-2 text-sm transition-colors focus:outline-hidden',

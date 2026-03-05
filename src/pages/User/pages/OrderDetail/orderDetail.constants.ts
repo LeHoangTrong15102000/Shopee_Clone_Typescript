@@ -1,4 +1,4 @@
-import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
+import { ORDER_STATUS_CONFIG, OrderStatus, getStatusLabel } from 'src/config/orderStatus'
 import { ANIMATION_DURATION, STAGGER_DELAY } from 'src/styles/animations/motion.config'
 
 // Page-level stagger container
@@ -81,7 +81,7 @@ export function getStatusDisplay(status: OrderStatus) {
     }
   }
   return {
-    label: config.label,
+    label: getStatusLabel(status),
     color: `${config.color.light} dark:${config.color.dark}`,
     bgColor: `${config.bgColor.light} dark:${config.bgColor.dark}`,
     icon: config.icon

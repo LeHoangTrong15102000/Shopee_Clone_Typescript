@@ -50,6 +50,26 @@
   "detail.orderDate": "Order Date:",
   "detail.note": "Note:",
   "detail.bulkDeleteTitle": "Delete {{count}} addresses",
-  "detail.bulkDeleteMessage": "Are you sure you want to delete {{count}} selected addresses? This action cannot be undone."
+  "detail.bulkDeleteMessage": "Are you sure you want to delete {{count}} selected addresses? This action cannot be undone.",
+  "config.pending": "Pending",
+  "config.confirmed": "Confirmed",
+  "config.processing": "Processing",
+  "config.shipping": "Shipping",
+  "config.delivered": "Delivered",
+  "config.cancelled": "Cancelled",
+  "config.returned": "Returned",
+  "carrier.ghn": "GHN Express",
+  "carrier.ghtk": "GHTK Economy",
+  "carrier.viettelPost": "Viettel Post",
+  "carrier.jt": "J&T Express",
+  "carrier.other": "Other",
+  "tracking.statusPending": "Order is pending",
+  "tracking.statusConfirmed": "Order has been confirmed",
+  "tracking.statusProcessing": "Order is being processed",
+  "tracking.statusShipping": "Order is being shipped",
+  "tracking.statusDelivered": "Order delivered successfully",
+  "tracking.statusCancelled": "Order has been cancelled",
+  "tracking.statusReturned": "Order has been returned",
+  "tracking.statusFallback": "Order status: {{status}}"
 }
 

@@ -51,13 +51,5 @@ export interface OrderTrackingConfig {
   status?: string
 }
 
-// Carrier display names mapping
-export const CARRIER_DISPLAY_NAMES: Record<string, string> = {
-  ghn: 'Giao Hàng Nhanh',
-  ghtk: 'Giao Hàng Tiết Kiệm',
-  viettel_post: 'Viettel Post',
-  'j&t': 'J&T Express',
-  other: 'Khác'
-}
-
-export const getCarrierDisplayName = (carrierCode: string): string => CARRIER_DISPLAY_NAMES[carrierCode] ?? carrierCode
+// Re-export carrier utilities from centralized config
+export { CARRIER_DISPLAY_NAMES, getCarrierDisplayName } from 'src/config/orderStatus'

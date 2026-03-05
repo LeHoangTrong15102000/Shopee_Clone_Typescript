@@ -55,5 +55,6 @@
   "toast.updateQuantityError": "Cannot update quantity",
   "sync.syncing": "Syncing...",
   "sync.synced": "Synced",
-  "toast.alreadyInCart": "Product is already in cart"
+  "toast.alreadyInCart": "Product is already in cart",
+  "sync.updatedFromOtherDevice": "🔄 Cart updated from another device"
 }

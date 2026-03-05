@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { Product } from 'src/types/product.type'
 import { useProductComparison } from 'src/hooks/useProductComparison'
@@ -11,6 +12,7 @@ interface CompareButtonProps {
 }
 
 export default function CompareButton({ product, className, size = 'md' }: CompareButtonProps) {
+  const { t } = useTranslation('compare')
   const { isInCompare, addToCompare, removeFromCompare, canAddMore } = useProductComparison()
   const isComparing = isInCompare(product._id)
 
@@ -20,14 +22,14 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
 
     if (isComparing) {
       removeFromCompare(product._id)
-      toast.info('Đã xóa khỏi danh sách so sánh')
+      toast.info(t('removedFromCompare'))
     } else {
       if (!canAddMore) {
-        toast.warning('Chỉ có thể so sánh tối đa 4 sản phẩm')
+        toast.warning(t('maxCompareReached'))
         return
       }
       addToCompare(product)
-      toast.success('Đã thêm vào danh sách so sánh')
+      toast.success(t('addedToCompare'))
     }
   }
 
@@ -51,8 +53,8 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
   }
 
   const ariaLabel = isComparing
-    ? `Xóa ${product.name} khỏi danh sách so sánh`
-    : `Thêm ${product.name} vào danh sách so sánh`
+    ? t('removeFromCompareAriaLabel', { name: product.name })
+    : t('addToCompareAriaLabel', { name: product.name })
 
   return (
     <Button
@@ -63,7 +65,7 @@ export default function CompareButton({ product, className, size = 'md' }: Compa
       aria-label={ariaLabel}
       aria-pressed={isComparing}
       tabIndex={0}
-      title={isComparing ? 'Xóa khỏi so sánh' : 'Thêm vào so sánh'}
+      title={isComparing ? t('removeFromCompareTitle') : t('addToCompareTitle')}
       className={classNames(
         'flex items-center justify-center bg-white/80 shadow-xs transition-all duration-200 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900',
         sizeClasses[size],

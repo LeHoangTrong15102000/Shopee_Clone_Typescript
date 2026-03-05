@@ -4,6 +4,7 @@ import useSocket from './useSocket'
 import { SocketEvent, CartUpdatedPayload } from 'src/types/socket.types'
 import { AppContext } from 'src/contexts/app.context'
 import { toast } from 'react-toastify'
+import i18n from 'src/i18n/i18n'
 
 interface UseCartSyncReturn {
   lastSyncTimestamp: string | null
@@ -29,7 +30,7 @@ const useCartSync = (): UseCartSyncReturn => {
       queryClient.invalidateQueries({ queryKey: ['purchases'] })
 
       // Brief toast notification
-      toast.info('🔄 Giỏ hàng đã được cập nhật từ thiết bị khác', {
+      toast.info(i18n.t('sync.updatedFromOtherDevice', { ns: 'cart' }), {
         autoClose: 2000,
         toastId: 'cart-sync' // prevent duplicate toasts
       })

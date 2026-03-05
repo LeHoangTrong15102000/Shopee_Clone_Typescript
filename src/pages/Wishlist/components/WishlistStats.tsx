@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { formatCurrency } from 'src/utils/utils'
 import { IconChartBar, IconCurrencyDollar, IconHeart, IconTag } from './WishlistIcons'
 
@@ -21,6 +22,7 @@ export default function WishlistStats({
   containerVariants,
   isMobile
 }: WishlistStatsProps) {
+  const { t } = useTranslation('wishlist')
   return (
     <motion.div
       variants={containerVariants}
@@ -37,7 +39,7 @@ export default function WishlistStats({
         </div>
         <div>
           <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>{itemCount}</div>
-          <div className='text-xs text-gray-500 dark:text-gray-400'>Yêu thích</div>
+          <div className='text-xs text-gray-500 dark:text-gray-400'>{t('stats.favorites')}</div>
         </div>
       </motion.div>
       <motion.div
@@ -49,7 +51,7 @@ export default function WishlistStats({
         </div>
         <div>
           <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>₫{formatCurrency(totalValue)}</div>
-          <div className='text-xs text-gray-500 dark:text-gray-400'>Tổng giá trị</div>
+          <div className='text-xs text-gray-500 dark:text-gray-400'>{t('stats.totalValue')}</div>
         </div>
       </motion.div>
       <motion.div
@@ -63,7 +65,7 @@ export default function WishlistStats({
           <div className='text-xl font-bold text-emerald-500 dark:text-emerald-400'>
             ₫{formatCurrency(totalSavings)}
           </div>
-          <div className='text-xs text-gray-500 dark:text-gray-400'>Tiết kiệm</div>
+          <div className='text-xs text-gray-500 dark:text-gray-400'>{t('stats.savings')}</div>
         </div>
       </motion.div>
       <motion.div
@@ -75,7 +77,7 @@ export default function WishlistStats({
         </div>
         <div>
           <div className='text-xl font-bold text-gray-800 dark:text-gray-100'>{avgDiscount}%</div>
-          <div className='text-xs text-gray-500 dark:text-gray-400'>TB giảm giá</div>
+          <div className='text-xs text-gray-500 dark:text-gray-400'>{t('stats.avgDiscount')}</div>
         </div>
       </motion.div>
     </motion.div>

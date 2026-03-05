@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { Link } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Order } from 'src/types/checkout.type'
-import { ORDER_STATUS_CONFIG, OrderStatus } from 'src/config/orderStatus'
+import { ORDER_STATUS_CONFIG, OrderStatus, getStatusLabel } from 'src/config/orderStatus'
 import { formatCurrency } from 'src/utils/utils'
 import { orderStatusToNumber } from 'src/constant/order'
 import ImageWithFallback from 'src/components/ImageWithFallback'
@@ -31,7 +31,7 @@ function getStatusDisplay(status: OrderStatus) {
     }
   }
   return {
-    label: config.label,
+    label: getStatusLabel(status),
     color: `${config.color.light} dark:${config.color.dark}`,
     bgColor: `${config.bgColor.light} dark:${config.bgColor.dark}`,
     borderColor: `${config.borderColor.light} dark:${config.borderColor.dark}`,

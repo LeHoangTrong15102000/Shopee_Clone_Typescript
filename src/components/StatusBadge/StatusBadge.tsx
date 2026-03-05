@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ORDER_STATUS_CONFIG } from 'src/config/orderStatus'
+import { ORDER_STATUS_CONFIG, getStatusLabel } from 'src/config/orderStatus'
 import type { OrderStatus } from 'src/config/orderStatus'
 
 interface StatusBadgeProps {
@@ -29,7 +29,7 @@ const StatusBadge = ({ status, className, size = 'md' }: StatusBadgeProps) => {
         className
       )}
     >
-      {config.label}
+      {getStatusLabel(status)}
     </span>
   )
 }

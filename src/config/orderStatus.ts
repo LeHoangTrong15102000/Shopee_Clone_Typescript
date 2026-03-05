@@ -5,6 +5,7 @@
 
 export type { OrderStatus } from 'src/types/orderTracking.type'
 import type { OrderStatus } from 'src/types/orderTracking.type'
+import i18n from 'src/i18n/i18n'
 
 export interface OrderStatusConfig {
   label: string
@@ -79,7 +80,8 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, OrderStatusConfig> = {
   }
 }
 
-export const getStatusLabel = (status: OrderStatus): string => ORDER_STATUS_CONFIG[status]?.label ?? status
+export const getStatusLabel = (status: OrderStatus): string =>
+  i18n.t(`config.${status}`, { ns: 'order', defaultValue: ORDER_STATUS_CONFIG[status]?.label ?? status })
 
 export const getStatusClasses = (status: OrderStatus): string => {
   const config = ORDER_STATUS_CONFIG[status]
@@ -87,7 +89,7 @@ export const getStatusClasses = (status: OrderStatus): string => {
   return `${config.color.light} dark:${config.color.dark} ${config.bgColor.light} dark:${config.bgColor.dark} ${config.borderColor.light} dark:${config.borderColor.dark}`
 }
 
-// Carrier code to display name mapping (backend uses codes, UI shows names)
+// Carrier code to display name mapping (fallback values)
 export const CARRIER_DISPLAY_NAMES: Record<string, string> = {
   ghn: 'Giao Hàng Nhanh',
   ghtk: 'Giao Hàng Tiết Kiệm',
@@ -96,4 +98,16 @@ export const CARRIER_DISPLAY_NAMES: Record<string, string> = {
   other: 'Khác'
 }
 
-export const getCarrierDisplayName = (carrierCode: string): string => CARRIER_DISPLAY_NAMES[carrierCode] ?? carrierCode
+// Carrier code to i18n key mapping (backend uses codes, UI shows translated names)
+const CARRIER_I18N_KEYS: Record<string, string> = {
+  ghn: 'carrier.ghn',
+  ghtk: 'carrier.ghtk',
+  viettel_post: 'carrier.viettelPost',
+  'j&t': 'carrier.jt',
+  other: 'carrier.other'
+}
+
+export const getCarrierDisplayName = (carrierCode: string): string =>
+  CARRIER_I18N_KEYS[carrierCode]
+    ? i18n.t(CARRIER_I18N_KEYS[carrierCode], { ns: 'order', defaultValue: CARRIER_DISPLAY_NAMES[carrierCode] })
+    : carrierCode

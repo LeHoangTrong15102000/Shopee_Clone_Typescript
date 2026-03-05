@@ -101,5 +101,10 @@
   "address.otherAddresses": "Địa chỉ khác ({{count}})",
   "address.dragToReorder": "Kéo thả để sắp xếp",
   "address.bulkDeleteTitle": "Xóa {{count}} địa chỉ",
-  "address.bulkDeleteMessage": "Bạn có chắc chắn muốn xóa {{count}} địa chỉ đã chọn? Hành động này không thể hoàn tác."
+  "address.bulkDeleteMessage": "Bạn có chắc chắn muốn xóa {{count}} địa chỉ đã chọn? Hành động này không thể hoàn tác.",
+  "avatar.editTitle": "Chỉnh sửa ảnh đại diện",
+  "avatar.preview": "Xem trước:",
+  "avatar.maxSize": "Dung lượng file tối đa 1 MB",
+  "avatar.invalidFormat": "Định dạng file không hợp lệ. Chỉ chấp nhận JPEG, PNG, WebP",
+  "avatar.processingError": "Có lỗi xảy ra khi xử lý ảnh"
 }

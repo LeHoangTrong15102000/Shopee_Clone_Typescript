@@ -6,5 +6,11 @@
   "typing": "Typing...",
   "send": "Send",
   "online": "Online",
-  "close": "Close"
+  "close": "Close",
+  "defaultSeller": "Seller",
+  "status.connecting": "Connecting...",
+  "status.noConnection": "No connection",
+  "status.online": "Online",
+  "button.minimize": "Minimize",
+  "button.close": "Close"
 }

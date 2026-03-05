@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import config from 'src/constant/config'
 import { toast } from 'react-toastify'
@@ -17,6 +18,8 @@ const MIN_SCALE = 1
 const MAX_SCALE = 3
 
 const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropModalProps) => {
+  const { t } = useTranslation('user')
+  const { t: tCommon } = useTranslation('common')
   const reducedMotion = useReducedMotion()
   const [imageUrl, setImageUrl] = useState<string>('')
   const [scale, setScale] = useState(1)
@@ -32,14 +35,14 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
   useEffect(() => {
     if (imageFile) {
       if (imageFile.size > config.maxSizeUploadAvatar) {
-        toast.error('Dung lượng file tối đa 1 MB', { autoClose: 2000, position: 'top-center' })
+        toast.error(t('avatar.maxSize'), { autoClose: 2000, position: 'top-center' })
         onClose()
         return
       }
 
       const validTypes = ['image/jpeg', 'image/png', 'image/webp']
       if (!validTypes.includes(imageFile.type)) {
-        toast.error('Định dạng file không hợp lệ. Chỉ chấp nhận JPEG, PNG, WebP', {
+        toast.error(t('avatar.invalidFormat'), {
           autoClose: 2000,
           position: 'top-center'
         })
@@ -182,7 +185,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
         0.9
       )
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi xử lý ảnh', { autoClose: 2000, position: 'top-center' })
+      toast.error(t('avatar.processingError'), { autoClose: 2000, position: 'top-center' })
       setIsProcessing(false)
     }
   }
@@ -229,7 +232,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                 id='avatar-crop-title'
                 className='mb-4 text-center text-lg font-semibold text-gray-900 dark:text-gray-100'
               >
-                Chỉnh sửa ảnh đại diện
+                {t('avatar.editTitle')}
               </h2>
 
               <div className='flex flex-col items-center gap-4'>
@@ -311,7 +314,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
 
                 {/* Preview */}
                 <div className='flex items-center gap-3'>
-                  <span className='text-sm text-gray-500 dark:text-gray-400'>Xem trước:</span>
+                  <span className='text-sm text-gray-500 dark:text-gray-400'>{t('avatar.preview')}</span>
                   <div className='h-16 w-16 overflow-hidden rounded-full border-2 border-gray-200 dark:border-slate-600'>
                     <div
                       className='relative h-full w-full'
@@ -333,7 +336,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                     onClick={onClose}
                     className='flex-1 rounded-md px-4 py-2.5 font-medium'
                   >
-                    Hủy
+                    {tCommon('button.cancel')}
                   </Button>
                   <Button
                     variant='primary'
@@ -343,7 +346,7 @@ const AvatarCropModal = ({ isOpen, onClose, onConfirm, imageFile }: AvatarCropMo
                     onClick={handleConfirm}
                     className='flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2.5 font-medium'
                   >
-                    Xác nhận
+                    {tCommon('button.confirm')}
                   </Button>
                 </div>
               </div>

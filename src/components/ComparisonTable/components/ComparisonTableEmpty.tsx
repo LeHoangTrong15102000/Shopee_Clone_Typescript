@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import path from 'src/constant/path'
 
@@ -7,8 +8,9 @@ interface ComparisonTableEmptyProps {
 }
 
 export default function ComparisonTableEmpty({ className }: ComparisonTableEmptyProps) {
+  const { t } = useTranslation('compare')
   return (
-    <div className={classNames('py-12 text-center', className)} role='region' aria-label='Bảng so sánh sản phẩm'>
+    <div className={classNames('py-12 text-center', className)} role='region' aria-label={t('tableAriaLabel')}>
       <svg
         className='mx-auto h-16 w-16 text-gray-400 dark:text-gray-500'
         fill='none'
@@ -24,10 +26,10 @@ export default function ComparisonTableEmpty({ className }: ComparisonTableEmpty
         />
       </svg>
       <p className='mt-4 text-gray-500 dark:text-gray-400' aria-live='polite'>
-        Chưa có sản phẩm nào để so sánh
+        {t('emptyState')}
       </p>
       <Link to={path.home} className='mt-4 inline-block text-orange hover:underline'>
-        Tiếp tục mua sắm
+        {t('addToCompare')}
       </Link>
     </div>
   )

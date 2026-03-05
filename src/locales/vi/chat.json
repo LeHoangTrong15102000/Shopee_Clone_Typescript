@@ -6,5 +6,11 @@
   "typing": "Đang nhập...",
   "send": "Gửi",
   "online": "Trực tuyến",
-  "close": "Đóng"
+  "close": "Đóng",
+  "defaultSeller": "Người bán",
+  "status.connecting": "Kết nối...",
+  "status.noConnection": "Không có kết nối",
+  "status.online": "Trực tuyến",
+  "button.minimize": "Thu nhỏ",
+  "button.close": "Đóng"
 }
