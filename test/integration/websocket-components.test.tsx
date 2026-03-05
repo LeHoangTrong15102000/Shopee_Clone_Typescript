@@ -185,28 +185,28 @@ describe('WebSocket UI Components', () => {
     test('shows connecting message when connecting', () => {
       mockConnectionStatus = 'connecting'
       renderConnectionStatus(true)
-      expect(screen.getByText('status.connecting')).toBeInTheDocument()
+      expect(screen.getByText('Đang kết nối...')).toBeInTheDocument()
     })
 
     test('shows disconnected message with reconnect button', () => {
       mockConnectionStatus = 'disconnected'
       renderConnectionStatus(true)
-      expect(screen.getByText('status.disconnected')).toBeInTheDocument()
-      expect(screen.getByText('connection.reconnect')).toBeInTheDocument()
+      expect(screen.getByText('Mất kết nối')).toBeInTheDocument()
+      expect(screen.getByText('Kết nối lại')).toBeInTheDocument()
     })
 
     test('shows error message with retry button', () => {
       mockConnectionStatus = 'error'
       renderConnectionStatus(true)
-      expect(screen.getByText('connection.error')).toBeInTheDocument()
-      expect(screen.getByText('button.retry')).toBeInTheDocument()
+      expect(screen.getByText('Lỗi kết nối')).toBeInTheDocument()
+      expect(screen.getByText('Thử lại')).toBeInTheDocument()
     })
 
     test('calls connect when reconnect button clicked', async () => {
       mockConnectionStatus = 'disconnected'
       const user = userEvent.setup()
       renderConnectionStatus(true)
-      await user.click(screen.getByText('connection.reconnect'))
+      await user.click(screen.getByText('Kết nối lại'))
       expect(mockConnect).toHaveBeenCalled()
     })
   })
@@ -505,7 +505,7 @@ describe('Phase3 - LiveQASection Component', () => {
 
   test('shows question count when > 0', () => {
     render(<LiveQASection newQuestionCount={5} newAnswers={[]} />)
-    expect(screen.getByText('qa.newQuestions')).toBeInTheDocument()
+    expect(screen.getByText('5 câu hỏi mới')).toBeInTheDocument()
   })
 
   test('calls onViewQuestions when question section clicked', () => {
@@ -521,7 +521,7 @@ describe('Phase3 - LiveQASection Component', () => {
     ]
     render(<LiveQASection newQuestionCount={0} newAnswers={answers} />)
     expect(screen.getByText(/Shop ABC/)).toBeInTheDocument()
-    expect(screen.getByText(/qa\.seller/)).toBeInTheDocument()
+    expect(screen.getByText(/Người bán/)).toBeInTheDocument()
     expect(screen.getByText('🏪')).toBeInTheDocument()
   })
 
@@ -611,7 +611,7 @@ describe('Phase3 - SellerDashboardPanel Component', () => {
         <SellerDashboardPanel />
       </MemoryRouter>
     )
-    expect(screen.getByText(/seller\.dashboardTitle/)).toBeInTheDocument()
+    expect(screen.getByText(/Bảng điều khiển người bán/)).toBeInTheDocument()
   })
 
   test('shows metrics cards', () => {
@@ -622,11 +622,11 @@ describe('Phase3 - SellerDashboardPanel Component', () => {
       </MemoryRouter>
     )
     expect(screen.getByText('10')).toBeInTheDocument()
-    expect(screen.getByText('seller.todayOrders')).toBeInTheDocument()
+    expect(screen.getByText('Đơn hàng hôm nay')).toBeInTheDocument()
     expect(screen.getByText('3')).toBeInTheDocument()
-    expect(screen.getByText('seller.pendingOrders')).toBeInTheDocument()
+    expect(screen.getByText('Đơn chờ xử lý')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
-    expect(screen.getByText('seller.pendingQA')).toBeInTheDocument()
+    expect(screen.getByText('Câu hỏi chờ trả lời')).toBeInTheDocument()
   })
 
   test('shows order notifications', () => {

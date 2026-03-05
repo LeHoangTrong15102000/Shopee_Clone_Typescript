@@ -7,6 +7,49 @@ import '@testing-library/jest-dom/vitest'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
+// Import all Vietnamese translations for i18n mock
+import addressVi from './src/locales/vi/address.json'
+import authVi from './src/locales/vi/auth.json'
+import cartVi from './src/locales/vi/cart.json'
+import chatVi from './src/locales/vi/chat.json'
+import checkinVi from './src/locales/vi/checkin.json'
+import checkoutVi from './src/locales/vi/checkout.json'
+import commonVi from './src/locales/vi/common.json'
+import compareVi from './src/locales/vi/compare.json'
+import homeVi from './src/locales/vi/home.json'
+import navVi from './src/locales/vi/nav.json'
+import notificationVi from './src/locales/vi/notification.json'
+import orderVi from './src/locales/vi/order.json'
+import paymentVi from './src/locales/vi/payment.json'
+import productVi from './src/locales/vi/product.json'
+import qaVi from './src/locales/vi/qa.json'
+import shippingVi from './src/locales/vi/shipping.json'
+import userVi from './src/locales/vi/user.json'
+import validationVi from './src/locales/vi/validation.json'
+import wishlistVi from './src/locales/vi/wishlist.json'
+
+const allTranslations = {
+  address: addressVi,
+  auth: authVi,
+  cart: cartVi,
+  chat: chatVi,
+  checkin: checkinVi,
+  checkout: checkoutVi,
+  common: commonVi,
+  compare: compareVi,
+  home: homeVi,
+  nav: navVi,
+  notification: notificationVi,
+  order: orderVi,
+  payment: paymentVi,
+  product: productVi,
+  qa: qaVi,
+  shipping: shippingVi,
+  user: userVi,
+  validation: validationVi,
+  wishlist: wishlistVi
+}
+
 // Suppress SSL/TLS errors from socket cleanup in CI
 // These are benign errors from socket.io-client cleanup during test teardown
 process.on('unhandledRejection', (reason) => {
@@ -124,17 +167,34 @@ vi.mock('react-i18next', async () => {
   const actual = await vi.importActual('react-i18next')
   return {
     ...actual,
-    useTranslation: () => ({
-      t: (key) => key,
+    useTranslation: (ns = 'home') => ({
+      t: (key, options) => {
+        const namespace = typeof ns === 'string' ? ns : (Array.isArray(ns) ? ns[0] : 'home')
+        const translations = allTranslations[namespace]
+        let value = translations?.[key] || key
+        // Handle interpolation: replace {{variable}} with actual values
+        if (options && typeof value === 'string') {
+          Object.keys(options).forEach(optKey => {
+            if (optKey !== 'defaultValue') {
+              value = value.replace(new RegExp(`\\{\\{${optKey}\\}\\}`, 'g'), String(options[optKey]))
+            }
+          })
+        }
+        return value
+      },
       i18n: {
         changeLanguage: vi.fn(),
-        language: 'vi'
+        language: 'vi',
+        hasResourceBundle: vi.fn().mockReturnValue(true),
+        addResourceBundle: vi.fn(),
+        getResourceBundle: vi.fn()
       }
     }),
     initReactI18next: {
       type: '3rdParty',
       init: vi.fn()
-    }
+    },
+    Trans: ({ children }) => children
   }
 })
 
