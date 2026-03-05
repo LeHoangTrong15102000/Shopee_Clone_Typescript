@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import ComparisonTable from 'src/components/ComparisonTable'
@@ -24,10 +24,7 @@ const Compare = () => {
 
   return (
     <div className='min-h-screen bg-gray-100 py-4 sm:py-6 dark:bg-slate-900'>
-      <Helmet>
-        <title>{t('pageTitle')}</title>
-        <meta name='description' content={t('pageDescription')} />
-      </Helmet>
+      <SEO title={t('pageTitle')} description={t('pageDescription')} />
 
       <div className='container'>
         {/* Header */}

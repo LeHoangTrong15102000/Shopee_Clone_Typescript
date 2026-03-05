@@ -9,6 +9,7 @@ import OrderDetailItems from './components/OrderDetailItems'
 import OrderSummarySection from './components/OrderSummarySection'
 import OrderTimeline from './components/OrderTimeline'
 import ReturnOrderModal from './components/ReturnOrderModal'
+import SEO from 'src/components/SEO'
 import {
   formatDate,
   getStatusDisplay,
@@ -81,6 +82,7 @@ export default function OrderDetail() {
 
   return (
     <motion.div variants={containerVariants} initial='hidden' animate='visible' className='space-y-4'>
+      <SEO title={`${t('detail.title')} #${order._id.slice(-8)}`} noindex />
       {/* Header */}
       <motion.div
         variants={sectionItemVariants}

@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router'
 
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
 import Button from 'src/components/Button'
@@ -121,10 +121,7 @@ const Login = () => {
           backgroundPosition: 'center center'
         }}
       />
-      <Helmet>
-        <title>{t('login.meta.title')}</title>
-        <meta name='description' content={t('login.meta.description')} />
-      </Helmet>
+      <SEO title={t('login.meta.title')} description={t('login.meta.description')} />
       <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='mt-10 md:col-span-3 md:mx-auto md:w-full md:max-w-md lg:col-span-2 lg:col-start-4 lg:mx-0 lg:max-w-none'>

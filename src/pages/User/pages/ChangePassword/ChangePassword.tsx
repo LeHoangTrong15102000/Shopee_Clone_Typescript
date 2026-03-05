@@ -9,6 +9,7 @@ import userApi, { BodyUpdateProfile } from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import PasswordStrengthMeter from 'src/components/PasswordStrengthMeter'
+import SEO from 'src/components/SEO'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { UserSchema, baseUserSchema } from 'src/utils/rules'
@@ -108,6 +109,7 @@ const ChangePassword = () => {
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
+      <SEO title={t('changePassword.title')} noindex />
       {/* Tiêu đề */}
       <motion.div
         className='border-b border-b-gray-100 py-6 text-center sm:text-left dark:border-b-slate-600'

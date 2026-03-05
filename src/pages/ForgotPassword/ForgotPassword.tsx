@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
@@ -67,10 +67,7 @@ const ForgotPassword = () => {
           backgroundPosition: 'center center'
         }}
       />
-      <Helmet>
-        <title>{t('forgotPassword.meta.title')}</title>
-        <meta name='description' content={t('forgotPassword.meta.description')} />
-      </Helmet>
+      <SEO title={t('forgotPassword.meta.title')} description={t('forgotPassword.meta.description')} />
       <div className='relative container min-h-[60vh] lg:min-h-[773.94px]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='mt-10 md:col-span-3 md:mx-auto md:w-full md:max-w-md lg:col-span-2 lg:col-start-4 lg:mx-0 lg:max-w-none'>

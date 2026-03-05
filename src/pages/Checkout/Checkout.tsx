@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import SEO from 'src/components/SEO'
 import { useCheckout } from './useCheckout'
 import { CheckoutProgressStepper } from './components/CheckoutProgressStepper'
 import { CheckoutFormSections } from './components/CheckoutFormSections'
@@ -41,6 +42,7 @@ const Checkout = () => {
 
   return (
     <div className='min-h-screen bg-linear-to-b from-neutral-100 via-orange-50/10 to-neutral-100 py-4 md:py-8 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900'>
+      <SEO title={t('title')} noindex />
       <div className='container'>
         {/* Header */}
         <motion.div

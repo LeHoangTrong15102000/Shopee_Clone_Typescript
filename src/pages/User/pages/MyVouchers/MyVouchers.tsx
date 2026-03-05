@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import classNames from 'classnames'
 import voucherApi from 'src/apis/voucher.api'
 import VoucherCard from 'src/components/VoucherCard'
+import SEO from 'src/components/SEO'
 import { VoucherStatus, VoucherCategory } from 'src/types/voucher.type'
 import Button from 'src/components/Button'
 
@@ -61,6 +62,7 @@ export default function MyVouchers() {
 
   return (
     <div className='space-y-4'>
+      <SEO title='Kho Voucher' noindex />
       <div className='rounded-lg bg-white p-4 shadow-xs dark:bg-slate-800'>
         <h1 className='text-xl font-bold text-gray-900 dark:text-gray-100'>Kho Voucher</h1>
         <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>Quản lý các voucher của bạn</p>

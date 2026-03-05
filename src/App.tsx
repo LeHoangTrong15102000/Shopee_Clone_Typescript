@@ -4,9 +4,10 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
-import SEO from './components/SEO'
+import SEO, { SITE_URL } from './components/SEO'
 import { KeyboardShortcutsProvider } from './components/KeyboardShortcutsProvider'
 import ScrollToTopOnNavigate from './components/ScrollToTopOnNavigate'
+import useDocumentLang from './hooks/useDocumentLang'
 
 // Lazy load heavy components - giảm main chunk size
 const ChatbotWidget = lazy(() => import('./components/ChatbotWidget'))
@@ -27,6 +28,9 @@ function App() {
   // Sử dụng useContext để lấy ra giá trị
   const { reset } = useContext(AppContext)
 
+  // Set html lang attribute based on i18n language
+  useDocumentLang()
+
   useEffect(() => {
     // lắng nghe sự kiện
     // Khi mà lắng nghe sự kiện thì chúng ta sẽ xóa cái profile, isAuthenticated, extendedPurchases
@@ -38,8 +42,15 @@ function App() {
 
   return (
     <KeyboardShortcutsProvider>
-      {/* Default SEO cho toàn bộ app */}
-      <SEO />
+      {/* Default SEO cho toàn bộ app — Organization schema on every page */}
+      <SEO
+        jsonLd={{
+          '@type': 'Organization',
+          name: 'Shopee Clone',
+          url: SITE_URL,
+          logo: `${SITE_URL}/vite.svg`
+        }}
+      />
       <ToastContainer autoClose={1500} role='alert' />
       <ScrollToTopOnNavigate />
       {routeElements}

@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router'
-import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 
 import HeroBanner from 'src/components/HeroBanner'
 import { FlashSaleTimer } from 'src/components/FlashSale'
 import OptimizedImage from 'src/components/OptimizedImage'
+import SEO from 'src/components/SEO'
+import { SITE_URL } from 'src/components/SEO'
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 import path from 'src/constant/path'
@@ -80,10 +81,22 @@ const Home = () => {
 
   return (
     <div className='bg-gray-50 dark:bg-slate-900'>
-      <Helmet>
-        <title>{t('meta.title')}</title>
-        <meta name='description' content={t('meta.description')} />
-      </Helmet>
+      <SEO
+        title={t('meta.title')}
+        description={t('meta.description')}
+        jsonLd={[
+          {
+            '@type': 'WebSite',
+            name: 'Shopee Clone',
+            url: SITE_URL,
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/products?name={search_term_string}` },
+              'query-input': 'required name=search_term_string'
+            }
+          }
+        ]}
+      />
 
       {/* Hero Banner */}
       <div className='bg-white dark:bg-slate-800'>

@@ -17,6 +17,7 @@ import { setProfileToLS } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
+import SEO from 'src/components/SEO'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import AvatarCropModal from 'src/components/AvatarCropModal'
 
@@ -231,6 +232,7 @@ const Profile = () => {
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
+      <SEO title={t('profile.title')} noindex />
       {/* Profile Completion Progress */}
       <ProfileCompletion user={profile || null} className='mt-2 mb-2 sm:mt-6 sm:mb-6' />
 

@@ -100,6 +100,7 @@ export async function loadLanguage(lng: string): Promise<void> {
   if (lng === 'vi') {
     // Vietnamese is already loaded statically
     await i18n.changeLanguage('vi')
+    document.documentElement.lang = lng
     return
   }
 
@@ -107,6 +108,7 @@ export async function loadLanguage(lng: string): Promise<void> {
   const allLoaded = allNamespaces.every((ns) => i18n.hasResourceBundle(lng, ns))
   if (allLoaded) {
     await i18n.changeLanguage(lng)
+    document.documentElement.lang = lng
     return
   }
 
@@ -173,6 +175,7 @@ export async function loadLanguage(lng: string): Promise<void> {
   i18n.addResourceBundle(lng, 'compare', compareModule.default, true, true)
   i18n.addResourceBundle(lng, 'validation', validationModule.default, true, true)
   await i18n.changeLanguage(lng)
+  document.documentElement.lang = lng
 }
 
 export default i18n

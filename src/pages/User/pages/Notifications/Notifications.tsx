@@ -7,6 +7,7 @@ import { useIsMobile } from 'src/hooks/useIsMobile'
 import { Notification, NotificationType } from 'src/types/notification.type'
 import useNotifications from 'src/hooks/useNotifications'
 import useNotificationSound from 'src/hooks/useNotificationSound'
+import SEO from 'src/components/SEO'
 import Button from 'src/components/Button'
 
 type FilterTab = 'all' | 'order' | 'promotion' | 'system' | 'other'
@@ -225,6 +226,7 @@ const Notifications = () => {
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
+      <SEO title='Thông báo' noindex />
       {/* Header */}
       <div className='mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div className='flex items-center gap-2'>

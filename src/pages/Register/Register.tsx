@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import omit from 'lodash/omit'
 import { useContext } from 'react'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router'
@@ -110,10 +110,7 @@ const Register = () => {
           backgroundPosition: 'center center'
         }}
       />
-      <Helmet>
-        <title>{t('register.meta.title')}</title>
-        <meta name='description' content={t('register.meta.description')} />
-      </Helmet>
+      <SEO title={t('register.meta.title')} description={t('register.meta.description')} />
       <div className='relative container min-h-[60vh]'>
         <div className='grid grid-cols-1 py-8 md:grid-cols-3 md:py-16 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='md:col-span-3 md:mx-auto md:w-full md:max-w-md lg:col-span-2 lg:col-start-4 lg:mx-0 lg:max-w-none'>

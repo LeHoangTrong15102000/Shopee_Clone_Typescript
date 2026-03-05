@@ -13,12 +13,13 @@ import ProductQA from 'src/components/ProductQA'
 import ShippingEstimate from 'src/components/ShippingEstimate'
 import path from 'src/constant/path'
 
-import { getIdFromNameId } from 'src/utils/utils'
+import { getIdFromNameId, generateNameId } from 'src/utils/utils'
 import { ProductImages, ProductInfo, ProductActions, RelatedProducts } from './components'
 
 import { AppContext } from 'src/contexts/app.context'
 import HTTP_STATUS_CODE from 'src/constant/httpStatusCode.enum'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
+import { SITE_URL } from 'src/components/SEO'
 import { convert } from 'html-to-text'
 import { useRecentlyViewed } from 'src/hooks/useRecentlyViewed'
 import useLivePriceUpdate from 'src/hooks/useLivePriceUpdate'
@@ -194,37 +195,54 @@ const ProductDetail = () => {
 
   return (
     <div className='bg-gray-200 py-6 dark:bg-slate-900'>
-      <Helmet>
-        <title>{t('meta.title', { name: product?.name })}</title>
-        <meta
-          name='description'
-          content={convert(product?.description, {
-            limits: {
-              maxInputLength: 200
-            }
-          })}
-        />
-        <script type='application/ld+json'>
-          {JSON.stringify({
-            '@context': 'https://schema.org/',
+      <SEO
+        title={t('meta.title', { name: product?.name })}
+        description={convert(product?.description, { limits: { maxInputLength: 200 } })}
+        image={product.image}
+        type='product'
+        url={`${SITE_URL}/${generateNameId({ name: product.name, id: product._id })}`}
+        jsonLd={[
+          {
             '@type': 'Product',
             name: product.name,
             image: product.image,
             description: convert(product.description, { limits: { maxInputLength: 500 } }),
+            brand: { '@type': 'Brand', name: 'Shopee Clone' },
             offers: {
               '@type': 'Offer',
+              url: `${SITE_URL}/${generateNameId({ name: product.name, id: product._id })}`,
               price: product.price,
               priceCurrency: 'VND',
-              availability: product.quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'
+              availability: product.quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+              itemCondition: 'https://schema.org/NewCondition'
             },
             aggregateRating: {
               '@type': 'AggregateRating',
               ratingValue: product.rating,
-              reviewCount: product.sold
+              reviewCount: product.sold,
+              bestRating: 5,
+              worstRating: 1
             }
-          })}
-        </script>
-      </Helmet>
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: SITE_URL },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: product.category.name,
+                item: `${SITE_URL}/products?category=${product.category._id}`
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: product.name
+              }
+            ]
+          }
+        ]}
+      />
       {/* Thông tin sản phẩm */}
       <div className='container'>
         <div className='bg-white p-4 shadow-sm dark:bg-slate-800 dark:shadow-slate-900/50'>

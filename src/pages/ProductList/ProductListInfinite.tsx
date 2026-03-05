@@ -14,7 +14,7 @@ import AsideFilter from './components/AsideFilter'
 import Product from './components/Product/Product'
 import SortProductList from './components/SortProductList'
 
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import Breadcrumb from 'src/components/Breadcrumb'
 import Button from 'src/components/Button'
 import path from 'src/constant/path'
@@ -153,9 +153,7 @@ const ProductListInfinite = () => {
   if (isLoading) {
     return (
       <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
-        <Helmet>
-          <title>Đang tải... | Shopee Clone</title>
-        </Helmet>
+        <SEO title='Đang tải...' />
         <div className='container'>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-12'>
             <div className='hidden md:col-span-3 md:block'>
@@ -209,10 +207,10 @@ const ProductListInfinite = () => {
 
   return (
     <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
-      <Helmet>
-        <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : 'Tất cả sản phẩm | Shopee Clone'}</title>
-        <meta name='description' content='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng' />
-      </Helmet>
+      <SEO
+        title={currentCategory ? currentCategory.name : 'Tất cả sản phẩm'}
+        description='Mua sắm online hàng triệu sản phẩm ở tất cả ngành hàng'
+      />
 
       <div className='container'>
         {/* Breadcrumb */}

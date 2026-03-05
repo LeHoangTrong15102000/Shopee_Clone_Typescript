@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Fragment, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import WishlistPriceAlert from 'src/components/WishlistPriceAlert'
@@ -62,10 +62,7 @@ export default function Wishlist() {
 
   return (
     <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-16 dark:bg-slate-900'>
-      <Helmet>
-        <title>{t('pageTitle')}</title>
-        <meta name='description' content={t('pageDescription')} />
-      </Helmet>
+      <SEO title={t('pageTitle')} description={t('pageDescription')} noindex />
 
       <div className='container'>
         {allWishlistItems.length > 0 ? (

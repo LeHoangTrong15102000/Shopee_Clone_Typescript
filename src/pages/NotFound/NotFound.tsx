@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router'
 import path from 'src/constant/path'
+import SEO from 'src/components/SEO'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { useIsMobile } from 'src/hooks/useIsMobile'
 import { staggerContainer, staggerItem, STAGGER_DELAY, ANIMATION_DURATION } from 'src/styles/animations'
@@ -28,6 +29,7 @@ const NotFound = () => {
       initial={disableAnimation ? undefined : 'hidden'}
       animate={disableAnimation ? undefined : 'visible'}
     >
+      <SEO title='Không tìm thấy trang' noindex />
       <motion.h1
         className='text-6xl font-extrabold tracking-widest text-black/90 sm:text-7xl md:text-9xl dark:text-gray-100'
         variants={disableAnimation ? undefined : floatingVariants}

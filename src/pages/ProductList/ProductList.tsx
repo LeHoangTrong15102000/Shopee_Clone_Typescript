@@ -21,7 +21,8 @@ import { useProductQueryStates, normalizeProductQueryKey } from 'src/hooks/nuqs'
 import { useScrollRestoration } from 'src/hooks/useScrollRestoration'
 import { useViewMode } from 'src/hooks/useViewMode'
 import { useIsMobile } from 'src/hooks/useIsMobile'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
+import { SITE_URL } from 'src/components/SEO'
 import { useTranslation } from 'react-i18next'
 import Loader from 'src/components/Loader'
 import Button from 'src/components/Button'
@@ -165,10 +166,37 @@ const ProductList = () => {
 
   return (
     <div className='bg-[#f5f5f5] py-6 dark:bg-slate-900'>
-      <Helmet>
-        <title>{currentCategory ? `${currentCategory.name} | Shopee Clone` : t('allProducts')}</title>
-        <meta name='description' content={t('allProductsMeta')} />
-      </Helmet>
+      <SEO
+        title={currentCategory ? `${currentCategory.name}` : t('allProducts')}
+        description={t('allProductsMeta')}
+        jsonLd={[
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: SITE_URL },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: currentCategory?.name ?? 'Tất cả sản phẩm',
+                ...(currentCategory ? { item: `${SITE_URL}/products?category=${currentCategory._id}` } : {})
+              }
+            ]
+          },
+          ...(products.length > 0
+            ? [
+                {
+                  '@type': 'ItemList',
+                  itemListElement: products.map((p, i) => ({
+                    '@type': 'ListItem',
+                    position: i + 1,
+                    name: p.name,
+                    url: `${SITE_URL}/${encodeURIComponent(p.name.replace(/\s/g, '-'))}-i-${p._id}`
+                  }))
+                }
+              ]
+            : [])
+        ]}
+      />
 
       <div className='container'>
         {/* Loading indicator khi đang fetch data mới (không phải lần đầu load) */}

@@ -8,6 +8,7 @@ import { usePurchaseStatus } from 'src/hooks/nuqs'
 import { useOrderFilter } from 'src/hooks/useOrderFilter'
 import { useReducedMotion } from 'src/hooks/useReducedMotion'
 import { useTranslation } from 'react-i18next'
+import SEO from 'src/components/SEO'
 import { staggerContainer } from 'src/styles/animations'
 import { PurchaseListStatus, Purchase } from 'src/types/purchases.type'
 import { PurchaseTabBar, PurchaseItem } from './components'
@@ -71,6 +72,7 @@ const HistoryPurchases = () => {
 
   return (
     <Fragment>
+      <SEO title='Đơn mua' noindex />
       {/* Tabs Link */}
       <PurchaseTabBar status={status} onStatusChange={setStatus} />
 

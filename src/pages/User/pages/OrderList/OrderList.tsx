@@ -11,6 +11,7 @@ import Button from 'src/components/Button'
 import { useOrderStatus } from 'src/hooks/nuqs/orderSearchParams'
 import { ordersStatus, orderStatusFromNumber, orderStatusToNumber } from 'src/constant/order'
 import { useIsMobile } from 'src/hooks/useIsMobile'
+import SEO from 'src/components/SEO'
 import { useTranslation } from 'react-i18next'
 
 const orderTabKeys = [
@@ -117,6 +118,7 @@ export default function OrderList() {
 
   return (
     <div className='space-y-4'>
+      <SEO title='Đơn hàng' noindex />
       {/* Tabs */}
       <div className='sticky top-0 z-20 scrollbar-hide flex items-center overflow-x-auto rounded-t-sm bg-white shadow-xs dark:bg-slate-800'>
         {orderTabStatuses.map((status, index) => (

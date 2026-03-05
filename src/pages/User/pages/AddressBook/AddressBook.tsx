@@ -2,7 +2,7 @@ import { DndContext, DragOverlay, MeasuringStrategy } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { AnimatePresence } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import { useTranslation } from 'react-i18next'
 import i18n from 'src/i18n/i18n'
 import AddressForm from 'src/components/AddressSelector/AddressForm'
@@ -117,10 +117,7 @@ const AddressBook = () => {
 
   return (
     <div className='rounded-md bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
-      <Helmet>
-        <title>{t('user:address.meta.title')}</title>
-        <meta name='description' content={t('user:address.meta.description')} />
-      </Helmet>
+      <SEO title={t('user:address.meta.title')} description={t('user:address.meta.description')} noindex />
       {/* Header */}
       <div className='flex flex-col gap-4 border-b border-b-gray-100 py-6 sm:flex-row sm:items-center sm:justify-between dark:border-b-slate-600'>
         <div className='text-center sm:text-left'>

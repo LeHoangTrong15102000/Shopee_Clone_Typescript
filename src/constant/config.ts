@@ -3,6 +3,7 @@ const config = {
   // baseUrl: 'http://localhost:3000/',
   socketUrl: import.meta.env.VITE_SOCKET_URL ?? 'https://api-ecom.duthanhduoc.com',
   // socketUrl: 'http://localhost:3000',
+  siteUrl: import.meta.env.VITE_SITE_URL ?? 'https://shop.lehoangtrong.com',
   maxSizeUploadAvatar: 1048576, // bytes
 
   /**

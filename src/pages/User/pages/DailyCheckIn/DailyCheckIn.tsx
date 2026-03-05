@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import SEO from 'src/components/SEO'
 import DailyCheckIn from 'src/components/DailyCheckIn'
 
 // SVG Icon Components for reward tiers
@@ -75,10 +75,7 @@ const LightbulbIcon = () => (
 export default function DailyCheckInPage() {
   return (
     <div className='rounded-xs bg-white px-2 pb-10 shadow-sm md:px-7 md:pb-20 dark:bg-slate-800'>
-      <Helmet>
-        <title>Điểm danh hàng ngày | Shopee Clone</title>
-        <meta name='description' content='Điểm danh hàng ngày để nhận xu và phần thưởng' />
-      </Helmet>
+      <SEO title='Điểm danh hàng ngày' description='Điểm danh hàng ngày để nhận xu và phần thưởng' noindex />
 
       <div className='border-b border-b-gray-200 py-6 dark:border-b-slate-700'>
         <h1 className='text-lg font-medium text-gray-900 capitalize dark:text-gray-100'>Điểm danh hàng ngày</h1>

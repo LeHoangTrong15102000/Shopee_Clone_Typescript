@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { useSaveForLater, SavedItem } from 'src/hooks/useSaveForLater'
 import SaveForLaterSection from 'src/components/SaveForLaterSection'
 import useAnimatedNumber from 'src/hooks/useAnimatedNumber'
+import SEO from 'src/components/SEO'
 import CartItemList from './components/CartItemList'
 import CartSummaryBar from './components/CartSummaryBar'
 import EmptyCartState from './components/EmptyCartState'
@@ -295,6 +296,7 @@ const Cart = () => {
   }, [checkedPurchases.length, navigate])
   return (
     <div className='border-b-4 border-b-[#ee4d2d] bg-neutral-100 py-6 md:py-8 dark:bg-slate-900'>
+      <SEO title='Giỏ hàng' noindex />
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <Fragment>
