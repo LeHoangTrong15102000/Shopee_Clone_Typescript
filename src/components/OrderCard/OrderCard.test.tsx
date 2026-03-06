@@ -14,18 +14,61 @@ vi.mock('framer-motion', () => ({
 
 const mockOrder: Order = {
   _id: 'order123456789',
+  userId: 'user1',
   items: [
     {
-      product: { _id: 'p1', name: 'Test Product', image: 'test.jpg', price: 100000 },
+      product: {
+        _id: 'p1',
+        name: 'Test Product',
+        image: 'test.jpg',
+        images: ['test.jpg'],
+        price: 100000,
+        price_before_discount: 120000,
+        rating: 4.5,
+        quantity: 100,
+        sold: 50,
+        view: 1000,
+        description: 'Test product description',
+        category: { _id: 'cat1', name: 'Test Category' },
+        location: 'TP. Hồ Chí Minh',
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z'
+      },
       buyCount: 2,
-      price: 100000
+      price: 100000,
+      priceBeforeDiscount: 120000
     }
   ],
   total: 200000,
+  subtotal: 200000,
+  shippingFee: 30000,
+  discount: 0,
+  coinsUsed: 0,
+  coinsDiscount: 0,
   status: 'pending',
   createdAt: '2024-01-15T10:30:00.000Z',
   updatedAt: '2024-01-15T10:30:00.000Z',
-  shippingAddress: { fullName: 'Test', phone: '0123456789', address: 'Test Address' },
+  shippingAddress: {
+    _id: 'addr1',
+    userId: 'user1',
+    fullName: 'Test',
+    phone: '0123456789',
+    province: 'TP. Hồ Chí Minh',
+    district: 'Quận 1',
+    ward: 'Phường Bến Nghé',
+    street: '123 Test Street',
+    isDefault: true,
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
+  },
+  shippingMethod: {
+    _id: 'ship1',
+    name: 'Giao hàng tiêu chuẩn',
+    description: 'Giao trong 3-5 ngày',
+    price: 30000,
+    estimatedDays: '3-5 ngày',
+    icon: '📦'
+  },
   paymentMethod: 'cod'
 }
 

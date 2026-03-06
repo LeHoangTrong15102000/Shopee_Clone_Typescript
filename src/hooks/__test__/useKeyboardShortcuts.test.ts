@@ -3,7 +3,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { useKeyboardShortcuts, Shortcut, SequenceShortcut } from '../useKeyboardShortcuts'
 
 describe('useKeyboardShortcuts', () => {
-  let mockAction: ReturnType<typeof vi.fn>
+  let mockAction: () => void
 
   beforeEach(() => {
     mockAction = vi.fn()

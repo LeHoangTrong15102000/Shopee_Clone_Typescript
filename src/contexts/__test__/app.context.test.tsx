@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { useContext } from 'react'
 import { AppContext, AppProvider, getInitialAppContext } from '../app.context'
 
