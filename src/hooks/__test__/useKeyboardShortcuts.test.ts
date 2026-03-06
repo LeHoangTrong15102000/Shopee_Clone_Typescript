@@ -18,9 +18,7 @@ describe('useKeyboardShortcuts', () => {
   }
 
   it('calls action when shortcut key is pressed', () => {
-    const shortcuts: Shortcut[] = [
-      { key: '/', description: 'Search', action: mockAction, category: 'Navigation' }
-    ]
+    const shortcuts: Shortcut[] = [{ key: '/', description: 'Search', action: mockAction, category: 'Navigation' }]
 
     renderHook(() => useKeyboardShortcuts({ shortcuts }))
 
@@ -29,9 +27,7 @@ describe('useKeyboardShortcuts', () => {
   })
 
   it('does not call action when disabled', () => {
-    const shortcuts: Shortcut[] = [
-      { key: '/', description: 'Search', action: mockAction, category: 'Navigation' }
-    ]
+    const shortcuts: Shortcut[] = [{ key: '/', description: 'Search', action: mockAction, category: 'Navigation' }]
 
     renderHook(() => useKeyboardShortcuts({ shortcuts, enabled: false }))
 
@@ -54,9 +50,7 @@ describe('useKeyboardShortcuts', () => {
   })
 
   it('skips shortcuts when typing in input fields', () => {
-    const shortcuts: Shortcut[] = [
-      { key: '/', description: 'Search', action: mockAction, category: 'Navigation' }
-    ]
+    const shortcuts: Shortcut[] = [{ key: '/', description: 'Search', action: mockAction, category: 'Navigation' }]
 
     renderHook(() => useKeyboardShortcuts({ shortcuts }))
 
@@ -71,9 +65,7 @@ describe('useKeyboardShortcuts', () => {
   })
 
   it('always allows Escape even in input fields', () => {
-    const shortcuts: Shortcut[] = [
-      { key: 'Escape', description: 'Close', action: mockAction, category: 'Navigation' }
-    ]
+    const shortcuts: Shortcut[] = [{ key: 'Escape', description: 'Close', action: mockAction, category: 'Navigation' }]
 
     renderHook(() => useKeyboardShortcuts({ shortcuts }))
 
@@ -109,9 +101,7 @@ describe('useKeyboardShortcuts', () => {
     const addEventListenerSpy = vi.spyOn(document, 'addEventListener')
     const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener')
 
-    const shortcuts: Shortcut[] = [
-      { key: '/', description: 'Search', action: mockAction, category: 'Navigation' }
-    ]
+    const shortcuts: Shortcut[] = [{ key: '/', description: 'Search', action: mockAction, category: 'Navigation' }]
 
     const { unmount } = renderHook(() => useKeyboardShortcuts({ shortcuts }))
 
@@ -122,4 +112,3 @@ describe('useKeyboardShortcuts', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function), true)
   })
 })
-

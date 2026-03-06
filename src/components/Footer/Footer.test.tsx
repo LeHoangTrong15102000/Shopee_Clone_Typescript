@@ -27,4 +27,3 @@ describe('Footer', () => {
     expect(vnElements.length).toBeGreaterThanOrEqual(1)
   })
 })
-

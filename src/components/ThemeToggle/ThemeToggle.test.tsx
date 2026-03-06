@@ -28,4 +28,3 @@ describe('ThemeToggle', () => {
     expect(button).toHaveClass('text-red-500')
   })
 })
-

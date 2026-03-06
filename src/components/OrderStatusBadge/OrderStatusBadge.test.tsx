@@ -34,4 +34,3 @@ describe('OrderStatusBadge', () => {
     expect(span).toHaveClass('inline-flex')
   })
 })
-

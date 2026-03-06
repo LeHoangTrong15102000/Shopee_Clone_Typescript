@@ -38,4 +38,3 @@ describe('DeleteModal', () => {
     expect(handleIsCancel).toHaveBeenCalled()
   })
 })
-

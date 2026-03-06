@@ -29,4 +29,3 @@ describe('Wishlist', () => {
     expect(document.body).toBeInTheDocument()
   })
 })
-

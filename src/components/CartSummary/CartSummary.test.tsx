@@ -6,4 +6,3 @@ describe('CartSummary', () => {
     expect(true).toBe(true)
   })
 })
-

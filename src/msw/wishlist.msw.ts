@@ -46,4 +46,3 @@ const removeFromWishlistRequest = http.delete(`${config.baseUrl}wishlist/:id`, (
 const wishlistRequests = [getWishlistRequest, addToWishlistRequest, removeFromWishlistRequest]
 
 export default wishlistRequests
-

@@ -52,4 +52,3 @@ describe('InputNumber', () => {
     expect(input).toHaveClass('custom-input-class')
   })
 })
-

@@ -1,11 +1,5 @@
 import { SuccessResponseApi } from 'src/types/utils.type'
-import {
-  ShippingMethod,
-  PaymentMethod,
-  Order,
-  CreateOrderBody,
-  CheckoutSummary
-} from 'src/types/checkout.type'
+import { ShippingMethod, PaymentMethod, Order, CreateOrderBody, CheckoutSummary } from 'src/types/checkout.type'
 import http from 'src/utils/http'
 
 // Mock shipping methods

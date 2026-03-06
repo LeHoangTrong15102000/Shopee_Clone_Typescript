@@ -76,4 +76,3 @@ describe('ThemeContext', () => {
     consoleError.mockRestore()
   })
 })
-

@@ -25,4 +25,3 @@ describe('purchaseStatusParser', () => {
     expect(purchaseStatusParser.serialize(99)).toBe('99')
   })
 })
-

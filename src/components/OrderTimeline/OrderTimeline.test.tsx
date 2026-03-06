@@ -22,4 +22,3 @@ describe('OrderTimeline', () => {
     expect(screen.getByRole('progressbar')).toBeInTheDocument()
   })
 })
-

@@ -265,12 +265,15 @@ const chatbotApi = {
 
   testChatbotStream: async (body: TestChatbotBody) => {
     try {
-      const response = await fetch(`${config.baseUrl}conversations/test-stream?message=${encodeURIComponent(body.message)}`, {
-        method: 'GET',
-        headers: {
-          authorization: getAccessTokenFromLS()
+      const response = await fetch(
+        `${config.baseUrl}conversations/test-stream?message=${encodeURIComponent(body.message)}`,
+        {
+          method: 'GET',
+          headers: {
+            authorization: getAccessTokenFromLS()
+          }
         }
-      })
+      )
       return response
     } catch (error) {
       console.warn('⚠️ [testChatbotStream] API not available, using mock stream response')

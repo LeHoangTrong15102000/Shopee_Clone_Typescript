@@ -119,4 +119,3 @@ describe('baseSchema', () => {
     expect(pwOnly.safeParse({ password: '12345' }).success).toBe(false)
   })
 })
-

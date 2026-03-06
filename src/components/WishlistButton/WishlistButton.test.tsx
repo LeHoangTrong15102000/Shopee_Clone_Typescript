@@ -31,4 +31,3 @@ describe('WishlistButton', () => {
     expect(button).toHaveAttribute('aria-busy', 'false')
   })
 })
-

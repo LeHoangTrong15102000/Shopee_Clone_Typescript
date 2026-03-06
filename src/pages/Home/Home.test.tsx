@@ -21,4 +21,3 @@ describe('Home', () => {
     expect(window.location.pathname).toBe('/')
   })
 })
-

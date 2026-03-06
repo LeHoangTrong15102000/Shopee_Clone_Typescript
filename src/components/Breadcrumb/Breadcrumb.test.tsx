@@ -8,11 +8,7 @@ const renderWithRouter = (ui: React.ReactElement) => {
 }
 
 describe('Breadcrumb', () => {
-  const items = [
-    { label: 'Home', to: '/' },
-    { label: 'Products', to: '/products' },
-    { label: 'Current Page' }
-  ]
+  const items = [{ label: 'Home', to: '/' }, { label: 'Products', to: '/products' }, { label: 'Current Page' }]
 
   it('renders all breadcrumb items', () => {
     renderWithRouter(<Breadcrumb items={items} />)
@@ -37,4 +33,3 @@ describe('Breadcrumb', () => {
     expect(screen.getByRole('navigation')).toHaveAttribute('aria-label', 'Breadcrumb')
   })
 })
-

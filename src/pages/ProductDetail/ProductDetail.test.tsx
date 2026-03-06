@@ -23,4 +23,3 @@ describe('ProductDetail', () => {
     expect(window.location.pathname).toBe(productSlug)
   })
 })
-

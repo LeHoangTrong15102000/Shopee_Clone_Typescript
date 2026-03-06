@@ -33,4 +33,3 @@ describe('Header', () => {
     expect(searchInputs[0]).toHaveValue('áo thun')
   })
 })
-

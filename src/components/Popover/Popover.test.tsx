@@ -70,4 +70,3 @@ describe('Popover', () => {
     expect(screen.getByRole('button', { name: 'Trigger' }).parentElement?.tagName).toBe('SPAN')
   })
 })
-

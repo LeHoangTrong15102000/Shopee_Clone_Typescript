@@ -82,4 +82,3 @@ describe('createBlurPlaceholder', () => {
     expect(result).toContain('data:image/svg+xml;base64,')
   })
 })
-

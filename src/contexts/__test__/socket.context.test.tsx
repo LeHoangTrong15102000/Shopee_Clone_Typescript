@@ -56,4 +56,3 @@ describe('SocketContext', () => {
     expect(screen.getByTestId('status')).toBeInTheDocument()
   })
 })
-

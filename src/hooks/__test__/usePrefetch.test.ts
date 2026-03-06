@@ -111,4 +111,3 @@ describe('usePrefetch', () => {
     expect(fn3).toHaveBeenCalledTimes(1)
   })
 })
-

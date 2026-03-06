@@ -36,7 +36,9 @@ describe('Register', () => {
     await waitFor(() => {
       // Should show some validation error
       const errorElements = document.querySelectorAll('[class*="text-red"], [class*="text-danger"]')
-      expect(errorElements.length > 0 || screen.queryByText(/bắt buộc/i) || screen.queryByText(/required/i)).toBeTruthy()
+      expect(
+        errorElements.length > 0 || screen.queryByText(/bắt buộc/i) || screen.queryByText(/required/i)
+      ).toBeTruthy()
     })
   })
 

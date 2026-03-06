@@ -50,4 +50,3 @@ const deleteAddressRequest = http.delete(`${config.baseUrl}addresses/:id`, () =>
 const addressRequests = [getAddressesRequest, createAddressRequest, updateAddressRequest, deleteAddressRequest]
 
 export default addressRequests
-

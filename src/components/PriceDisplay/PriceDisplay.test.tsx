@@ -29,4 +29,3 @@ describe('PriceDisplay', () => {
     expect(screen.queryByText('-50%')).not.toBeInTheDocument()
   })
 })
-

@@ -45,4 +45,3 @@ const markAllNotificationsReadRequest = http.put(`${config.baseUrl}notifications
 const notificationRequests = [getNotificationsRequest, markNotificationReadRequest, markAllNotificationsReadRequest]
 
 export default notificationRequests
-

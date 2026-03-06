@@ -46,4 +46,3 @@ describe('SearchHistory', () => {
     expect(onClearAll).toHaveBeenCalled()
   })
 })
-

@@ -58,4 +58,3 @@ describe('ErrorBoundary', () => {
     expect(homeButton).toBeInTheDocument()
   })
 })
-

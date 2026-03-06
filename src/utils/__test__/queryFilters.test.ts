@@ -87,4 +87,3 @@ describe('QueryFilters.notifications', () => {
     expect(QueryFilters.notifications.count()).toEqual({ queryKey: ['notifications', 'count'] })
   })
 })
-

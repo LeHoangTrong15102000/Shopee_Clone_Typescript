@@ -28,4 +28,3 @@ describe('StockBadge', () => {
     expect(screen.getByText('Sắp hết hàng')).toBeInTheDocument()
   })
 })
-

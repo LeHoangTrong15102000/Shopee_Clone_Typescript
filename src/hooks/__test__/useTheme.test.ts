@@ -88,4 +88,3 @@ describe('useTheme', () => {
     expect(result.current.toggleTheme).toBe(mockContextValue.toggleTheme)
   })
 })
-

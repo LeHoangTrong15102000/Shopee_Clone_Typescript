@@ -72,4 +72,3 @@ describe('PasswordStrengthMeter', () => {
     expect(meter).toHaveAttribute('aria-valuemax', '4')
   })
 })
-

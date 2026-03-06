@@ -88,4 +88,3 @@ describe('useQueryInvalidation', () => {
     expect(operation3).toHaveBeenCalledTimes(1)
   })
 })
-

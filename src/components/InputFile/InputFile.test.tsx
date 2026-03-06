@@ -34,4 +34,3 @@ describe('InputFile', () => {
     expect(fileInput).toHaveAttribute('accept', '.jpg,.jpeg,.png')
   })
 })
-

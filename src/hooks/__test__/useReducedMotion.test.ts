@@ -95,4 +95,3 @@ describe('useReducedMotion', () => {
     expect(mockRemoveEventListener).toHaveBeenCalledWith('change', expect.any(Function))
   })
 })
-

@@ -57,4 +57,3 @@ const cancelOrderRequest = http.put(`${config.baseUrl}orders/:id/cancel`, () => 
 const orderRequests = [getOrdersRequest, getOrderDetailRequest, cancelOrderRequest]
 
 export default orderRequests
-
