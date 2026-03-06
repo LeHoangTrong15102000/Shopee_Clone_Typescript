@@ -64,6 +64,10 @@ import productRequests from './src/msw/product.msw'
 import userRequests from './src/msw/user.msw'
 import cartRequests from './src/msw/cart.msw'
 import checkoutRequests from './src/msw/checkout.msw'
+import orderRequests from './src/msw/order.msw'
+import wishlistRequests from './src/msw/wishlist.msw'
+import notificationRequests from './src/msw/notification.msw'
+import addressRequests from './src/msw/address.msw'
 
 // import { afterAll, afterEach, beforeAll, expect } from 'vitest'
 // import { setupServer } from 'msw/node'
@@ -198,10 +202,10 @@ vi.mock('react-i18next', async () => {
   }
 })
 
-const server = setupServer(...authRequests, ...productRequests, ...userRequests, ...cartRequests, ...checkoutRequests, ...additionalMocks)
+const server = setupServer(...authRequests, ...productRequests, ...userRequests, ...cartRequests, ...checkoutRequests, ...orderRequests, ...wishlistRequests, ...notificationRequests, ...addressRequests, ...additionalMocks)
 
-// Start server before all tests với warn thay vì error
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+// Start server before all tests với strict mode — unhandled requests sẽ throw error
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 
 // Close server after all tests
 afterAll(() => server.close())

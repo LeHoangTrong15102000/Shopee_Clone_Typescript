@@ -162,7 +162,7 @@ export default defineConfig(({ mode }) => {
         coverage: {
           provider: 'v8',
           include: ['src/**/*.{ts,tsx}'],
-          exclude: ['src/**/*.test.{ts,tsx}', 'src/stories/**']
+          exclude: ['src/**/*.test.{ts,tsx}', 'src/stories/**', 'src/msw/**', 'src/types/**', 'src/NotePage/**']
         }
       }
     }

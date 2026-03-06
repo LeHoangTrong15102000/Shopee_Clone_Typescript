@@ -265,13 +265,11 @@ const chatbotApi = {
 
   testChatbotStream: async (body: TestChatbotBody) => {
     try {
-      const response = await fetch(`${config.baseUrl}conversations/test/stream`, {
-        method: 'POST',
+      const response = await fetch(`${config.baseUrl}conversations/test-stream?message=${encodeURIComponent(body.message)}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           authorization: getAccessTokenFromLS()
-        },
-        body: JSON.stringify(body)
+        }
       })
       return response
     } catch (error) {

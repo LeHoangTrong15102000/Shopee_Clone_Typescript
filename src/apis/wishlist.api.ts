@@ -160,7 +160,7 @@ const wishlistApi = {
 
   clearWishlist: async (options?: ApiOptions) => {
     try {
-      const response = await http.delete<SuccessResponseApi<WishlistClearResponse>>('/wishlist/clear', {
+      const response = await http.delete<SuccessResponseApi<WishlistClearResponse>>('/wishlist', {
         signal: options?.signal
       })
       return response

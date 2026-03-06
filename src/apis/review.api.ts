@@ -192,26 +192,6 @@ const reviewApi = {
     }
   },
 
-  // Vote review (helpful/not helpful)
-  voteReview: async (reviewId: string, vote: 'helpful' | 'not_helpful') => {
-    try {
-      return await http.post<SuccessResponseApi<{ helpful_count: number; voted: boolean }>>(`${URL}/${reviewId}/vote`, {
-        vote
-      })
-    } catch (error) {
-      console.warn('⚠️ [voteReview] API not available, using mock data')
-      const currentReview = mockReviews.find((r) => r._id === reviewId) || mockReviews[0]
-      const newHelpfulCount = vote === 'helpful' ? currentReview.helpful_count + 1 : currentReview.helpful_count
-      return {
-        data: {
-          message:
-            vote === 'helpful' ? 'Đánh dấu hữu ích thành công (mock)' : 'Đánh dấu không hữu ích thành công (mock)',
-          data: { helpful_count: newHelpfulCount, voted: true }
-        }
-      }
-    }
-  },
-
   // Lấy reviews của sản phẩm
   getProductReviews: async (productId: string, params?: ReviewQuery) => {
     try {

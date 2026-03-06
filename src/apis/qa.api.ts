@@ -165,21 +165,6 @@ const qaApi = {
     }
   },
 
-  // Vote/Like câu hỏi
-  voteQuestion: async (questionId: string) => {
-    try {
-      return await http.post<SuccessResponseApi<{ likes_count: number }>>(`/qa/questions/${questionId}/vote`)
-    } catch (error) {
-      console.warn('⚠️ [voteQuestion] API not available, using mock data')
-      return {
-        data: {
-          message: 'Vote thành công (mock)',
-          data: { likes_count: 1 }
-        }
-      }
-    }
-  },
-
   // Like câu hỏi
   likeQuestion: async (questionId: string) => {
     try {

@@ -57,6 +57,19 @@ jobs:
           CI: 'true'
           NODE_OPTIONS: '--max-old-space-size=4096'
 
+      - name: Check Coverage Threshold
+        run: |
+          COVERAGE=$(node -e "
+            const report = require('./coverage/coverage-summary.json');
+            const total = report.total;
+            const avg = (total.lines.pct + total.statements.pct + total.functions.pct + total.branches.pct) / 4;
+            console.log(avg.toFixed(2));
+          " 2>/dev/null || echo "0")
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 75" | bc -l 2>/dev/null || echo "0") )); then
+            echo "::warning::Coverage ${COVERAGE}% is below 75% threshold"
+          fi
+
       - name: Upload Coverage
         uses: codecov/codecov-action@v5
         with:

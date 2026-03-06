@@ -4,8 +4,7 @@ import {
   PaymentMethod,
   Order,
   CreateOrderBody,
-  CheckoutSummary,
-  OrderListResponse
+  CheckoutSummary
 } from 'src/types/checkout.type'
 import http from 'src/utils/http'
 
@@ -184,113 +183,6 @@ const checkoutApi = {
       return {
         data: {
           message: 'Tạo đơn hàng thành công (mock)',
-          data: mockOrder
-        }
-      }
-    }
-  },
-
-  getOrders: async (params: { status?: string; page?: number; limit?: number }) => {
-    try {
-      const response = await http.get<SuccessResponseApi<OrderListResponse>>('/orders', { params })
-      return response
-    } catch (error) {
-      console.warn('Orders API not available, using mock data')
-      return {
-        data: {
-          message: 'Lấy danh sách đơn hàng thành công',
-          data: {
-            orders: [],
-            pagination: { page: 1, limit: 10, total: 0, totalPages: 0 }
-          }
-        }
-      }
-    }
-  },
-
-  getOrderById: async (id: string) => {
-    try {
-      const response = await http.get<SuccessResponseApi<Order>>(`/orders/${id}`)
-      return response
-    } catch (error) {
-      console.warn('⚠️ [getOrderById] API not available, using mock data')
-      const mockOrder: Order = {
-        _id: id,
-        userId: 'mock-user-id',
-        items: [],
-        shippingAddress: {
-          _id: '1',
-          userId: 'mock-user-id',
-          fullName: 'Nguyễn Văn A',
-          phone: '0901234567',
-          province: 'Hồ Chí Minh',
-          district: 'Quận 1',
-          ward: 'Phường Bến Nghé',
-          street: '123 Nguyễn Huệ',
-          isDefault: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        },
-        shippingMethod: mockShippingMethods[0],
-        paymentMethod: 'cod',
-        subtotal: 500000,
-        shippingFee: 30000,
-        discount: 0,
-        coinsUsed: 0,
-        coinsDiscount: 0,
-        total: 530000,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-      return {
-        data: {
-          message: 'Lấy chi tiết đơn hàng thành công (mock)',
-          data: mockOrder
-        }
-      }
-    }
-  },
-
-  cancelOrder: async (id: string, reason?: string) => {
-    try {
-      const response = await http.put<SuccessResponseApi<Order>>(`/orders/${id}/cancel`, { reason })
-      return response
-    } catch (error) {
-      console.warn('⚠️ [cancelOrder] API not available, using mock data')
-      const mockOrder: Order = {
-        _id: id,
-        userId: 'mock-user-id',
-        items: [],
-        shippingAddress: {
-          _id: '1',
-          userId: 'mock-user-id',
-          fullName: 'Nguyễn Văn A',
-          phone: '0901234567',
-          province: 'Hồ Chí Minh',
-          district: 'Quận 1',
-          ward: 'Phường Bến Nghé',
-          street: '123 Nguyễn Huệ',
-          isDefault: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        },
-        shippingMethod: mockShippingMethods[0],
-        paymentMethod: 'cod',
-        subtotal: 500000,
-        shippingFee: 30000,
-        discount: 0,
-        coinsUsed: 0,
-        coinsDiscount: 0,
-        total: 530000,
-        status: 'cancelled',
-        note: reason,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-      return {
-        data: {
-          message: 'Hủy đơn hàng thành công (mock)',
           data: mockOrder
         }
       }

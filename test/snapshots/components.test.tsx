@@ -6,6 +6,9 @@ import React from 'react'
 import Input from '../../src/components/Input'
 import Button from '../../src/components/Button'
 import Pagination from '../../src/components/Pagination'
+import ProductRating from '../../src/components/ProductRating'
+import Footer from '../../src/components/Footer'
+import { SkeletonBase, ProductCardSkeleton, NotificationSkeleton } from '../../src/components/Skeleton'
 
 // Wrapper component để cung cấp context cần thiết
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -58,5 +61,50 @@ describe('Component Snapshots', () => {
       </TestWrapper>
     )
     expect(container.firstChild).toMatchSnapshot('Pagination-default')
+  })
+
+  test('ProductRating component renders correctly', () => {
+    const { container } = render(
+      <TestWrapper>
+        <ProductRating rating={4.5} />
+      </TestWrapper>
+    )
+    expect(container.firstChild).toMatchSnapshot('ProductRating-default')
+  })
+
+  test('Footer component renders correctly', () => {
+    const { container } = render(
+      <TestWrapper>
+        <Footer />
+      </TestWrapper>
+    )
+    expect(container.firstChild).toMatchSnapshot('Footer-default')
+  })
+
+  test('SkeletonBase component renders correctly', () => {
+    const { container } = render(
+      <TestWrapper>
+        <SkeletonBase className='h-4 w-full' />
+      </TestWrapper>
+    )
+    expect(container.firstChild).toMatchSnapshot('SkeletonBase-default')
+  })
+
+  test('ProductCardSkeleton component renders correctly', () => {
+    const { container } = render(
+      <TestWrapper>
+        <ProductCardSkeleton />
+      </TestWrapper>
+    )
+    expect(container.firstChild).toMatchSnapshot('ProductCardSkeleton-default')
+  })
+
+  test('NotificationSkeleton component renders correctly', () => {
+    const { container } = render(
+      <TestWrapper>
+        <NotificationSkeleton count={2} />
+      </TestWrapper>
+    )
+    expect(container.firstChild).toMatchSnapshot('NotificationSkeleton-default')
   })
 })

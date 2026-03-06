@@ -7,7 +7,8 @@ import {
   getRefreshTokenFromLS,
   setAccessTokenToLS,
   setProfileToLS,
-  setRefreshTokenToLS
+  setRefreshTokenToLS,
+  LocalStorageEventTarget
 } from 'src/utils/auth'
 
 const access_token =
@@ -80,5 +81,16 @@ describe('clearLS', () => {
     expect(getAccessTokenFromLS()).toBe('')
     expect(getRefreshTokenFromLS()).toBe('')
     expect(getProfileFromLS()).toBe(null)
+  })
+
+  it('dispatches clearLS event on LocalStorageEventTarget', () => {
+    let eventFired = false
+    const handler = () => {
+      eventFired = true
+    }
+    LocalStorageEventTarget.addEventListener('clearLS', handler)
+    clearLS()
+    expect(eventFired).toBe(true)
+    LocalStorageEventTarget.removeEventListener('clearLS', handler)
   })
 })

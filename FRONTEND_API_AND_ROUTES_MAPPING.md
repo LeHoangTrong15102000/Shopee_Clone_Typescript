@@ -90,14 +90,13 @@
 - `addToWishlist(product_id)` → POST `/wishlist`
 - `removeFromWishlist(product_id)` → DELETE `/wishlist/{product_id}`
 - `checkInWishlist(product_id)` → GET `/wishlist/check/{product_id}`
-- `clearWishlist()` → DELETE `/wishlist/clear`
+- `clearWishlist()` → DELETE `/wishlist`
 - `getWishlistCount()` → GET `/wishlist/count`
 
 ### 9. Reviews (`review.api.ts`)
 - `createReview(body)` → POST `/reviews`
 - `updateReview(reviewId, body)` → PUT `/reviews/{reviewId}`
 - `deleteReview(reviewId)` → DELETE `/reviews/{reviewId}`
-- `voteReview(reviewId, vote)` → POST `/reviews/{reviewId}/vote`
 - `getProductReviews(productId, params)` → GET `/reviews/product/{productId}`
 - `toggleReviewLike(reviewId)` → POST `/reviews/like/{reviewId}`
 - `createComment(body)` → POST `/reviews/comment`
@@ -108,7 +107,6 @@
 - `getQuestions(params)` → GET `/qa/questions`
 - `askQuestion(product_id, question)` → POST `/qa/questions`
 - `answerQuestion(questionId, answer)` → POST `/qa/questions/{questionId}/answers`
-- `voteQuestion(questionId)` → POST `/qa/questions/{questionId}/vote`
 - `likeQuestion(questionId)` → POST `/qa/questions/{questionId}/like`
 - `likeAnswer(questionId, answerId)` → POST `/qa/questions/{questionId}/answers/{answerId}/like`
 
@@ -171,7 +169,7 @@
 - `updateConversation(id, body)` → PUT `/conversations/{id}`
 - `deleteConversation(id)` → DELETE `/conversations/{id}`
 - `testChatbot(body)` → POST `/conversations/test`
-- `testChatbotStream(body)` → POST `/conversations/test/stream`
+- `testChatbotStream(message)` → GET `/conversations/test-stream?message={message}`
 
 ---
 

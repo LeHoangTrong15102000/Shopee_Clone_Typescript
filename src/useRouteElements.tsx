@@ -33,6 +33,8 @@ const MyVouchers = lazy(() => import('./pages/User/pages/MyVouchers'))
 const DailyCheckInPage = lazy(() => import('./pages/User/pages/DailyCheckIn'))
 const AddressBook = lazy(() => import('./pages/User/pages/AddressBook'))
 const Notifications = lazy(() => import('./pages/User/pages/Notifications'))
+const ConversationHistory = lazy(() => import('./pages/User/pages/ConversationHistory'))
+const PriceAlerts = lazy(() => import('./pages/User/pages/PriceAlerts'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword/ForgotPassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword/ResetPassword'))
@@ -236,6 +238,22 @@ const useRouteElements = () => {
                   element: (
                     <Suspense>
                       <Notifications />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.conversations,
+                  element: (
+                    <Suspense>
+                      <ConversationHistory />
+                    </Suspense>
+                  )
+                },
+                {
+                  path: path.priceAlerts,
+                  element: (
+                    <Suspense>
+                      <PriceAlerts />
                     </Suspense>
                   )
                 }
