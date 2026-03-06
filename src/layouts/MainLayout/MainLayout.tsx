@@ -1,4 +1,4 @@
-import { memo, useEffect, lazy, Suspense } from 'react'
+import { memo, useEffect, Suspense, lazy } from 'react'
 import { Outlet } from 'react-router'
 import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
@@ -8,7 +8,6 @@ import PageTransition from 'src/components/PageTransition'
 const CompareFloatingBar = lazy(() => import('src/components/CompareFloatingBar'))
 const ConnectionStatus = lazy(() => import('src/components/ConnectionStatus'))
 const BackToTop = lazy(() => import('src/components/BackToTop'))
-const UserChatButton = lazy(() => import('src/components/UserChatButton'))
 
 interface Props {
   children?: React.ReactNode
@@ -41,10 +40,6 @@ const MainLayoutInner = ({ children }: Props) => {
       {/* Back to top button */}
       <Suspense fallback={null}>
         <BackToTop />
-      </Suspense>
-      {/* User chat button - floating, auth-only */}
-      <Suspense fallback={null}>
-        <UserChatButton />
       </Suspense>
     </div>
   )
