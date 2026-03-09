@@ -243,33 +243,49 @@ Integration Testing (Level 3):
 1. **Comprehensive Mock Strategies**:
 
    ```typescript
-   // API mocking với MSW
-   server.use(rest.get('/api/products', mockHandler))
+   // API mocking với MSW v2 — dùng http.get + HttpResponse.json (KHÔNG phải rest.get)
+   import { http, HttpResponse } from 'msw'
+   server.use(http.get(`${config.baseUrl}products`, () => {
+     return HttpResponse.json(productsRes, { status: 200 })
+   }))
 
-   // Context mocking
-   vi.mock('react-i18next', () => mockI18n)
+   // Context mocking — global mock trong vitest.setup.js
+   vi.mock('react-i18next', async () => {
+     const actual = await vi.importActual('react-i18next')
+     return { ...actual, useTranslation: (ns) => ({ t: (key) => translations[ns]?.[key] || key, ... }) }
+   })
 
    // Component mocking for complex dependencies
-   vi.mock('framer-motion', () => mockFramerMotion)
+   vi.mock('src/components/ChatbotWidget', () => ({ default: () => null }))
    ```
 
-2. **Test Utilities Evolution**:
+   > **MSW Handler Groups** (9 groups + additionalMocks trong `vitest.setup.js`):
+   > `authRequests`, `productRequests`, `userRequests`, `cartRequests`, `checkoutRequests`,
+   > `orderRequests`, `wishlistRequests`, `notificationRequests`, `addressRequests`, `additionalMocks`
+
+2. **Test Utilities Evolution** (`src/utils/testUtils.tsx`):
 
    ```typescript
-   // Advanced wrapper với multiple contexts
-   const renderWithAllProviders = (ui, options) => {
-     return render(ui, {
-       wrapper: ({ children }) => (
-         <BrowserRouter>
-           <QueryClientProvider client={queryClient}>
-             <AppContext.Provider value={mockContext}>
-               {children}
-             </AppContext.Provider>
-           </QueryClientProvider>
-         </BrowserRouter>
-       ),
-       ...options
-     })
+   // renderWithProviders — full provider chain matching production
+   export const renderWithProviders = (ui, options = {}) => {
+     const { route = '/', initialEntries, ...renderOptions } = options
+     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+     const Wrapper = ({ children }) => (
+       <QueryClientProvider client={queryClient}>
+         <ThemeProvider>
+           <HelmetProvider>
+             <AppProvider defaultValue={getInitialAppContext()}>
+               <SocketProvider>
+                 <BrowserRouter>
+                   <NuqsTestingAdapter>{children}</NuqsTestingAdapter>
+                 </BrowserRouter>
+               </SocketProvider>
+             </AppProvider>
+           </HelmetProvider>
+         </ThemeProvider>
+       </QueryClientProvider>
+     )
+     return { user: userEvent.setup(), queryClient, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
    }
    ```
 

@@ -10,7 +10,7 @@
    - MSW (Mock Service Worker) để mock API
    - React Testing Library cho component testing
    - Custom test utilities trong `src/utils/testUtils.tsx`
-   - Coverage reporting với c8/v8
+   - Coverage reporting với v8 (`@vitest/coverage-v8`)
 
 2. **Các loại test đã được triển khai**:
 
@@ -104,8 +104,8 @@
    // test/snapshots/components.test.tsx
    import { render } from '@testing-library/react'
    import { expect, test, describe } from 'vitest'
-   import { Input } from 'src/components/Input'
-   import { Button } from 'src/components/Button'
+   import Input from 'src/components/Input'
+   import Button from 'src/components/Button'
 
    describe('Component Snapshots', () => {
      test('Input component renders correctly', () => {
@@ -195,23 +195,45 @@
 ### 1. Cấu hình Vitest cho multiple test types
 
 ```typescript
-// vitest.config.ts
-export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.js'],
-    css: true,
-    pool: 'forks',
-    include: [
-      'src/**/*.test.{ts,tsx}', // Unit tests
-      'test/**/*.test.{ts,tsx}' // Integration & E2E tests
-    ],
-    coverage: {
-      include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/**/*.test.{ts,tsx}', 'src/stories/**']
+// vite.config.ts — test config chỉ được thêm khi mode === 'test'
+export default defineConfig(({ mode }) => {
+  const isTest = mode === 'test'
+
+  const baseConfig = {
+    // ... production config
+  }
+
+  if (isTest) {
+    return {
+      ...baseConfig,
+      test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: ['./vitest.setup.js'],
+        css: true,
+        testTimeout: process.env.CI ? 60000 : 60000,
+        hookTimeout: process.env.CI ? 60000 : 60000,
+        pool: 'forks',
+        maxWorkers: process.env.CI ? 1 : 2,
+        execArgv: ['--max-old-space-size=8192'],
+        include: [
+          'src/**/*.test.{ts,tsx}', // Unit tests
+          'test/**/*.test.{ts,tsx}' // Integration & E2E tests
+        ],
+        reporters: ['default', 'junit'],
+        outputFile: {
+          junit: './test-results/junit-report.xml'
+        },
+        coverage: {
+          provider: 'v8',
+          include: ['src/**/*.{ts,tsx}'],
+          exclude: ['src/**/*.test.{ts,tsx}', 'src/stories/**', 'src/msw/**', 'src/types/**', 'src/NotePage/**']
+        }
+      }
     }
   }
+
+  return baseConfig
 })
 ```
 
@@ -221,15 +243,17 @@ export default defineConfig({
 {
   "scripts": {
     "test": "vitest",
-    "test:unit": "vitest src/",
-    "test:integration": "vitest test/integration/",
-    "test:e2e": "vitest test/e2e/",
-    "test:snapshots": "vitest test/snapshots/",
+    "test:unit": "vitest run src/",
+    "test:integration": "vitest run test/integration/",
+    "test:e2e": "vitest run test/e2e/",
+    "test:snapshots": "vitest run test/snapshots/",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   }
 }
 ```
+
+> **Lưu ý**: `vitest` (không có `run`) chạy ở watch mode. `vitest run` chạy single run — dùng cho CI/CD.
 
 ### 3. Snapshot Testing Best Practices
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { useContext } from 'react'
 import { SocketContext, SocketProvider } from '../socket.context'
@@ -14,10 +14,6 @@ const TestConsumer = () => {
     </div>
   )
 }
-
-beforeEach(() => {
-  localStorage.clear()
-})
 
 describe('SocketContext', () => {
   it('renders children', () => {

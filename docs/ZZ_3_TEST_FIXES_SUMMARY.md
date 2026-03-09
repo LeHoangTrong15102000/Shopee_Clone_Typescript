@@ -201,7 +201,7 @@
     return HttpResponse.json(
       {
         message: 'Lấy lịch sử tìm kiếm thành công',
-        data: ['áo thun nam', 'giày thể thao', 'túi xách nữ']
+        data: ['áo thun', 'điện thoại', 'laptop', 'giày dép']
       },
       {
         status: HTTP_STATUS_CODE.Ok,

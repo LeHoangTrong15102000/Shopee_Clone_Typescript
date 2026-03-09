@@ -20,7 +20,7 @@ const TestConsumer = () => {
 }
 
 beforeEach(() => {
-  localStorage.clear()
+  // localStorage.clear() is handled by global afterEach in vitest.setup.js
   document.documentElement.classList.remove('dark', 'light')
 })
 

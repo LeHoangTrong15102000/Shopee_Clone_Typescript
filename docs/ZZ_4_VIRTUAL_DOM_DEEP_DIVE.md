@@ -86,11 +86,13 @@ Trong dự án Shopee Clone, chúng ta có thể thấy:
 
 ```typescript
 // src/contexts/app.context.tsx - Quản lý state phức tạp
+// (Hiện tại cart state đã chuyển sang Zustand store)
 interface AppContextInterface {
   isAuthenticated: boolean
   profile: User | null
-  extendedPurchases: ExtendedPurchase[]
-  // ... nhiều state khác
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+  setProfile: React.Dispatch<React.SetStateAction<User | null>>
+  reset: () => void
 }
 
 // Với Real DOM, việc sync state này với UI rất phức tạp:
@@ -140,7 +142,7 @@ const virtualElement = {
 </div>
 ```
 
-### 🎨 **React.createElement() - Xưởng sản xuất Virtual DOM**
+### 🎨 **JSX Transform - Xưởng sản xuất Virtual DOM**
 
 ```javascript
 // JSX này:
@@ -151,15 +153,22 @@ const ProductCard = ({ product }) => (
   </div>
 )
 
-// Được biên dịch thành:
+// Từ React 17+, được biên dịch thành (New JSX Transform):
+import { jsx as _jsx, jsxs as _jsxs } from 'react/jsx-runtime'
+
 const ProductCard = ({ product }) => {
-  return React.createElement(
-    'div',
-    { className: 'product-card' },
-    React.createElement('h3', null, product.name),
-    React.createElement('span', { className: 'price' }, product.price)
-  )
+  return _jsxs('div', {
+    className: 'product-card',
+    children: [
+      _jsx('h3', { children: product.name }),
+      _jsx('span', { className: 'price', children: product.price })
+    ]
+  })
 }
+
+// Lưu ý: React.createElement() là cách cũ (trước React 17).
+// New JSX Transform không cần import React trong mỗi file nữa.
+// Dự án Shopee Clone dùng React 19 + Vite → luôn dùng new transform.
 ```
 
 ---
@@ -171,29 +180,34 @@ const ProductCard = ({ product }) => {
 ```javascript
 // Trong Real DOM:
 function updateProductList() {
-  // Mỗi lệnh này gây reflow/repaint riêng biệt
-  document.getElementById('product-1').style.display = 'none' // Reflow #1
-  document.getElementById('product-2').textContent = 'Updated' // Reflow #2
-  document.getElementById('product-3').className = 'highlight' // Reflow #3
-  // => 3 lần reflow/repaint
+  // Các lệnh DOM mutations liên tiếp trong cùng synchronous block
+  document.getElementById('product-1').style.display = 'none'
+  document.getElementById('product-2').textContent = 'Updated'
+  document.getElementById('product-3').className = 'highlight'
+  // Browser hiện đại CÓ THỂ batch các mutations này thành 1 reflow
+  // NHƯNG nếu bạn đọc layout property giữa các writes (layout thrashing)
+  // thì browser buộc phải reflow ngay lập tức (xem ví dụ Layout Thrashing ở trên)
 }
 
-// Trong Virtual DOM:
+// Trong Virtual DOM (React):
 function updateProductList() {
-  // Tất cả thay đổi được gộp lại
+  // Tất cả thay đổi được gộp lại trong 1 state update
   setProducts((prevProducts) =>
     prevProducts.map((product) => ({
       ...product
       // các thay đổi
     }))
   )
-  // => Chỉ 1 lần DOM update duy nhất!
+  // => React đảm bảo chỉ 1 lần DOM update duy nhất!
+  // Lợi thế: Developer không cần lo về thứ tự read/write DOM
 }
 ```
 
 ### 2. **Diffing Algorithm - Thuật toán So sánh thông minh**
 
 React sử dụng **Heuristic Algorithm** với 3 giả định:
+
+> **Lưu ý**: Thuật toán diff tree tổng quát có complexity O(n³). Nhờ 3 giả định dưới đây, React giảm xuống còn **O(n)** — một cải tiến rất lớn.
 
 #### 🔸 **Giả định 1: Các element khác type sẽ tạo ra tree khác nhau**
 
@@ -241,7 +255,7 @@ React sử dụng **Heuristic Algorithm** với 3 giả định:
 ```javascript
 // Ví dụ: Cập nhật danh sách từ [A, B, C] -> [A, C, B, D]
 
-// Real DOM approach:
+// Real DOM approach (naive):
 // 1. Remove B
 // 2. Insert B after C
 // 3. Append D
@@ -249,9 +263,9 @@ React sử dụng **Heuristic Algorithm** với 3 giả định:
 
 // Virtual DOM với key:
 // React nhận ra: B chỉ di chuyển, D được thêm mới
-// 1. Move B
-// 2. Append D
-// => 2 DOM operations (tối ưu hơn 33%)
+// Số operations thực tế phụ thuộc vào thuật toán matching keys
+// Nhưng React đảm bảo chỉ thực hiện minimum operations cần thiết
+// thay vì rebuild toàn bộ list
 ```
 
 ---
@@ -269,8 +283,9 @@ const fiberNode = {
   child: null, // First child fiber
   sibling: null, // Next sibling fiber
   return: null, // Parent fiber
-  alternate: null, // Previous fiber version
-  effectTag: 'UPDATE' // What operation to perform
+  alternate: null, // Previous fiber version (double buffering)
+  flags: 0b00000100 // Bitmask flags cho operations (React 18+ dùng bitmask thay vì string)
+  // Ví dụ flags: Placement = 0b10, Update = 0b100, Deletion = 0b1000
   // ... more fields
 }
 ```
@@ -455,12 +470,12 @@ const useRouteElements = () => {
 
 ## 🚀 React 19 và tương lai của Virtual DOM
 
-### **React Compiler (React Forget)**
+### **React Compiler**
 
-React 19 đưa ra **React Compiler** - một bước tiến vượt bậc:
+> **Lưu ý**: React Compiler là package **riêng biệt** (`babel-plugin-react-compiler`), không đi kèm React 19. Phải cài và config riêng. Tên cũ "React Forget" không còn được sử dụng. React Compiler 1.0 stable released tháng 10/2025, tương thích với React 17, 18, và 19.
 
 ```typescript
-// ❌ React 18 và trước đây
+// ❌ Trước khi có React Compiler — phải tự memoize thủ công
 const ProductCard = memo(({ product }: { product: Product }) => {
   const formattedPrice = useMemo(() =>
     product.price.toLocaleString('vi-VN'),
@@ -479,13 +494,13 @@ const ProductCard = memo(({ product }: { product: Product }) => {
   );
 });
 
-// ✅ React 19 với Compiler
+// ✅ Với React Compiler — compiler tự động thêm memoization
 const ProductCard = ({ product }: { product: Product }) => {
-  // Compiler tự động:
-  // - Thêm memoization cho formattedPrice
-  // - Thêm memoization cho handleClick
-  // - Thêm memo() cho component
-  // - Tối ưu Virtual DOM operations
+  // React Compiler tự động:
+  // - Thêm memoization cho formattedPrice (tương đương useMemo)
+  // - Thêm memoization cho handleClick (tương đương useCallback)
+  // - Thêm memoization cho component (tương đương React.memo)
+  // - Có thể memoize conditionally (sau early returns) — điều manual memo không làm được
 
   const formattedPrice = product.price.toLocaleString('vi-VN');
 
@@ -502,15 +517,16 @@ const ProductCard = ({ product }: { product: Product }) => {
 };
 ```
 
-### **Server Components - Virtual DOM trên Server**
+### **Server Components - Rendering trên Server**
 
 ```typescript
 // Server Component (chạy trên server)
 async function ProductListServer() {
   const products = await fetchProducts(); // Fetch data trên server
 
-  // Virtual DOM được tạo trên server
-  // Gửi về client dưới dạng serialized format
+  // Component được render trên server
+  // Gửi về client dưới dạng RSC Payload (React Server Component Payload)
+  // — một streaming format đặc biệt, KHÔNG phải Virtual DOM objects
   return (
     <div>
       {products.map(product => (
@@ -520,23 +536,24 @@ async function ProductListServer() {
   );
 }
 
-// Client chỉ nhận Virtual DOM đã render sẵn
+// RSC Payload chứa serialized component tree dưới dạng text stream
+// Client nhận RSC Payload và reconstruct thành Virtual DOM tree
 // => Faster initial page load
 // => Better SEO
-// => Reduced bundle size
+// => Reduced bundle size (server components không gửi JS về client)
+//
+// Lưu ý: RSC được hỗ trợ bởi nhiều framework: Next.js, React Router, Waku, Expo, Redwood SDK
 ```
 
 ---
 
 ## 🎯 So sánh Performance: Virtual DOM vs Real DOM
 
-### **Benchmark Test Case: Render 10,000 Product Cards**
+### **So sánh cách tiếp cận: Render 10,000 Product Cards**
 
 ```javascript
-// Real DOM Approach
-function renderProductsRealDOM(products) {
-  const startTime = performance.now()
-
+// ❌ Real DOM Approach — Worst case: append từng element trong loop
+function renderProductsRealDOM_Naive(products) {
   const container = document.getElementById('product-list')
   container.innerHTML = '' // Clear existing
 
@@ -557,24 +574,32 @@ function renderProductsRealDOM(products) {
     card.appendChild(img)
     card.appendChild(title)
     card.appendChild(price)
-    container.appendChild(card) // DOM operation per item!
+    container.appendChild(card) // DOM operation per item — gây nhiều reflow!
   })
-
-  const endTime = performance.now()
-  console.log(`Real DOM: ${endTime - startTime}ms`)
-  // Kết quả: ~450-600ms (Chrome desktop)
 }
 
-// Virtual DOM Approach (React)
-function ProductList({ products }) {
-  const startTime = performance.now()
+// ✅ Real DOM Approach — Tối ưu hơn với DocumentFragment
+function renderProductsRealDOM_Optimized(products) {
+  const container = document.getElementById('product-list')
+  const fragment = document.createDocumentFragment() // Batch DOM operations
 
-  useEffect(() => {
-    const endTime = performance.now()
-    console.log(`Virtual DOM: ${endTime - startTime}ms`)
-    // Kết quả: ~80-120ms (Chrome desktop)
+  products.forEach((product) => {
+    const card = document.createElement('div')
+    card.className = 'product-card'
+    card.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <span>${product.price.toLocaleString('vi-VN')}</span>
+    `
+    fragment.appendChild(card) // Append vào fragment (không gây reflow)
   })
 
+  container.innerHTML = ''
+  container.appendChild(fragment) // Chỉ 1 lần DOM operation!
+}
+
+// ✅ Virtual DOM Approach (React)
+function ProductList({ products }) {
   return (
     <div id='product-list'>
       {products.map((product) => (
@@ -588,7 +613,14 @@ function ProductList({ products }) {
   )
 }
 
-// Virtual DOM nhanh hơn 4-5 lần!
+// 📊 So sánh:
+// - Naive Real DOM: Chậm nhất (nhiều reflow)
+// - Optimized Real DOM (DocumentFragment): Nhanh cho initial render
+// - Virtual DOM (React): Tỏa sáng khi UPDATE — chỉ diff và patch phần thay đổi
+//
+// ⚠️ Lưu ý: Virtual DOM không phải lúc nào cũng nhanh hơn Real DOM.
+// Với initial render đơn giản, Real DOM + DocumentFragment có thể nhanh hơn.
+// Virtual DOM thắng ở: complex updates, conditional rendering, large lists with frequent changes.
 ```
 
 ---
@@ -612,7 +644,7 @@ document.getElementById('simple-text').textContent = 'New text'
 
 ### 2. **"Predictable Performance"**
 
-> **Dan Abramov**: "Virtual DOM quan trọng không phải vì nó nhanh nhất, mà vì nó cho phép chúng ta viết code với performance có thể dự đoán được."
+> **Dan Abramov** (cựu thành viên React Core Team, rời team năm 2023): "Virtual DOM quan trọng không phải vì nó nhanh nhất, mà vì nó cho phép chúng ta viết code với performance có thể dự đoán được."
 
 ### 3. **"Developer Experience First"**
 
@@ -683,7 +715,7 @@ Trong source code Shopee Clone, chúng ta thấy Virtual DOM giúp:
 2. **Search Suggestions`**: Real-time search không lag UI
 3. **State Management**: Context updates chỉ affect đúng components cần thiết
 4. **Code Splitting**: Lazy load pages mà không breaking UX
-5. **Performance**: Bundle optimization với React 19 compiler
+5. **Performance**: Tối ưu với React Compiler (package riêng, cài thêm nếu cần)
 
 ### **🚀 Message cuối cùng:**
 
@@ -697,6 +729,6 @@ _"The best code is code you don't have to write. The best performance optimizati
 
 ---
 
-**📝 Tác giả**: Dự án Shopee Clone TypeScript  
-**📅 Ngày tạo**: 2024  
-**🔄 Cập nhật**: React 19.0.0 Features
+**📝 Tác giả**: Dự án Shopee Clone TypeScript
+**📅 Ngày tạo**: 2024
+**🔄 Cập nhật lần cuối**: 2026-03 — React 19.2.x, React Compiler 1.0, New JSX Transform

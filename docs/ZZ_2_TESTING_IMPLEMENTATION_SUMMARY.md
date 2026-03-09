@@ -167,11 +167,13 @@ test('Session timeout handling')
 
 ## 📊 Metrics Hiện Tại
 
-- **Total Tests**: 54
+> **Lưu ý**: Số liệu dưới đây phản ánh thời điểm Phase 1 hoàn thành. Xem `ZZ_7_OVERALL_TESTING_STRATEGY_PROGRESS.md` cho số liệu mới nhất.
+
+- **Total Tests (Phase 1)**: 54
 - **Passing**: 47 (87%)
-- **Failing**: 7 (13%)
+- **Failing**: 7 (13%) — đã được fix trong Phase 2 (xem `ZZ_3_TEST_FIXES_SUMMARY.md`)
 - **Coverage**: Chưa đo (cần chạy `pnpm run test:coverage`)
-- **Test Types**:
+- **Test Types (Phase 1)**:
   - Unit: 32 tests
   - Integration: 16 tests
   - E2E: 6 tests

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router'
 import ErrorBoundary from './ErrorBoundary'
@@ -10,13 +10,15 @@ const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
   return <div>No error</div>
 }
 
+let consoleSpy: ReturnType<typeof vi.spyOn>
+
 describe('ErrorBoundary', () => {
   beforeEach(() => {
-    vi.spyOn(console, 'error').mockImplementation(() => {})
+    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    consoleSpy.mockRestore()
   })
 
   it('renders children when there is no error', () => {

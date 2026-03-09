@@ -212,31 +212,62 @@ vi.mock('src/apis/auth.api', () => ({
 }))
 ```
 
-**i18n Mocking**:
+**i18n Mocking** (đã được setup global trong `vitest.setup.js`):
 
 ```typescript
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    i18n: { changeLanguage: vi.fn(), language: 'vi' }
-  })
-}))
+// vitest.setup.js — mock react-i18next với translation lookup thực tế
+// Import tất cả 19 file JSON tiếng Việt vào allTranslations object
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next')
+  return {
+    ...actual,
+    useTranslation: (ns = 'home') => ({
+      t: (key, options) => {
+        const namespace = typeof ns === 'string' ? ns : (Array.isArray(ns) ? ns[0] : 'home')
+        const translations = allTranslations[namespace]
+        let value = translations?.[key] || key
+        // Handle interpolation: replace {{variable}} with actual values
+        if (options && typeof value === 'string') {
+          Object.keys(options).forEach(optKey => {
+            if (optKey !== 'defaultValue') {
+              value = value.replace(new RegExp(`\\{\\{${optKey}\\}\\}`, 'g'), String(options[optKey]))
+            }
+          })
+        }
+        return value
+      },
+      i18n: {
+        changeLanguage: vi.fn(), language: 'vi',
+        hasResourceBundle: vi.fn().mockReturnValue(true),
+        addResourceBundle: vi.fn(),
+        getResourceBundle: vi.fn()
+      }
+    }),
+    initReactI18next: { type: '3rdParty', init: vi.fn() },
+    Trans: ({ children }) => children
+  }
+})
 ```
+
+> **Lưu ý**: Mock này trả về text tiếng Việt thật (không phải key). Khi viết test, assert text hiển thị thực tế, không phải i18n key.
 
 ### 3. **Complex Component Testing**
 
-**Context-Dependent Components**:
+**Context-Dependent Components** (sử dụng `renderWithProviders` từ `src/utils/testUtils.tsx`):
 
 ```typescript
-// NavHeader requires AppContext + QueryClient + Router
-const TestWrapper = ({ isAuthenticated, profile }) => (
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <AppContext.Provider value={contextValue}>
-        {children}
-      </AppContext.Provider>
-    </QueryClientProvider>
-  </BrowserRouter>
-)
+// Cách đúng: dùng renderWithProviders — đã bao gồm tất cả providers cần thiết
+import { renderWithProviders } from 'src/utils/testUtils'
+
+// renderWithProviders tự động wrap component với:
+// QueryClientProvider → ThemeProvider → HelmetProvider → AppProvider → SocketProvider → Router → NuqsTestingAdapter
+const { user } = renderWithProviders(<NavHeader />)
+
+// Hoặc với custom route:
+const { user } = renderWithProviders(<NavHeader />, { route: '/products' })
+
+// Hoặc với MemoryRouter:
+const { user } = renderWithProviders(<NavHeader />, { initialEntries: ['/products?page=2'] })
 ```
 
 ## 🐛 Issues Encountered & Solutions

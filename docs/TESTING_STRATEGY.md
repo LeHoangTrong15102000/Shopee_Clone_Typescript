@@ -264,7 +264,7 @@ Object.defineProperty(window, 'localStorage', {
 - **Test Runner**: Vitest
 - **Testing Library**: React Testing Library
 - **Mocking**: MSW (Mock Service Worker)
-- **Coverage**: c8/v8
+- **Coverage**: v8 (`@vitest/coverage-v8`)
 - **E2E**: Playwright (future)
 
 ### Configuration Files
@@ -279,7 +279,7 @@ Object.defineProperty(window, 'localStorage', {
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentName } from './ComponentName'
+import ComponentName from './ComponentName'
 
 describe('ComponentName', () => {
   const defaultProps = {
@@ -326,10 +326,10 @@ describe('ComponentName', () => {
    pnpm run test:coverage
    ```
 
-3. **Watch mode**:
+3. **Watch mode** (mặc định `pnpm run test` đã là watch mode):
 
    ```bash
-   pnpm run test:watch
+   pnpm run test
    ```
 
 4. **Test specific file**:

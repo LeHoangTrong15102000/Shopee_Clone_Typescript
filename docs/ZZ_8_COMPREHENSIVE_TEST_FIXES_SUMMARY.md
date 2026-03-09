@@ -67,26 +67,47 @@ global.PointerEvent = class PointerEvent extends Event {
     this.pointerId = options.pointerId || 1
     this.clientX = options.clientX || 0
     this.clientY = options.clientY || 0
-    // ... more properties
+    this.pointerType = options.pointerType || 'mouse'
+    this.pressure = options.pressure || 0.5
+    this.isPrimary = options.isPrimary || true
   }
 }
 
-// Enhanced react-i18next mock
+// Enhanced react-i18next mock — import 19 file JSON tiếng Việt để trả về text thật
+// (allTranslations = { address: addressVi, auth: authVi, cart: cartVi, ... })
 vi.mock('react-i18next', async () => {
   const actual = await vi.importActual('react-i18next')
   return {
     ...actual,
-    useTranslation: () => ({
-      t: (key) => key,
-      i18n: { changeLanguage: vi.fn(), language: 'vi' }
+    useTranslation: (ns = 'home') => ({
+      t: (key, options) => {
+        const namespace = typeof ns === 'string' ? ns : (Array.isArray(ns) ? ns[0] : 'home')
+        const translations = allTranslations[namespace]
+        let value = translations?.[key] || key
+        // Handle interpolation: replace {{variable}} with actual values
+        if (options && typeof value === 'string') {
+          Object.keys(options).forEach(optKey => {
+            if (optKey !== 'defaultValue') {
+              value = value.replace(new RegExp(`\\{\\{${optKey}\\}\\}`, 'g'), String(options[optKey]))
+            }
+          })
+        }
+        return value
+      },
+      i18n: {
+        changeLanguage: vi.fn(), language: 'vi',
+        hasResourceBundle: vi.fn().mockReturnValue(true),
+        addResourceBundle: vi.fn(),
+        getResourceBundle: vi.fn()
+      }
     }),
-    initReactI18next: {
-      type: '3rdParty',
-      init: vi.fn()
-    }
+    initReactI18next: { type: '3rdParty', init: vi.fn() },
+    Trans: ({ children }) => children
   }
 })
 ```
+
+> **Quan trọng**: Mock này trả về text tiếng Việt thật từ JSON files, không phải key. Khi viết test assertions, dùng text hiển thị thực tế (ví dụ: `'Đăng nhập'`) thay vì i18n key (`'auth:login'`).
 
 #### **Test Methodology Improvements:**
 

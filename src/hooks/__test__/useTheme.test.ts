@@ -1,42 +1,10 @@
 import { renderHook } from '@testing-library/react'
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import { createElement, ReactNode } from 'react'
 import { useTheme } from '../useTheme'
 import { ThemeProvider, ThemeContext } from 'src/contexts/theme.context'
 
 describe('useTheme', () => {
-  beforeEach(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: vi.fn().mockImplementation((query: string) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        dispatchEvent: vi.fn()
-      }))
-    })
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(null),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-      length: 0,
-      key: vi.fn()
-    }
-    Object.defineProperty(window, 'localStorage', {
-      writable: true,
-      value: mockLocalStorage
-    })
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
 
   it('returns theme context when used within ThemeProvider', () => {
     const wrapper = ({ children }: { children: ReactNode }) => createElement(ThemeProvider, null, children)
