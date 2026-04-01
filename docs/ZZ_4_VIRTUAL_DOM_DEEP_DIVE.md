@@ -159,10 +159,7 @@ import { jsx as _jsx, jsxs as _jsxs } from 'react/jsx-runtime'
 const ProductCard = ({ product }) => {
   return _jsxs('div', {
     className: 'product-card',
-    children: [
-      _jsx('h3', { children: product.name }),
-      _jsx('span', { className: 'price', children: product.price })
-    ]
+    children: [_jsx('h3', { children: product.name }), _jsx('span', { className: 'price', children: product.price })]
   })
 }
 
@@ -272,6 +269,49 @@ React sử dụng **Heuristic Algorithm** với 3 giả định:
 
 ## 🧮 Reconciliation Algorithm: Trái tim của Virtual DOM
 
+### **Reconciliation là gì?**
+
+> **Reconciliation** là **quá trình React tính toán sự khác biệt** giữa Virtual DOM cũ và Virtual DOM mới, rồi chỉ apply những thay đổi tối thiểu cần thiết lên Real DOM.
+
+Nói đơn giản: mỗi khi state hoặc props thay đổi, React không vứt bỏ toàn bộ DOM và render lại từ đầu. Thay vào đó, nó chạy Reconciliation để tìm ra **chính xác cái gì đã thay đổi**, sau đó chỉ update đúng phần đó.
+
+```
+State/Props thay đổi
+        │
+        ▼
+React render() → Virtual DOM mới
+        │
+        ▼
+  ┌─────────────────────────────────────────┐
+  │         RECONCILIATION                  │
+  │                                         │
+  │  1. Render Phase  ← Diffing Algorithm   │
+  │     So sánh Virtual DOM cũ vs mới       │
+  │     Tính ra danh sách changes           │
+  │     (có thể pause/resume — async)       │
+  │                                         │
+  │  2. Commit Phase  ← Không thể interrupt │
+  │     Apply changes vào Real DOM          │
+  │     Chạy useEffect, useLayoutEffect     │
+  └─────────────────────────────────────────┘
+        │
+        ▼
+   Real DOM được update
+```
+
+**Hai phase của Reconciliation:**
+
+| Phase | Tên gọi | Có thể interrupt? | Làm gì? |
+|---|---|---|---|
+| Phase 1 | **Render Phase** | ✅ Có (async) | Chạy Diffing Algorithm, tính ra changes |
+| Phase 2 | **Commit Phase** | ❌ Không | Apply changes vào DOM, chạy effects |
+
+**Tại sao cần Reconciliation?**
+
+Trước React 16, Reconciliation chạy **synchronous** và **không thể bị interrupt**. Nếu component tree lớn (ví dụ: render 1000 ProductCard), toàn bộ quá trình phải chạy xong trong một lần — browser bị block, UI bị giật (jank). React 16 giới thiệu **Fiber Architecture** để giải quyết vấn đề này bằng cách chia Render Phase thành các đơn vị nhỏ có thể pause/resume.
+
+---
+
 ### **React Fiber Architecture (từ React 16)**
 
 ```javascript
@@ -283,7 +323,8 @@ const fiberNode = {
   child: null, // First child fiber
   sibling: null, // Next sibling fiber
   return: null, // Parent fiber
-  alternate: null, // Previous fiber version (double buffering)
+  alternate: null, // Work-in-progress fiber (double buffering)
+  // Khi commit xong: current ↔ work-in-progress swap vai trò
   flags: 0b00000100 // Bitmask flags cho operations (React 18+ dùng bitmask thay vì string)
   // Ví dụ flags: Placement = 0b10, Update = 0b100, Deletion = 0b1000
   // ... more fields
@@ -732,3 +773,4 @@ _"The best code is code you don't have to write. The best performance optimizati
 **📝 Tác giả**: Dự án Shopee Clone TypeScript
 **📅 Ngày tạo**: 2024
 **🔄 Cập nhật lần cuối**: 2026-03 — React 19.2.x, React Compiler 1.0, New JSX Transform
+````
