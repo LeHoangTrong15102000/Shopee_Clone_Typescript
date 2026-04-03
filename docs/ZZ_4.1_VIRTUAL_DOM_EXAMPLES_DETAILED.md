@@ -4,8 +4,9 @@
 
 1. [Batching Updates - Gộp các thay đổi với ví dụ cụ thể](#batching-updates---gộp-các-thay-đổi-với-ví-dụ-cụ-thể)
 2. [Diffing Algorithm - Giả định 1: Element khác type](#diffing-algorithm---giả-định-1-element-khác-type)
-3. [Diffing Algorithm - Giả định 3: Component cùng type](#diffing-algorithm---giả-định-3-component-cùng-type)
-4. [Ví dụ thực tế từ Shopee Clone](#ví-dụ-thực-tế-từ-shopee-clone)
+3. [Diffing Algorithm - Giả định 2: Keys trong danh sách](#diffing-algorithm---giả-định-2-keys-trong-danh-sách)
+4. [Diffing Algorithm - Giả định 3: Component cùng type](#diffing-algorithm---giả-định-3-component-cùng-type)
+5. [Ví dụ thực tế từ Shopee Clone](#ví-dụ-thực-tế-từ-shopee-clone)
 
 ---
 
@@ -289,6 +290,246 @@ function ProductInfo({ loading, product }) {
 
 // Khi loading thay đổi:
 // React chỉ update className và textContent → NHANH
+```
+
+---
+
+## 🗝️ Diffing Algorithm - Giả định 2: Keys trong danh sách
+
+### **Giải thích đơn giản**
+
+Khi React render một **danh sách** (list) các elements, nó cần biết element nào trong danh sách cũ tương ứng với element nào trong danh sách mới. Nếu không có `key`, React chỉ so sánh theo **vị trí (index)** — dẫn đến việc re-render sai hoặc mất state. Khi có `key`, React dùng key để **match chính xác** từng element, bất kể thứ tự thay đổi thế nào.
+
+### **Vấn đề khi không có key (hoặc dùng index làm key)**
+
+```javascript
+// ❌ BAD: Không có key — React so sánh theo vị trí
+function ProductList({ products }) {
+  return (
+    <ul>
+      {products.map(product => (
+        <li>{product.name}</li>  // ⚠️ Thiếu key!
+      ))}
+    </ul>
+  )
+}
+
+// Danh sách ban đầu:
+// Index 0: iPhone 14
+// Index 1: Samsung S24
+// Index 2: Google Pixel 8
+
+// Sau khi xóa phần tử đầu tiên (iPhone 14):
+// Index 0: Samsung S24   ← React thấy "vị trí 0 thay đổi" → UPDATE
+// Index 1: Google Pixel 8 ← React thấy "vị trí 1 thay đổi" → UPDATE
+//                          React thấy "vị trí 2 biến mất" → REMOVE
+
+// Kết quả: React UPDATE 2 nodes + REMOVE 1 node
+// Thay vì chỉ cần REMOVE đúng 1 node (iPhone 14)
+// → 3 DOM operations thay vì 1 → CHẬM và có thể sai state!
+```
+
+```javascript
+// ❌ BAD: Dùng index làm key — vẫn sai khi list thay đổi thứ tự
+function ProductList({ products }) {
+  return (
+    <ul>
+      {products.map((product, index) => (
+        <ProductCard key={index} product={product} />
+        // key=0, key=1, key=2 — gắn với VỊ TRÍ, không phải với SẢN PHẨM
+      ))}
+    </ul>
+  )
+}
+
+// Khi xóa iPhone 14 (index 0):
+// React thấy key=0 vẫn còn → "Ồ, vị trí 0 vẫn tồn tại, chỉ đổi data"
+// → React UPDATE ProductCard tại key=0 với data của Samsung S24
+// → React UPDATE ProductCard tại key=1 với data của Google Pixel 8
+// → React REMOVE ProductCard tại key=2
+
+// Vấn đề nghiêm trọng hơn khi ProductCard có internal state:
+function ProductCard({ product }) {
+  const [isExpanded, setIsExpanded] = useState(false)  // Internal state!
+  // ...
+}
+
+// Nếu user đang expand iPhone 14 (key=0, isExpanded=true)
+// Sau khi xóa iPhone 14:
+// → key=0 giờ là Samsung S24, nhưng isExpanded vẫn là TRUE (state bị giữ lại sai!)
+// → Samsung S24 bị expand dù user chưa click!
+```
+
+### **Giải pháp đúng: Dùng stable unique key**
+
+```javascript
+// ✅ GOOD: Dùng ID ổn định làm key
+function ProductList({ products }) {
+  return (
+    <ul>
+      {products.map(product => (
+        <ProductCard key={product.id} product={product} />
+        // key="1", key="2", key="3" — gắn với SẢN PHẨM, không phải vị trí
+      ))}
+    </ul>
+  )
+}
+
+// Khi xóa iPhone 14 (id=1):
+// React thấy key="1" biến mất → REMOVE đúng ProductCard của iPhone 14
+// React thấy key="2" vẫn còn → KEEP Samsung S24 nguyên vẹn (kể cả state!)
+// React thấy key="3" vẫn còn → KEEP Google Pixel 8 nguyên vẹn
+
+// Kết quả: Chỉ 1 DOM operation (REMOVE) — NHANH và ĐÚNG state!
+```
+
+### **Ví dụ minh họa: React dùng key để match như thế nào**
+
+```javascript
+// Danh sách cũ (old Virtual DOM):
+[
+  { key: "p1", type: ProductCard, props: { product: iPhone14 } },
+  { key: "p2", type: ProductCard, props: { product: Samsung } },
+  { key: "p3", type: ProductCard, props: { product: Pixel } },
+]
+
+// Danh sách mới (new Virtual DOM) — thêm 1 sản phẩm ở đầu:
+[
+  { key: "p0", type: ProductCard, props: { product: iPad } },    // MỚI
+  { key: "p1", type: ProductCard, props: { product: iPhone14 } },
+  { key: "p2", type: ProductCard, props: { product: Samsung } },
+  { key: "p3", type: ProductCard, props: { product: Pixel } },
+]
+
+// React Diffing với KEY:
+console.log('🔍 React dùng key để match...')
+
+// key="p0": Không có trong old list → CREATE mới
+console.log('➕ key="p0": Create ProductCard cho iPad')
+
+// key="p1": Tìm thấy trong old list → REUSE, chỉ check props
+console.log('✅ key="p1": Reuse iPhone14 ProductCard — props không đổi → skip')
+
+// key="p2": Tìm thấy trong old list → REUSE
+console.log('✅ key="p2": Reuse Samsung ProductCard — props không đổi → skip')
+
+// key="p3": Tìm thấy trong old list → REUSE
+console.log('✅ key="p3": Reuse Pixel ProductCard — props không đổi → skip')
+
+// KẾT QUẢ: Chỉ 1 CREATE operation, 3 ProductCard được tái sử dụng hoàn toàn!
+// Nếu không có key: React sẽ UPDATE tất cả 4 nodes theo vị trí → 4 operations
+```
+
+### **Ví dụ thực tế: Reorder danh sách**
+
+```javascript
+// Tình huống: User sort sản phẩm theo giá
+function SortableProductList() {
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [products] = useState([
+    { id: 1, name: "iPhone 14", price: 20000000 },
+    { id: 2, name: "Samsung S24", price: 15000000 },
+    { id: 3, name: "Google Pixel 8", price: 18000000 },
+  ])
+
+  const sortedProducts = [...products].sort((a, b) =>
+    sortOrder === 'asc' ? a.price - b.price : b.price - a.price
+  )
+
+  return (
+    <div>
+      <button onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
+        Sort by price {sortOrder === 'asc' ? '↑' : '↓'}
+      </button>
+
+      {sortedProducts.map(product => (
+        // ✅ key=product.id — React biết đây là CÙNG sản phẩm, chỉ đổi vị trí
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  )
+}
+
+// Khi user click Sort (asc → desc):
+// Old order: Samsung(id=2) → Pixel(id=3) → iPhone(id=1)
+// New order: iPhone(id=1) → Pixel(id=3) → Samsung(id=2)
+
+// React với key=id:
+// → Nhận ra id=1, id=2, id=3 đều đã tồn tại
+// → Chỉ REORDER DOM nodes (move operations) — không destroy/create
+// → Internal state của mỗi ProductCard được GIỮ NGUYÊN
+
+// React không có key (hoặc key=index):
+// → Thấy vị trí 0 thay đổi data → UPDATE
+// → Thấy vị trí 1 thay đổi data → UPDATE
+// → Thấy vị trí 2 thay đổi data → UPDATE
+// → 3 UPDATE operations + internal state bị reset!
+```
+
+### **Khi nào được phép dùng index làm key?**
+
+```javascript
+// ✅ OK dùng index khi list THOẢ MÃN CẢ 3 điều kiện:
+// 1. List KHÔNG bao giờ reorder
+// 2. List KHÔNG bao giờ filter/remove phần tử ở giữa
+// 3. Các items KHÔNG có internal state
+
+// Ví dụ an toàn: Danh sách static, chỉ append
+function BreadcrumbNav({ items }) {
+  return (
+    <nav>
+      {items.map((item, index) => (
+        // ✅ OK: breadcrumb không reorder, không có state
+        <span key={index}>{item.label}</span>
+      ))}
+    </nav>
+  )
+}
+
+// ❌ KHÔNG OK: Cart items có thể xóa ở giữa, có internal state
+function CartList({ items }) {
+  return (
+    <div>
+      {items.map((item, index) => (
+        // ❌ SAI: Nếu xóa item ở giữa → state của các item sau bị shift
+        <CartItemCard key={index} item={item} />
+      ))}
+    </div>
+  )
+}
+
+// ✅ ĐÚNG: Dùng stable ID
+function CartList({ items }) {
+  return (
+    <div>
+      {items.map(item => (
+        <CartItemCard key={item.id} item={item} />
+      ))}
+    </div>
+  )
+}
+```
+
+### **Tóm tắt: Key giúp React làm gì?**
+
+```
+Không có key / key=index:
+  Old list: [A(0), B(1), C(2)]
+  New list: [B(0), C(1)]        ← A bị xóa ở đầu
+  React so sánh theo vị trí:
+    Vị trí 0: A → B  → UPDATE (sai!)
+    Vị trí 1: B → C  → UPDATE (sai!)
+    Vị trí 2: C → ∅  → REMOVE
+  = 2 UPDATE + 1 REMOVE = 3 operations, state bị sai
+
+Có key=id:
+  Old list: [A(id=a), B(id=b), C(id=c)]
+  New list: [B(id=b), C(id=c)]  ← A bị xóa
+  React so sánh theo key:
+    key=a: tồn tại trong old, không có trong new → REMOVE A
+    key=b: tồn tại trong cả hai → KEEP B (không đổi)
+    key=c: tồn tại trong cả hai → KEEP C (không đổi)
+  = 1 REMOVE = 1 operation, state chính xác ✅
 ```
 
 ---
@@ -722,6 +963,11 @@ function CartItemCard({ item, onUpdateQuantity }: CartItemCardProps) {
 - **Khác type**: Destroy + Create (đơn giản nhưng chậm hơn)
 - **Cùng type**: Update props (phức tạp nhưng nhanh hơn)
 - **Lesson**: Giữ element type ổn định để tối ưu performance
+
+### **Diffing Algorithm - Giả định 2 (Keys trong danh sách):**
+- **Không có key / key=index**: React so sánh theo vị trí → UPDATE sai, state bị shift
+- **key=stable ID**: React match chính xác từng element → chỉ REMOVE/CREATE đúng node cần thiết
+- **Lesson**: Luôn dùng stable unique ID làm key, không dùng index khi list có thể reorder hoặc filter
 
 ### **Diffing Algorithm - Giả định 3 (Component cùng type):**
 - **Cùng component**: React tin rằng structure tương tự
