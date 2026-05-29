@@ -11,8 +11,8 @@
     "dev:win": "cross-env BUILD_MODE=dev NODE_OPTIONS=\"--max-old-space-size=4096\" VITE_FORCE_COLOR=1 vite --force",
     "dev:safe": "cross-env BUILD_MODE=dev vite --force --clearScreen false",
     "dev:bypass": "cross-env BUILD_MODE=dev NODE_OPTIONS=\"--max-old-space-size=4096\" vite --force --config ./vite.config.ts",
-    "build": "cross-env BUILD_MODE=production tsc && vite build",
-    "build:production": "cross-env BUILD_MODE=production NODE_ENV=production tsc && vite build",
+    "build": "cross-env BUILD_MODE=production NODE_OPTIONS=\"--max-old-space-size=4096\" tsc && cross-env BUILD_MODE=production NODE_OPTIONS=\"--max-old-space-size=4096\" vite build",
+    "build:production": "cross-env BUILD_MODE=production NODE_ENV=production NODE_OPTIONS=\"--max-old-space-size=4096\" tsc && cross-env BUILD_MODE=production NODE_ENV=production NODE_OPTIONS=\"--max-old-space-size=4096\" vite build",
     "deploy": "pnpm run build:production && pnpm run preview",
     "preview": "vite preview",
     "lint": "eslint --ext ts,tsx src/",
@@ -110,10 +110,5 @@
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
-  "packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2",
-  "pnpm": {
-    "overrides": {
-      "jiti": "^2.0.0"
-    }
-  }
+  "packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2"
 }
